@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html class="no-js" lang="">
+<style>
+    .container {
+        /* display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center; */
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .loader {
+        border: 16px solid #f3f3f3;
+        /* Light grey */
+        border-top: 16px solid #33cc99;
+        /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        /* margin: auto auto; */
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<head>
+    <base href="/" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1">
+    <title>
+
+    </title>
+</head>
+
+<body style="box-sizing: border-box;margin: 0;padding: 0;">
+    <div id="app" class="container">
+        <div class="loader" />
+    </div>
+</body>
+
+
+</html>
