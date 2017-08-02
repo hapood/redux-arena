@@ -13,7 +13,7 @@ export function ArenaLoadScene(
   saga,
   match,
   location,
-  sceneNo
+  isSameScene
 ) {
   return {
     type: ARENA_SCENE_SWITCH,
@@ -23,7 +23,7 @@ export function ArenaLoadScene(
     match,
     location,
     SceneComponent,
-    newSceneNo: sceneNo
+    isSameScene
   };
 }
 

@@ -9,7 +9,7 @@ class SceneBundle extends Component {
   componentWillMount() {
     this.state = {
       isSceneBundleValid: false,
-      sceneNo: 0
+      OldPlayingScene: this.props.PlayingScene
     };
     let {
       asyncSceneComponent,
@@ -27,38 +27,31 @@ class SceneBundle extends Component {
       reducer,
       saga,
       match,
-      location,
-      1
+      location
     );
   }
 
-  checkAndStartPlay = () => {
-    let { sceneNo } = this.props;
-    if (sceneNo > this.state.sceneNo) {
+  checkAndStartPlay(props, nextProps) {
+    if (
+      this.state.OldPlayingScene !== nextProps.PlayingScene ||
+      props.sceneNo !== nextProps.sceneNo
+    ) {
       this.setState(
         {
           isSceneBundleValid: true,
-          sceneNo
+          OldPlayingScene: nextProps.PlayingScene
         },
         () => {
           this.props.sceneStartPlay();
         }
       );
     }
-  };
+  }
 
   componentWillUnmount() {
     this.setState({ isSceneContextValid: false }, () => {
       this.props.sceneStopPlay();
     });
-  }
-
-  componentDidMount() {
-    this.checkAndStartPlay();
-  }
-
-  componentDidUpdate() {
-    this.checkAndStartPlay();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -71,6 +64,7 @@ class SceneBundle extends Component {
       match,
       location
     } = nextProps;
+    this.checkAndStartPlay(this.props, nextProps);
     if (
       asyncSceneComponent !== this.props.asyncSceneComponent ||
       SceneComponent !== this.props.SceneComponent ||
@@ -103,8 +97,7 @@ class SceneBundle extends Component {
     reducer,
     saga,
     match,
-    location,
-    sceneNo
+    location
   ) {
     this.props.sceneLoadStart();
     if (SceneComponent) {
@@ -115,7 +108,7 @@ class SceneBundle extends Component {
         saga,
         match,
         location,
-        sceneNo
+        SceneComponent === this.state.OldPlayingScene
       );
       this.props.sceneLoadEnd();
       return;
@@ -132,7 +125,7 @@ class SceneBundle extends Component {
           saga,
           match,
           location,
-          sceneNo
+          SceneComponentA === this.state.OldPlayingScene
         );
         this.props.sceneLoadEnd();
       });

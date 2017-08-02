@@ -8,12 +8,10 @@ import {
   sceneReducer
 } from "./reducers";
 import rootSaga from "./sagas";
-import { syncHistoryWithStore, routerReducer } from "react-router-redux";
 
 const rootReducer = {
   arena: arenaReducer,
-  scene: sceneReducer,
-  routing: routerReducer
+  scene: sceneReducer
 };
 
 const rootState = {

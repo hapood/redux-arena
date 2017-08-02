@@ -21,14 +21,14 @@ function* sceneSwitch({
   match,
   location,
   SceneComponent,
-  newSceneNo
+  isSameScene
 }) {
   let { sceneNo } = yield select(state => state.arena);
   let newArenaState = {
     match,
     location,
     PlayingScene: SceneComponent,
-    sceneNo: newSceneNo != null ? newSceneNo : sceneNo + 1
+    sceneNo: isSameScene ? sceneNo + 1 : 0
   };
   yield* sceneApplyRedux({ reducer, saga, state });
   yield put({ type: ARENA_SET_STATE, state: newArenaState });
