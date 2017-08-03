@@ -8,6 +8,7 @@ export default function getInitState() {
     sceneNo: 0,
     match: null,
     location: null,
-    history: null
+    history: null,
+    tracks: []
   };
 }

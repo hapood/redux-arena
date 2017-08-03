@@ -7,11 +7,8 @@ import SceneLoading from "../SceneLoading";
 class PublicScene extends Component {
   render() {
     let {
-      asyncSceneComponent,
-      SceneComponent,
-      state,
-      reducer,
-      saga,
+      asyncSceneBundle,
+      sceneBundle,
       exact,
       strict,
       path,
@@ -25,11 +22,8 @@ class PublicScene extends Component {
         component={() =>
           <SceneBundle
             {...{
-              asyncSceneComponent,
-              SceneComponent,
-              state,
-              reducer,
-              saga,
+              asyncSceneBundle,
+              sceneBundle,
               SceneLoadingComponent
             }}
           />}
@@ -38,11 +32,8 @@ class PublicScene extends Component {
   }
 }
 PublicScene.propTypes = {
-  asyncSceneComponent: PropTypes.any,
-  SceneComponent: PropTypes.any,
-  state: PropTypes.object,
-  reducer: PropTypes.object,
-  saga: PropTypes.object,
+  asyncSceneBuldle: PropTypes.any,
+  scene: PropTypes.any,
   SceneLoadingComponent: PropTypes.any,
   exact: PropTypes.bool,
   path: PropTypes.string,
@@ -50,7 +41,8 @@ PublicScene.propTypes = {
 };
 
 PublicScene.defaultProps = {
-  SceneLoadingComponent: SceneLoading
+  SceneLoadingComponent: SceneLoading,
+  exact: true
 };
 
 export default PublicScene;

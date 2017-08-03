@@ -4,34 +4,24 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ReduxArena from "../src/ReduxArena";
 import PublicScene from "../src/PublicScene";
-import PageA from "./PageA/PageA";
-import PageB from "./PageB/PageB";
-import pageAState from "./PageA/state";
-import pageBState from "./PageB/state";
+import pageABundle from "./pageABundle";
 import * as actions from "./actions";
 
+const asyncPageB = import("./pageBBundle");
 class Frame extends Component {
   render() {
     return (
       <div>
-        <button onClick={() => this.props.history.push("/PageA")}>PageA</button>
-        <button onClick={() => this.props.history.push("/PageB")}>PageB</button>
-        <ReduxArena>
-          <PublicScene
-            exact
-            strict
-            path="/PageA"
-            state={pageAState}
-            SceneComponent={PageA}
-          />
-          <PublicScene
-            exact
-            strict
-            path="/PageB"
-            state={pageBState}
-            SceneComponent={PageB}
-          />
-        </ReduxArena>
+        <button onClick={() => this.props.history.push("/pageA")}>PageA</button>
+        <button onClick={() => this.props.history.push("/asyncPageB")}>
+          asyncPageB
+        </button>
+        <div style={{ marginTop: "1rem" }}>
+          <ReduxArena>
+            <PublicScene path="/pageA" sceneBundle={pageABundle} />
+            <PublicScene path="/asyncPageB" asyncSceneBundle={asyncPageB} />
+          </ReduxArena>
+        </div>
       </div>
     );
   }

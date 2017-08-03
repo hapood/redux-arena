@@ -34,11 +34,8 @@ class PrivateScene extends Component {
 
   render() {
     let {
-      asyncSceneComponent,
-      SceneComponent,
-      state,
-      reducer,
-      saga,
+      asyncSceneBundle,
+      sceneBundle,
       exact,
       strict,
       path,
@@ -49,11 +46,8 @@ class PrivateScene extends Component {
       return (
         <PublicScene
           {...{
-            asyncSceneComponent,
-            SceneComponent,
-            state,
-            reducer,
-            saga,
+            asyncSceneBundle,
+            sceneBundle,
             exact,
             strict,
             path,
@@ -66,11 +60,8 @@ class PrivateScene extends Component {
 }
 
 PrivateScene.propTypes = {
-  asyncSceneComponent: PropTypes.any,
-  SceneComponent: PropTypes.any,
-  state: PropTypes.object,
-  reducer: PropTypes.object,
-  saga: PropTypes.object,
+  asyncSceneBundle: PropTypes.any,
+  sceneBundle: PropTypes.any,
   SceneLoadingComponent: PropTypes.any,
   SceneValidatingComponent: PropTypes.any,
   exact: PropTypes.bool,
@@ -83,7 +74,8 @@ PrivateScene.propTypes = {
 
 PrivateScene.defaultProps = {
   SceneValidatingComponent: SceneValidating,
-  SceneLoadingComponent: SceneLoading
+  SceneLoadingComponent: SceneLoading,
+  exact: true
 };
 
 export default PrivateScene;

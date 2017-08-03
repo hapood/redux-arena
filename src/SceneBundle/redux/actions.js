@@ -1,5 +1,6 @@
 import {
-  ARENA_SCENE_SWITCH,
+  ARENA_LOAD_SCENE,
+  ARENA_LOAD_ASYNCSCENE,
   SCENE_LOAD_START,
   SCENE_LOAD_END,
   SCENE_PLAY_START,
@@ -7,23 +8,39 @@ import {
 } from "../../redux/actionTypes";
 
 export function ArenaLoadScene(
-  SceneComponent,
-  state,
-  reducer,
-  saga,
+  sceneBundle,
   match,
   location,
-  isSameScene
+  OldPlayingScene,
+  sceneNo
 ) {
   return {
-    type: ARENA_SCENE_SWITCH,
-    state,
-    saga,
-    reducer,
+    type: ARENA_LOAD_SCENE,
+    SceneComponent: sceneBundle.Component,
+    state: sceneBundle.state,
+    saga: sceneBundle.saga,
+    reducer: sceneBundle.reducer,
     match,
     location,
-    SceneComponent,
-    isSameScene
+    OldPlayingScene,
+    sceneNo
+  };
+}
+
+export function arenaLoadAsyncScene(
+  asyncSceneBundle,
+  match,
+  location,
+  OldPlayingScene,
+  sceneNo
+) {
+  return {
+    type: ARENA_LOAD_ASYNCSCENE,
+    asyncSceneBundle,
+    match,
+    location,
+    OldPlayingScene,
+    sceneNo
   };
 }
 
