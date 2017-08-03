@@ -56,7 +56,7 @@ function createPackageFile() {
     } = packageData;
 
     const minimalPackage = {
-      name: 'material-ui',
+      name: 'redux-arena',
       author,
       version,
       description,
