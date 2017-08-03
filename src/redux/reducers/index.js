@@ -1,10 +1,11 @@
 import arenaReducer from "./arenaReducer";
-import sceneReducer from "./sceneReducer";
+import createSenceReducer from "./createSenceReducer";
 import getArenaInitState from "./getArenaInitState";
 import getSceneInitState from "./getSceneInitState";
 
-const rootReducer = {
-  arena: arenaReducer,
-  scene: sceneReducer
+export {
+  arenaReducer,
+  createSenceReducer,
+  getArenaInitState,
+  getSceneInitState
 };
-export { arenaReducer, sceneReducer, getArenaInitState, getSceneInitState };

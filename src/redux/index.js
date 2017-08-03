@@ -5,13 +5,13 @@ import {
   getSceneInitState,
   getArenaInitState,
   arenaReducer,
-  sceneReducer
+  createSenceReducer
 } from "./reducers";
 import rootSaga from "./sagas";
 
 const rootReducer = {
   arena: arenaReducer,
-  scene: sceneReducer
+  scene: createSenceReducer()
 };
 
 const rootState = {

@@ -11,6 +11,7 @@ function* dynamicState() {
     });
   }
 }
+
 export default function* saga() {
   yield fork(dynamicState);
 }

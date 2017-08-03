@@ -6,9 +6,12 @@ import {
   ARENA_LOAD_ASYNCSCENE
 } from "../actionTypes";
 import { takeLatest, take, put, call, fork, select } from "redux-saga/effects";
+import createSenceReducer from "../reducers/createSenceReducer";
 
 function* sceneApplyRedux({ state, saga, reducer }) {
-  window.arenaStore.replaceReducer(reducer ? { scene: reducer } : {});
+  window.arenaStore.replaceReducer(
+    reducer ? { scene: createSenceReducer(reducer) } : {}
+  );
   if (saga) yield fork(saga);
   yield put({
     type: SCENE_REPLACE_STATE,

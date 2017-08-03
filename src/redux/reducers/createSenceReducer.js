@@ -5,7 +5,7 @@ import {
 } from "../actionTypes.js";
 import getSceneInitState from "./getSceneInitState";
 
-export default function reducer(state = getSceneInitState(), action) {
+function reducer(state, action) {
   switch (action.type) {
     case SCENE_SET_STATE:
       return Object.assign({}, state, action.state);
@@ -16,4 +16,13 @@ export default function reducer(state = getSceneInitState(), action) {
     default:
       return state;
   }
+}
+
+export default function createSenceReducer(extendSenceReducer) {
+  return function(state = getSceneInitState(), action) {
+    if (extendSenceReducer) {
+      state = extendSenceReducer(state, action);
+    }
+    return reducer(state, action);
+  };
 }
