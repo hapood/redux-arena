@@ -6,20 +6,32 @@ import { connect } from "react-redux";
 class PageB extends Component {
   render() {
     return (
-      <div>
-        <div>
-          <span>name:</span>
-          <span>
-            {this.props.name}
-          </span>
-        </div>
-        <div>
-          <span>pageB:</span>
-          <span>
-            {this.props.pageB}
-          </span>
-        </div>
-      </div>
+      <table>
+        <tbody>
+          <tr>
+            <th>state_key</th>
+            <th>state_value</th>
+          </tr>
+          <tr>
+            <td>name:</td>
+            <td>
+              {this.props.name}
+            </td>
+          </tr>
+          <tr>
+            <td>pageB:</td>
+            <td>
+              {this.props.pageB}
+            </td>
+          </tr>
+          <tr>
+            <td>dynamicState:</td>
+            <td>
+              {this.props.dynamicState}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     );
   }
 }
@@ -27,7 +39,8 @@ class PageB extends Component {
 function mapStateToProps(state) {
   return {
     pageB: state.scene.pageB,
-    name: state.scene.name
+    name: state.scene.name,
+    dynamicState: state.scene.dynamicState
   };
 }
 

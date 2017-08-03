@@ -1,4 +1,5 @@
 export default {
   name: "PageA",
-  pageA: "true"
+  pageA: "true",
+  dynamicState: 0
 };
