@@ -8,28 +8,32 @@ import { REFRESH_VALIDATE, FIRST_VALADATE } from "./validateType";
 class PrivateScene extends Component {
   componentWillMount() {
     this.state = {
-      isValidated: false
+      isValid: false
     };
-    this.props.onValidate(FIRST_VALADATE).then(isValidated => {
-      if (isValidated == true) {
-        this.setState({ isValidated: true });
-        this.props.onPass();
-      } else {
-        this.props.onReject();
-      }
-    });
+    this.props
+      .onValidate(this.props.match, this.props.location, FIRST_VALADATE)
+      .then(({ isValid, data }) => {
+        if (isValid == true) {
+          this.setState({ isValid: true });
+          this.props.onPass(data);
+        } else {
+          this.props.onReject(data);
+        }
+      });
   }
 
   componentWillReceiveProps(nextProps) {
-    this.props.onValidate(REFRESH_VALIDATE).then(isValidated => {
-      if (isValidated == true) {
-        this.setState({ isValidated: true });
-        this.props.onPass();
-      } else {
-        this.setState({ isValidated: false });
-        this.props.onReject();
-      }
-    });
+    this.props
+      .onValidate(this.props.match, this.props.location, REFRESH_VALIDATE)
+      .then(isValid => {
+        if (isValid == true) {
+          this.setState({ isValid: true });
+          this.props.onPass();
+        } else {
+          this.setState({ isValid: false });
+          this.props.onReject();
+        }
+      });
   }
 
   render() {
@@ -42,7 +46,7 @@ class PrivateScene extends Component {
       SceneValidatingComponent,
       SceneLoadingComponent
     } = this.props;
-    if (this.state.isValidated)
+    if (this.state.isValid)
       return (
         <PublicScene
           {...{
