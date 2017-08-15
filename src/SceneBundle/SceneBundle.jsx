@@ -12,8 +12,12 @@ class SceneBundle extends Component {
       OldPlayingScene: this.props.PlayingScene,
       sceneNo: this.props.sceneNo
     };
-    let { asyncSceneBundle, sceneBundle, match, location } = this.props;
-    this.loadScene(asyncSceneBundle, sceneBundle, match, location);
+    this.loadScene(
+      this.props.asyncSceneBundle,
+      this.props.sceneBundle,
+      this.props.match,
+      this.props.location
+    );
   }
 
   checkAndStartPlay(state, props) {
@@ -28,15 +32,26 @@ class SceneBundle extends Component {
           sceneNo: props.sceneNo
         },
         () => {
-          this.props.sceneStartPlay();
+          this.props.sceneStartPlay(
+            props.match,
+            props.location,
+            props.sceneBundle,
+            props.sceneBundle ? null : props.asyncSceneBundle
+          );
         }
       );
     }
   }
 
   componentWillUnmount() {
+    let props = this.props;
     this.setState({ isSceneContextValid: false }, () => {
-      this.props.sceneStopPlay();
+      this.props.sceneStopPlay(
+        props.match,
+        props.location,
+        props.sceneBundle,
+        props.sceneBundle ? null : props.asyncSceneBundle
+      );
     });
   }
 
@@ -56,23 +71,15 @@ class SceneBundle extends Component {
           isSceneBundleValid: false,
           sceneStartTime: sceneStartTime + 1
         },
-        () =>
-          this.loadScene(
-            asyncSceneBundle,
-            sceneBundle,
-            state,
-            reducer,
-            saga,
-            match,
-            location
-          )
+        () => this.loadScene(asyncSceneBundle, sceneBundle, match, location)
       );
     }
   }
 
   loadScene(asyncSceneBundle, sceneBundle, match, location) {
-    this.props.sceneLoadStart();
     if (sceneBundle) {
+      let payload = [match, location, sceneBundle];
+      this.props.sceneLoadStart(...payload);
       this.props.ArenaLoadScene(
         sceneBundle,
         match,
@@ -80,9 +87,10 @@ class SceneBundle extends Component {
         this.state.OldPlayingScene,
         this.state.sceneNo
       );
+      this.props.sceneLoadEnd(...payload);
       return;
-    }
-    if (asyncSceneBundle) {
+    } else if (asyncSceneBundle) {
+      this.props.sceneLoadStart(match, location, null, asyncSceneBundle);
       this.props.arenaLoadAsyncScene(
         asyncSceneBundle,
         match,

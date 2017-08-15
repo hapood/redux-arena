@@ -1,5 +1,5 @@
 import {
-  ARENA_LOAD_SCENE,
+  ARENA_SWITCH_SCENE,
   ARENA_SET_STATE,
   SCENE_REPLACE_STATE,
   SCENE_LOAD_END,
@@ -20,24 +20,24 @@ function* sceneApplyRedux({ state, saga, reducer }) {
 }
 
 function* arenaLoadScene({
-  SceneComponent,
-  state,
-  saga,
-  reducer,
+  sceneBundle,
   match,
   location,
   OldPlayingScene,
   sceneNo
 }) {
   let newArenaState = {
-    match,
-    location,
-    PlayingScene: SceneComponent,
-    sceneNo: OldPlayingScene === SceneComponent ? sceneNo + 1 : 0
+    match: sceneBundle.match,
+    location: sceneBundle.location,
+    PlayingScene: sceneBundle.Component,
+    sceneNo: OldPlayingScene === sceneBundle.Component ? sceneNo + 1 : 0
   };
-  yield* sceneApplyRedux({ state, saga, reducer });
+  yield* sceneApplyRedux({
+    state: sceneBundle.state,
+    saga: sceneBundle.saga,
+    reducer: sceneBundle.reducer
+  });
   yield put({ type: ARENA_SET_STATE, state: newArenaState });
-  yield put({ type: SCENE_LOAD_END });
 }
 
 function* arenaLoadAsyncScene({
@@ -48,13 +48,16 @@ function* arenaLoadAsyncScene({
   sceneNo
 }) {
   let sceneBundle = yield asyncSceneBundle;
+  yield put({
+    type: SCENE_LOAD_END,
+    match,
+    location,
+    asyncSceneBundle
+  });
   sceneBundle = sceneBundle.default ? sceneBundle.default : sceneBundle;
   yield put({
-    type: ARENA_LOAD_SCENE,
-    SceneComponent: sceneBundle.Component,
-    state: sceneBundle.state,
-    saga: sceneBundle.saga,
-    reducer: sceneBundle.reducer,
+    type: ARENA_SWITCH_SCENE,
+    sceneBundle,
     match,
     location,
     OldPlayingScene,
@@ -63,6 +66,6 @@ function* arenaLoadAsyncScene({
 }
 
 export default function* saga() {
-  yield takeLatest(ARENA_LOAD_SCENE, arenaLoadScene);
+  yield takeLatest(ARENA_SWITCH_SCENE, arenaLoadScene);
   yield takeLatest(ARENA_LOAD_ASYNCSCENE, arenaLoadAsyncScene);
 }

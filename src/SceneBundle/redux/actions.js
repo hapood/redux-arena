@@ -1,10 +1,10 @@
 import {
-  ARENA_LOAD_SCENE,
+  ARENA_SWITCH_SCENE,
   ARENA_LOAD_ASYNCSCENE,
   SCENE_LOAD_START,
-  SCENE_LOAD_END,
   SCENE_PLAY_START,
-  SCENE_PLAY_END
+  SCENE_PLAY_END,
+  SCENE_LOAD_END
 } from "../../redux/actionTypes";
 
 export function ArenaLoadScene(
@@ -15,11 +15,8 @@ export function ArenaLoadScene(
   sceneNo
 ) {
   return {
-    type: ARENA_LOAD_SCENE,
-    SceneComponent: sceneBundle.Component,
-    state: sceneBundle.state,
-    saga: sceneBundle.saga,
-    reducer: sceneBundle.reducer,
+    type: ARENA_SWITCH_SCENE,
+    sceneBundle,
     match,
     location,
     OldPlayingScene,
@@ -44,18 +41,42 @@ export function arenaLoadAsyncScene(
   };
 }
 
-export function sceneLoadStart() {
-  return { type: SCENE_LOAD_START };
+export function sceneLoadStart(match, location, sceneBundle, asyncSceneBundle) {
+  return {
+    type: SCENE_LOAD_START,
+    match,
+    location,
+    sceneBundle,
+    asyncSceneBundle
+  };
 }
 
-export function sceneLoadEnd() {
-  return { type: SCENE_LOAD_END };
+export function sceneStartPlay(match, location, sceneBundle, asyncSceneBundle) {
+  return {
+    type: SCENE_PLAY_START,
+    match,
+    location,
+    sceneBundle,
+    asyncSceneBundle
+  };
 }
 
-export function sceneStartPlay() {
-  return { type: SCENE_PLAY_START };
+export function sceneLoadEnd(match, location, sceneBundle, asyncSceneBundle) {
+  return {
+    type: SCENE_LOAD_END,
+    match,
+    location,
+    sceneBundle,
+    asyncSceneBundle
+  };
 }
 
-export function sceneStopPlay() {
-  return { type: SCENE_PLAY_END };
+export function sceneStopPlay(match, location, sceneBundle, asyncSceneBundle) {
+  return {
+    type: SCENE_PLAY_END,
+    match,
+    location,
+    sceneBundle,
+    asyncSceneBundle
+  };
 }

@@ -13,7 +13,7 @@ Redux is a great state management container, I love redux-saga and react-router 
 
 Every url related page-component in management console webapp is nearly independent, but when we register its state and reducer in original redux, states and reducers will work all life-circle of redux. That's not necessary, it will cause some problems like same action type conflict, reducer inefficient, etc.
 
-Redux-arena is designed to solve these problems once and for all, when scence changed the state, reducer, and saga will be replaced by redux-arena, looks like the two scene connected with irrelevant store.
+Redux-arena is designed to solve these problems once and for all, when scene changed the state, reducer, and saga will be replaced by redux-arena, looks like the two scene connected with irrelevant store.
 
 Take this tool and build management console webapp easier with our favourite react&redux.
 
