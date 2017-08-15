@@ -10,30 +10,31 @@ class PrivateScene extends Component {
     this.state = {
       isValid: false
     };
-    this.props
-      .onValidate(this.props.match, this.props.location, FIRST_VALADATE)
-      .then(({ isValid, data }) => {
-        if (isValid == true) {
-          this.setState({ isValid: true });
-          this.props.onPass(data);
-        } else {
-          this.props.onReject(data);
-        }
-      });
+    this.props.onValidate(
+      this.validateCb,
+      this.props.match,
+      this.props.location,
+      FIRST_VALADATE
+    );
   }
 
+  validateCb = isValid => {
+    if (isValid == true) {
+      this.setState({ isValid: true });
+      this.props.onPass();
+    } else {
+      this.setState({ isValid: false });
+      this.props.onReject();
+    }
+  };
+
   componentWillReceiveProps(nextProps) {
-    this.props
-      .onValidate(this.props.match, this.props.location, REFRESH_VALIDATE)
-      .then(isValid => {
-        if (isValid == true) {
-          this.setState({ isValid: true });
-          this.props.onPass();
-        } else {
-          this.setState({ isValid: false });
-          this.props.onReject();
-        }
-      });
+    this.props.onValidate(
+      this.validateCb,
+      this.props.match,
+      this.props.location,
+      REFRESH_VALIDATE
+    );
   }
 
   render() {
