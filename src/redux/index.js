@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, combineReducers } from "redux";
-import { ARENA_INIT_AUDIENCE_SAGA } from "./actionTypes";
+import { ARENA_INIT_AUDIENCE_SAGA, ARENA_SET_STATE } from "./actionTypes";
 import createSagaMiddleware, { END } from "redux-saga";
 import {
   getSceneInitState,
@@ -9,7 +9,7 @@ import {
 } from "./reducers";
 import rootSaga from "./sagas";
 
-const rootReducer = {
+let currentReducers = {
   arena: arenaReducer,
   scene: createSenceReducer()
 };
@@ -19,24 +19,37 @@ const rootState = {
   scene: getSceneInitState()
 };
 
-function createProxyStore(store, audienceReducer) {
+function createProxyStore(store) {
   const handler = {
     get: function(target, name) {
-      return name === "replaceReducer"
-        ? reducer => {
-            let newReducer = Object.assign(
-              {},
-              rootReducer,
-              audienceReducer,
-              reducer
-            );
-            let state = target.getState();
-            for (let key in state) {
-              if (newReducer[key] == null) delete state[key];
+      if (name === "replaceReducers") {
+        return reducer => {
+          currentReducers = Object.assign({}, currentReducers, reducer);
+          return target.replaceReducer(combineReducers(currentReducers));
+        };
+      }
+      if (name === "removeReducers") {
+        return reducerNameList => {
+          let state = target.getState();
+          let newReducers = Object.assign({}, currentReducers);
+          reducerKeyList.forEach(reducerKey => {
+            delete state[key];
+            delete newReducers[key];
+          });
+          currentReducers = newReducers;
+          return target.replaceReducer(combineReducers(newReducer));
+        };
+      }
+      if (name === "setHistory") {
+        return history =>
+          store.dispatch({
+            type: ARENA_SET_STATE,
+            state: {
+              history
             }
-            return target.replaceReducer(combineReducers(newReducer));
-          }
-        : target[name];
+          });
+      }
+      return target[name];
     }
   };
   return new Proxy(store, handler);
@@ -49,13 +62,13 @@ export function createArenaStore(
   milldewares = []
 ) {
   const sagaMiddleware = createSagaMiddleware();
+  currentReducers = Object.assign({}, currentReducers, reducer);
   const store = createProxyStore(
     createStore(
-      combineReducers(Object.assign({}, rootReducer, reducer)),
+      combineReducers(currentReducers),
       Object.assign({}, rootState, initialState),
       applyMiddleware(...[sagaMiddleware].concat(milldewares))
-    ),
-    reducer
+    )
   );
   window.arenaStore = store;
   store.runSaga = sagaMiddleware.run;

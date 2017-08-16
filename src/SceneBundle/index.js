@@ -1,3 +1,4 @@
 import SceneBundle from "./SceneBundle";
+import withSceneSwitch from "./withSceneSwitch";
 
-export default SceneBundle;
+export default withSceneSwitch(SceneBundle);

@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router";
-import { bindActionCreators } from "redux";
-import * as actions from "./redux/actions";
-import { connect } from "react-redux";
 
-class SceneBundle extends Component {
+export default class SceneBundle extends Component {
   componentWillMount() {
     this.state = {
       isSceneBundleValid: false,
@@ -33,6 +29,7 @@ class SceneBundle extends Component {
         },
         () => {
           this.props.sceneStartPlay(
+            this.context.sceneSwitchKey,
             props.match,
             props.location,
             props.sceneBundle,
@@ -47,6 +44,7 @@ class SceneBundle extends Component {
     let props = this.props;
     this.setState({ isSceneContextValid: false }, () => {
       this.props.sceneStopPlay(
+        this.context.sceneSwitchKey,
         props.match,
         props.location,
         props.sceneBundle,
@@ -68,8 +66,7 @@ class SceneBundle extends Component {
     ) {
       this.setState(
         {
-          isSceneBundleValid: false,
-          sceneStartTime: sceneStartTime + 1
+          isSceneBundleValid: false
         },
         () => this.loadScene(asyncSceneBundle, sceneBundle, match, location)
       );
@@ -78,9 +75,10 @@ class SceneBundle extends Component {
 
   loadScene(asyncSceneBundle, sceneBundle, match, location) {
     if (sceneBundle) {
-      let payload = [match, location, sceneBundle];
+      let payload = [this.context.sceneSwitchKey, match, location, sceneBundle];
       this.props.sceneLoadStart(...payload);
       this.props.ArenaLoadScene(
+        this.context.sceneSwitchKey,
         sceneBundle,
         match,
         location,
@@ -90,8 +88,15 @@ class SceneBundle extends Component {
       this.props.sceneLoadEnd(...payload);
       return;
     } else if (asyncSceneBundle) {
-      this.props.sceneLoadStart(match, location, null, asyncSceneBundle);
+      this.props.sceneLoadStart(
+        this.context.sceneSwitchKey,
+        match,
+        location,
+        null,
+        asyncSceneBundle
+      );
       this.props.arenaLoadAsyncScene(
+        this.context.sceneSwitchKey,
         asyncSceneBundle,
         match,
         location,
@@ -124,17 +129,6 @@ SceneBundle.propTypes = {
   SceneLoadingComponent: PropTypes.any
 };
 
-function mapStateToProps(state) {
-  return {
-    PlayingScene: state.arena.PlayingScene,
-    sceneNo: state.arena.sceneNo
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actions, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withRouter(SceneBundle)
-);
+SceneBundle.contextTypes = {
+  sceneSwitchKey: PropTypes.string
+};

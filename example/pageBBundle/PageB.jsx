@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
-import * as actions from "./actions";
-import { connect } from "react-redux";
 
-class PageB extends Component {
+export default class PageB extends Component {
   render() {
     return (
       <div>
@@ -44,18 +41,3 @@ class PageB extends Component {
     );
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    pageB: state.scene.pageB,
-    name: state.scene.name,
-    dynamicState: state.scene.dynamicState,
-    cnt: state.scene.cnt
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actions, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PageB);
