@@ -1,40 +1,38 @@
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import { ARENA_INIT_AUDIENCE_SAGA, ARENA_SET_STATE } from "./actionTypes";
 import createSagaMiddleware, { END } from "redux-saga";
-import {
-  getSceneInitState,
-  getArenaInitState,
-  arenaReducer,
-  createSenceReducer
-} from "./reducers";
+import { getSceneInitState, getArenaInitState, arenaReducer } from "./reducers";
 import rootSaga from "./sagas";
 
 let currentReducers = {
-  arena: arenaReducer,
-  scene: createSenceReducer()
+  arena: arenaReducer
 };
 
 const rootState = {
-  arena: getArenaInitState(),
-  scene: getSceneInitState()
+  arena: getArenaInitState()
 };
 
 function createProxyStore(store) {
   const handler = {
     get: function(target, name) {
-      if (name === "replaceReducers") {
-        return reducer => {
-          currentReducers = Object.assign({}, currentReducers, reducer);
-          return target.replaceReducer(combineReducers(currentReducers));
+      if (name === "addReducer") {
+        return ({ reducerKey, reducer }) => {
+          let state = target.getState();
+          if (state[reducerKey] != null) return false;
+          currentReducers = Object.assign({}, currentReducers, {
+            [reducerKey]: reducer
+          });
+          target.replaceReducer(combineReducers(currentReducers));
+          return true;
         };
       }
-      if (name === "removeReducers") {
+      if (name === "removeReducer") {
         return reducerNameList => {
           let state = target.getState();
           let newReducers = Object.assign({}, currentReducers);
           reducerKeyList.forEach(reducerKey => {
-            delete state[key];
-            delete newReducers[key];
+            delete state[reducerKey];
+            delete newReducers[reducerKey];
           });
           currentReducers = newReducers;
           return target.replaceReducer(combineReducers(newReducer));
@@ -73,7 +71,7 @@ export function createArenaStore(
   window.arenaStore = store;
   store.runSaga = sagaMiddleware.run;
   store.close = () => store.dispatch(END);
-  store.runSaga(rootSaga);
+  store.runSaga(rootSaga, { store });
   if (saga)
     store.dispatch({
       type: ARENA_INIT_AUDIENCE_SAGA,

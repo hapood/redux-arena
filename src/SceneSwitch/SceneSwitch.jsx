@@ -9,27 +9,38 @@ import {
 import createSenceSwitchReducer from "../redux/reducers/createSenceSwitchReducer";
 
 export default class SceneSwitch extends Component {
+  static contextTypes = {
+    store: PropTypes.any
+  };
+
+  static childContextTypes = {
+    sceneSwitchKey: PropTypes.string
+  };
+
   componentWillMount() {
-    window.arenaStore.replaceReducers({
-      [this.props.sceneSwitchKey]: createSenceSwitchReducer(
-        this.props.sceneSwitchKey
-      )
+    let flag = this.context.store.addReducer({
+      reducerKey: [this.props.reducerKey],
+      reducer: createSenceSwitchReducer(this.props.reducerKey)
     });
+    if (flag === false)
+      throw new Error(
+        `Reducer key [${this.props.reducerKey}] is already exsited.`
+      );
     this.sagaTaskPromise = new Promise(resolve =>
-      window.arenaStore.dispatch({
+      this.context.store.dispatch({
         type: SCENESWITCH_INIT_SAGA,
-        sceneSwitchKey: this.props.sceneSwitchKey,
+        reducerKey: this.props.reducerKey,
         setSagaTask: resolve
       })
     );
   }
 
   componentWillUnMount() {
-    window.arenaStore.dispatch({
+    this.context.store.dispatch({
       type: SCENESWITCH_KILL_SAGA,
       sagaTaskPromise: this.sagaTaskPromise
     });
-    window.arenaStore.removeReducers([this.props.sceneSwitchKey]);
+    this.context.store.removeReducer(this.props.reducerKey);
   }
 
   getChildContext() {
@@ -47,13 +58,9 @@ export default class SceneSwitch extends Component {
 
 SceneSwitch.propTypes = {
   children: PropTypes.any,
-  sceneSwitchKey: PropTypes.string
-};
-
-SceneSwitch.childContextTypes = {
-  sceneSwitchKey: PropTypes.string
+  reducerKey: PropTypes.string
 };
 
 SceneSwitch.defaultProps = {
-  sceneSwitchKey: "sceneSwitch"
+  reducerKey: "sceneSwitch"
 };

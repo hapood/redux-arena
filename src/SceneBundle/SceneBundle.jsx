@@ -2,6 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 export default class SceneBundle extends Component {
+  static contextTypes = {
+    sceneSwitchKey: PropTypes.string,
+    store: PropTypes.any
+  };
+
   componentWillMount() {
     this.state = {
       isSceneBundleValid: false,
@@ -77,13 +82,16 @@ export default class SceneBundle extends Component {
     if (sceneBundle) {
       let payload = [this.context.sceneSwitchKey, match, location, sceneBundle];
       this.props.sceneLoadStart(...payload);
-      this.props.ArenaLoadScene(
-        this.context.sceneSwitchKey,
-        sceneBundle,
-        match,
-        location,
-        this.state.OldPlayingScene,
-        this.state.sceneNo
+      this.loadScenePromise = new Promise(resolve =>
+        this.props.SceneSwitchLoadScene(
+          this.context.sceneSwitchKey,
+          sceneBundle,
+          match,
+          location,
+          this.state.OldPlayingScene,
+          this.state.sceneNo,
+          resolve
+        )
       );
       this.props.sceneLoadEnd(...payload);
       return;
@@ -95,13 +103,16 @@ export default class SceneBundle extends Component {
         null,
         asyncSceneBundle
       );
-      this.props.arenaLoadAsyncScene(
-        this.context.sceneSwitchKey,
-        asyncSceneBundle,
-        match,
-        location,
-        this.state.OldPlayingScene,
-        this.state.sceneNo
+      this.loadScenePromise = new Promise(resolve =>
+        this.props.arenaLoadAsyncScene(
+          this.context.sceneSwitchKey,
+          asyncSceneBundle,
+          match,
+          location,
+          this.state.OldPlayingScene,
+          this.state.sceneNo,
+          resolve
+        )
       );
       return;
     }
@@ -127,8 +138,4 @@ SceneBundle.propTypes = {
   location: PropTypes.object,
   history: PropTypes.object,
   SceneLoadingComponent: PropTypes.any
-};
-
-SceneBundle.contextTypes = {
-  sceneSwitchKey: PropTypes.string
 };

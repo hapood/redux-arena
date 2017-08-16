@@ -7,13 +7,14 @@ import {
   SCENE_LOAD_END
 } from "../../redux/actionTypes";
 
-export function ArenaLoadScene(
+export function SceneSwitchLoadScene(
   sceneSwitchKey,
   sceneBundle,
   match,
   location,
   OldPlayingScene,
-  sceneNo
+  sceneNo,
+  setReduxInfo
 ) {
   return {
     type: SCENESWITCH_SWITCH_SCENE,
@@ -22,7 +23,8 @@ export function ArenaLoadScene(
     match,
     location,
     OldPlayingScene,
-    sceneNo
+    sceneNo,
+    setReduxInfo
   };
 }
 
@@ -32,7 +34,8 @@ export function arenaLoadAsyncScene(
   match,
   location,
   OldPlayingScene,
-  sceneNo
+  sceneNo,
+  setReduxInfo
 ) {
   return {
     type: SCENESWITCH_LOAD_ASYNCSCENE,
@@ -41,7 +44,8 @@ export function arenaLoadAsyncScene(
     match,
     location,
     OldPlayingScene,
-    sceneNo
+    sceneNo,
+    setReduxInfo
   };
 }
 

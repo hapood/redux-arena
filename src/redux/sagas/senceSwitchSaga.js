@@ -22,16 +22,34 @@ import createSenceReducer from "../reducers/createSenceReducer";
 import { connect } from "react-redux";
 import bindActionCreators from "../../enhencedRedux/bindActionCreators";
 
-function* sceneApplyRedux({ sceneKey, state, saga, reducer }) {
-  if (reducer)
-    window.arenaStore.replaceReducers({
-      [sceneKey]: createSenceReducer(reducer)
+function* sceneApplyRedux({ reducerKey, state, saga, reducer, setReduxInfo }) {
+  let arenaStore = yield getContext("store");
+  if (reducerKey) {
+    let flag = arenaStore.addReducer({
+      reducerKey,
+      reducer: createSenceReducer(reducer)
     });
-  if (saga) yield fork(saga);
+    if (flag === false)
+      throw new Error(`Reducer key [${reducerKey}] is already exsited.`);
+  } else {
+    do {
+      let reducerKey = String(Math.random()).slice(2);
+      let flag = arenaStore.addReducer({
+        reducerKey,
+        reducer: createSenceReducer(reducer)
+      });
+      if (flag === false) reducerKey = null;
+    } while (reducerKey == null);
+  }
+  let sagaTask;
+  if (saga) sagaTask = yield fork(saga);
   yield put({
     type: SCENE_REPLACE_STATE,
+    _sceneKey: sceneKey,
     state
   });
+  setReduxInfo({ reducerKey, sagaTask });
+  return reducerKey;
 }
 
 function* arenaSwitchScene({
@@ -40,17 +58,25 @@ function* arenaSwitchScene({
   match,
   location,
   OldPlayingScene,
-  sceneNo
+  sceneNo,
+  setReduxInfo
 }) {
   let ctxSceneSwitchKey = yield getContext("sceneSwitchKey");
   if (ctxSceneSwitchKey !== sceneSwitchKey) return;
   let mapDispatchToProps;
+  let reducerKey = yield* sceneApplyRedux({
+    reducerKey: sceneBundle.reducerKey,
+    state: sceneBundle.state,
+    saga: sceneBundle.saga,
+    reducer: sceneBundle.reducer,
+    setReduxInfo
+  });
   if (sceneBundle.actions) {
     mapDispatchToProps = dispatch =>
-      bindActionCreators(sceneBundle.actions, dispatch, "scene");
+      bindActionCreators(sceneBundle.actions, dispatch, reducerKey);
   }
   let PlayingScene = connect(
-    state => sceneBundle.mapStateToProps(state, "scene"),
+    state => sceneBundle.mapStateToProps(state, reducerKey),
     mapDispatchToProps
   )(sceneBundle.Component);
   let newArenaState = {
@@ -59,12 +85,6 @@ function* arenaSwitchScene({
     PlayingScene,
     sceneNo: OldPlayingScene === sceneBundle.Component ? sceneNo + 1 : 0
   };
-  yield* sceneApplyRedux({
-    sceneKey: "scene",
-    state: sceneBundle.state,
-    saga: sceneBundle.saga,
-    reducer: sceneBundle.reducer
-  });
   yield put({
     type: SCENESWITCH_REPLACE_STATE,
     sceneSwitchKey,
@@ -78,7 +98,8 @@ function* arenaLoadAsyncScene({
   match,
   location,
   OldPlayingScene,
-  sceneNo
+  sceneNo,
+  setReduxInfo
 }) {
   let ctxSceneSwitchKey = yield getContext("sceneSwitchKey");
   if (ctxSceneSwitchKey !== sceneSwitchKey) return;
@@ -97,7 +118,8 @@ function* arenaLoadAsyncScene({
     match,
     location,
     OldPlayingScene,
-    sceneNo
+    sceneNo,
+    setReduxInfo
   });
 }
 
@@ -107,8 +129,8 @@ function* forkSagaWithCotext(ctx) {
   yield takeEvery(SCENESWITCH_LOAD_ASYNCSCENE, arenaLoadAsyncScene);
 }
 
-function* initSceneSwitchSaga({ sceneSwitchKey, setSagaTask }) {
-  let sagaTask = yield fork(forkSagaWithCotext, { sceneSwitchKey });
+function* initSceneSwitchSaga({ reducerKey, setSagaTask }) {
+  let sagaTask = yield fork(forkSagaWithCotext, { sceneSwitchKey: reducerKey });
   setSagaTask(sagaTask);
 }
 
