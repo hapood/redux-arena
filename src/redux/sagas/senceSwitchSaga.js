@@ -1,7 +1,6 @@
 import {
   SCENESWITCH_SWITCH_SCENE,
   SCENESWITCH_REPLACE_STATE,
-  SCENE_REPLACE_STATE,
   SCENE_LOAD_END,
   SCENESWITCH_LOAD_ASYNCSCENE,
   SCENESWITCH_INIT_SAGA,
@@ -18,41 +17,11 @@ import {
   setContext,
   getContext
 } from "redux-saga/effects";
-import createSenceReducer from "../reducers/createSenceReducer";
 import { connect } from "react-redux";
 import bindActionCreators from "../../enhencedRedux/bindActionCreators";
+import { sceneApplyRedux } from "./sceneSaga";
 
-function* sceneApplyRedux({ reducerKey, state, saga, reducer, setReduxInfo }) {
-  let arenaStore = yield getContext("store");
-  if (reducerKey) {
-    let flag = arenaStore.addReducer({
-      reducerKey,
-      reducer: createSenceReducer(reducer)
-    });
-    if (flag === false)
-      throw new Error(`Reducer key [${reducerKey}] is already exsited.`);
-  } else {
-    do {
-      let reducerKey = String(Math.random()).slice(2);
-      let flag = arenaStore.addReducer({
-        reducerKey,
-        reducer: createSenceReducer(reducer)
-      });
-      if (flag === false) reducerKey = null;
-    } while (reducerKey == null);
-  }
-  let sagaTask;
-  if (saga) sagaTask = yield fork(saga);
-  yield put({
-    type: SCENE_REPLACE_STATE,
-    _sceneKey: sceneKey,
-    state
-  });
-  setReduxInfo({ reducerKey, sagaTask });
-  return reducerKey;
-}
-
-function* arenaSwitchScene({
+function* sceneSwitchSwitchScene({
   sceneSwitchKey,
   sceneBundle,
   match,
@@ -92,7 +61,7 @@ function* arenaSwitchScene({
   });
 }
 
-function* arenaLoadAsyncScene({
+function* sceneSwitchLoadAsyncScene({
   sceneSwitchKey,
   asyncSceneBundle,
   match,
@@ -125,8 +94,8 @@ function* arenaLoadAsyncScene({
 
 function* forkSagaWithCotext(ctx) {
   yield setContext(ctx);
-  yield takeEvery(SCENESWITCH_SWITCH_SCENE, arenaSwitchScene);
-  yield takeEvery(SCENESWITCH_LOAD_ASYNCSCENE, arenaLoadAsyncScene);
+  yield takeEvery(SCENESWITCH_SWITCH_SCENE, sceneSwitchSwitchScene);
+  yield takeEvery(SCENESWITCH_LOAD_ASYNCSCENE, sceneSwitchLoadAsyncScene);
 }
 
 function* initSceneSwitchSaga({ reducerKey, setSagaTask }) {

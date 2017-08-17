@@ -1,3 +1,3 @@
-export default function getInitState() {
+export default function getSceneInitState() {
   return {};
 }

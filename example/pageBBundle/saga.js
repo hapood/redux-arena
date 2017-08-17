@@ -1,6 +1,6 @@
 import { fork, put } from "redux-saga/effects";
 import { delay } from "redux-saga";
-import { SCENE_SET_STATE } from "../../src/redux/actionTypes";
+import { setSceneState } from "../../src/sceneStateOps";
 
 function randLetter() {
   var letters = [
@@ -38,9 +38,8 @@ function randLetter() {
 function* dynamicState() {
   while (true) {
     yield delay(500);
-    yield put({
-      type: SCENE_SET_STATE,
-      state: { dynamicState: randLetter() }
+    yield* setSceneState({
+      dynamicState: randLetter()
     });
   }
 }

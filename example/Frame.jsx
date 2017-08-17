@@ -11,7 +11,7 @@ import * as actions from "./actions";
 const asyncPageB = import("./pageBBundle");
 class Frame extends Component {
   componentWillMount() {
-    this.state = 0;
+    this.state = { a: 1 };
   }
   render() {
     return (
@@ -23,8 +23,8 @@ class Frame extends Component {
           <button onClick={() => this.props.history.push("/asyncPageB")}>
             asyncPageB
           </button>
-          <button onClick={() => this.setState(this.state+1)}>
-            asyncPageB
+          <button onClick={() => this.setState({ a: this.state.a + 1 })}>
+            re-render
           </button>
           <div style={{ marginTop: "1rem" }}>
             <SceneSwitch>

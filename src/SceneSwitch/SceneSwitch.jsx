@@ -17,6 +17,15 @@ export default class SceneSwitch extends Component {
     sceneSwitchKey: PropTypes.string
   };
 
+  static propTypes = {
+    children: PropTypes.any,
+    reducerKey: PropTypes.string
+  };
+
+  static defaultProps = {
+    reducerKey: "sceneSwitch"
+  };
+
   componentWillMount() {
     let flag = this.context.store.addReducer({
       reducerKey: [this.props.reducerKey],
@@ -44,7 +53,7 @@ export default class SceneSwitch extends Component {
   }
 
   getChildContext() {
-    return { sceneSwitchKey: this.props.sceneSwitchKey };
+    return { sceneSwitchKey: this.props.reducerKey };
   }
 
   render() {
@@ -55,12 +64,3 @@ export default class SceneSwitch extends Component {
     );
   }
 }
-
-SceneSwitch.propTypes = {
-  children: PropTypes.any,
-  reducerKey: PropTypes.string
-};
-
-SceneSwitch.defaultProps = {
-  reducerKey: "sceneSwitch"
-};

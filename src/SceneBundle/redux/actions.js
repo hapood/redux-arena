@@ -4,7 +4,8 @@ import {
   SCENE_LOAD_START,
   SCENE_PLAY_START,
   SCENE_PLAY_END,
-  SCENE_LOAD_END
+  SCENE_LOAD_END,
+  SCENE_CLEAR_REDUX
 } from "../../redux/actionTypes";
 
 export function SceneSwitchLoadScene(
@@ -115,4 +116,12 @@ export function sceneStopPlay(
     sceneBundle,
     asyncSceneBundle
   };
+}
+
+export function clearSceneRedux(reduxInfoPromise) {
+  if (reduxInfoPromise != null)
+    return {
+      type: SCENE_CLEAR_REDUX,
+      reduxInfoPromise
+    };
 }

@@ -16,9 +16,10 @@ function createProxyStore(store) {
   const handler = {
     get: function(target, name) {
       if (name === "addReducer") {
-        return ({ reducerKey, reducer }) => {
-          let state = target.getState();
-          if (state[reducerKey] != null) return false;
+        return ({ reducerKey, reducer, state }) => {
+          let allStates = target.getState();
+          if (allStates[reducerKey] != null) return false;
+          allStates[reducerKey] = state;
           currentReducers = Object.assign({}, currentReducers, {
             [reducerKey]: reducer
           });
@@ -27,15 +28,14 @@ function createProxyStore(store) {
         };
       }
       if (name === "removeReducer") {
-        return reducerNameList => {
-          let state = target.getState();
+        return reducerKey => {
+          if (reducerKey == null) return;
           let newReducers = Object.assign({}, currentReducers);
-          reducerKeyList.forEach(reducerKey => {
-            delete state[reducerKey];
-            delete newReducers[reducerKey];
-          });
+          let allStates = target.getState();
+          delete allStates[reducerKey];
+          delete newReducers[reducerKey];
           currentReducers = newReducers;
-          return target.replaceReducer(combineReducers(newReducer));
+          target.replaceReducer(combineReducers(newReducers));
         };
       }
       if (name === "setHistory") {
