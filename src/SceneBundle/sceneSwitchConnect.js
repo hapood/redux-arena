@@ -9,7 +9,9 @@ export default function sceneSwitchConnect(
   asyncSceneBundle,
   sceneBundle,
   SceneLoadingComponent,
-  sceneSwitchKey
+  sceneSwitchKey,
+  sceneSwitchLocation,
+  sceneSwitchMatch
 ) {
   let mapDispatchToProps = dispatch => {
     return bindActionCreators(actions, dispatch);
@@ -22,21 +24,23 @@ export default function sceneSwitchConnect(
     };
   };
 
-  let wrappedComponent = withRouter(
-    connect(mapStateToProps, mapDispatchToProps)(function(extraProps) {
-      return (
-        <SceneBundle
-          {...{
-            asyncSceneBundle,
-            sceneBundle,
-            SceneLoadingComponent,
-            mapStateToProps,
-            ...extraProps
-          }}
-        />
-      );
-    })
-  );
+  let wrappedComponent = connect(mapStateToProps, mapDispatchToProps)(function(
+    extraProps
+  ) {
+    return (
+      <SceneBundle
+        {...{
+          asyncSceneBundle,
+          sceneBundle,
+          SceneLoadingComponent,
+          mapStateToProps,
+          sceneSwitchLocation,
+          sceneSwitchMatch,
+          ...extraProps
+        }}
+      />
+    );
+  });
 
   wrappedComponent.displayName = "SceneSwitchConnect";
   return wrappedComponent;

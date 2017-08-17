@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Route } from "react-router-dom";
-import invariant from 'invariant'
+import invariant from "invariant";
 import SceneLoading from "../SceneLoading";
 import { sceneSwitchConnect } from "../SceneBundle";
 
@@ -27,21 +27,35 @@ class PublicScene extends Component {
   componentWillMount() {
     invariant(
       this.context.sceneSwitchKey,
-      'You should not use <PublicScene> outside a <SceneSwitch>'
-    )
-    let { asyncSceneBundle, sceneBundle, SceneLoadingComponent } = this.props;
+      "You should not use <PublicScene> outside a <SceneSwitch>"
+    );
+    let {
+      asyncSceneBundle,
+      sceneBundle,
+      SceneLoadingComponent,
+      location,
+      computedMatch
+    } = this.props;
     this.state = {
       wrappedSceneBundle: sceneSwitchConnect(
         asyncSceneBundle,
         sceneBundle,
         SceneLoadingComponent,
-        this.context.sceneSwitchKey
+        this.context.sceneSwitchKey,
+        location,
+        computedMatch
       )
     };
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    let { asyncSceneBundle, sceneBundle, SceneLoadingComponent } = nextProps;
+    let {
+      asyncSceneBundle,
+      sceneBundle,
+      SceneLoadingComponent,
+      location,
+      computedMatch
+    } = nextProps;
     if (
       asyncSceneBundle !== this.props.asyncSceneBundle ||
       sceneBundle !== this.props.sceneBundle ||
@@ -52,7 +66,9 @@ class PublicScene extends Component {
         asyncSceneBundle,
         sceneBundle,
         SceneLoadingComponent,
-        nextContext.sceneSwitchKey
+        nextContext.sceneSwitchKey,
+        location,
+        computedMatch
       );
     }
   }

@@ -111,8 +111,25 @@ export default class SceneBundle extends Component {
 
   render() {
     let { PlayingScene, SceneLoadingComponent } = this.props;
+    let {
+      match,
+      location,
+      history,
+      sceneSwitchLocation,
+      sceneSwitchMatch
+    } = this.props;
     if (this.state.isSceneBundleValid) {
-      return <PlayingScene />;
+      return (
+        <PlayingScene
+          {...{
+            match,
+            location,
+            history,
+            sceneSwitchLocation,
+            sceneSwitchMatch
+          }}
+        />
+      );
     } else {
       return <div />;
     }
