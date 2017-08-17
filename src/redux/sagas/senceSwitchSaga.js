@@ -42,10 +42,13 @@ function* sceneSwitchSwitchScene({
     mapDispatchToProps = dispatch =>
       bindActionCreators(sceneBundle.actions, dispatch, reducerKey);
   }
-  let PlayingScene = connect(
-    state => sceneBundle.mapStateToProps(state, reducerKey),
-    mapDispatchToProps
-  )(sceneBundle.Component);
+  let mapStateToProps;
+  if (sceneBundle.mapStateToProps) {
+    mapStateToProps = state => sceneBundle.mapStateToProps(state, reducerKey);
+  }
+  let PlayingScene = connect(mapStateToProps, mapDispatchToProps)(
+    sceneBundle.Component
+  );
   let newArenaState = {
     PlayingScene,
     sceneNo: OldPlayingScene === sceneBundle.Component ? sceneNo + 1 : 0

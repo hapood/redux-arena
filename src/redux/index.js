@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import { ARENA_INIT_AUDIENCE_SAGA } from "./actionTypes";
 import createSagaMiddleware, { END } from "redux-saga";
-import { getSceneInitState, getArenaInitState, arenaReducer } from "./reducers";
+import { getArenaInitState, arenaReducer } from "./reducers";
 import rootSaga from "./sagas";
 
 let currentReducers = {
