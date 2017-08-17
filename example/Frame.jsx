@@ -43,9 +43,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return {
-    history: state.arena.history
-  };
+  return {};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Frame);

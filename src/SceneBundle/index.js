@@ -1,4 +1,5 @@
 import SceneBundle from "./SceneBundle";
-import withSceneSwitch from "./withSceneSwitch";
+import arenaConnect from "./arenaConnect";
 
-export default withSceneSwitch(SceneBundle);
+export default SceneBundle;
+export { arenaConnect };

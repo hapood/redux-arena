@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 
 export default class PageB extends Component {
+  componentWillMount(){
+    console.log("PageB")
+  }
   render() {
     return (
       <div>

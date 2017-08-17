@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 export default class PageA extends Component {
+  componentWillMount(){
+    console.log("PageA")
+  }
   render() {
     return (
       <div>
