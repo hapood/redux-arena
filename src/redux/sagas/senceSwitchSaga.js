@@ -24,8 +24,6 @@ import { sceneApplyRedux } from "./sceneSaga";
 function* sceneSwitchSwitchScene({
   sceneSwitchKey,
   sceneBundle,
-  match,
-  location,
   OldPlayingScene,
   sceneNo,
   setReduxInfo
@@ -49,8 +47,6 @@ function* sceneSwitchSwitchScene({
     mapDispatchToProps
   )(sceneBundle.Component);
   let newArenaState = {
-    match: sceneBundle.match,
-    location: sceneBundle.location,
     PlayingScene,
     sceneNo: OldPlayingScene === sceneBundle.Component ? sceneNo + 1 : 0
   };
@@ -64,8 +60,6 @@ function* sceneSwitchSwitchScene({
 function* sceneSwitchLoadAsyncScene({
   sceneSwitchKey,
   asyncSceneBundle,
-  match,
-  location,
   OldPlayingScene,
   sceneNo,
   setReduxInfo
@@ -75,8 +69,6 @@ function* sceneSwitchLoadAsyncScene({
   let sceneBundle = yield asyncSceneBundle;
   yield put({
     type: SCENE_LOAD_END,
-    match,
-    location,
     asyncSceneBundle
   });
   sceneBundle = sceneBundle.default ? sceneBundle.default : sceneBundle;
@@ -84,8 +76,6 @@ function* sceneSwitchLoadAsyncScene({
     type: SCENESWITCH_SWITCH_SCENE,
     sceneSwitchKey,
     sceneBundle,
-    match,
-    location,
     OldPlayingScene,
     sceneNo,
     setReduxInfo

@@ -11,8 +11,6 @@ import {
 export function SceneSwitchLoadScene(
   sceneSwitchKey,
   sceneBundle,
-  match,
-  location,
   OldPlayingScene,
   sceneNo,
   setReduxInfo
@@ -21,8 +19,6 @@ export function SceneSwitchLoadScene(
     type: SCENESWITCH_SWITCH_SCENE,
     sceneSwitchKey,
     sceneBundle,
-    match,
-    location,
     OldPlayingScene,
     sceneNo,
     setReduxInfo
@@ -32,8 +28,6 @@ export function SceneSwitchLoadScene(
 export function arenaLoadAsyncScene(
   sceneSwitchKey,
   asyncSceneBundle,
-  match,
-  location,
   OldPlayingScene,
   sceneNo,
   setReduxInfo
@@ -42,8 +36,6 @@ export function arenaLoadAsyncScene(
     type: SCENESWITCH_LOAD_ASYNCSCENE,
     sceneSwitchKey,
     asyncSceneBundle,
-    match,
-    location,
     OldPlayingScene,
     sceneNo,
     setReduxInfo
@@ -52,16 +44,12 @@ export function arenaLoadAsyncScene(
 
 export function sceneLoadStart(
   sceneSwitchKey,
-  match,
-  location,
   sceneBundle,
   asyncSceneBundle
 ) {
   return {
     type: SCENE_LOAD_START,
     sceneSwitchKey,
-    match,
-    location,
     sceneBundle,
     asyncSceneBundle
   };
@@ -69,16 +57,12 @@ export function sceneLoadStart(
 
 export function sceneStartPlay(
   sceneSwitchKey,
-  match,
-  location,
   sceneBundle,
   asyncSceneBundle
 ) {
   return {
     type: SCENE_PLAY_START,
     sceneSwitchKey,
-    match,
-    location,
     sceneBundle,
     asyncSceneBundle
   };
@@ -86,16 +70,12 @@ export function sceneStartPlay(
 
 export function sceneLoadEnd(
   sceneSwitchKey,
-  match,
-  location,
   sceneBundle,
   asyncSceneBundle
 ) {
   return {
     type: SCENE_LOAD_END,
     sceneSwitchKey,
-    match,
-    location,
     sceneBundle,
     asyncSceneBundle
   };
@@ -103,16 +83,12 @@ export function sceneLoadEnd(
 
 export function sceneStopPlay(
   sceneSwitchKey,
-  match,
-  location,
   sceneBundle,
   asyncSceneBundle
 ) {
   return {
     type: SCENE_PLAY_END,
     sceneSwitchKey,
-    match,
-    location,
     sceneBundle,
     asyncSceneBundle
   };

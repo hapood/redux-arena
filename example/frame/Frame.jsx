@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Router } from "react-router-dom";
-import PublicScene from "../src/PublicScene";
-import SceneSwitch from "../src/SceneSwitch";
-import pageABundle from "./pageABundle";
-import * as actions from "./actions";
+import PublicScene from "../../src/PublicScene";
+import SceneSwitch from "../../src/SceneSwitch";
+import pageABundle from "../pageABundle";
+import * as actions from "./redux/actions";
 
-const asyncPageB = import("./pageBBundle");
+const asyncPageB = import("../pageBBundle");
 class Frame extends Component {
   componentWillMount() {
     this.state = { a: 1 };

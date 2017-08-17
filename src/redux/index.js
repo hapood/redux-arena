@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, combineReducers } from "redux";
-import { ARENA_INIT_AUDIENCE_SAGA, ARENA_SET_STATE } from "./actionTypes";
+import { ARENA_INIT_AUDIENCE_SAGA } from "./actionTypes";
 import createSagaMiddleware, { END } from "redux-saga";
 import { getSceneInitState, getArenaInitState, arenaReducer } from "./reducers";
 import rootSaga from "./sagas";
@@ -37,15 +37,6 @@ function createProxyStore(store) {
           currentReducers = newReducers;
           target.replaceReducer(combineReducers(newReducers));
         };
-      }
-      if (name === "setHistory") {
-        return history =>
-          store.dispatch({
-            type: ARENA_SET_STATE,
-            state: {
-              history
-            }
-          });
       }
       return target[name];
     }

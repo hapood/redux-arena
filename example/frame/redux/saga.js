@@ -1,6 +1,6 @@
-import { takeLatest, fork, put } from "redux-saga/effects";
+import { takeLatest, put } from "redux-saga/effects";
 
-import { ARENA_HISTORY_PUSH, ARENA_SET_STATE } from "../actionTypes";
+import { FRAME_HISTORY_PUSH } from "./actionTypes";
 
 function* historyPush({ path, isTracing }) {
   let { history } = yield select(state => state.arena);
@@ -9,12 +9,12 @@ function* historyPush({ path, isTracing }) {
       let { arena, scene } = yield select(state => state);
       let { match, location, tracks } = arena;
       yield put({
-        type: ARENA_SET_STATE,
+        type: FRAME_SET_STATE,
         tracks: tracks.concat({ match, location, scene })
       });
     } else {
       yield put({
-        type: ARENA_SET_STATE,
+        type: FRAME_SET_STATE,
         tracks: []
       });
     }
@@ -25,5 +25,5 @@ function* historyPush({ path, isTracing }) {
 }
 
 export default function* saga() {
-  yield takeLatest(ARENA_HISTORY_PUSH, historyPush);
+  yield takeLatest(FRAME_HISTORY_PUSH, historyPush);
 }
