@@ -5,7 +5,7 @@ import { withRouter } from "react-router";
 import * as actions from "./redux/actions";
 import SceneBundle from "./SceneBundle";
 
-export default function arenaConnect(
+export default function sceneSwitchConnect(
   asyncSceneBundle,
   sceneBundle,
   SceneLoadingComponent,
@@ -38,6 +38,6 @@ export default function arenaConnect(
     })
   );
 
-  wrappedComponent.displayName = "ArenaConnect";
+  wrappedComponent.displayName = "SceneSwitchConnect";
   return wrappedComponent;
 }

@@ -8,8 +8,6 @@ export default class SceneBundle extends Component {
   };
 
   componentWillMount() {
-    
-    console.log('componentWillMount')
     this.state = {
       isSceneBundleValid: false,
       OldPlayingScene: this.props.PlayingScene,
@@ -26,16 +24,16 @@ export default class SceneBundle extends Component {
 
   componentWillUnmount() {
     let props = this.props;
-    // this.setState({ isSceneContextValid: false }, () => {
-    //   this.props.sceneStopPlay(
-    //     this.context.sceneSwitchKey,
-    //     props.match,
-    //     props.location,
-    //     props.sceneBundle,
-    //     props.sceneBundle ? null : props.asyncSceneBundle
-    //   );
-    // });
-    // this.props.clearSceneRedux(this.state.reduxInfoPromise);
+    this.setState({ isSceneContextValid: false }, () => {
+      this.props.sceneStopPlay(
+        this.context.sceneSwitchKey,
+        props.match,
+        props.location,
+        props.sceneBundle,
+        props.sceneBundle ? null : props.asyncSceneBundle
+      );
+    });
+    this.props.clearSceneRedux(this.state.reduxInfoPromise);
   }
 
   checkAndStartPlay(state, props) {

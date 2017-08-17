@@ -8,6 +8,8 @@ import {
 } from "../redux/actionTypes";
 import createSenceSwitchReducer from "../redux/reducers/createSenceSwitchReducer";
 import { addReducer } from "../utils";
+import { sceneSwitchConnect } from "../SceneBundle";
+import SceneLoading from "../SceneLoading";
 
 export default class SceneSwitch extends Component {
   static contextTypes = {
@@ -15,12 +17,19 @@ export default class SceneSwitch extends Component {
   };
 
   static childContextTypes = {
-    sceneSwitchKey: PropTypes.string
+    sceneMetaKey: PropTypes.string
   };
 
   static propTypes = {
     children: PropTypes.any,
-    reducerKey: PropTypes.string
+    reducerKey: PropTypes.string,
+    asyncSceneBuldle: PropTypes.any,
+    scene: PropTypes.any,
+    SceneLoadingComponent: PropTypes.any
+  };
+
+  static defaultProps = {
+    SceneLoadingComponent: SceneLoading
   };
 
   componentWillMount() {
@@ -31,6 +40,12 @@ export default class SceneSwitch extends Component {
     );
     this.state = {
       reducerKey,
+      wrappedSceneBundle: sceneSwitchConnect(
+        asyncSceneBundle,
+        sceneBundle,
+        SceneLoadingComponent,
+        reducerKey
+      ),
       sagaTaskPromise: new Promise(resolve =>
         this.context.store.dispatch({
           type: SCENESWITCH_INIT_SAGA,
@@ -42,26 +57,40 @@ export default class SceneSwitch extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
+    let {
+      reducerKey,
+      asyncSceneBundle,
+      sceneBundle,
+      SceneLoadingComponent
+    } = nextContext;
     if (
-      nextProps.reducerKey != null &&
-      nextProps.reducerKey !== this.state.reducerKey
+      (reducerKey != null && reducerKey !== this.state.reducerKey) ||
+      asyncSceneBundle !== this.props.asyncSceneBundle ||
+      sceneBundle !== this.props.sceneBundle ||
+      SceneLoadingComponent !== this.props.SceneLoadingComponent
     ) {
       this.context.store.dispatch({
         type: SCENESWITCH_KILL_SAGA,
         sagaTaskPromise: this.sagaTaskPromise
       });
       this.context.store.removeReducer(this.state.reducerKey);
-      let reducerKey = addReducer(
-        nextContext.store,
-        nextProps.reducerKey,
+      reducerKey = addReducer(
+        this.context.store,
+        reducerKey,
         createSenceSwitchReducer
       );
       this.setState({
         reducerKey,
+        wrappedSceneBundle: sceneSwitchConnect(
+          asyncSceneBundle,
+          sceneBundle,
+          SceneLoadingComponent,
+          reducerKey
+        ),
         sagaTaskPromise: new Promise(resolve =>
           this.context.store.dispatch({
             type: SCENESWITCH_INIT_SAGA,
-            reducerKey,
+            reducerKey: reducerKey,
             setSagaTask: resolve
           })
         )
@@ -78,14 +107,10 @@ export default class SceneSwitch extends Component {
   }
 
   getChildContext() {
-    return { sceneSwitchKey: this.state.reducerKey };
+    return { sceneMetaKey: this.state.reducerKey };
   }
 
   render() {
-    return (
-      <Switch location={this.props.location}>
-        {this.props.children}
-      </Switch>
-    );
+    return this.state.wrappedSceneBundle;
   }
 }

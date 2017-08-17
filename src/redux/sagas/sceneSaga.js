@@ -12,6 +12,7 @@ import {
   setContext
 } from "redux-saga/effects";
 import createSenceReducer from "../reducers/createSenceReducer";
+import { addReducer } from "../../utils";
 
 function* forkSagaWithCotext(saga, ctx) {
   yield setContext(ctx);
@@ -26,24 +27,12 @@ export function* sceneApplyRedux({
   setReduxInfo
 }) {
   let arenaStore = yield getContext("store");
-  if (reducerKey) {
-    let flag = arenaStore.addReducer({
-      reducerKey,
-      reducer: createSenceReducer(reducer, reducerKey)
-    });
-    if (flag === false)
-      throw new Error(`Reducer key [${reducerKey}] is already exsited.`);
-  } else {
-    do {
-      reducerKey = String(Math.random()).slice(2);
-      let flag = arenaStore.addReducer({
-        reducerKey,
-        reducer: createSenceReducer(reducer, reducerKey),
-        state
-      });
-      if (flag === false) reducerKey = null;
-    } while (reducerKey == null);
-  }
+  reducerKey = addReducer(
+    arenaStore,
+    reducerKey,
+    newReducerKey => createSenceReducer(reducer, newReducerKey),
+    state
+  );
   let sagaTask;
   if (saga)
     sagaTask = yield fork(forkSagaWithCotext, saga, { sceneKey: reducerKey });

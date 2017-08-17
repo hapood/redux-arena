@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Route } from "react-router-dom";
+import invariant from 'invariant'
 import SceneLoading from "../SceneLoading";
-import { arenaConnect } from "../SceneBundle";
+import { sceneSwitchConnect } from "../SceneBundle";
 
 class PublicScene extends Component {
   static contextTypes = {
@@ -24,9 +25,13 @@ class PublicScene extends Component {
   };
 
   componentWillMount() {
+    invariant(
+      this.context.sceneSwitchKey,
+      'You should not use <PublicScene> outside a <SceneSwitch>'
+    )
     let { asyncSceneBundle, sceneBundle, SceneLoadingComponent } = this.props;
     this.state = {
-      wrappedSceneBundle: arenaConnect(
+      wrappedSceneBundle: sceneSwitchConnect(
         asyncSceneBundle,
         sceneBundle,
         SceneLoadingComponent,
@@ -43,7 +48,7 @@ class PublicScene extends Component {
       SceneLoadingComponent !== this.props.SceneLoadingComponent ||
       nextContext.sceneSwitchKey !== this.context.sceneSwitchKey
     ) {
-      this.state.wrappedSceneBundle = arenaConnect(
+      this.state.wrappedSceneBundle = sceneSwitchConnect(
         asyncSceneBundle,
         sceneBundle,
         SceneLoadingComponent,
