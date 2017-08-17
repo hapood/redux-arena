@@ -26,17 +26,19 @@ function* sceneSwitchSwitchScene({
   sceneBundle,
   OldPlayingScene,
   sceneNo,
-  setReduxInfo
+  curSceneBundle,
+  reduxInfo
 }) {
   let ctxSceneSwitchKey = yield getContext("sceneSwitchKey");
   if (ctxSceneSwitchKey !== sceneSwitchKey) return;
   let mapDispatchToProps;
-  let reducerKey = yield* sceneApplyRedux({
+  let { reducerKey, sagaTask } = yield* sceneApplyRedux({
     reducerKey: sceneBundle.reducerKey,
     state: sceneBundle.state,
     saga: sceneBundle.saga,
     reducer: sceneBundle.reducer,
-    setReduxInfo
+    curSceneBundle,
+    reduxInfo
   });
   if (sceneBundle.actions) {
     mapDispatchToProps = dispatch =>
@@ -51,7 +53,9 @@ function* sceneSwitchSwitchScene({
   );
   let newArenaState = {
     PlayingScene,
-    sceneNo: OldPlayingScene === sceneBundle.Component ? sceneNo + 1 : 0
+    sceneNo: OldPlayingScene === sceneBundle.Component ? sceneNo + 1 : 0,
+    reduxInfo: { reducerKey, sagaTask },
+    curSceneBundle: sceneBundle
   };
   yield put({
     type: SCENESWITCH_REPLACE_STATE,
@@ -65,30 +69,46 @@ function* sceneSwitchLoadAsyncScene({
   asyncSceneBundle,
   OldPlayingScene,
   sceneNo,
-  setReduxInfo
+  curSceneBundle,
+  reduxInfo
 }) {
-  let ctxSceneSwitchKey = yield getContext("sceneSwitchKey");
-  if (ctxSceneSwitchKey !== sceneSwitchKey) return;
   let sceneBundle = yield asyncSceneBundle;
   yield put({
     type: SCENE_LOAD_END,
     asyncSceneBundle
   });
   sceneBundle = sceneBundle.default ? sceneBundle.default : sceneBundle;
-  yield put({
-    type: SCENESWITCH_SWITCH_SCENE,
+  yield* sceneSwitchSwitchScene({
     sceneSwitchKey,
     sceneBundle,
     OldPlayingScene,
     sceneNo,
-    setReduxInfo
+    curSceneBundle,
+    reduxInfo
   });
 }
 
 function* forkSagaWithCotext(ctx) {
   yield setContext(ctx);
-  yield takeEvery(SCENESWITCH_SWITCH_SCENE, sceneSwitchSwitchScene);
-  yield takeEvery(SCENESWITCH_LOAD_ASYNCSCENE, sceneSwitchLoadAsyncScene);
+  yield fork(function*() {
+    let lastTask;
+    while (true) {
+      const action = yield take([
+        SCENESWITCH_LOAD_ASYNCSCENE,
+        SCENESWITCH_SWITCH_SCENE
+      ]);
+      if (action.sceneSwitchKey === ctx.sceneSwitchKey) {
+        if (lastTask) {
+          yield cancel(lastTask);
+        }
+        if (action.type === SCENESWITCH_LOAD_ASYNCSCENE) {
+          yield fork(sceneSwitchLoadAsyncScene, action);
+        } else {
+          yield fork(sceneSwitchSwitchScene, action);
+        }
+      }
+    }
+  });
 }
 
 function* initSceneSwitchSaga({ reducerKey, setSagaTask }) {

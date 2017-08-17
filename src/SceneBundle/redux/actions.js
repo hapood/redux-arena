@@ -13,7 +13,8 @@ export function SceneSwitchLoadScene(
   sceneBundle,
   OldPlayingScene,
   sceneNo,
-  setReduxInfo
+  curSceneBundle,
+  reduxInfo
 ) {
   return {
     type: SCENESWITCH_SWITCH_SCENE,
@@ -21,7 +22,8 @@ export function SceneSwitchLoadScene(
     sceneBundle,
     OldPlayingScene,
     sceneNo,
-    setReduxInfo
+    curSceneBundle,
+    reduxInfo
   };
 }
 
@@ -30,7 +32,8 @@ export function arenaLoadAsyncScene(
   asyncSceneBundle,
   OldPlayingScene,
   sceneNo,
-  setReduxInfo
+  curSceneBundle,
+  reduxInfo
 ) {
   return {
     type: SCENESWITCH_LOAD_ASYNCSCENE,
@@ -38,15 +41,12 @@ export function arenaLoadAsyncScene(
     asyncSceneBundle,
     OldPlayingScene,
     sceneNo,
-    setReduxInfo
+    curSceneBundle,
+    reduxInfo
   };
 }
 
-export function sceneLoadStart(
-  sceneSwitchKey,
-  sceneBundle,
-  asyncSceneBundle
-) {
+export function sceneLoadStart(sceneSwitchKey, sceneBundle, asyncSceneBundle) {
   return {
     type: SCENE_LOAD_START,
     sceneSwitchKey,
@@ -55,11 +55,7 @@ export function sceneLoadStart(
   };
 }
 
-export function sceneStartPlay(
-  sceneSwitchKey,
-  sceneBundle,
-  asyncSceneBundle
-) {
+export function sceneStartPlay(sceneSwitchKey, sceneBundle, asyncSceneBundle) {
   return {
     type: SCENE_PLAY_START,
     sceneSwitchKey,
@@ -68,11 +64,7 @@ export function sceneStartPlay(
   };
 }
 
-export function sceneLoadEnd(
-  sceneSwitchKey,
-  sceneBundle,
-  asyncSceneBundle
-) {
+export function sceneLoadEnd(sceneSwitchKey, sceneBundle, asyncSceneBundle) {
   return {
     type: SCENE_LOAD_END,
     sceneSwitchKey,
@@ -81,11 +73,7 @@ export function sceneLoadEnd(
   };
 }
 
-export function sceneStopPlay(
-  sceneSwitchKey,
-  sceneBundle,
-  asyncSceneBundle
-) {
+export function sceneStopPlay(sceneSwitchKey, sceneBundle, asyncSceneBundle) {
   return {
     type: SCENE_PLAY_END,
     sceneSwitchKey,
@@ -95,9 +83,8 @@ export function sceneStopPlay(
 }
 
 export function clearSceneRedux(reduxInfoPromise) {
-  if (reduxInfoPromise != null)
-    return {
-      type: SCENE_CLEAR_REDUX,
-      reduxInfoPromise
-    };
+  return {
+    type: SCENE_CLEAR_REDUX,
+    reduxInfoPromise
+  };
 }
