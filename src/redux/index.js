@@ -19,11 +19,12 @@ function createProxyStore(store) {
         return ({ reducerKey, reducer, state }) => {
           let allStates = target.getState();
           if (allStates[reducerKey] != null) return false;
-          allStates[reducerKey] = state;
           currentReducers = Object.assign({}, currentReducers, {
             [reducerKey]: reducer
           });
           target.replaceReducer(combineReducers(currentReducers));
+          allStates = target.getState();
+          allStates[reducerKey] = state;
           return true;
         };
       }
@@ -45,10 +46,11 @@ function createProxyStore(store) {
           let allStates = target.getState();
           if (currentReducers[reducerKey] == null)
             throw new Error(`reducer for key [${reducerKey}] doesn't exsit.`);
-          if (state) allStates[reducerKey] = state;
           currentReducers = Object.assign({}, currentReducers, {
             [reducerKey]: reducer
           });
+          allStates = target.getState();
+          if (state) allStates[reducerKey] = state;
           target.replaceReducer(combineReducers(newReducers));
         };
       }
@@ -70,8 +72,9 @@ function createProxyStore(store) {
           if (newReducers[reducerKeySet] == null)
             throw new Error(`reducer of key [${reducerKeySet}] already exsit.`);
           newReducers[reducerKeySet] = reducer;
-          allStates[reducerKeySet] = state ? state : oldState;
           target.replaceReducer(combineReducers(newReducers));
+          allStates = target.getState();
+          allStates[reducerKeySet] = state ? state : oldState;
         };
       }
       return target[name];

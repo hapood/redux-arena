@@ -7,7 +7,6 @@ import configureStore from "./configureStore";
 
 const history = createHistory();
 const store = configureStore(history);
-console.log(store.getState())
 const app = document.getElementById("app");
 ReactDOM.render(
   <Provider store={store}>
