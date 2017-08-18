@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, combineReducers } from "redux";
+import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import { ARENA_INIT_AUDIENCE_SAGA } from "./actionTypes";
 import createSagaMiddleware, { END } from "redux-saga";
 import { getArenaInitState, arenaReducer } from "./reducers";
@@ -84,7 +84,7 @@ export function createArenaStore(
   reducer = {},
   initialState = {},
   saga,
-  milldewares = []
+  enhencers
 ) {
   const sagaMiddleware = createSagaMiddleware();
   currentReducers = Object.assign({}, currentReducers, reducer);
@@ -92,7 +92,9 @@ export function createArenaStore(
     createStore(
       combineReducers(currentReducers),
       Object.assign({}, rootState, initialState),
-      applyMiddleware(...[sagaMiddleware].concat(milldewares))
+      enhencers
+        ? compose(applyMiddleware(sagaMiddleware), ...enhencers)
+        : applyMiddleware(sagaMiddleware)
     )
   );
   window.arenaStore = store;

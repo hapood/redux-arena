@@ -4,7 +4,7 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: {
-    app: "./example/App.jsx",
+    app: "./index.js",
     babelPolyfill: "babel-polyfill"
   },
   output: {
@@ -28,7 +28,7 @@ module.exports = {
   plugins: [
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
-      template: "./example/index.html", // Load a custom template
+      template: "./index.html", // Load a custom template
       inject: "body", // Inject all scripts into the body
       title: "Immutable Tree",
       filename: "index.html"

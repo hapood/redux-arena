@@ -1,21 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { createArenaStore } from "../src";
 import Frame from "./frame/Frame";
-import thunk from "redux-thunk";
 import createHistory from "history/createBrowserHistory";
-import reducer from "./frame/redux/reducer";
-import saga from "./frame/redux/saga";
+import configureStore from "./configureStore";
 
 const history = createHistory();
-const store = createArenaStore(
-  { frame: reducer },
-  { frame: { history } },
-  saga,
-  [thunk]
-);
-
+const store = configureStore(history);
+console.log(store.getState())
 const app = document.getElementById("app");
 ReactDOM.render(
   <Provider store={store}>
@@ -26,3 +18,15 @@ ReactDOM.render(
     document.getElementById("app").className = "";
   }
 );
+
+if (module.hot) {
+  module.hot.accept("./frame/Frame", () => {
+    const UpdatedFrame = require("./frame/Frame").default;
+    render(
+      <Provider store={store}>
+        <UpdatedFrame history={history} />
+      </Provider>,
+      app
+    );
+  });
+}
