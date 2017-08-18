@@ -8,7 +8,6 @@ const host = process.env.npm_package_config_host || "localhost";
 new WebpackDevServer(webpack(config), {
   publicPath: config.output.publicPath,
   hot: true,
-  contentBase: path.join(__dirname, "example"),
   historyApiFallback: {
     disableDotRule: true
   },

@@ -42,7 +42,6 @@ class Frame extends Component {
             </div>
           </div>
         </Router>
-        <DevTools />
       </div>
     );
   }

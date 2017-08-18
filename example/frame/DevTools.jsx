@@ -3,6 +3,8 @@ import { createDevTools } from "redux-devtools";
 import LogMonitor from "redux-devtools-log-monitor";
 import DockMonitor from "redux-devtools-dock-monitor";
 import ChartMonitor from 'redux-devtools-chart-monitor';
+// import Inspector from 'redux-devtools-inspector';
+import DiffMonitor from 'redux-devtools-diff-monitor';
 
 export default createDevTools(
   <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">

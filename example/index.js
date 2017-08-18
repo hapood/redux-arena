@@ -7,25 +7,26 @@ import configureStore from "./configureStore";
 
 const history = createHistory();
 const store = configureStore(history);
-const app = document.getElementById("app");
-ReactDOM.render(
-  <Provider store={store}>
-    <Frame history={history} />
-  </Provider>,
-  app,
-  function() {
-    document.getElementById("app").className = "";
-  }
-);
+
+let appDom = document.getElementById("app");
+
+const render = Component => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <Component history={history} />
+    </Provider>,
+    appDom,
+    function() {
+      document.getElementById("app").className = "";
+    }
+  );
+};
+
+render(Frame);
 
 if (module.hot) {
   module.hot.accept("./frame/Frame", () => {
     const UpdatedFrame = require("./frame/Frame").default;
-    render(
-      <Provider store={store}>
-        <UpdatedFrame history={history} />
-      </Provider>,
-      app
-    );
+    render(UpdatedFrame);
   });
 }
