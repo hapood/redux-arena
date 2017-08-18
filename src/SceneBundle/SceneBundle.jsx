@@ -64,6 +64,22 @@ export default class SceneBundle extends Component {
     this.checkAndStartPlay(this.state, this.props);
   }
 
+  startUpdatingScene(asyncSceneBundle, sceneBundle, loadScene, props, state) {
+    props.clearSceneRedux(this.state.obsoleteReduxInfoPromise);
+    state.reduxInfoPromise = new Promise(resolveReduxInfo => {
+      state.obsoleteReduxInfoPromise = new Promise(resolveObsoleteReduxInfo => {
+        loadScene(
+          sceneBundle,
+          asyncSceneBundle,
+          props.curSceneBundle,
+          state.reduxInfoPromise,
+          resolveReduxInfo,
+          resolveObsoleteReduxInfo
+        );
+      });
+    });
+  }
+
   componentWillReceiveProps(nextProps) {
     let { asyncSceneBundle, sceneBundle } = nextProps;
     this.checkAndStartPlay(this.state, nextProps);
@@ -71,28 +87,28 @@ export default class SceneBundle extends Component {
       asyncSceneBundle !== this.props.asyncSceneBundle ||
       sceneBundle !== this.props.sceneBundle
     ) {
-      this.setState(
-        {
-          isSceneBundleValid: false
-        },
-        () => {
-          this.props.clearSceneRedux(this.state.obsoleteReduxInfoPromise);
-          this.state.reduxInfoPromise = new Promise(resolveReduxInfo => {
-            this.state.obsoleteReduxInfoPromise = new Promise(
-              resolveObsoleteReduxInfo => {
-                this.loadScene(
-                  sceneBundle,
-                  asyncSceneBundle,
-                  nextProps.curSceneBundle,
-                  this.setState.reduxInfoPromise,
-                  resolveReduxInfo,
-                  resolveObsoleteReduxInfo
-                );
-              }
-            );
-          });
-        }
-      );
+      if (nextProps.showSwitchingLoading) {
+        this.setState(
+          {
+            isSceneBundleValid: false
+          },
+          this.startUpdatingScene(
+            asyncSceneBundle,
+            sceneBundle,
+            this.loadScene,
+            nextProps,
+            this.state
+          )
+        );
+      } else {
+        this.startUpdatingScene(
+          asyncSceneBundle,
+          sceneBundle,
+          this.loadScene,
+          nextProps,
+          this.state
+        );
+      }
     }
   }
 
@@ -149,7 +165,7 @@ export default class SceneBundle extends Component {
   }
 
   render() {
-    let { PlayingScene } = this.props;
+    let { PlayingScene, SceneLoadingComponent } = this.props;
     let {
       match,
       location,
@@ -170,7 +186,7 @@ export default class SceneBundle extends Component {
         />
       );
     } else {
-      return <div />;
+      return SceneLoadingComponent ? <SceneLoadingComponent /> : <div />;
     }
   }
 }
@@ -180,5 +196,7 @@ SceneBundle.propTypes = {
   sceneBundle: PropTypes.any,
   location: PropTypes.object,
   computedMatch: PropTypes.object,
-  match: PropTypes.object
+  match: PropTypes.object,
+  showSwitchingLoading: PropTypes.bool,
+  SceneLoadingComponent: PropTypes.any
 };
