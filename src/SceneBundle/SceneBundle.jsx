@@ -2,35 +2,40 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 export default class SceneBundle extends Component {
-  static contextTypes = {
-    sceneSwitchKey: PropTypes.string,
-    store: PropTypes.any
-  };
-
   componentWillMount() {
     this.state = {
       isSceneBundleValid: false,
       OldPlayingScene: this.props.PlayingScene,
-      sceneNo: this.props.sceneNo
+      sceneNo: this.props.sceneNo,
+      reduxInfoPromise: Promise.resolve({}),
+      obsoleteReduxInfoPromise: Promise.resolve({})
     };
-    this.loadScene(
-      this.props.sceneBundle,
-      this.props.asyncSceneBundle,
-      this.props.curSceneBundle,
-      this.props.reduxInfo
-    );
+    this.state.reduxInfoPromise = new Promise(resolveReduxInfo => {
+      this.state.obsoleteReduxInfoPromise = new Promise(
+        resolveObsoleteReduxInfo => {
+          this.loadScene(
+            this.props.sceneBundle,
+            this.props.asyncSceneBundle,
+            this.props.curSceneBundle,
+            this.state.reduxInfoPromise,
+            resolveReduxInfo,
+            resolveObsoleteReduxInfo
+          );
+        }
+      );
+    });
   }
 
   componentWillUnmount() {
     let props = this.props;
     this.setState({ isSceneContextValid: false }, () => {
       this.props.sceneStopPlay(
-        this.context.sceneSwitchKey,
+        this.props.sceneSwitchReducerKey,
         props.sceneBundle,
         props.sceneBundle ? null : props.asyncSceneBundle
       );
     });
-    this.props.clearSceneRedux(this.props.reduxInfo);
+    this.props.clearSceneRedux(this.state.reduxInfoPromise);
   }
 
   checkAndStartPlay(state, props) {
@@ -46,7 +51,7 @@ export default class SceneBundle extends Component {
         },
         () => {
           this.props.sceneStartPlay(
-            this.context.sceneSwitchKey,
+            this.props.sceneSwitchReducerKey,
             props.sceneBundle,
             props.sceneBundle ? null : props.asyncSceneBundle
           );
@@ -70,45 +75,71 @@ export default class SceneBundle extends Component {
         {
           isSceneBundleValid: false
         },
-        () =>
-          this.loadScene(
-            sceneBundle,
-            asyncSceneBundle,
-            nextProps.curSceneBundle,
-            nextProps.reduxInfo
-          )
+        () => {
+          this.props.clearSceneRedux(this.state.obsoleteReduxInfoPromise);
+          this.state.reduxInfoPromise = new Promise(resolveReduxInfo => {
+            this.state.obsoleteReduxInfoPromise = new Promise(
+              resolveObsoleteReduxInfo => {
+                this.loadScene(
+                  sceneBundle,
+                  asyncSceneBundle,
+                  nextProps.curSceneBundle,
+                  this.setState.reduxInfoPromise,
+                  resolveReduxInfo,
+                  resolveObsoleteReduxInfo
+                );
+              }
+            );
+          });
+        }
       );
     }
   }
 
-  loadScene(sceneBundle, asyncSceneBundle, curSceneBundle, reduxInfo) {
+  loadScene(
+    sceneBundle,
+    asyncSceneBundle,
+    curSceneBundle,
+    reduxInfoPromise,
+    resolveReduxInfo,
+    resolveObsoleteReduxInfo
+  ) {
     if (sceneBundle) {
-      let payload = [this.context.sceneSwitchKey, sceneBundle, reduxInfo];
+      let payload = [
+        this.props.sceneSwitchReducerKey,
+        sceneBundle,
+        reduxInfoPromise
+      ];
       this.props.sceneLoadStart(...payload);
+      this.state.obsoleteReduxInfo;
       this.props.SceneSwitchLoadScene(
-        this.context.sceneSwitchKey,
+        this.props.sceneSwitchReducerKey,
         sceneBundle,
         this.state.OldPlayingScene,
         this.state.sceneNo,
         curSceneBundle,
-        reduxInfo
+        reduxInfoPromise,
+        resolveReduxInfo,
+        resolveObsoleteReduxInfo
       );
       this.props.sceneLoadEnd(...payload);
       return;
     } else if (asyncSceneBundle) {
       this.props.sceneLoadStart(
-        this.context.sceneSwitchKey,
+        this.props.sceneSwitchReducerKey,
         null,
         asyncSceneBundle,
-        reduxInfo
+        reduxInfoPromise
       );
       this.props.arenaLoadAsyncScene(
-        this.context.sceneSwitchKey,
+        this.props.sceneSwitchReducerKey,
         asyncSceneBundle,
         this.state.OldPlayingScene,
         this.state.sceneNo,
         curSceneBundle,
-        reduxInfo
+        reduxInfoPromise,
+        resolveReduxInfo,
+        resolveObsoleteReduxInfo
       );
       return;
     }
@@ -118,7 +149,7 @@ export default class SceneBundle extends Component {
   }
 
   render() {
-    let { PlayingScene, SceneLoadingComponent } = this.props;
+    let { PlayingScene } = this.props;
     let {
       match,
       location,
@@ -149,6 +180,5 @@ SceneBundle.propTypes = {
   sceneBundle: PropTypes.any,
   location: PropTypes.object,
   computedMatch: PropTypes.object,
-  match: PropTypes.object,
-  SceneLoadingComponent: PropTypes.any
+  match: PropTypes.object
 };

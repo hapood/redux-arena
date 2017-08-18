@@ -14,6 +14,8 @@ import {
   call,
   fork,
   select,
+  cancel,
+  cancelled,
   setContext,
   getContext
 } from "redux-saga/effects";
@@ -27,18 +29,22 @@ function* sceneSwitchSwitchScene({
   OldPlayingScene,
   sceneNo,
   curSceneBundle,
-  reduxInfo
+  reduxInfoPromise,
+  resolveReduxInfo,
+  resolveObsoleteReduxInfo
 }) {
-  let ctxSceneSwitchKey = yield getContext("sceneSwitchKey");
+  let ctxSceneSwitchKey = (yield getContext("sceneSwitchCtx")).reducerKey;
   if (ctxSceneSwitchKey !== sceneSwitchKey) return;
   let mapDispatchToProps;
-  let { reducerKey, sagaTask } = yield* sceneApplyRedux({
+  let reducerKey = yield* sceneApplyRedux({
     reducerKey: sceneBundle.reducerKey,
     state: sceneBundle.state,
     saga: sceneBundle.saga,
     reducer: sceneBundle.reducer,
     curSceneBundle,
-    reduxInfo
+    reduxInfoPromise,
+    resolveReduxInfo,
+    resolveObsoleteReduxInfo
   });
   if (sceneBundle.actions) {
     mapDispatchToProps = dispatch =>
@@ -54,7 +60,6 @@ function* sceneSwitchSwitchScene({
   let newArenaState = {
     PlayingScene,
     sceneNo: OldPlayingScene === sceneBundle.Component ? sceneNo + 1 : 0,
-    reduxInfo: { reducerKey, sagaTask },
     curSceneBundle: sceneBundle
   };
   yield put({
@@ -70,9 +75,18 @@ function* sceneSwitchLoadAsyncScene({
   OldPlayingScene,
   sceneNo,
   curSceneBundle,
-  reduxInfo
+  reduxInfoPromise,
+  resolveReduxInfo,
+  resolveObsoleteReduxInfo
 }) {
-  let sceneBundle = yield asyncSceneBundle;
+  let sceneBundle;
+  try {
+    sceneBundle = yield asyncSceneBundle;
+  } finally {
+    if (yield cancelled()) {
+      resolveObsoleteReduxInfo({});
+    }
+  }
   yield put({
     type: SCENE_LOAD_END,
     asyncSceneBundle
@@ -84,41 +98,49 @@ function* sceneSwitchLoadAsyncScene({
     OldPlayingScene,
     sceneNo,
     curSceneBundle,
-    reduxInfo
+    reduxInfoPromise,
+    resolveReduxInfo,
+    resolveObsoleteReduxInfo
   });
 }
 
 function* forkSagaWithCotext(ctx) {
   yield setContext(ctx);
   yield fork(function*() {
-    let lastTask;
+    let lastTask, lastAction;
     while (true) {
-      const action = yield take([
+      let action = yield take([
         SCENESWITCH_LOAD_ASYNCSCENE,
         SCENESWITCH_SWITCH_SCENE
       ]);
-      if (action.sceneSwitchKey === ctx.sceneSwitchKey) {
-        if (lastTask) {
+      if (action.sceneSwitchKey === ctx.sceneSwitchCtx.reducerKey) {
+        if (lastTask && lastTask.isRunning()) {
           yield cancel(lastTask);
+          action = Object.assign({}, action, {
+            reduxInfoPromise: lastAction.reduxInfoPromise
+          });
         }
+        lastAction = action;
         if (action.type === SCENESWITCH_LOAD_ASYNCSCENE) {
-          yield fork(sceneSwitchLoadAsyncScene, action);
+          lastTask = yield fork(sceneSwitchLoadAsyncScene, action);
         } else {
-          yield fork(sceneSwitchSwitchScene, action);
+          lastTask = yield fork(sceneSwitchSwitchScene, action);
         }
       }
     }
   });
 }
 
-function* initSceneSwitchSaga({ reducerKey, setSagaTask }) {
-  let sagaTask = yield fork(forkSagaWithCotext, { sceneSwitchKey: reducerKey });
+function* initSceneSwitchSaga({ sceneSwitchCtx, setSagaTask }) {
+  let sagaTask = yield fork(forkSagaWithCotext, {
+    sceneSwitchCtx
+  });
   setSagaTask(sagaTask);
 }
 
 function* killSceneSwitchSaga({ sagaTaskPromise }) {
   let sagaTask = yield sagaTaskPromise;
-  yield cancel(sagaTask);
+  if (sagaTask) yield cancel(sagaTask);
 }
 
 export default function* saga() {

@@ -6,7 +6,7 @@ export default function addReducer(store, reducerKey, reducerFactory, state) {
       state
     });
     if (flag === false) {
-      throw new Error(`Reducer key [${reducerKey}] is already exsited.`);
+      throw new Error(`Reducer key [${reducerKey}] already exsit.`);
     }
   } else {
     do {

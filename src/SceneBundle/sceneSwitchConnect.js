@@ -9,7 +9,7 @@ export default function sceneSwitchConnect(
   asyncSceneBundle,
   sceneBundle,
   SceneLoadingComponent,
-  sceneSwitchKey,
+  sceneSwitchCtx,
   sceneSwitchLocation,
   sceneSwitchMatch
 ) {
@@ -19,8 +19,10 @@ export default function sceneSwitchConnect(
 
   let mapStateToProps = state => {
     return {
-      PlayingScene: state[sceneSwitchKey].PlayingScene,
-      sceneNo: state[sceneSwitchKey].sceneNo
+      PlayingScene: state[sceneSwitchCtx.reducerKey].PlayingScene,
+      sceneNo: state[sceneSwitchCtx.reducerKey].sceneNo,
+      curSceneBundle: state[sceneSwitchCtx.reducerKey].curSceneBundle,
+      sceneSwitchReducerKey: sceneSwitchCtx.reducerKey
     };
   };
 

@@ -14,7 +14,9 @@ export function SceneSwitchLoadScene(
   OldPlayingScene,
   sceneNo,
   curSceneBundle,
-  reduxInfo
+  reduxInfoPromise,
+  resolveReduxInfo,
+  resolveObsoleteReduxInfo
 ) {
   return {
     type: SCENESWITCH_SWITCH_SCENE,
@@ -23,7 +25,9 @@ export function SceneSwitchLoadScene(
     OldPlayingScene,
     sceneNo,
     curSceneBundle,
-    reduxInfo
+    reduxInfoPromise,
+    resolveReduxInfo,
+    resolveObsoleteReduxInfo
   };
 }
 
@@ -33,7 +37,9 @@ export function arenaLoadAsyncScene(
   OldPlayingScene,
   sceneNo,
   curSceneBundle,
-  reduxInfo
+  reduxInfoPromise,
+  resolveReduxInfo,
+  resolveObsoleteReduxInfo
 ) {
   return {
     type: SCENESWITCH_LOAD_ASYNCSCENE,
@@ -42,7 +48,9 @@ export function arenaLoadAsyncScene(
     OldPlayingScene,
     sceneNo,
     curSceneBundle,
-    reduxInfo
+    reduxInfoPromise,
+    resolveReduxInfo,
+    resolveObsoleteReduxInfo
   };
 }
 

@@ -1,4 +1,4 @@
-import { SCENE_CLEAR_REDUX } from "../actionTypes";
+import { SCENE_CLEAR_REDUX, SCENE_SET_STATE } from "../actionTypes";
 import {
   takeEvery,
   takeLatest,
@@ -8,6 +8,7 @@ import {
   fork,
   select,
   cancel,
+  cancelled,
   getContext,
   setContext
 } from "redux-saga/effects";
@@ -25,47 +26,83 @@ export function* sceneApplyRedux({
   saga,
   reducer,
   curSceneBundle,
-  reduxInfo
+  reduxInfoPromise,
+  resolveReduxInfo,
+  resolveObsoleteReduxInfo
 }) {
-  let arenaStore = yield getContext("store");
-  if (reduxInfo.reducerKey == null) {
-    reducerKey = addReducer(
-      arenaStore,
-      reducerKey,
-      newReducerKey => createSenceReducer(reducer, newReducerKey),
-      state
-    );
-  } else if (reducerKey == null && reducer != curSceneBundle.reducer) {
-    reducerKey = replaceReducer(
-      arenaStore,
-      reducerKey,
-      newReducerKey => createSenceReducer(reducer, newReducerKey),
-      state
-    );
-  } else if (reducerKey != null) {
-    removeAndAddReducer(
-      arenaStore,
-      removeReducerKey,
-      addReducerKey,
-      newReducerKey => createSenceReducer(reducer, newReducerKey),
-      state
-    );
-  }
-  let sagaTask;
-  if (saga != reduxInfo.saga) {
-    yield cancel(reduxInfo.sagaTask);
-    if (saga) {
-      sagaTask = yield fork(forkSagaWithCotext, saga, { sceneKey: reducerKey });
+  let reduxInfo;
+  let newReducerKey, newSagaTask;
+  try {
+    reduxInfo = yield reduxInfoPromise;
+    let arenaStore = yield getContext("store");
+    if (saga != curSceneBundle.saga) {
+      if (reduxInfo.sagaTask) yield cancel(reduxInfo.sagaTask);
+    }
+    if (reduxInfo.reducerKey == null) {
+      newReducerKey = addReducer(
+        arenaStore,
+        reducerKey,
+        newReducerKey => createSenceReducer(reducer, newReducerKey),
+        state
+      );
+    } else if (reducerKey == null || reducerKey === reduxInfo.reducerKey) {
+      if (reducer !== curSceneBundle.reducer) {
+        newReducerKey = replaceReducer(
+          arenaStore,
+          reduxInfo.reducerKey,
+          newReducerKey => createSenceReducer(reducer, newReducerKey),
+          state === curSceneBundle.state ? null : state
+        );
+      } else if (state !== curSceneBundle.state) {
+        newReducerKey = reduxInfo.reducerKey;
+        yield put({
+          type: SCENE_SET_STATE,
+          _sceneKey: reduxInfo.reducerKey,
+          state
+        });
+      }
+    } else if (reducerKey !== reduxInfo.reducerKey) {
+      newReducerKey = add(
+        arenaStore,
+        reducerKey,
+        newReducerKey => createSenceReducer(reducer, newReducerKey),
+        state === curSceneBundle.state ? null : state
+      );
+    }
+    if (saga != curSceneBundle.saga || newReducerKey !== reduxInfo.reducerKey) {
+      if (saga) {
+        newSagaTask = yield fork(forkSagaWithCotext, saga, {
+          sceneKey: newReducerKey
+        });
+      }
+    }
+  } finally {
+    if (yield cancelled()) {
+      resolveObsoleteReduxInfo({
+        reducerKey:
+          newReducerKey === reduxInfo.reducerKey ? null : newReducerKey,
+        sagaTask: newSagaTask
+      });
+    } else {
+      resolveReduxInfo({
+        reducerKey: newReducerKey,
+        sagaTask: newSagaTask
+      });
+      resolveObsoleteReduxInfo({
+        reducerKey:
+          newReducerKey === reduxInfo.reducerKey ? null : reduxInfo.reducerKey,
+        sagaTask: reduxInfo.sagaTask
+      });
     }
   }
-  return { reducerKey, saga, sagaTask };
+  return newReducerKey;
 }
 
 function* sceneClearRedux({ reduxInfoPromise }) {
   let reduxInfo = yield reduxInfoPromise;
   let arenaStore = yield getContext("store");
-  yield cancel(reduxInfo.sagaTask);
-  arenaStore.removeReducer(reduxInfo.reducerKey);
+  if (reduxInfo.sagaTask) yield cancel(reduxInfo.sagaTask);
+  if (reduxInfo.reducerKey) arenaStore.removeReducer(reduxInfo.reducerKey);
 }
 
 export default function* saga() {

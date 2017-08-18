@@ -7,7 +7,7 @@ import { sceneSwitchConnect } from "../SceneBundle";
 
 class PublicScene extends Component {
   static contextTypes = {
-    sceneSwitchKey: PropTypes.string
+    sceneSwitchCtx: PropTypes.object
   };
 
   static propTypes = {
@@ -26,7 +26,7 @@ class PublicScene extends Component {
 
   componentWillMount() {
     invariant(
-      this.context.sceneSwitchKey,
+      this.context.sceneSwitchCtx,
       "You should not use <PublicScene> outside a <SceneSwitch>"
     );
     let {
@@ -41,7 +41,7 @@ class PublicScene extends Component {
         asyncSceneBundle,
         sceneBundle,
         SceneLoadingComponent,
-        this.context.sceneSwitchKey,
+        this.context.sceneSwitchCtx,
         location,
         computedMatch
       )
@@ -60,13 +60,13 @@ class PublicScene extends Component {
       asyncSceneBundle !== this.props.asyncSceneBundle ||
       sceneBundle !== this.props.sceneBundle ||
       SceneLoadingComponent !== this.props.SceneLoadingComponent ||
-      nextContext.sceneSwitchKey !== this.context.sceneSwitchKey
+      nextContext.sceneSwitchCtx !== this.context.sceneSwitchCtx
     ) {
       this.state.wrappedSceneBundle = sceneSwitchConnect(
         asyncSceneBundle,
         sceneBundle,
         SceneLoadingComponent,
-        nextContext.sceneSwitchKey,
+        nextContext.sceneSwitchCtx,
         location,
         computedMatch
       );
