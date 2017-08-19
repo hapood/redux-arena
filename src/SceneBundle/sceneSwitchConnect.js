@@ -25,10 +25,7 @@ export default function sceneSwitchConnect(
       sceneSwitchReducerKey: sceneSwitchCtx.reducerKey
     };
   };
-
-  let wrappedComponent = connect(mapStateToProps, mapDispatchToProps)(function(
-    extraProps
-  ) {
+  let PassSceneBundleProps = function(extraProps) {
     return (
       <SceneBundle
         {...{
@@ -42,8 +39,12 @@ export default function sceneSwitchConnect(
         }}
       />
     );
-  });
+  };
+  
+  let wrappedComponent = connect(mapStateToProps, mapDispatchToProps)(
+    PassSceneBundleProps
+  );
 
-  wrappedComponent.displayName = "SceneSwitchConnect";
+  wrappedComponent.displayName = `SceneSwitchConnect({${sceneSwitchCtx.reducerKey}})`;
   return wrappedComponent;
 }

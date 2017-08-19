@@ -57,6 +57,11 @@ function* sceneSwitchSwitchScene({
   let PlayingScene = connect(mapStateToProps, mapDispatchToProps)(
     sceneBundle.Component
   );
+  let displayName =
+    sceneBundle.Component.displayName ||
+    sceneBundle.Component.name ||
+    "Unknown";
+  PlayingScene.displayName = `SceneConnect({reducerKey:${reducerKey},Component:${displayName}})`;
   let newArenaState = {
     PlayingScene,
     sceneNo: OldPlayingScene === sceneBundle.Component ? sceneNo + 1 : 0,

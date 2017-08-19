@@ -7,13 +7,14 @@ import PublicScene from "../../src/PublicScene";
 import SceneSwitch from "../../src/SceneSwitch";
 import pageABundle from "../pageABundle";
 import * as actions from "./redux/actions";
-import DevTools from './DevTools';
+import DevTools from "./DevTools";
 
 const asyncPageB = import("../pageBBundle");
 class Frame extends Component {
   componentWillMount() {
     this.state = { a: 1 };
   }
+
   render() {
     return (
       <div>
@@ -42,6 +43,7 @@ class Frame extends Component {
             </div>
           </div>
         </Router>
+        <DevTools />
       </div>
     );
   }

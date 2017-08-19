@@ -10,10 +10,11 @@ const store = configureStore(history);
 
 let appDom = document.getElementById("app");
 
-const render = Component => {
+const render = (FrameComponent, frameVersion) => {
+  console.log(frameVersion)
   ReactDOM.render(
     <Provider store={store}>
-      <Component history={history} />
+      <FrameComponent history={history} version={frameVersion} />
     </Provider>,
     appDom,
     function() {
@@ -22,11 +23,12 @@ const render = Component => {
   );
 };
 
-render(Frame);
+let frameVersion = 0;
+render(Frame, frameVersion);
 
 if (module.hot) {
   module.hot.accept("./frame/Frame", () => {
     const UpdatedFrame = require("./frame/Frame").default;
-    render(UpdatedFrame);
+    render(UpdatedFrame, ++frameVersion);
   });
 }

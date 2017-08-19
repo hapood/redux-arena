@@ -85,4 +85,5 @@ class PublicScene extends Component {
     );
   }
 }
+
 export default PublicScene;
