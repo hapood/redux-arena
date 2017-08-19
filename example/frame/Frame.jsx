@@ -27,9 +27,6 @@ class Frame extends Component {
               <li>
                 <Link to="/asyncPageB">asyncPageB</Link>
               </li>
-              <li>
-                <Link to="/topics">Topics</Link>
-              </li>
             </ul>
             <hr />
             <button onClick={() => this.setState({ a: this.state.a + 1 })}>

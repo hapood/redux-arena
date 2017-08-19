@@ -26,8 +26,9 @@ npm install redux-arena --save
 ## Example
 
 ```
+cd example
 npm install
-npm run example
+npm start
 ```
 
 ## Quick Start
@@ -45,7 +46,15 @@ export default {
   Component: PageA,
   state,
   saga,
-  reducer
+  reducer,
+  mapStateToProps: function mapStateToProps(state,key) {
+    return {
+      pageA: state[key].pageA,
+      name: state[key].name,
+      dynamicState: state[key].dynamicState,
+      cnt: state[key].cnt
+    };
+  }
 };
 
 ```
@@ -58,42 +67,36 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import ReduxArena from "../src/ReduxArena";
-import PublicScene from "../src/PublicScene";
+import { BrowserRouter, Link } from "react-router-dom";
+import { PublicScene , SceneSwitch } from "redux-arena";
 import pageABundle from "./pageABundle";
 import * as actions from "./actions";
 
 const asyncPageB = import("./pageBBundle");
-class Frame extends Component {
+eport default class Frame extends Component {
   render() {
     return (
       <div>
-        <button onClick={() => this.props.history.push("/pageA")}>PageA</button>
-        <button onClick={() => this.props.history.push("/asyncPageB")}>
-          asyncPageB
-        </button>
+        <ul>
+          <li>
+            <Link to="/pageA">pageA</Link>
+          </li>
+          <li>
+            <Link to="/asyncPageB">asyncPageB</Link>
+          </li>
+        </ul>
         <div style={{ marginTop: "1rem" }}>
-          <ReduxArena>
-            <PublicScene path="/pageA" sceneBundle={pageABundle} />
-            <PublicScene path="/asyncPageB" asyncSceneBundle={asyncPageB} />
-          </ReduxArena>
+          <BrowserRouter>
+            <SceneSwitch>
+              <PublicScene path="/pageA" sceneBundle={pageABundle} />
+              <PublicScene path="/asyncPageB" asyncSceneBundle={asyncPageB} />
+            </SceneSwitch>
+          </BrowserRouter>
         </div>
       </div>
     );
   }
 }
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actions, dispatch);
-}
-
-function mapStateToProps(state) {
-  return {
-    history: state.arena.history
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Frame);
 
 ```
 
@@ -104,11 +107,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(Frame);
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { createArenaStore } from "../src";
+import { createArenaStore } from "redux-arena";
 import Frame from "./Frame";
 import thunk from "redux-thunk";
 
-const store = createArenaStore(null, null, null, [thunk]);
+const store = createArenaStore();
 
 const app = document.getElementById("app");
 ReactDOM.render(
@@ -127,16 +130,16 @@ ReactDOM.render(
 
 Redux-arena provide a set of useful HOCs to enhence react-router
 
-### ReduxArena
+### SceneSwitch
 
-An enhenced Router but only supply Switch match mode as how we define redux-arena.All PublicScene and PrivateScene should pass in as children flat.
+An enhenced Switch. All PublicScene and PrivateScene should pass in as children.
 
 ```javascript
 
-<ReduxArena>
+<SceneSwitch>
     <PublicScene path="/pageA" sceneBundle={pageABundle} />
     <PrivateScene path="/asyncPageB" asyncSceneBundle={asyncPageB} />
-</ReduxArena>
+</SceneSwitch>
 
 ```
 
@@ -158,7 +161,7 @@ An enhenced PublicScene whitch accept onValidate onPass and onReject props. Help
 
 <PrivateScene path="/asyncPageB" 
     sceneBundle={pageA}
-    onValidate={(match,location,type)=>Promise.resolve({isValid:true,data:{}})}
+    onValidate={(cb,match,location,type)=>cb(true)}
     onPass={(data)=>console.debug("pass")}
     onReject={(data)=>this.props.jumpTo("/login")}
 />
@@ -179,22 +182,29 @@ A set of action types defined in redux/actionTypes. Some action types is helpful
 
 ### SCENE_SET_STATE
 
-Redux-arena will subscribe this action type and merge state into current scene state. If you use redux-saga, it will replace reducer under most circumstances.
+Redux-arena will subscribe this action type and merge state into current scene state.
+
+In Action:
 
 ```javascript
+import { SCENE_SET_STATE } from "redux-arena/redux/actionTypes";
 
-yield put({type:SCENE_SET_STATE, state:{a:1}})
-
+function doSomthing(){
+  return { 
+    type: SCENE_SET_STATE,
+    state: { a:1 }
+  }
+}
 ```
 
-### ARENA_HISTORY_PUSH
-
-Redux-arena will subscribe this action type push new path to router history.
+In saga:
 
 ```javascript
+import { setSceneState } from "redux-arena/sceneStateOps";
 
-yield put({type:ARENA_HISTORY_PUSH, path:"/pageA"})
-
+function * doSomthing(){
+  yield* setSceneState({a:1})
+}
 ```
 
 ### SCENE_LOAD_START SCENE_LOAD_END
