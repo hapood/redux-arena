@@ -13,7 +13,10 @@ module.exports = function(config) {
     frameworks: ["mocha"],
 
     // list of files / patterns to load in the browser
-    files: ["test.webpack.js"],
+    files: [
+      "../node_modules/babel-polyfill/dist/polyfill.min.js",
+      "test.webpack.js"
+    ],
 
     // list of files to exclude
     exclude: [],
@@ -30,7 +33,7 @@ module.exports = function(config) {
     coverageIstanbulReporter: {
       reports: ["text-summary", "lcovonly", "html"],
       fixWebpackSourcePaths: true,
-      dir: path.join(__dirname, "coverage"),
+      dir: path.join(__dirname, "..", "coverage"),
       "report-config": {
         // all options available at: https://github.com/istanbuljs/istanbul-reports/blob/590e6b0089f67b723a1fdf57bc7ccc080ff189d7/lib/html/index.js#L135-L137
         html: {

@@ -13,8 +13,8 @@
     "clean:build": "rimraf build",
     "prebuild": "npm run clean:build",
     "postpublish": "npm run build && cd build && npm publish",
-    "test": "karma start karma.conf.js",
-    "test-travis": "karma start --browsers Firefox --single-run"
+    "test": "karma start test/karma.conf.js",
+    "test-travis": "karma start test/karma.conf.js --browsers Firefox --single-run"
   },
   "repository": {
     "type": "git",

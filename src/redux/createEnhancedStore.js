@@ -27,8 +27,8 @@ function storeEnhancer(store, reducers) {
           let allStates = target.getState();
           delete newReducers[reducerKey];
           _currentReducers = newReducers;
-          target.replaceReducer(combineReducers(newReducers));
           delete allStates[reducerKey];
+          target.replaceReducer(combineReducers(newReducers));
         };
       }
       if (name === "replaceReducer") {
