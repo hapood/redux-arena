@@ -134,6 +134,16 @@ Redux-arena provide a set of useful HOCs to enhence react-router
 
 ### SceneSwitch
 
+###IndependentScene
+
+Bundle redux with react component. Reducer and saga in bundle will mount/unmount with IndependentScene.
+
+```javascript
+
+<PublicScene asyncSceneBundle={asyncPageB} />
+
+```
+
 An enhenced Switch. All PublicScene and PrivateScene should pass in as children.
 
 ```javascript

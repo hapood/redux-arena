@@ -1,6 +1,6 @@
 {
   "name": "redux-arena",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Auto switch context of redux refer to url",
   "main": "index.js",
   "scripts": {
