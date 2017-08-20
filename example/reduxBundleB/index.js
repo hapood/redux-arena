@@ -1,10 +1,10 @@
 import state from "./state";
 import saga from "./saga";
-import PageB from "./PageB";
+import Page from "./Page";
 import * as actions from "./actions";
 
 export default {
-  Component: PageB,
+  Component: Page,
   state,
   saga,
   actions,

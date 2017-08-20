@@ -11,7 +11,6 @@ const store = configureStore(history);
 let appDom = document.getElementById("app");
 
 const render = (FrameComponent, frameVersion) => {
-  console.log(frameVersion)
   ReactDOM.render(
     <Provider store={store}>
       <FrameComponent history={history} version={frameVersion} />

@@ -3,16 +3,18 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Router, Link } from "react-router-dom";
-import PublicScene from "../../src/PublicScene";
-import SceneSwitch from "../../src/SceneSwitch";
-import pageABundle from "../pageABundle";
+import { PublicScene, SceneSwitch } from "redux-arena";
+import { IndependentScene } from "../../src";
+import reduxBundleA from "../reduxBundleA";
 import * as actions from "./redux/actions";
 import DevTools from "./DevTools";
 
-const asyncPageB = import("../pageBBundle");
+const asyncReduxBundleB = import("../reduxBundleB");
+const asyncReduxBundleC = import("../reduxBundleC");
+
 class Frame extends Component {
   componentWillMount() {
-    this.state = { a: 1 };
+    this.state = { showWidget: false };
   }
 
   render() {
@@ -29,14 +31,23 @@ class Frame extends Component {
               </li>
             </ul>
             <hr />
-            <button onClick={() => this.setState({ a: this.state.a + 1 })}>
-              re-render
+            <button
+              onClick={() =>
+                this.setState({ showWidget: !this.state.showWidget })}
+            >
+              {this.state.showWidget ? "hideWidget" : "showWidget"}
             </button>
             <div style={{ marginTop: "1rem" }}>
               <SceneSwitch>
-                <PublicScene path="/pageA" sceneBundle={pageABundle} />
-                <PublicScene path="/asyncPageB" asyncSceneBundle={asyncPageB} />
+                <PublicScene path="/pageA" sceneBundle={reduxBundleA} />
+                <PublicScene
+                  path="/asyncPageB"
+                  asyncSceneBundle={asyncReduxBundleB}
+                />
               </SceneSwitch>
+              {this.state.showWidget
+                ? <IndependentScene asyncSceneBundle={asyncReduxBundleC} />
+                : null}
             </div>
           </div>
         </Router>

@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import DevTools from "./frame/DevTools";
-import { createArenaStore } from "../src";
+import { createArenaStore } from "redux-arena";
 import saga from "./frame/redux/saga";
 import reducer from "./frame/redux/reducer";
 

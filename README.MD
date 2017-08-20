@@ -5,7 +5,7 @@
 [![npm version](https://img.shields.io/npm/v/redux-arena.svg?style=flat-square)](https://www.npmjs.com/package/redux-arena)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md#pull-requests)
 
-Redux-arena. Auto switch context of redux refer to url. Side effect isolated between different url.
+Redux-arena is a tool for modularizing redux/redux-saga with react component. Scope redux/redux-saga within bundle, and auto clear redux/redux-saga in bundle after react component unmounted.
 
 ## Why I write this tool
 
@@ -40,6 +40,7 @@ npm start
 import state from "./state";
 import saga from "./saga";
 import reducer from "./reducer";
+import * as actions from "./actions";
 import PageA from "./PageA";
 
 export default {
@@ -47,6 +48,7 @@ export default {
   state,
   saga,
   reducer,
+  actions,
   mapStateToProps: function mapStateToProps(state,key) {
     return {
       pageA: state[key].pageA,

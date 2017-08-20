@@ -1,35 +1,22 @@
 import { fork, put } from "redux-saga/effects";
 import { delay } from "redux-saga";
-import { setSceneState } from "../../src/sceneStateOps";
+import { setSceneState } from "redux-arena/sceneStateOps";
 
 function randLetter() {
   var letters = [
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z"
+    "~",
+    "!",
+    "@",
+    "#",
+    "$",
+    "%",
+    "^",
+    "&",
+    "*",
+    "(",
+    ")",
+    "_",
+    "+"
   ];
   var letter = letters[Math.floor(Math.random() * letters.length)];
   return letter;

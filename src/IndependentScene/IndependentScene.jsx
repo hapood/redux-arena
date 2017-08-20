@@ -34,7 +34,12 @@ export default class IndependentScene extends Component {
       this.props.reducerKey,
       createSenceSwitchReducer
     );
-    sceneSwitchCtx = { reducerKey };
+    let sceneSwitchCtx = { reducerKey };
+    let {
+      asyncSceneBundle,
+      sceneBundle,
+      SceneLoadingComponent
+    } = this.props;
     this.state = {
       sceneSwitchCtx,
       wrappedSceneBundle: sceneSwitchConnect(
@@ -97,6 +102,6 @@ export default class IndependentScene extends Component {
   }
 
   render() {
-    return this.state.wrappedSceneBundle;
+    return React.createElement(this.state.wrappedSceneBundle);
   }
 }
