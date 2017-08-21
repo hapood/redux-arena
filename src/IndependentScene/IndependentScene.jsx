@@ -87,7 +87,7 @@ export default class IndependentScene extends Component {
           asyncSceneBundle,
           sceneBundle,
           SceneLoadingComponent,
-          sceneSwitchCtx
+          this.state.sceneSwitchCtx
         )
       });
     }

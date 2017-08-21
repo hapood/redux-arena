@@ -3202,9 +3202,9 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
-redux-arena@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/redux-arena/-/redux-arena-0.2.0.tgz#06fdb2ee29178a3f7c27763d1ccd0908c06dc68c"
+redux-arena@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.npmjs.org/redux-arena/-/redux-arena-0.2.1.tgz#96c781eb2c615743b0cdbbadce690f500c559e12"
   dependencies:
     prop-types "^15.5.10"
     react-redux "^5.0.5"
