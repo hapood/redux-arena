@@ -7,7 +7,7 @@ import { sceneSwitchConnect } from "../SceneBundle";
 
 class PublicScene extends Component {
   static contextTypes = {
-    sceneSwitchCtx: PropTypes.object
+    sceneSwitchReducerKey: PropTypes.object
   };
 
   static propTypes = {
@@ -25,8 +25,9 @@ class PublicScene extends Component {
   };
 
   componentWillMount() {
+    let { sceneSwitchReducerKey } = this.context;
     invariant(
-      this.context.sceneSwitchCtx,
+      sceneSwitchReducerKey,
       "You should not use <PublicScene> outside a <SceneSwitch>"
     );
     let {
@@ -36,15 +37,19 @@ class PublicScene extends Component {
       location,
       computedMatch
     } = this.props;
+    let wrappedSceneBundle = sceneSwitchConnect(sceneSwitchReducerKey);
+    let sceneBundleElement = React.createElement(wrappedSceneBundle, {
+      asyncSceneBundle,
+      sceneBundle,
+      SceneLoadingComponent,
+      sceneSwitchLocation: location,
+      sceneSwitchMatch: computedMatch,
+      sceneSwitchReducerKey: this.context.sceneSwitchReducerKey
+    });
     this.state = {
-      wrappedSceneBundle: sceneSwitchConnect(
-        asyncSceneBundle,
-        sceneBundle,
-        SceneLoadingComponent,
-        this.context.sceneSwitchCtx,
-        location,
-        computedMatch
-      )
+      wrappedSceneBundle,
+      sceneSwitchCtx,
+      sceneBundleElement
     };
   }
 
@@ -57,18 +62,24 @@ class PublicScene extends Component {
       computedMatch
     } = nextProps;
     if (
-      asyncSceneBundle !== this.props.asyncSceneBundle ||
-      sceneBundle !== this.props.sceneBundle ||
-      SceneLoadingComponent !== this.props.SceneLoadingComponent ||
-      nextContext.sceneSwitchCtx !== this.context.sceneSwitchCtx
+      (
+        asyncSceneBundle !== this.props.asyncSceneBundle ||
+          sceneBundle !== this.props.sceneBundle ||
+          SceneLoadingComponent !== this.props.SceneLoadingComponent,
+        this.context.sceneSwitchReducerKey !== nextContext.sceneSwitchReducerKey
+      )
     ) {
-      this.state.wrappedSceneBundle = sceneSwitchConnect(
-        asyncSceneBundle,
-        sceneBundle,
-        SceneLoadingComponent,
-        nextContext.sceneSwitchCtx,
-        location,
-        computedMatch
+      let wrappedSceneBundle = sceneSwitchConnect(sceneSwitchReducerKey);
+      this.state.sceneBundleElement = React.createElement(
+        this.state.wrappedSceneBundle,
+        {
+          asyncSceneBundle,
+          sceneBundle,
+          SceneLoadingComponent,
+          sceneSwitchLocation: location,
+          sceneSwitchMatch: computedMatch,
+          sceneSwitchReducerKey
+        }
       );
     }
   }
@@ -80,7 +91,7 @@ class PublicScene extends Component {
         exact={exact}
         path={path}
         strict={strict}
-        component={this.state.wrappedSceneBundle}
+        render={() => this.state.sceneBundleElement}
       />
     );
   }

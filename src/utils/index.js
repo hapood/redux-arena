@@ -1,4 +1,4 @@
 import addReducer from "./addReducer";
 import replaceReducer from "./replaceReducer";
-import removeAndSetReducer from "./removeAndSetReducer";
-export { addReducer, replaceReducer, removeAndSetReducer };
+import removeAndAddReducer from "./removeAndAddReducer";
+export { addReducer, replaceReducer, removeAndAddReducer };

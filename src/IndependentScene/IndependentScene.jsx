@@ -7,7 +7,7 @@ import {
   SCENESWITCH_KILL_SAGA
 } from "../redux/actionTypes";
 import createSenceSwitchReducer from "../redux/reducers/createSenceSwitchReducer";
-import { addReducer, removeAndSetReducer } from "../utils";
+import { addReducer, removeAndAddReducer } from "../utils";
 import { sceneSwitchConnect } from "../SceneBundle";
 import SceneLoading from "../SceneLoading";
 
@@ -65,7 +65,7 @@ export default class IndependentScene extends Component {
       reducerKey != null &&
       reducerKey !== this.state.sceneSwitchCtx.reducerKey
     ) {
-      reducerKey = removeAndSetReducer(
+      reducerKey = removeAndAddReducer(
         this.context.store,
         this.state.sceneSwitchCtx.reducerKey,
         reducerKey,
@@ -78,14 +78,20 @@ export default class IndependentScene extends Component {
       sceneBundle !== this.props.sceneBundle ||
       SceneLoadingComponent !== this.props.SceneLoadingComponent
     ) {
+      let wrappedSceneBundle = sceneSwitchConnect(sceneSwitchCtx);
       this.setState({
-        wrappedSceneBundle: sceneSwitchConnect(
-          asyncSceneBundle,
-          sceneBundle,
-          SceneLoadingComponent,
-          this.state.sceneSwitchCtx
-        )
+        wrappedSceneBundle
       });
+      let sceneBundleElement = React.createElement(wrappedSceneBundle, {
+        asyncSceneBundle,
+        sceneBundle,
+        SceneLoadingComponent
+      });
+      this.state = {
+        wrappedSceneBundle,
+        sceneSwitchCtx,
+        sceneBundleElement
+      };
     }
   }
 

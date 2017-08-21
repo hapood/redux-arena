@@ -22,13 +22,14 @@ function storeEnhancer(store, reducers) {
       }
       if (name === "removeReducer") {
         return reducerKey => {
-          if (reducerKey == null) return;
+          if (reducerKey == null) return false;
           let newReducers = Object.assign({}, _currentReducers);
           let allStates = target.getState();
           delete newReducers[reducerKey];
           _currentReducers = newReducers;
           delete allStates[reducerKey];
           target.replaceReducer(combineReducers(newReducers));
+          return true;
         };
       }
       if (name === "replaceReducer") {
@@ -41,32 +42,34 @@ function storeEnhancer(store, reducers) {
           _currentReducers = Object.assign({}, _currentReducers, {
             [reducerKey]: reducer
           });
-          target.replaceReducer(combineReducers(newReducers));
+          target.replaceReducer(combineReducers(_currentReducers));
           allStates = target.getState();
           if (state) allStates[reducerKey] = state;
+          return reducerKey;
         };
       }
-      if (name === "removeAndSetReducer") {
-        return ({ reducerKeyRemove, reducerKeySet, reducer, state }) => {
-          if (reducerKeyRemove == null || reducerKeySet == null)
+      if (name === "removeAndAddReducer") {
+        return ({ reducerKeyRemoved, reducerKeyAdded, reducer, state }) => {
+          if (reducerKeyRemoved == null || reducerKeyAdded == null)
             throw new Error(
-              `reducerKeyRemove or reducerKeySet can not be null.`
+              `reducerKeyRemoved or reducerKeyAdded can not be null.`
             );
-          if (_currentReducers[reducerKeyRemove] == null)
+          if (_currentReducers[reducerKeyRemoved] == null)
             throw new Error(
-              `reducer of key [${reducerKeyRemove}] doesn't exsit.`
+              `reducer of key [${reducerKeyRemoved}] doesn't exsit.`
             );
           let newReducers = Object.assign({}, _currentReducers);
           let allStates = target.getState();
-          let oldState = allStates[reducerKeyRemove];
-          delete allStates[reducerKeyRemove];
-          delete newReducers[reducerKeyRemove];
-          if (newReducers[reducerKeySet] == null)
-            throw new Error(`reducer of key [${reducerKeySet}] already exsit.`);
-          newReducers[reducerKeySet] = reducer;
+          let oldState = allStates[reducerKeyRemoved];
+          delete allStates[reducerKeyRemoved];
+          delete newReducers[reducerKeyRemoved];
+          if (newReducers[reducerKeyAdded] == null)
+            throw new Error(`reducer of key [${reducerKeyAdded}] already exsit.`);
+          newReducers[reducerKeyAdded] = reducer;
           target.replaceReducer(combineReducers(newReducers));
           allStates = target.getState();
-          allStates[reducerKeySet] = state ? state : oldState;
+          allStates[reducerKeyAdded] = state ? state : oldState;
+          return reducerKeyAdded;
         };
       }
       return target[name];

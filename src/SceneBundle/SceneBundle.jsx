@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 
 export default class SceneBundle extends Component {
   componentWillMount() {
+    let initEmptyPromise = Promise.resolve({});
     this.state = {
       isSceneBundleValid: false,
       OldPlayingScene: this.props.PlayingScene,
       sceneNo: this.props.sceneNo,
-      reduxInfoPromise: Promise.resolve({}),
-      obsoleteReduxInfoPromise: Promise.resolve({})
+      reduxInfoPromise: initEmptyPromise,
+      obsoleteReduxInfoPromise: initPromise
     };
     this.state.reduxInfoPromise = new Promise(resolveReduxInfo => {
       this.state.obsoleteReduxInfoPromise = new Promise(
@@ -18,7 +19,7 @@ export default class SceneBundle extends Component {
             this.props.asyncSceneBundle,
             this.props.curSceneBundle,
             this.state.reduxInfoPromise,
-            resolveReduxInfo,
+            initEmptyPromise,
             resolveObsoleteReduxInfo
           );
         }
@@ -64,21 +65,24 @@ export default class SceneBundle extends Component {
     this.checkAndStartPlay(this.state, this.props);
   }
 
-  startUpdatingScene(asyncSceneBundle, sceneBundle, loadScene, props, state) {
-    props.clearSceneRedux(this.state.obsoleteReduxInfoPromise);
-    state.reduxInfoPromise = new Promise(resolveReduxInfo => {
-      state.obsoleteReduxInfoPromise = new Promise(resolveObsoleteReduxInfo => {
-        loadScene(
-          sceneBundle,
-          asyncSceneBundle,
-          props.curSceneBundle,
-          state.reduxInfoPromise,
-          resolveReduxInfo,
-          resolveObsoleteReduxInfo
-        );
-      });
+  startUpdatingScene = (asyncSceneBundle, sceneBundle, nextProps) => {
+    let { reduxInfoPromise, obsoleteReduxInfoPromise } = this.state;
+    nextProps.clearSceneRedux(obsoleteReduxInfoPromise);
+    this.state.reduxInfoPromise = new Promise(resolveReduxInfo => {
+      this.state.obsoleteReduxInfoPromise = new Promise(
+        resolveObsoleteReduxInfo => {
+          this.loadScene(
+            sceneBundle,
+            asyncSceneBundle,
+            nextProps.curSceneBundle,
+            reduxInfoPromise,
+            resolveReduxInfo,
+            resolveObsoleteReduxInfo
+          );
+        }
+      );
     });
-  }
+  };
 
   componentWillReceiveProps(nextProps) {
     let { asyncSceneBundle, sceneBundle } = nextProps;
@@ -92,22 +96,10 @@ export default class SceneBundle extends Component {
           {
             isSceneBundleValid: false
           },
-          this.startUpdatingScene(
-            asyncSceneBundle,
-            sceneBundle,
-            this.loadScene,
-            nextProps,
-            this.state
-          )
+          this.startUpdatingScene(asyncSceneBundle, sceneBundle, nextProps)
         );
       } else {
-        this.startUpdatingScene(
-          asyncSceneBundle,
-          sceneBundle,
-          this.loadScene,
-          nextProps,
-          this.state
-        );
+        this.startUpdatingScene(asyncSceneBundle, sceneBundle, nextProps);
       }
     }
   }
@@ -127,7 +119,6 @@ export default class SceneBundle extends Component {
         reduxInfoPromise
       ];
       this.props.sceneLoadStart(...payload);
-      this.state.obsoleteReduxInfo;
       this.props.SceneSwitchLoadScene(
         this.props.sceneSwitchReducerKey,
         sceneBundle,

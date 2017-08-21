@@ -5,46 +5,24 @@ import { withRouter } from "react-router";
 import * as actions from "./redux/actions";
 import SceneBundle from "./SceneBundle";
 
-export default function sceneSwitchConnect(
-  asyncSceneBundle,
-  sceneBundle,
-  SceneLoadingComponent,
-  sceneSwitchCtx,
-  sceneSwitchLocation,
-  sceneSwitchMatch
-) {
+export default function sceneSwitchConnect(sceneSwitchReducerKey) {
   let mapDispatchToProps = dispatch => {
     return bindActionCreators(actions, dispatch);
   };
 
   let mapStateToProps = state => {
     return {
-      PlayingScene: state[sceneSwitchCtx.reducerKey].PlayingScene,
-      sceneNo: state[sceneSwitchCtx.reducerKey].sceneNo,
-      curSceneBundle: state[sceneSwitchCtx.reducerKey].curSceneBundle,
-      sceneSwitchReducerKey: sceneSwitchCtx.reducerKey
+      PlayingScene: state[sceneSwitchReducerKey].PlayingScene,
+      sceneNo: state[sceneSwitchReducerKey].sceneNo,
+      curSceneBundle: state[sceneSwitchReducerKey].curSceneBundle,
+      sceneSwitchReducerKey: sceneSwitchReducerKey
     };
   };
-  let PassSceneBundleProps = function(extraProps) {
-    return (
-      <SceneBundle
-        {...{
-          asyncSceneBundle,
-          sceneBundle,
-          SceneLoadingComponent,
-          mapStateToProps,
-          sceneSwitchLocation,
-          sceneSwitchMatch,
-          ...extraProps
-        }}
-      />
-    );
-  };
-  
+
   let wrappedComponent = connect(mapStateToProps, mapDispatchToProps)(
-    PassSceneBundleProps
+    SceneBundle
   );
 
-  wrappedComponent.displayName = `SceneSwitchConnect({${sceneSwitchCtx.reducerKey}})`;
+  wrappedComponent.displayName = `SceneSwitchConnect({${sceneSwitchReducerKey}})`;
   return wrappedComponent;
 }

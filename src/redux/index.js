@@ -2,7 +2,7 @@ import { applyMiddleware, compose } from "redux";
 import { ARENA_INIT_AUDIENCE_SAGA } from "./actionTypes";
 import createSagaMiddleware, { END } from "redux-saga";
 import { getArenaInitState, arenaReducer } from "./reducers";
-import createEnhancedStore from "./createEnhancedStore";
+import { createEnhancedStore } from "../enhencedRedux";
 import rootSaga from "./sagas";
 
 export function createArenaStore(
