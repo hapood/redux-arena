@@ -35,7 +35,7 @@ export function* sceneApplyRedux({
   try {
     reduxInfo = yield reduxInfoPromise;
     let arenaStore = yield getContext("store");
-    if (saga != curSceneBundle.saga) {
+    if (saga !== curSceneBundle.saga) {
       if (reduxInfo.sagaTask) yield cancel(reduxInfo.sagaTask);
     }
     if (reduxInfo.reducerKey == null) {
@@ -69,7 +69,7 @@ export function* sceneApplyRedux({
         state === curSceneBundle.state ? null : state
       );
     }
-    if (saga != curSceneBundle.saga || newReducerKey !== reduxInfo.reducerKey) {
+    if (saga !== curSceneBundle.saga || newReducerKey !== reduxInfo.reducerKey) {
       if (saga) {
         newSagaTask = yield fork(forkSagaWithCotext, saga, {
           sceneKey: newReducerKey

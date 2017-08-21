@@ -1,6 +1,6 @@
 import { fork, put, setContext, getContext } from "redux-saga/effects";
 import { delay } from "redux-saga";
-import { setSceneState } from "redux-arena/sceneStateOps";
+import { setSceneState } from "redux-arena/sagaOps";
 
 function* dynamicState() {
   while (true) {

@@ -212,7 +212,7 @@ function doSomthing(){
 In saga:
 
 ```javascript
-import { setSceneState } from "redux-arena/sceneStateOps";
+import { setSceneState } from "redux-arena/sagaOps";
 
 function * doSomthing(){
   yield* setSceneState({a:1})
