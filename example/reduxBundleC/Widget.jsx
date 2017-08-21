@@ -36,7 +36,13 @@ export default class Widget extends Component {
             </tr>
           </tbody>
         </table>
-        <button onClick={() => this.props.addCnt()}>Add Cnt</button>
+        <button onClick={() => this.props.addCnt()}>Add Widget Cnt</button>
+        <button onClick={() => this.props.switchDynamicState(false)}>
+          Stop DynimicState
+        </button>
+        <button onClick={() => this.props.switchDynamicState(true)}>
+          Start DynimicState
+        </button>
       </div>
     );
   }

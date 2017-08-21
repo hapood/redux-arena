@@ -1,9 +1,9 @@
 import { getSceneKey } from "../sagaOps";
 
-export default function sceneSaga(srcSaga) {
+export default function sceneActionSaga(srcSaga) {
   return function*(action) {
     let sceneKey = yield* getSceneKey();
-    if (action._sceneKey === sceneKey) {
+    if (action&&action._sceneKey === sceneKey) {
       yield* srcSaga(action);
     }
   };

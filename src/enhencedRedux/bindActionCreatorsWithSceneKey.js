@@ -1,8 +1,14 @@
 function bindActionCreator(actionCreator, dispatch, sceneKey) {
   return (...args) => {
     let action = actionCreator(...args);
-    typeof actionCreators === "object"
-      ? dispatch(Object.assign(action, { _sceneKey: sceneKey }))
+    if (action && action._sceneKey) {
+      console.warn(
+        '"Action with redux-arena should not contain an user specified "_sceneKey" property.\n' +
+          `Occurred in type: ${action.type}, _sceneKey: ${_sceneKey}.`
+      );
+    }
+    typeof action === "object"
+      ? dispatch(Object.assign({}, { _sceneKey: sceneKey }, action))
       : dispatch(action);
   };
 }
@@ -30,7 +36,7 @@ function bindActionCreator(actionCreator, dispatch, sceneKey) {
  * function as `actionCreators`, the return value will also be a single
  * function.
  */
-export default function bindActionCreators(actionCreators, dispatch, sceneKey) {
+export default function bindActionCreatorsWithSceneKey(actionCreators, dispatch, sceneKey) {
   if (typeof actionCreators === "function") {
     return bindActionCreator(actionCreators, dispatch);
   }

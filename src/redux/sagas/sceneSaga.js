@@ -1,7 +1,6 @@
 import { SCENE_CLEAR_REDUX, SCENE_SET_STATE } from "../actionTypes";
 import {
   takeEvery,
-  takeLatest,
   take,
   put,
   call,
@@ -15,7 +14,7 @@ import {
 import createSenceReducer from "../reducers/createSenceReducer";
 import { addReducer, replaceReducer } from "../../utils";
 
-function* forkSagaWithCotext(saga, ctx) {
+function* forkSagaWithContext(saga, ctx) {
   yield setContext(ctx);
   yield fork(saga);
 }
@@ -71,7 +70,7 @@ export function* sceneApplyRedux({
     }
     if (saga !== curSceneBundle.saga || newReducerKey !== reduxInfo.reducerKey) {
       if (saga) {
-        newSagaTask = yield fork(forkSagaWithCotext, saga, {
+        newSagaTask = yield fork(forkSagaWithContext, saga, {
           sceneKey: newReducerKey
         });
       }

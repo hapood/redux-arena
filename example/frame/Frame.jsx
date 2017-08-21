@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Router, Link } from "react-router-dom";
-import { PublicScene, SceneSwitch, IndependentScene } from "redux-arena";
+import { PublicScene, SceneSwitch, IndependentScene } from "../../src";
 import reduxBundleA from "../reduxBundleA";
 import * as actions from "./redux/actions";
 import DevTools from "./DevTools";

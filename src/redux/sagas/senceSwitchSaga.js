@@ -8,7 +8,6 @@ import {
 } from "../actionTypes";
 import {
   takeEvery,
-  takeLatest,
   take,
   put,
   call,
@@ -20,7 +19,8 @@ import {
   getContext
 } from "redux-saga/effects";
 import { connect } from "react-redux";
-import bindActionCreators from "../../enhencedRedux/bindActionCreators";
+import { bindActionCreatorsWithSceneKey } from "../../enhencedRedux";
+import { bindActionCreators } from "redux";
 import { sceneApplyRedux } from "./sceneSaga";
 
 function* sceneSwitchSwitchScene({
@@ -48,7 +48,13 @@ function* sceneSwitchSwitchScene({
   });
   if (sceneBundle.actions) {
     mapDispatchToProps = dispatch =>
-      bindActionCreators(sceneBundle.actions, dispatch, reducerKey);
+      sceneBundle.isPlainActions === true
+        ? bindActionCreators(sceneBundle.actions, dispatch, reducerKey)
+        : bindActionCreatorsWithSceneKey(
+            sceneBundle.actions,
+            dispatch,
+            reducerKey
+          );
   }
   let mapStateToProps;
   if (sceneBundle.mapStateToProps) {
@@ -109,7 +115,7 @@ function* sceneSwitchLoadAsyncScene({
   });
 }
 
-function* forkSagaWithCotext(ctx) {
+function* forkSagaWithContext(ctx) {
   yield setContext(ctx);
   yield fork(function*() {
     let lastTask, lastAction;
@@ -137,7 +143,7 @@ function* forkSagaWithCotext(ctx) {
 }
 
 function* initSceneSwitchSaga({ sceneSwitchCtx, setSagaTask }) {
-  let sagaTask = yield fork(forkSagaWithCotext, {
+  let sagaTask = yield fork(forkSagaWithContext, {
     sceneSwitchCtx
   });
   setSagaTask(sagaTask);
