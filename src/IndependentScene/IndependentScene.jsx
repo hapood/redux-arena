@@ -35,11 +35,7 @@ export default class IndependentScene extends Component {
       createSenceSwitchReducer
     );
     let sceneSwitchCtx = { reducerKey };
-    let {
-      asyncSceneBundle,
-      sceneBundle,
-      SceneLoadingComponent
-    } = this.props;
+    let { asyncSceneBundle, sceneBundle, SceneLoadingComponent } = this.props;
     this.state = {
       sceneSwitchCtx,
       wrappedSceneBundle: sceneSwitchConnect(
@@ -58,13 +54,13 @@ export default class IndependentScene extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
+  componentWillReceiveProps(nextProps) {
     let {
       reducerKey,
       asyncSceneBundle,
       sceneBundle,
       SceneLoadingComponent
-    } = nextContext;
+    } = nextProps;
     if (
       reducerKey != null &&
       reducerKey !== this.state.sceneSwitchCtx.reducerKey
