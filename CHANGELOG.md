@@ -1,4 +1,4 @@
-## 0.2.1 (Aug 20, 2017)
+## 0.2.2 (Aug 20, 2017)
 
 * Add IndependentScene
 
