@@ -13,8 +13,8 @@ export default function sceneSwitchConnect(sceneSwitchReducerKey) {
   let mapStateToProps = state => {
     return {
       PlayingScene: state[sceneSwitchReducerKey].PlayingScene,
-      sceneNo: state[sceneSwitchReducerKey].sceneNo,
       curSceneBundle: state[sceneSwitchReducerKey].curSceneBundle,
+      reduxInfo: state[sceneSwitchReducerKey].reduxInfo,
       sceneSwitchReducerKey: sceneSwitchReducerKey
     };
   };

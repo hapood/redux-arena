@@ -43,8 +43,7 @@ class PublicScene extends Component {
       sceneBundle,
       SceneLoadingComponent,
       sceneSwitchLocation: location,
-      sceneSwitchMatch: computedMatch,
-      sceneSwitchReducerKey: this.context.sceneSwitchReducerKey
+      sceneSwitchMatch: computedMatch
     });
     this.state = {
       wrappedSceneBundle,
@@ -53,6 +52,7 @@ class PublicScene extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
+    let refreshFlag = false;
     let {
       asyncSceneBundle,
       sceneBundle,
@@ -61,14 +61,21 @@ class PublicScene extends Component {
       computedMatch
     } = nextProps;
     if (
+      this.context.sceneSwitchReducerKey !== nextContext.sceneSwitchReducerKey
+    ) {
+      this.state.wrappedSceneBundle = sceneSwitchConnect(
+        nextContext.sceneSwitchReducerKey
+      );
+      refreshFlag = true;
+    }
+    if (
       asyncSceneBundle !== this.props.asyncSceneBundle ||
       sceneBundle !== this.props.sceneBundle ||
       SceneLoadingComponent !== this.props.SceneLoadingComponent ||
-      this.context.sceneSwitchReducerKey !== nextContext.sceneSwitchReducerKey
+      refreshFlag
     ) {
-      let wrappedSceneBundle = sceneSwitchConnect(nextContext.sceneSwitchReducerKey);
       this.state.sceneBundleElement = React.createElement(
-        wrappedSceneBundle,
+        this.state.wrappedSceneBundle,
         {
           asyncSceneBundle,
           sceneBundle,

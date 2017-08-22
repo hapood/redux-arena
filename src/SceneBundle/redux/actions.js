@@ -8,49 +8,19 @@ import {
   SCENE_CLEAR_REDUX
 } from "../../redux/actionTypes";
 
-export function sceneSwitchLoadScene(
-  sceneSwitchKey,
-  sceneBundle,
-  OldPlayingScene,
-  sceneNo,
-  curSceneBundle,
-  reduxInfoPromise,
-  resolveReduxInfo,
-  resolveObsoleteReduxInfo
-) {
+export function sceneSwitchLoadScene(sceneSwitchKey, sceneBundle) {
   return {
     type: SCENESWITCH_SWITCH_SCENE,
     sceneSwitchKey,
-    sceneBundle,
-    OldPlayingScene,
-    sceneNo,
-    curSceneBundle,
-    reduxInfoPromise,
-    resolveReduxInfo,
-    resolveObsoleteReduxInfo
+    sceneBundle
   };
 }
 
-export function arenaLoadAsyncScene(
-  sceneSwitchKey,
-  asyncSceneBundle,
-  OldPlayingScene,
-  sceneNo,
-  curSceneBundle,
-  reduxInfoPromise,
-  resolveReduxInfo,
-  resolveObsoleteReduxInfo
-) {
+export function arenaLoadAsyncScene(sceneSwitchKey, asyncSceneBundle) {
   return {
     type: SCENESWITCH_LOAD_ASYNCSCENE,
     sceneSwitchKey,
-    asyncSceneBundle,
-    OldPlayingScene,
-    sceneNo,
-    curSceneBundle,
-    reduxInfoPromise,
-    resolveReduxInfo,
-    resolveObsoleteReduxInfo
+    asyncSceneBundle
   };
 }
 
@@ -90,9 +60,9 @@ export function sceneStopPlay(sceneSwitchKey, sceneBundle, asyncSceneBundle) {
   };
 }
 
-export function clearSceneRedux(reduxInfoPromise) {
+export function clearSceneRedux(reduxInfo) {
   return {
     type: SCENE_CLEAR_REDUX,
-    reduxInfoPromise
+    reduxInfo
   };
 }

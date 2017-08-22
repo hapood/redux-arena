@@ -83,23 +83,24 @@ export default class IndependentScene extends Component {
           setSagaTask: resolve
         })
       );
+      this.state.wrappedSceneBundle = sceneSwitchConnect(
+        this.state.sceneSwitchReducerKey
+      );
     }
     if (
       asyncSceneBundle !== this.props.asyncSceneBundle ||
       sceneBundle !== this.props.sceneBundle ||
-      SceneLoadingComponent !== this.props.SceneLoadingComponent
+      SceneLoadingComponent !== this.props.SceneLoadingComponent ||
+      refreshFlag == true
     ) {
-      refreshFlag = true;
-    }
-    if (refreshFlag) {
-      let wrappedSceneBundle = sceneSwitchConnect(this.state.sceneSwitchReducerKey);
-      let sceneBundleElement = React.createElement(wrappedSceneBundle, {
-        asyncSceneBundle,
-        sceneBundle,
-        SceneLoadingComponent
-      });
-      this.state.wrappedSceneBundle = wrappedSceneBundle;
-      this.state.sceneBundleElement = sceneBundleElement;
+      this.state.sceneBundleElement = React.createElement(
+        this.state.wrappedSceneBundle,
+        {
+          asyncSceneBundle,
+          sceneBundle,
+          SceneLoadingComponent
+        }
+      );
     }
   }
 

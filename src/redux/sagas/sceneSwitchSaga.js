@@ -1,6 +1,6 @@
 import {
   SCENESWITCH_SWITCH_SCENE,
-  SCENESWITCH_REPLACE_STATE,
+  SCENESWITCH_SET_STATE,
   SCENE_LOAD_END,
   SCENESWITCH_LOAD_ASYNCSCENE,
   SCENESWITCH_INIT_SAGA,
@@ -23,26 +23,21 @@ import { bindActionCreatorsWithSceneKey } from "../../enhencedRedux";
 import { bindActionCreators } from "redux";
 import { sceneApplyRedux } from "./sceneSaga";
 
-function* sceneSwitchSwitchScene({
-  sceneSwitchKey,
-  sceneBundle,
-  OldPlayingScene,
-  sceneNo,
-  curSceneBundle,
-  reduxInfoPromise,
-  resolveReduxInfo,
-  resolveObsoleteReduxInfo
-}) {
+function* sceneSwitchSwitchScene({ sceneSwitchKey, sceneBundle }) {
   let mapDispatchToProps;
+  let {
+    curSceneBundle,
+    reduxInfo,
+    PlayingScene: OldPlayingScene
+  } = yield select(state => state[sceneSwitchKey]);
   let reducerKey = yield* sceneApplyRedux({
+    sceneSwitchKey,
     reducerKey: sceneBundle.reducerKey,
     state: sceneBundle.state,
     saga: sceneBundle.saga,
     reducer: sceneBundle.reducer,
     curSceneBundle,
-    reduxInfoPromise,
-    resolveReduxInfo,
-    resolveObsoleteReduxInfo
+    reduxInfo
   });
   if (sceneBundle.actions) {
     mapDispatchToProps = dispatch =>
@@ -68,55 +63,39 @@ function* sceneSwitchSwitchScene({
   PlayingScene.displayName = `SceneConnect({reducerKey:${reducerKey},Component:${displayName}})`;
   let newArenaState = {
     PlayingScene,
-    sceneNo: OldPlayingScene === sceneBundle.Component ? sceneNo + 1 : 0,
     curSceneBundle: sceneBundle
   };
   yield put({
-    type: SCENESWITCH_REPLACE_STATE,
+    type: SCENESWITCH_SET_STATE,
     sceneSwitchKey,
     state: newArenaState
   });
 }
 
-function* sceneSwitchLoadAsyncScene({
-  sceneSwitchKey,
-  asyncSceneBundle,
-  OldPlayingScene,
-  sceneNo,
-  curSceneBundle,
-  reduxInfoPromise,
-  resolveReduxInfo,
-  resolveObsoleteReduxInfo
-}) {
+function* sceneSwitchLoadAsyncScene({ sceneSwitchKey, asyncSceneBundle }) {
   let sceneBundle;
   try {
     sceneBundle = yield asyncSceneBundle;
   } finally {
     if (yield cancelled()) {
-      resolveObsoleteReduxInfo({});
     }
   }
   yield put({
     type: SCENE_LOAD_END,
-    asyncSceneBundle
+    sceneBundle
   });
   sceneBundle = sceneBundle.default ? sceneBundle.default : sceneBundle;
   yield* sceneSwitchSwitchScene({
     sceneSwitchKey,
-    sceneBundle,
-    OldPlayingScene,
-    sceneNo,
-    curSceneBundle,
-    reduxInfoPromise,
-    resolveReduxInfo,
-    resolveObsoleteReduxInfo
+    sceneBundle
   });
+  return true;
 }
 
 function* forkSagaWithContext(ctx) {
   yield setContext(ctx);
   yield fork(function*() {
-    let lastTask, lastAction;
+    let lastTask;
     while (true) {
       let action = yield take([
         SCENESWITCH_LOAD_ASYNCSCENE,
@@ -125,11 +104,7 @@ function* forkSagaWithContext(ctx) {
       if (action.sceneSwitchKey === ctx.sceneSwitchReducerKey) {
         if (lastTask && lastTask.isRunning()) {
           yield cancel(lastTask);
-          action = Object.assign({}, action, {
-            reduxInfoPromise: lastAction.reduxInfoPromise
-          });
         }
-        lastAction = action;
         if (action.type === SCENESWITCH_LOAD_ASYNCSCENE) {
           lastTask = yield fork(sceneSwitchLoadAsyncScene, action);
         } else {

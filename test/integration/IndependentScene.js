@@ -25,7 +25,7 @@ function selectNeededStates(allStates) {
   Object.keys(otherState).forEach(key => {
     if (otherState[key].name === "PageA") {
       bundleState = otherState[key];
-    } else if (otherState[key].sceneNo != null) {
+    } else if (otherState[key].curSceneBundle != null) {
       metaState = otherState[key];
     }
   });
