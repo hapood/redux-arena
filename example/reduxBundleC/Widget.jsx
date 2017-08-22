@@ -11,7 +11,7 @@ export default class Widget extends Component {
               <th>state_value</th>
             </tr>
             <tr>
-              <td>name:</td>
+              <td>names:</td>
               <td>
                 {this.props.name}
               </td>

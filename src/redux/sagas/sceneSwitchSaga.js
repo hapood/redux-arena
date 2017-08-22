@@ -33,8 +33,6 @@ function* sceneSwitchSwitchScene({
   resolveReduxInfo,
   resolveObsoleteReduxInfo
 }) {
-  let ctxSceneSwitchKey = (yield getContext("sceneSwitchReducerKey")).reducerKey;
-  if (ctxSceneSwitchKey !== sceneSwitchKey) return;
   let mapDispatchToProps;
   let reducerKey = yield* sceneApplyRedux({
     reducerKey: sceneBundle.reducerKey,
@@ -124,7 +122,7 @@ function* forkSagaWithContext(ctx) {
         SCENESWITCH_LOAD_ASYNCSCENE,
         SCENESWITCH_SWITCH_SCENE
       ]);
-      if (action.sceneSwitchKey === ctx.sceneSwitchReducerKey.reducerKey) {
+      if (action.sceneSwitchKey === ctx.sceneSwitchReducerKey) {
         if (lastTask && lastTask.isRunning()) {
           yield cancel(lastTask);
           action = Object.assign({}, action, {
@@ -144,7 +142,7 @@ function* forkSagaWithContext(ctx) {
 
 function* initSceneSwitchSaga({ reducerKey, setSagaTask }) {
   let sagaTask = yield fork(forkSagaWithContext, {
-    sceneSwitchReducerKey:reducerKey
+    sceneSwitchReducerKey: reducerKey
   });
   setSagaTask(sagaTask);
 }

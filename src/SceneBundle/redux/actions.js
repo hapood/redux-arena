@@ -8,7 +8,7 @@ import {
   SCENE_CLEAR_REDUX
 } from "../../redux/actionTypes";
 
-export function SceneSwitchLoadScene(
+export function sceneSwitchLoadScene(
   sceneSwitchKey,
   sceneBundle,
   OldPlayingScene,

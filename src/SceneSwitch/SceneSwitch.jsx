@@ -15,7 +15,7 @@ export default class SceneSwitch extends Component {
   };
 
   static childContextTypes = {
-    sceneSwitchReducerKey: PropTypes.object
+    sceneSwitchReducerKey: PropTypes.string
   };
 
   static propTypes = {
@@ -43,17 +43,27 @@ export default class SceneSwitch extends Component {
 
   componentWillReceiveProps(nextProps, nextContext) {
     let { reducerKey } = nextProps;
-    if (
-      reducerKey != null &&
-      reducerKey !== this.state.sceneSwitchReducerKey
-    ) {
+    if (reducerKey != null && reducerKey !== this.state.sceneSwitchReducerKey) {
+      this.context.store.dispatch({
+        type: SCENESWITCH_KILL_SAGA,
+        sagaTaskPromise: this.state.sagaTaskPromise
+      });
       reducerKey = removeAndAddReducer(
         this.context.store,
         this.state.sceneSwitchReducerKey,
         reducerKey,
         createSenceSwitchReducer
       );
-      this.state.sceneSwitchReducerKey = reducerKey;
+      this.state = {
+        sceneSwitchReducerKey: reducerKey,
+        sagaTaskPromise: new Promise(resolve =>
+          this.context.store.dispatch({
+            type: SCENESWITCH_INIT_SAGA,
+            reducerKey,
+            setSagaTask: resolve
+          })
+        )
+      };
     }
   }
 
@@ -62,7 +72,7 @@ export default class SceneSwitch extends Component {
       type: SCENESWITCH_KILL_SAGA,
       sagaTaskPromise: this.state.sagaTaskPromise
     });
-    this.context.store.removeReducer(this.statesceneSwitchReducerKey);
+    this.context.store.removeReducer(this.state.sceneSwitchReducerKey);
   }
 
   getChildContext() {

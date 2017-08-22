@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 
 export default class SceneBundle extends Component {
   componentWillMount() {
+    console.log(123)
     let initEmptyPromise = Promise.resolve({});
     this.state = {
       isSceneBundleValid: false,
       OldPlayingScene: this.props.PlayingScene,
       sceneNo: this.props.sceneNo,
       reduxInfoPromise: initEmptyPromise,
-      obsoleteReduxInfoPromise: initPromise
+      obsoleteReduxInfoPromise: initEmptyPromise
     };
     this.state.reduxInfoPromise = new Promise(resolveReduxInfo => {
       this.state.obsoleteReduxInfoPromise = new Promise(
@@ -19,7 +20,7 @@ export default class SceneBundle extends Component {
             this.props.asyncSceneBundle,
             this.props.curSceneBundle,
             this.state.reduxInfoPromise,
-            initEmptyPromise,
+            resolveReduxInfo,
             resolveObsoleteReduxInfo
           );
         }
@@ -119,7 +120,7 @@ export default class SceneBundle extends Component {
         reduxInfoPromise
       ];
       this.props.sceneLoadStart(...payload);
-      this.props.SceneSwitchLoadScene(
+      this.props.sceneSwitchLoadScene(
         this.props.sceneSwitchReducerKey,
         sceneBundle,
         this.state.OldPlayingScene,

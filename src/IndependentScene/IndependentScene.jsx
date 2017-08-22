@@ -34,20 +34,21 @@ export default class IndependentScene extends Component {
       this.props.reducerKey,
       createSenceSwitchReducer
     );
-    let sceneSwitchCtx = { reducerKey };
     let { asyncSceneBundle, sceneBundle, SceneLoadingComponent } = this.props;
+    let wrappedSceneBundle = sceneSwitchConnect(reducerKey);
+    let sceneBundleElement = React.createElement(wrappedSceneBundle, {
+      asyncSceneBundle,
+      sceneBundle,
+      SceneLoadingComponent
+    });
     this.state = {
-      sceneSwitchCtx,
-      wrappedSceneBundle: sceneSwitchConnect(
-        asyncSceneBundle,
-        sceneBundle,
-        SceneLoadingComponent,
-        sceneSwitchCtx
-      ),
+      sceneSwitchReducerKey: reducerKey,
+      wrappedSceneBundle,
+      sceneBundleElement,
       sagaTaskPromise: new Promise(resolve =>
         this.context.store.dispatch({
           type: SCENESWITCH_INIT_SAGA,
-          sceneSwitchCtx,
+          reducerKey,
           setSagaTask: resolve
         })
       )
@@ -55,43 +56,50 @@ export default class IndependentScene extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    let refreshFlag = false;
     let {
       reducerKey,
       asyncSceneBundle,
       sceneBundle,
       SceneLoadingComponent
     } = nextProps;
-    if (
-      reducerKey != null &&
-      reducerKey !== this.state.sceneSwitchCtx.reducerKey
-    ) {
+    if (reducerKey != null && reducerKey !== this.state.sceneSwitchReducerKey) {
+      refreshFlag = true;
+      this.context.store.dispatch({
+        type: SCENESWITCH_KILL_SAGA,
+        sagaTaskPromise: this.state.sagaTaskPromise
+      });
       reducerKey = removeAndAddReducer(
         this.context.store,
-        this.state.sceneSwitchCtx.reducerKey,
+        this.state.sceneSwitchReducerKey,
         reducerKey,
         createSenceSwitchReducer
       );
-      this.state.sceneSwitchCtx.reducerKey = reducerKey;
+      this.state.sceneSwitchReducerKey = reducerKey;
+      this.state.sagaTaskPromise = new Promise(resolve =>
+        this.context.store.dispatch({
+          type: SCENESWITCH_INIT_SAGA,
+          reducerKey,
+          setSagaTask: resolve
+        })
+      );
     }
     if (
       asyncSceneBundle !== this.props.asyncSceneBundle ||
       sceneBundle !== this.props.sceneBundle ||
       SceneLoadingComponent !== this.props.SceneLoadingComponent
     ) {
-      let wrappedSceneBundle = sceneSwitchConnect(sceneSwitchCtx);
-      this.setState({
-        wrappedSceneBundle
-      });
+      refreshFlag = true;
+    }
+    if (refreshFlag) {
+      let wrappedSceneBundle = sceneSwitchConnect(this.state.sceneSwitchReducerKey);
       let sceneBundleElement = React.createElement(wrappedSceneBundle, {
         asyncSceneBundle,
         sceneBundle,
         SceneLoadingComponent
       });
-      this.state = {
-        wrappedSceneBundle,
-        sceneSwitchCtx,
-        sceneBundleElement
-      };
+      this.state.wrappedSceneBundle = wrappedSceneBundle;
+      this.state.sceneBundleElement = sceneBundleElement;
     }
   }
 
@@ -100,10 +108,10 @@ export default class IndependentScene extends Component {
       type: SCENESWITCH_KILL_SAGA,
       sagaTaskPromise: this.state.sagaTaskPromise
     });
-    this.context.store.removeReducer(this.state.sceneSwitchCtx.reducerKey);
+    this.context.store.removeReducer(this.state.sceneSwitchReducerKey);
   }
 
   render() {
-    return React.createElement(this.state.wrappedSceneBundle);
+    return this.state.sceneBundleElement;
   }
 }

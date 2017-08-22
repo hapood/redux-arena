@@ -11,7 +11,6 @@ export default {
   reducer,
   actions,
   mapStateToProps: function mapStateToProps(state,key) {
-    console.log(state,key)
     return {
       pageA: state[key].pageA,
       name: state[key].name,

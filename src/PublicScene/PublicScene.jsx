@@ -7,7 +7,7 @@ import { sceneSwitchConnect } from "../SceneBundle";
 
 class PublicScene extends Component {
   static contextTypes = {
-    sceneSwitchReducerKey: PropTypes.object
+    sceneSwitchReducerKey: PropTypes.string
   };
 
   static propTypes = {
@@ -48,7 +48,6 @@ class PublicScene extends Component {
     });
     this.state = {
       wrappedSceneBundle,
-      sceneSwitchCtx,
       sceneBundleElement
     };
   }
@@ -62,23 +61,20 @@ class PublicScene extends Component {
       computedMatch
     } = nextProps;
     if (
-      (
-        asyncSceneBundle !== this.props.asyncSceneBundle ||
-          sceneBundle !== this.props.sceneBundle ||
-          SceneLoadingComponent !== this.props.SceneLoadingComponent,
-        this.context.sceneSwitchReducerKey !== nextContext.sceneSwitchReducerKey
-      )
+      asyncSceneBundle !== this.props.asyncSceneBundle ||
+      sceneBundle !== this.props.sceneBundle ||
+      SceneLoadingComponent !== this.props.SceneLoadingComponent ||
+      this.context.sceneSwitchReducerKey !== nextContext.sceneSwitchReducerKey
     ) {
-      let wrappedSceneBundle = sceneSwitchConnect(sceneSwitchReducerKey);
+      let wrappedSceneBundle = sceneSwitchConnect(nextContext.sceneSwitchReducerKey);
       this.state.sceneBundleElement = React.createElement(
-        this.state.wrappedSceneBundle,
+        wrappedSceneBundle,
         {
           asyncSceneBundle,
           sceneBundle,
           SceneLoadingComponent,
           sceneSwitchLocation: location,
-          sceneSwitchMatch: computedMatch,
-          sceneSwitchReducerKey
+          sceneSwitchMatch: computedMatch
         }
       );
     }
