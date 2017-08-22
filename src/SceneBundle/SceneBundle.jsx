@@ -14,7 +14,7 @@ export default class SceneBundle extends Component {
     this.setState({ isSceneContextValid: false }, () => {
       this.props.sceneStopPlay(this.props.sceneSwitchReducerKey);
     });
-    this.props.clearSceneRedux(this.state.reduxInfo);
+    this.props.clearSceneRedux(this.props.reduxInfo);
   }
 
   checkAndStartPlay(props, nextProps) {
