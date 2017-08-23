@@ -10,10 +10,17 @@ import DevTools from "./DevTools";
 
 const asyncReduxBundleB = import("../reduxBundleB");
 const asyncReduxBundleC = import("../reduxBundleC");
-
 class Frame extends Component {
+  constructor(props) {
+    super(props);
+  }
   componentWillMount() {
-    this.state = { showWidget: false };
+    // this.state.showWidget = false;
+    this.state = {
+      showWidget: false,
+      reducerKey: "fkdsjfkdj",
+      showSenceSwitch: true
+    };
   }
 
   render() {
@@ -36,14 +43,32 @@ class Frame extends Component {
             >
               {this.state.showWidget ? "hideWidget" : "showWidget"}
             </button>
+            <input
+              type="button"
+              value="reducerKey"
+              onClick={() =>
+                this.setState({ reducerKey: this.state.reducerKey + "re" })}
+            />
+            <input
+              type="button"
+              value={
+                this.state.showSenceSwitch
+                  ? "hideSenceSwitch"
+                  : "showSenceSwitch"
+              }
+              onClick={() =>
+                this.setState({ showSenceSwitch: !this.state.showSenceSwitch })}
+            />
             <div style={{ marginTop: "1rem" }}>
-              <SceneSwitch>
-                <PublicScene path="/pageA" sceneBundle={reduxBundleA} />
-                <PublicScene
-                  path="/asyncPageB"
-                  asyncSceneBundle={asyncReduxBundleB}
-                />
-              </SceneSwitch>
+              {this.state.showSenceSwitch
+                ? <SceneSwitch reducerKey={this.state.reducerKey}>
+                    <PublicScene path="/pageA" sceneBundle={reduxBundleA} />
+                    <PublicScene
+                      path="/asyncPageB"
+                      asyncSceneBundle={asyncReduxBundleB}
+                    />
+                  </SceneSwitch>
+                : null}
               {this.state.showWidget
                 ? <IndependentScene asyncSceneBundle={asyncReduxBundleC} />
                 : null}

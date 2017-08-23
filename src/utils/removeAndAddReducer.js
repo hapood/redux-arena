@@ -1,15 +1,15 @@
 export default function replaceReducer(
   store,
-  reducerKeyRemove,
-  reducerKeySet,
+  reducerKeyRemoved,
+  reducerKeyAdded,
   reducerFactory,
   state
 ) {
-  store.replaceReducer({
-    reducerKeyRemove,
-    reducerKeySet,
-    reducer: reducerFactory(reducerKeySet),
+  store.removeAndAddReducer({
+    reducerKeyRemoved,
+    reducerKeyAdded,
+    reducer: reducerFactory(reducerKeyAdded),
     state
   });
-  return reducerKeySet;
+  return reducerKeyAdded;
 }

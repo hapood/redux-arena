@@ -16,7 +16,7 @@ function senceSwitchReducer(state, action) {
 }
 
 export default function createSenceSwitchReducer(sceneSwitchKey) {
-  return function(state = getSceneSwitchInitState(), action) {
+  return function (state = getSceneSwitchInitState(), action) {
     if (sceneSwitchKey === action.sceneSwitchKey) {
       state = senceSwitchReducer(state, action);
     }

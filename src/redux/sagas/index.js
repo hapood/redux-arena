@@ -4,11 +4,13 @@ import sceneSwitchSaga from "./sceneSwitchSaga";
 import audienceSaga from "./audienceSaga";
 import sceneSaga from "./sceneSaga";
 
+/**
+ * This is a function that starts saga
+ * 
+ * @export
+ * @param {any} ctx 
+ */
 export default function* root(ctx) {
   yield setContext(ctx);
-  yield all([
-    fork(audienceSaga),
-    fork(sceneSwitchSaga),
-    fork(sceneSaga)
-  ]);
+  yield all([fork(audienceSaga), fork(sceneSwitchSaga), fork(sceneSaga)]);
 }

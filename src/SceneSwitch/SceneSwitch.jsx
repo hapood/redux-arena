@@ -7,7 +7,7 @@ import {
   SCENESWITCH_KILL_SAGA
 } from "../redux/actionTypes";
 import createSenceSwitchReducer from "../redux/reducers/createSenceSwitchReducer";
-import { addReducer } from "../utils";
+import { addReducer, removeAndAddReducer } from "../utils";
 
 export default class SceneSwitch extends Component {
   static contextTypes = {

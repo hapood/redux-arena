@@ -23,6 +23,15 @@ import { bindActionCreatorsWithSceneKey } from "../../enhencedRedux";
 import { bindActionCreators } from "redux";
 import { sceneApplyRedux } from "./sceneSaga";
 
+/**
+ * Scene of the synchronous load function, it does the following.
+ * 1. load, add, replace reducer.
+ * 2. Set the state of the corresponding scene.
+ * 3. Run the corresponding scene of the saga, cancel the last scene of the task.
+ * 4. Connect redux according to the incoming mapStateToProps and actions.
+ * 
+ * @param {any} { sceneSwitchKey, sceneBundle } 
+ */
 function* sceneSwitchSwitchScene({ sceneSwitchKey, sceneBundle }) {
   let mapDispatchToProps;
   let {
@@ -72,6 +81,13 @@ function* sceneSwitchSwitchScene({ sceneSwitchKey, sceneBundle }) {
   });
 }
 
+/**
+ * The asynchronous loading function of the scene, 
+ * and finally the synchronous load function
+ * 
+ * @param {any} { sceneSwitchKey, asyncSceneBundle } 
+ * @returns 
+ */
 function* sceneSwitchLoadAsyncScene({ sceneSwitchKey, asyncSceneBundle }) {
   let sceneBundle;
   try {
@@ -91,6 +107,13 @@ function* sceneSwitchLoadAsyncScene({ sceneSwitchKey, asyncSceneBundle }) {
   });
   return true;
 }
+
+/**
+ * Listen to the loading of each scene,
+ * and handle different processing functions when handling sence switches.
+ * 
+ * @param {any} ctx 
+ */
 
 function* forkSagaWithContext(ctx) {
   yield setContext(ctx);
@@ -115,12 +138,24 @@ function* forkSagaWithContext(ctx) {
   });
 }
 
+/**
+ * It is used to initialize the SenceSwitch layer.
+ * 
+ * @param {any} { reducerKey, setSagaTask } 
+ */
+
 function* initSceneSwitchSaga({ reducerKey, setSagaTask }) {
   let sagaTask = yield fork(forkSagaWithContext, {
     sceneSwitchReducerKey: reducerKey
   });
   setSagaTask(sagaTask);
 }
+
+/**
+ * It is used to cancel the task of the SenceSwitch layer.
+ * 
+ * @param {any} { sagaTaskPromise } 
+ */
 
 function* killSceneSwitchSaga({ sagaTaskPromise }) {
   let sagaTask = yield sagaTaskPromise;
