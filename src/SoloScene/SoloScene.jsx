@@ -3,15 +3,15 @@ import PropTypes from "prop-types";
 import { Router, Switch } from "react-router-dom";
 import createHistory from "history/createBrowserHistory";
 import {
-  SCENESWITCH_INIT_SAGA,
-  SCENESWITCH_KILL_SAGA
+  ARENASWITCH_INIT_SAGA,
+  ARENASWITCH_KILL_SAGA
 } from "../redux/actionTypes";
-import createSenceSwitchReducer from "../redux/reducers/createSenceSwitchReducer";
+import createArenaSwitchReducer from "../redux/reducers/createArenaSwitchReducer";
 import { addReducer, removeAndAddReducer } from "../utils";
-import { sceneSwitchConnect } from "../SceneBundle";
+import { arenaSwitchConnect } from "../SceneBundle";
 import SceneLoading from "../SceneLoading";
 
-export default class IndependentScene extends Component {
+export default class SoloScene extends Component {
   static contextTypes = {
     store: PropTypes.any
   };
@@ -32,22 +32,22 @@ export default class IndependentScene extends Component {
     let reducerKey = addReducer(
       this.context.store,
       this.props.reducerKey,
-      createSenceSwitchReducer
+      createArenaSwitchReducer
     );
     let { asyncSceneBundle, sceneBundle, SceneLoadingComponent } = this.props;
-    let wrappedSceneBundle = sceneSwitchConnect(reducerKey);
+    let wrappedSceneBundle = arenaSwitchConnect(reducerKey);
     let sceneBundleElement = React.createElement(wrappedSceneBundle, {
       asyncSceneBundle,
       sceneBundle,
       SceneLoadingComponent
     });
     this.state = {
-      sceneSwitchReducerKey: reducerKey,
+      arenaSwitchReducerKey: reducerKey,
       wrappedSceneBundle,
       sceneBundleElement,
       sagaTaskPromise: new Promise(resolve =>
         this.context.store.dispatch({
-          type: SCENESWITCH_INIT_SAGA,
+          type: ARENASWITCH_INIT_SAGA,
           reducerKey,
           setSagaTask: resolve
         })
@@ -63,28 +63,28 @@ export default class IndependentScene extends Component {
       sceneBundle,
       SceneLoadingComponent
     } = nextProps;
-    if (reducerKey != null && reducerKey !== this.state.sceneSwitchReducerKey) {
+    if (reducerKey != null && reducerKey !== this.state.arenaSwitchReducerKey) {
       refreshFlag = true;
       this.context.store.dispatch({
-        type: SCENESWITCH_KILL_SAGA,
+        type: ARENASWITCH_KILL_SAGA,
         sagaTaskPromise: this.state.sagaTaskPromise
       });
       reducerKey = removeAndAddReducer(
         this.context.store,
-        this.state.sceneSwitchReducerKey,
+        this.state.arenaSwitchReducerKey,
         reducerKey,
-        createSenceSwitchReducer
+        createArenaSwitchReducer
       );
-      this.state.sceneSwitchReducerKey = reducerKey;
+      this.state.arenaSwitchReducerKey = reducerKey;
       this.state.sagaTaskPromise = new Promise(resolve =>
         this.context.store.dispatch({
-          type: SCENESWITCH_INIT_SAGA,
+          type: ARENASWITCH_INIT_SAGA,
           reducerKey,
           setSagaTask: resolve
         })
       );
-      this.state.wrappedSceneBundle = sceneSwitchConnect(
-        this.state.sceneSwitchReducerKey
+      this.state.wrappedSceneBundle = arenaSwitchConnect(
+        this.state.arenaSwitchReducerKey
       );
     }
     if (
@@ -106,10 +106,10 @@ export default class IndependentScene extends Component {
 
   componentWillUnmount() {
     this.context.store.dispatch({
-      type: SCENESWITCH_KILL_SAGA,
+      type: ARENASWITCH_KILL_SAGA,
       sagaTaskPromise: this.state.sagaTaskPromise
     });
-    this.context.store.removeReducer(this.state.sceneSwitchReducerKey);
+    this.context.store.removeReducer(this.state.arenaSwitchReducerKey);
   }
 
   render() {

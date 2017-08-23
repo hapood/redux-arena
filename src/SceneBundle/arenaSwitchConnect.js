@@ -5,17 +5,17 @@ import { withRouter } from "react-router";
 import * as actions from "./redux/actions";
 import SceneBundle from "./SceneBundle";
 
-export default function sceneSwitchConnect(sceneSwitchReducerKey) {
+export default function arenaSwitchConnect(arenaSwitchReducerKey) {
   let mapDispatchToProps = dispatch => {
     return bindActionCreators(actions, dispatch);
   };
 
   let mapStateToProps = state => {
     return {
-      PlayingScene: state[sceneSwitchReducerKey].PlayingScene,
-      curSceneBundle: state[sceneSwitchReducerKey].curSceneBundle,
-      reduxInfo: state[sceneSwitchReducerKey].reduxInfo,
-      sceneSwitchReducerKey: sceneSwitchReducerKey
+      PlayingScene: state[arenaSwitchReducerKey].PlayingScene,
+      curSceneBundle: state[arenaSwitchReducerKey].curSceneBundle,
+      reduxInfo: state[arenaSwitchReducerKey].reduxInfo,
+      arenaSwitchReducerKey: arenaSwitchReducerKey
     };
   };
 
@@ -23,6 +23,6 @@ export default function sceneSwitchConnect(sceneSwitchReducerKey) {
     SceneBundle
   );
 
-  wrappedComponent.displayName = `SceneSwitchConnect({${sceneSwitchReducerKey}})`;
+  wrappedComponent.displayName = `ArenaSwitchConnect({${arenaSwitchReducerKey}})`;
   return wrappedComponent;
 }

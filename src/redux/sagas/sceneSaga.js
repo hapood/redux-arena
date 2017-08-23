@@ -1,7 +1,7 @@
 import {
   SCENE_CLEAR_REDUX,
   SCENE_SET_STATE,
-  SCENESWITCH_SET_STATE
+  ARENASWITCH_SET_STATE
 } from "../actionTypes";
 import {
   takeEvery,
@@ -25,7 +25,7 @@ function* forkSagaWithContext(saga, ctx) {
 }
 
 export function* sceneApplyRedux({
-  sceneSwitchKey,
+  arenaSwitchKey,
   reducerKey,
   state,
   saga,
@@ -76,16 +76,22 @@ export function* sceneApplyRedux({
       state === curSceneBundle.state ? null : state
     );
   }
-  if (saga !== curSceneBundle.saga || newReducerKey !== reduxInfo.reducerKey) {
-    if (saga) {
+  
+  if (saga) {
+    if (
+      saga !== curSceneBundle.saga ||
+      newReducerKey !== reduxInfo.reducerKey ||
+      reduxInfo.sagaTask.isCancelled()
+    ) {
       newSagaTask = yield spawn(forkSagaWithContext, saga, {
         sceneKey: newReducerKey
       });
     }
   }
+
   yield put({
-    type: SCENESWITCH_SET_STATE,
-    sceneSwitchKey,
+    type: ARENASWITCH_SET_STATE,
+    arenaSwitchKey,
     state: {
       reduxInfo: {
         sagaTask: newSagaTask,

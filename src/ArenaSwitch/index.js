@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import SceneSwitch from "./SceneSwitch";
+import ArenaSwitch from "./ArenaSwitch";
 
-export default SceneSwitch;
+export default ArenaSwitch;

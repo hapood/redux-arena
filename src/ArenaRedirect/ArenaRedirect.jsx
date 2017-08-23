@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Redirect, Switch } from "react-router-dom";
 
-class RedirectScene extends Component {
+export default class ArenaRedirect extends Component {
   render() {
     let { exact, from, to, push } = this.props;
     return <Redirect exact={exact} from={from} push={push} to={to} />;
@@ -15,4 +15,3 @@ RedirectScene.propTypes = {
   from: PropTypes.string,
   to: PropTypes.string.isRequired
 };
-export default RedirectScene;

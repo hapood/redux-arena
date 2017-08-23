@@ -12,7 +12,7 @@ export default class SceneBundle extends Component {
   componentWillUnmount() {
     let props = this.props;
     this.setState({ isSceneContextValid: false }, () => {
-      this.props.sceneStopPlay(this.props.sceneSwitchReducerKey);
+      this.props.sceneStopPlay(this.props.arenaSwitchReducerKey);
     });
     this.props.clearSceneRedux(this.props.reduxInfo);
   }
@@ -27,7 +27,7 @@ export default class SceneBundle extends Component {
           isSceneBundleValid: true
         },
         () => {
-          this.props.sceneStartPlay(this.props.sceneSwitchReducerKey);
+          this.props.sceneStartPlay(this.props.arenaSwitchReducerKey);
         }
       );
     }
@@ -59,18 +59,18 @@ export default class SceneBundle extends Component {
 
   loadScene(sceneBundle, asyncSceneBundle) {
     if (sceneBundle) {
-      let payload = [this.props.sceneSwitchReducerKey];
+      let payload = [this.props.arenaSwitchReducerKey];
       this.props.sceneLoadStart(...payload);
-      this.props.sceneSwitchLoadScene(
-        this.props.sceneSwitchReducerKey,
+      this.props.arenaSwitchLoadScene(
+        this.props.arenaSwitchReducerKey,
         sceneBundle
       );
       this.props.sceneLoadEnd(...payload);
       return;
     } else if (asyncSceneBundle) {
-      this.props.sceneLoadStart(this.props.sceneSwitchReducerKey);
+      this.props.sceneLoadStart(this.props.arenaSwitchReducerKey);
       this.props.arenaLoadAsyncScene(
-        this.props.sceneSwitchReducerKey,
+        this.props.arenaSwitchReducerKey,
         asyncSceneBundle
       );
       return;
@@ -86,8 +86,8 @@ export default class SceneBundle extends Component {
       match,
       location,
       history,
-      sceneSwitchLocation,
-      sceneSwitchMatch
+      arenaSwitchLocation,
+      arenaSwitchMatch
     } = this.props;
     if (this.state.isSceneBundleValid) {
       return (
@@ -96,8 +96,8 @@ export default class SceneBundle extends Component {
             match,
             location,
             history,
-            sceneSwitchLocation,
-            sceneSwitchMatch
+            arenaSwitchLocation,
+            arenaSwitchMatch
           }}
         />
       );

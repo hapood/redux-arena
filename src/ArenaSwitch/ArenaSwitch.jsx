@@ -3,19 +3,19 @@ import PropTypes from "prop-types";
 import { Router, Switch } from "react-router-dom";
 import createHistory from "history/createBrowserHistory";
 import {
-  SCENESWITCH_INIT_SAGA,
-  SCENESWITCH_KILL_SAGA
+  ARENASWITCH_INIT_SAGA,
+  ARENASWITCH_KILL_SAGA
 } from "../redux/actionTypes";
-import createSenceSwitchReducer from "../redux/reducers/createSenceSwitchReducer";
+import createArenaSwitchReducer from "../redux/reducers/createArenaSwitchReducer";
 import { addReducer, removeAndAddReducer } from "../utils";
 
-export default class SceneSwitch extends Component {
+export default class ArenaSwitch extends Component {
   static contextTypes = {
     store: PropTypes.any
   };
 
   static childContextTypes = {
-    sceneSwitchReducerKey: PropTypes.string
+    arenaSwitchReducerKey: PropTypes.string
   };
 
   static propTypes = {
@@ -27,13 +27,13 @@ export default class SceneSwitch extends Component {
     let reducerKey = addReducer(
       this.context.store,
       this.props.reducerKey,
-      createSenceSwitchReducer
+      createArenaSwitchReducer
     );
     this.state = {
-      sceneSwitchReducerKey: reducerKey,
+      arenaSwitchReducerKey: reducerKey,
       sagaTaskPromise: new Promise(resolve =>
         this.context.store.dispatch({
-          type: SCENESWITCH_INIT_SAGA,
+          type: ARENASWITCH_INIT_SAGA,
           reducerKey,
           setSagaTask: resolve
         })
@@ -43,22 +43,22 @@ export default class SceneSwitch extends Component {
 
   componentWillReceiveProps(nextProps, nextContext) {
     let { reducerKey } = nextProps;
-    if (reducerKey != null && reducerKey !== this.state.sceneSwitchReducerKey) {
+    if (reducerKey != null && reducerKey !== this.state.arenaSwitchReducerKey) {
       this.context.store.dispatch({
-        type: SCENESWITCH_KILL_SAGA,
+        type: ARENASWITCH_KILL_SAGA,
         sagaTaskPromise: this.state.sagaTaskPromise
       });
       reducerKey = removeAndAddReducer(
         this.context.store,
-        this.state.sceneSwitchReducerKey,
+        this.state.arenaSwitchReducerKey,
         reducerKey,
-        createSenceSwitchReducer
+        createArenaSwitchReducer
       );
       this.state = {
-        sceneSwitchReducerKey: reducerKey,
+        arenaSwitchReducerKey: reducerKey,
         sagaTaskPromise: new Promise(resolve =>
           this.context.store.dispatch({
-            type: SCENESWITCH_INIT_SAGA,
+            type: ARENASWITCH_INIT_SAGA,
             reducerKey,
             setSagaTask: resolve
           })
@@ -69,14 +69,14 @@ export default class SceneSwitch extends Component {
 
   componentWillUnmount() {
     this.context.store.dispatch({
-      type: SCENESWITCH_KILL_SAGA,
+      type: ARENASWITCH_KILL_SAGA,
       sagaTaskPromise: this.state.sagaTaskPromise
     });
-    this.context.store.removeReducer(this.state.sceneSwitchReducerKey);
+    this.context.store.removeReducer(this.state.arenaSwitchReducerKey);
   }
 
   getChildContext() {
-    return { sceneSwitchReducerKey: this.state.sceneSwitchReducerKey };
+    return { arenaSwitchReducerKey: this.state.arenaSwitchReducerKey };
   }
 
   render() {

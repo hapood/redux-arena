@@ -3,9 +3,9 @@ import React from "react";
 import { shallow } from "enzyme";
 import { expect, assert } from "chai";
 import sinon from "sinon";
-import SceneSwitch from "./SceneSwitch";
+import ArenaSwitch from "./ArenaSwitch";
 
-describe("<SceneSwitch />", () => {
+describe("<ArenaSwitch />", () => {
   it("should add reducer and render Switch", () => {
     const addReducerSpy = sinon.spy();
     const dispatchSpy = sinon.spy();
@@ -15,7 +15,7 @@ describe("<SceneSwitch />", () => {
         dispatch: dispatchSpy
       }
     };
-    const wrapper = shallow(<SceneSwitch />, { context: ctx });
+    const wrapper = shallow(<ArenaSwitch />, { context: ctx });
     expect(addReducerSpy).to.have.property("callCount", 1);
     expect(dispatchSpy).to.have.property("callCount", 1);
   });

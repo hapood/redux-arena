@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import PublicScene from "../PublicScene";
+import RouteScene from "../RouteScene";
 import SceneValidating from "../SceneValidating";
 import SceneLoading from "../SceneLoading";
 import { REFRESH_VALIDATE, FIRST_VALADATE } from "./validateType";
 
-class PrivateScene extends Component {
+class PrivateRouteScene extends Component {
   componentWillMount() {
     this.state = {
       isValid: false
@@ -49,7 +49,7 @@ class PrivateScene extends Component {
     } = this.props;
     if (this.state.isValid)
       return (
-        <PublicScene
+        <RouteScene
           {...{
             asyncSceneBundle,
             sceneBundle,
@@ -64,7 +64,7 @@ class PrivateScene extends Component {
   }
 }
 
-PrivateScene.propTypes = {
+PrivateRouteScene.propTypes = {
   asyncSceneBundle: PropTypes.any,
   sceneBundle: PropTypes.any,
   SceneLoadingComponent: PropTypes.any,
@@ -77,10 +77,10 @@ PrivateScene.propTypes = {
   onReject: PropTypes.func.isRequired
 };
 
-PrivateScene.defaultProps = {
+PrivateRouteScene.defaultProps = {
   SceneValidatingComponent: SceneValidating,
   SceneLoadingComponent: SceneLoading,
   exact: true
 };
 
-export default PrivateScene;
+export default PrivateRouteScene;

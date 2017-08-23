@@ -1,6 +1,6 @@
 ## 0.2.3 (Aug 20, 2017)
 
-* Add IndependentScene
+* Add SoloScene
 * Add annotations
 * Add route infomation in scene actions
 

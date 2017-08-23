@@ -1,13 +1,13 @@
 import { createArenaStore } from "./redux";
-import PublicScene from "./PublicScene";
-import PrivateScene from "./PrivateScene";
-import SceneSwitch from "./SceneSwitch";
-import IndependentScene from "./IndependentScene";
+import RouteScene from "./RouteScene";
+import PrivateRouteScene from "./PrivateRouteScene";
+import ArenaSwitch from "./ArenaSwitch";
+import SoloScene from "./SoloScene";
 
 export {
   createArenaStore,
-  PublicScene,
-  PrivateScene,
-  SceneSwitch,
-  IndependentScene
+  RouteScene,
+  PrivateRouteScene,
+  ArenaSwitch,
+  SoloScene
 };
