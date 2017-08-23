@@ -6,7 +6,7 @@ import { createStore, combineReducers } from "redux";
 function storeEnhancer(store, reducers) {
   let _currentReducers = reducers;
   const handler = {
-    get: function(target, name) {
+    get: function (target, name) {
       if (name === "addReducer") {
         return ({ reducerKey, reducer, state }) => {
           let allStates = target.getState();
@@ -63,9 +63,10 @@ function storeEnhancer(store, reducers) {
           let oldState = allStates[reducerKeyRemoved];
           delete allStates[reducerKeyRemoved];
           delete newReducers[reducerKeyRemoved];
-          if (newReducers[reducerKeyAdded] == null)
+          if (newReducers[reducerKeyAdded] != null)
             throw new Error(`reducer of key [${reducerKeyAdded}] already exsit.`);
           newReducers[reducerKeyAdded] = reducer;
+          _currentReducers = newReducers
           target.replaceReducer(combineReducers(newReducers));
           allStates = target.getState();
           allStates[reducerKeyAdded] = state ? state : oldState;

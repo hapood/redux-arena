@@ -5,8 +5,5 @@ export function addCnt() {
 }
 
 export function switchDynamicState(flag) {
-  return {
-    type: "SWITCH_DYNAMIC_STATE",
-    flag
-  };
+  return { type: "SWITCH_DYNAMIC_STATE", flag };
 }
