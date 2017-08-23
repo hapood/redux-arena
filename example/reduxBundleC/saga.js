@@ -32,10 +32,8 @@ function* setLetter() {
 
 function* switchDanymicState({ flag }) {
   let { isDynamicStateEnable } = yield* getSceneState();
-  if (isDynamicStateEnable !== flag) {
-    if (flag) {
-      yield fork(setLetter);
-    }
+  if (flag) {
+    yield fork(setLetter);
   }
   yield* setSceneState({
     isDynamicStateEnable: flag
