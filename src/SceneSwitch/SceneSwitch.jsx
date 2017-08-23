@@ -40,7 +40,13 @@ export default class SceneSwitch extends Component {
       )
     };
   }
-
+  /**
+   * 
+   * 
+   * @param {any} nextProps 
+   * @param {any} nextContext 
+   * @memberof SceneSwitch
+   */
   componentWillReceiveProps(nextProps, nextContext) {
     let { reducerKey } = nextProps;
     if (reducerKey != null && reducerKey !== this.state.sceneSwitchReducerKey) {

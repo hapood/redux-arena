@@ -1,12 +1,20 @@
 import React from "react";
 import { expect } from "chai";
+import { applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 import { spy } from "sinon";
 import { Provider } from "react-redux";
 import { createMount } from "../testUtils";
 import { createArenaStore } from "../../src";
-import IndependentScene from "../../src/IndependentScene";
+import { MemoryRouter, Link } from "react-router-dom";
+import createHistory from "history/createBrowserHistory";
+import SceneSwitch from "../../src/SceneSwitch";
+import PublicScene from "../../src/PublicScene";
 import reduxBundleForTest from "../reduxBundleForeTest";
-
+import reducer from "../frameForTest/redux/reducer";
+import saga from "../frameForTest/redux/saga";
+import DevTools from "../frameForTest/DevTools";
+import PrivateScene from "../../src/PrivateScene";
 function createMountWithRedux(store) {
   let mount = createMount(store);
   let mountWithRedux = children =>
@@ -36,11 +44,16 @@ function selectNeededStates(allStates) {
   };
 }
 
-describe("<IndependentScene /> integration", () => {
+describe("<SceneSwitch /> <PublicScene/>integration", () => {
   let store, mountWithRedux;
 
   before(() => {
-    store = createArenaStore();
+    store = createArenaStore(
+      { frame: reducer },
+      { frame: { history: createHistory() } },
+      saga,
+      [applyMiddleware(thunk), DevTools.instrument()]
+    );
     mountWithRedux = createMountWithRedux(store);
   });
 
@@ -49,12 +62,15 @@ describe("<IndependentScene /> integration", () => {
     store.close();
   });
 
-  describe("random reducer key instance", () => {
+  describe("special a key for SceneSwitch", () => {
     let wrapper;
-
     before(() => {
       wrapper = mountWithRedux(
-        <IndependentScene asyncSceneBundle={reduxBundleForTest} />
+        <MemoryRouter initialEntries={["/pageA"]} initialIndex={0}>
+          <SceneSwitch reducerKey="testkey">
+            <PublicScene path="/pageA" asyncSceneBundle={reduxBundleForTest} />
+          </SceneSwitch>
+        </MemoryRouter>
       );
     });
 

@@ -29,17 +29,17 @@ function* dynamicState() {
     let action = yield take("SWITCH_DYNAMIC_STATE");
     if (action.flag) {
       if (letterTask && letterTask.isRunning()) continue;
-      letterTask = yield fork(setLetter, true);
+      letterTask = yield fork(setLetter);
     } else if (!action.flag && letterTask) {
       yield cancel(letterTask);
     }
   }
 }
-function* setLetter(flag) {
-  do {
+function* setLetter() {
+  while (true) {
     yield fork(setSceneState, { dynamicState: randLetter() });
     yield delay(500);
-  } while (flag);
+  }
 }
 
 function* switchDanymicState({ flag }) {
