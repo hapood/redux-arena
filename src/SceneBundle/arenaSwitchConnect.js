@@ -23,6 +23,6 @@ export default function arenaSwitchConnect(arenaSwitchReducerKey) {
     SceneBundle
   );
 
-  wrappedComponent.displayName = `ArenaSwitchConnect({${arenaSwitchReducerKey}})`;
+  wrappedComponent.displayName = `ArenaSwitchConnect({reducerKey:${arenaSwitchReducerKey}})`;
   return wrappedComponent;
 }

@@ -18,7 +18,7 @@ class Frame extends Component {
     // this.state.showWidget = false;
     this.state = {
       showWidget: false,
-      reducerKey: "fkdsjfkdj",
+      reducerKey: "fixedReducerkey",
       showArenaSwitch: true
     };
   }
@@ -46,8 +46,7 @@ class Frame extends Component {
             <input
               type="button"
               value="reducerKey"
-              onClick={() =>
-                this.setState({ reducerKey: this.state.reducerKey + "re" })}
+              onClick={() => this.setState({ reducerKey: "YAFixedReducerKey" })}
             />
             <input
               type="button"

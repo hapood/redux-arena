@@ -19,7 +19,10 @@ import {
   getContext
 } from "redux-saga/effects";
 import { connect } from "react-redux";
-import { bindActionCreatorsWithSceneKey } from "../../enhencedRedux";
+import {
+  bindActionCreatorsWithSceneKey,
+  createProxyMapStateToProps
+} from "../../enhencedRedux";
 import { bindActionCreators } from "redux";
 import { sceneApplyRedux } from "./sceneSaga";
 
@@ -61,7 +64,10 @@ function* arenaSwitchSwitchScene({ arenaSwitchKey, sceneBundle }) {
   }
   let mapStateToProps;
   if (sceneBundle.mapStateToProps) {
-    mapStateToProps = state => sceneBundle.mapStateToProps(state, reducerKey);
+    mapStateToProps = createProxyMapStateToProps(
+      sceneBundle.mapStateToProps,
+      reducerKey
+    );
   }
   let PlayingScene = connect(mapStateToProps, mapDispatchToProps)(
     sceneBundle.Component
