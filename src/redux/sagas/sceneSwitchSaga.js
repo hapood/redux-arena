@@ -51,7 +51,7 @@ function* sceneSwitchSwitchScene({ sceneSwitchKey, sceneBundle }) {
   if (sceneBundle.actions) {
     mapDispatchToProps = dispatch =>
       sceneBundle.isPlainActions === true
-        ? bindActionCreators(sceneBundle.actions, dispatch, reducerKey)
+        ? bindActionCreators(sceneBundle.actions, dispatch)
         : bindActionCreatorsWithSceneKey(
             sceneBundle.actions,
             dispatch,
