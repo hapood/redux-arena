@@ -1,6 +1,6 @@
 import {
-  SCENESWITCH_SWITCH_SCENE,
-  SCENESWITCH_LOAD_ASYNCSCENE,
+  ARENASWITCH_SWITCH_SCENE,
+  ARENASWITCH_LOAD_ASYNCSCENE,
   SCENE_LOAD_START,
   SCENE_PLAY_START,
   SCENE_PLAY_END,
@@ -8,53 +8,53 @@ import {
   SCENE_CLEAR_REDUX
 } from "../../redux/actionTypes";
 
-export function sceneSwitchLoadScene(sceneSwitchKey, sceneBundle) {
+export function arenaSwitchLoadScene(arenaSwitchKey, sceneBundle) {
   return {
-    type: SCENESWITCH_SWITCH_SCENE,
-    sceneSwitchKey,
+    type: ARENASWITCH_SWITCH_SCENE,
+    arenaSwitchKey,
     sceneBundle
   };
 }
 
-export function arenaLoadAsyncScene(sceneSwitchKey, asyncSceneBundle) {
+export function arenaLoadAsyncScene(arenaSwitchKey, asyncSceneBundle) {
   return {
-    type: SCENESWITCH_LOAD_ASYNCSCENE,
-    sceneSwitchKey,
+    type: ARENASWITCH_LOAD_ASYNCSCENE,
+    arenaSwitchKey,
     asyncSceneBundle
   };
 }
 
-export function sceneLoadStart(sceneSwitchKey, sceneBundle, asyncSceneBundle) {
+export function sceneLoadStart(arenaSwitchKey, sceneBundle, asyncSceneBundle) {
   return {
     type: SCENE_LOAD_START,
-    sceneSwitchKey,
+    arenaSwitchKey,
     sceneBundle,
     asyncSceneBundle
   };
 }
 
-export function sceneStartPlay(sceneSwitchKey, sceneBundle, asyncSceneBundle) {
+export function sceneStartPlay(arenaSwitchKey, sceneBundle, asyncSceneBundle) {
   return {
     type: SCENE_PLAY_START,
-    sceneSwitchKey,
+    arenaSwitchKey,
     sceneBundle,
     asyncSceneBundle
   };
 }
 
-export function sceneLoadEnd(sceneSwitchKey, sceneBundle, asyncSceneBundle) {
+export function sceneLoadEnd(arenaSwitchKey, sceneBundle, asyncSceneBundle) {
   return {
     type: SCENE_LOAD_END,
-    sceneSwitchKey,
+    arenaSwitchKey,
     sceneBundle,
     asyncSceneBundle
   };
 }
 
-export function sceneStopPlay(sceneSwitchKey, sceneBundle, asyncSceneBundle) {
+export function sceneStopPlay(arenaSwitchKey, sceneBundle, asyncSceneBundle) {
   return {
     type: SCENE_PLAY_END,
-    sceneSwitchKey,
+    arenaSwitchKey,
     sceneBundle,
     asyncSceneBundle
   };

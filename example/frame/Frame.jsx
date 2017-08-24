@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Router, Link } from "react-router-dom";
-import { PublicScene, SceneSwitch, IndependentScene } from "../../src";
+import { RouteScene, ArenaSwitch, SoloScene } from "../../src";
 import reduxBundleA from "../reduxBundleA";
 import * as actions from "./redux/actions";
 import DevTools from "./DevTools";
@@ -18,8 +18,8 @@ class Frame extends Component {
     // this.state.showWidget = false;
     this.state = {
       showWidget: false,
-      reducerKey: "fkdsjfkdj",
-      showSenceSwitch: true
+      reducerKey: "fixedReducerkey",
+      showArenaSwitch: true
     };
   }
 
@@ -46,31 +46,30 @@ class Frame extends Component {
             <input
               type="button"
               value="reducerKey"
-              onClick={() =>
-                this.setState({ reducerKey: this.state.reducerKey + "re" })}
+              onClick={() => this.setState({ reducerKey: "YAFixedReducerKey" })}
             />
             <input
               type="button"
               value={
-                this.state.showSenceSwitch
-                  ? "hideSenceSwitch"
-                  : "showSenceSwitch"
+                this.state.showArenaSwitch
+                  ? "hideArenaSwitch"
+                  : "showArenaSwitch"
               }
               onClick={() =>
-                this.setState({ showSenceSwitch: !this.state.showSenceSwitch })}
+                this.setState({ showArenaSwitch: !this.state.showArenaSwitch })}
             />
             <div style={{ marginTop: "1rem" }}>
-              {this.state.showSenceSwitch
-                ? <SceneSwitch reducerKey={this.state.reducerKey}>
-                    <PublicScene path="/pageA" sceneBundle={reduxBundleA} />
-                    <PublicScene
+              {this.state.showArenaSwitch
+                ? <ArenaSwitch reducerKey={this.state.reducerKey}>
+                    <RouteScene path="/pageA" sceneBundle={reduxBundleA} />
+                    <RouteScene
                       path="/asyncPageB"
                       asyncSceneBundle={asyncReduxBundleB}
                     />
-                  </SceneSwitch>
+                  </ArenaSwitch>
                 : null}
               {this.state.showWidget
-                ? <IndependentScene asyncSceneBundle={asyncReduxBundleC} />
+                ? <SoloScene asyncSceneBundle={asyncReduxBundleC} />
                 : null}
             </div>
           </div>

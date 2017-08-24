@@ -61,7 +61,7 @@ export default {
 
 ```
 
-### Build PublicScene HOC as a children of ReduxArena
+### Build RouteScene HOC as a children of ReduxArena
 
 ```javascript
 
@@ -70,7 +70,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { BrowserRouter, Link } from "react-router-dom";
-import { PublicScene , SceneSwitch } from "redux-arena";
+import { RouteScene , ArenaSwitch } from "redux-arena";
 import pageABundle from "./pageABundle";
 import * as actions from "./actions";
 
@@ -89,10 +89,10 @@ eport default class Frame extends Component {
         </ul>
         <div style={{ marginTop: "1rem" }}>
           <BrowserRouter>
-            <SceneSwitch>
-              <PublicScene path="/pageA" sceneBundle={pageABundle} />
-              <PublicScene path="/asyncPageB" asyncSceneBundle={asyncPageB} />
-            </SceneSwitch>
+            <ArenaSwitch>
+              <RouteScene path="/pageA" sceneBundle={pageABundle} />
+              <RouteScene path="/asyncPageB" asyncSceneBundle={asyncPageB} />
+            </ArenaSwitch>
           </BrowserRouter>
         </div>
       </div>
@@ -132,46 +132,46 @@ ReactDOM.render(
 
 Redux-arena provide a set of useful HOCs to enhence react-router
 
-### SceneSwitch
+### ArenaSwitch
 
-###IndependentScene
+###SoloScene
 
-Bundle redux with react component. Reducer and saga in bundle will mount/unmount with IndependentScene.
-
-```javascript
-
-<PublicScene asyncSceneBundle={asyncPageB} />
-
-```
-
-An enhenced Switch. All PublicScene and PrivateScene should pass in as children.
+Bundle redux with react component. Reducer and saga in bundle will mount/unmount with SoloScene.
 
 ```javascript
 
-<SceneSwitch>
-    <PublicScene path="/pageA" sceneBundle={pageABundle} />
-    <PrivateScene path="/asyncPageB" asyncSceneBundle={asyncPageB} />
-</SceneSwitch>
+<RouteScene asyncSceneBundle={asyncPageB} />
 
 ```
 
-### PublicScene
+An enhenced Switch. All RouteScene and PrivateRouteScene should pass in as children.
+
+```javascript
+
+<ArenaSwitch>
+    <RouteScene path="/pageA" sceneBundle={pageABundle} />
+    <PrivateRouteScene path="/asyncPageB" asyncSceneBundle={asyncPageB} />
+</ArenaSwitch>
+
+```
+
+### RouteScene
 
 An enhenced Route witch accept sceneBundle prop. Support asyncSceneBundle for code splitting. Prop exact and strict and other props defined in Route of react-router will work.
 
 ```javascript
 
-<PublicScene path="/asyncPageB" asyncSceneBundle={asyncPageB} exact strict />
+<RouteScene path="/asyncPageB" asyncSceneBundle={asyncPageB} exact strict />
 
 ```
 
-### PrivateScene
+### PrivateRouteScene
 
-An enhenced PublicScene whitch accept onValidate onPass and onReject props. Helpful when integrating with access control system.
+An enhenced RouteScene whitch accept onValidate onPass and onReject props. Helpful when integrating with access control system.
 
 ```javascript
 
-<PrivateScene path="/asyncPageB" 
+<PrivateRouteScene path="/asyncPageB" 
     sceneBundle={pageA}
     onValidate={(cb,match,location,type)=>cb(true)}
     onPass={(data)=>console.debug("pass")}

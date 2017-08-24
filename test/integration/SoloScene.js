@@ -4,7 +4,7 @@ import { spy } from "sinon";
 import { Provider } from "react-redux";
 import { createMount } from "../testUtils";
 import { createArenaStore } from "../../src";
-import IndependentScene from "../../src/IndependentScene";
+import SoloScene from "../../src/SoloScene";
 import reduxBundleForTest from "../reduxBundleForeTest";
 
 function createMountWithRedux(store) {
@@ -36,7 +36,7 @@ function selectNeededStates(allStates) {
   };
 }
 
-describe("<IndependentScene /> integration", () => {
+describe("<SoloScene /> integration", () => {
   let store, mountWithRedux;
 
   before(() => {
@@ -54,7 +54,7 @@ describe("<IndependentScene /> integration", () => {
 
     before(() => {
       wrapper = mountWithRedux(
-        <IndependentScene asyncSceneBundle={reduxBundleForTest} />
+        <SoloScene asyncSceneBundle={reduxBundleForTest} />
       );
     });
 

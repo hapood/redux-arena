@@ -8,13 +8,13 @@ import { createMount } from "../testUtils";
 import { createArenaStore } from "../../src";
 import { MemoryRouter, Link } from "react-router-dom";
 import createHistory from "history/createBrowserHistory";
-import SceneSwitch from "../../src/SceneSwitch";
-import PublicScene from "../../src/PublicScene";
+import ArenaSwitch from "../../src/ArenaSwitch";
+import RouteScene from "../../src/RouteScene";
 import reduxBundleForTest from "../reduxBundleForeTest";
 import reducer from "../frameForTest/redux/reducer";
 import saga from "../frameForTest/redux/saga";
 import DevTools from "../frameForTest/DevTools";
-import PrivateScene from "../../src/PrivateScene";
+import PrivateRouteScene from "../../src/PrivateRouteScene";
 function createMountWithRedux(store) {
   let mount = createMount(store);
   let mountWithRedux = children =>
@@ -44,7 +44,7 @@ function selectNeededStates(allStates) {
   };
 }
 
-describe("<SceneSwitch /> <PublicScene/>integration", () => {
+describe("<ArenaSwitch /> <RouteScene/>integration", () => {
   let store, mountWithRedux;
 
   before(() => {
@@ -62,14 +62,14 @@ describe("<SceneSwitch /> <PublicScene/>integration", () => {
     store.close();
   });
 
-  describe("special a key for SceneSwitch", () => {
+  describe("special a key for ArenaSwitch", () => {
     let wrapper;
     before(() => {
       wrapper = mountWithRedux(
         <MemoryRouter initialEntries={["/pageA"]} initialIndex={0}>
-          <SceneSwitch reducerKey="testkey">
-            <PublicScene path="/pageA" asyncSceneBundle={reduxBundleForTest} />
-          </SceneSwitch>
+          <ArenaSwitch reducerKey="testkey">
+            <RouteScene path="/pageA" asyncSceneBundle={reduxBundleForTest} />
+          </ArenaSwitch>
         </MemoryRouter>
       );
     });

@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import { Route } from "react-router-dom";
 import invariant from "invariant";
 import SceneLoading from "../SceneLoading";
-import { sceneSwitchConnect } from "../SceneBundle";
+import { arenaSwitchConnect } from "../SceneBundle";
 
-class PublicScene extends Component {
+class RouteScene extends Component {
   static contextTypes = {
-    sceneSwitchReducerKey: PropTypes.string
+    arenaSwitchReducerKey: PropTypes.string
   };
 
   static propTypes = {
@@ -25,10 +25,10 @@ class PublicScene extends Component {
   };
 
   componentWillMount() {
-    let { sceneSwitchReducerKey } = this.context;
+    let { arenaSwitchReducerKey } = this.context;
     invariant(
-      sceneSwitchReducerKey,
-      "You should not use <PublicScene> outside a <SceneSwitch>"
+      arenaSwitchReducerKey,
+      "You should not use <RouteScene> outside a <ArenaSwitch>"
     );
     let {
       asyncSceneBundle,
@@ -37,13 +37,13 @@ class PublicScene extends Component {
       location,
       computedMatch
     } = this.props;
-    let wrappedSceneBundle = sceneSwitchConnect(sceneSwitchReducerKey);
+    let wrappedSceneBundle = arenaSwitchConnect(arenaSwitchReducerKey);
     let sceneBundleElement = React.createElement(wrappedSceneBundle, {
       asyncSceneBundle,
       sceneBundle,
       SceneLoadingComponent,
-      sceneSwitchLocation: location,
-      sceneSwitchMatch: computedMatch
+      arenaSwitchLocation: location,
+      arenaSwitchMatch: computedMatch
     });
     this.state = {
       wrappedSceneBundle,
@@ -61,10 +61,10 @@ class PublicScene extends Component {
       computedMatch
     } = nextProps;
     if (
-      this.context.sceneSwitchReducerKey !== nextContext.sceneSwitchReducerKey
+      this.context.arenaSwitchReducerKey !== nextContext.arenaSwitchReducerKey
     ) {
-      this.state.wrappedSceneBundle = sceneSwitchConnect(
-        nextContext.sceneSwitchReducerKey
+      this.state.wrappedSceneBundle = arenaSwitchConnect(
+        nextContext.arenaSwitchReducerKey
       );
       refreshFlag = true;
     }
@@ -80,8 +80,8 @@ class PublicScene extends Component {
           asyncSceneBundle,
           sceneBundle,
           SceneLoadingComponent,
-          sceneSwitchLocation: location,
-          sceneSwitchMatch: computedMatch
+          arenaSwitchLocation: location,
+          arenaSwitchMatch: computedMatch
         }
       );
     }
@@ -100,4 +100,4 @@ class PublicScene extends Component {
   }
 }
 
-export default PublicScene;
+export default RouteScene;

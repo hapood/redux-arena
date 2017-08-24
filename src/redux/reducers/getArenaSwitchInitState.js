@@ -1,4 +1,4 @@
-export default function getSceneSwitchInitState() {
+export default function getArenaSwitchInitState() {
   return {
     PlayingScene: null,
     curSceneBundle: {},
