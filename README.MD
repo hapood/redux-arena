@@ -33,7 +33,7 @@ Online example can be found here: [Here](https://hapood.github.io/redux-arena/)
 
 ## Quick Start
 
-### Bundle react component, actions, reducer, saga, mapStateToProps and export.
+1. Bundle react component, actions, reducer, saga, mapStateToProps and export.
 
 redux-arena extends original mapStateToProps, reducerKey is created by redux-arena and referring to current bundle state.
 
@@ -61,7 +61,7 @@ export default {
 };
 ```
 
-### Replace Switch/Route of react-router with ArenaSwitch/RouteScene
+2. Replace Switch/Route of react-router with ArenaSwitch/RouteScene
 
 ```javascript
 import React, { Component } from "react";
@@ -100,7 +100,7 @@ eport default class Frame extends Component {
 }
 ```
 
-### Initial arenaStore and provide it for redux. 
+3. Initial arenaStore and provide it for redux. 
 
 ```javascript
 import React from "react";

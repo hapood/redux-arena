@@ -33,7 +33,7 @@ npm install redux-arena --save
 
 ## 快速入门
 
-### 将react组件、actions、reducer、saga、mapStateToProps打包导出
+1. 将react组件、actions、reducer、saga、mapStateToProps打包导出
 
 redux-arena扩展了mapStateToProps函数的传入参数，reducerKey是当前模块初始化时由redux-arena自动分配的，通过reducerKey可以获取到当前bundle的state。
 
@@ -61,7 +61,7 @@ export default {
 };
 ```
 
-### 使用ArenaSwitch和RouteScene替代react-router中的Switch和Route
+2. 使用ArenaSwitch和RouteScene替代react-router中的Switch和Route
 
 ```javascript
 import React, { Component } from "react";
@@ -100,7 +100,7 @@ eport default class Frame extends Component {
 }
 ```
 
-### 初始化arenaStore并将其提供给redux
+3. 初始化arenaStore并将其提供给redux
 
 ```javascript
 import React from "react";
@@ -124,7 +124,7 @@ ReactDOM.render(
 );
 ```
 
-## HOC
+## 高阶组件介绍
 
 Redux-arena提供了一组可以和react-router整合使用的高阶组件。
 
