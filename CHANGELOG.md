@@ -1,6 +1,11 @@
+## 0.3.0 (Aug 20, 2017)
+* Rename IndependentScene to SoloScene
+* Rename SceneSwitch to ArenaScene
+* fix some bugs
+
 ## 0.2.3 (Aug 20, 2017)
 
-* Add SoloScene
+* Add IndependentScene
 * Add annotations
 * Add route infomation in scene actions
 

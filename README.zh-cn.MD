@@ -5,27 +5,27 @@
 [![npm version](https://img.shields.io/npm/v/redux-arena.svg?style=flat-square)](https://www.npmjs.com/package/redux-arena)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md#pull-requests)
 
-Redux-arena is a tool for modularizing redux/redux-saga with react component. Scope redux/redux-saga within bundle, and auto clear redux/redux-saga in bundle after react component unmounted.
+对于redux-arena，你可以简单的理解为它是一个为redux增加了模块化功能的增强版，不同于一般意义上的redux中间件，它一定程度上改变了redux的行为。当前版本的redux初始化过程是与react组件独立的，而redux-arena会将action/reducer/saga与react组件绑定在一起加载，在react组件的生命周期结束时，对应于这个组件的redux信息将会被自动清理掉。
 
-## Why redux-arena
+## 为什么选择redux-arena
 
-Redux is a great state management container, I love redux-saga and react-router very much. But when I am developing a webapp for management console, packaging a dozen url related page-components into one entity is annoying.
+在很多基于react的大型企业Web项目开发中，redux/redux-saga/react-router已经成为开发的不可获缺的一部分。但是在使用过程中，将这一切整合到一起颇为麻烦，虽然社区提供丰富的文档和很多问题解决案例，但是当项目变得越来越复杂时，需要一个框架将这一切管理起来。
 
-Every url related page-component in management console webapp is nearly independent, but when we register its state and reducer in original redux, states and reducers will work all life-circle of redux. That's not necessary, it will cause some problems like same action type conflict, reducer inefficient, etc.
+主要问题之一，就是基于url的页面的状态彼此相互独立，在同一时刻用户访问的url是唯一的。虽然react会帮助我们自动加载和卸载组件，但是由于redux生命周期与react独立，在页面被卸载后其reducer和saga依然处于激活状态，造成不必要的性能开销。
 
-Redux-arena is designed to solve these problems once and for all, when scene changed, the state, actions, reducer, and saga will be replaced by redux-arena, looks like the two scene connected with irrelevant store.
+使用redux-arena可以完美的解决这个问题，当react-router切换页面时，redux-arena会自动渲染新的react组件并初始化组件相关的state/actions/reducer/saga，同时所有上个页面的redux信息都会被自动清理。
 
-And any issue or pr is welcomed.
+这个工具目前仍在持续开发中，欢迎任何issue以及pr。
 
-## Install
+## 安装
 
 ```
 npm install redux-arena --save
 ```
 
-## Example
+## 例子
 
-An complete example is under example directory, including a lot of HOC. And add redux-devtools for state changing show.
+example目录下包含了一个完整的例子，包括了多个HOC的使用。并且使用了redux-devtool动态展示state的变化。
 
 ```
 cd example
@@ -33,11 +33,11 @@ npm install
 npm start
 ```
 
-## Quick Start
+## 快速入门
 
-### Bundle react component, actions, reducer, saga, mapStateToProps and export.
+### 将react组件、actions、reducer、saga、mapStateToProps打包导出
 
-redux-arena extends original mapStateToProps, reducerKey is created by redux-arena and referring to current bundle state.
+redux-arena扩展了mapStateToProps函数的传入参数，reducerKey是当前模块初始化时由redux-arena自动分配的，通过reducerKey可以获取到当前bundle的state。
 
 ```javascript
 import state from "./state";
@@ -63,7 +63,7 @@ export default {
 };
 ```
 
-### Replace Switch/Route of react-router with ArenaSwitch/RouteScene
+### 使用ArenaSwitch和RouteScene替代react-router中的Switch和Route
 
 ```javascript
 import React, { Component } from "react";
@@ -102,7 +102,7 @@ eport default class Frame extends Component {
 }
 ```
 
-### Initial arenaStore and provide it for redux. 
+### 初始化arenaStore并将其提供给redux
 
 ```javascript
 import React from "react";
@@ -128,11 +128,12 @@ ReactDOM.render(
 
 ## HOC
 
-Redux-arena provide a set of useful HOCs to enhence react-router.
+Redux-arena提供了一组可以和react-router整合使用的高阶组件。
 
 ###SoloScene
 
-If route is not necessary, use SoloScene.
+如果你不需要路由功能，直接使用SoloScene。
+
 
 ```javascript
 <SoloScene asyncSceneBundle={asyncPageB} />
@@ -140,7 +141,7 @@ If route is not necessary, use SoloScene.
 
 ### ArenaSwitch
 
-Instead of Switch of react-router.
+替代react-router的Switch组件。
 
 ```javascript
 <ArenaSwitch>
@@ -151,32 +152,29 @@ Instead of Switch of react-router.
 
 ### RouteScene
 
-An enhenced Route witch accept sceneBundle prop. Support asyncSceneBundle for code splitting. Prop exact and strict and other props defined in Route of react-router will work.
+扩展了react-router中route的props，sceneBundle用来接收同步模块，如果模块使用import()做了代码分割，需要将异步模块传入asyncPageB。
 
 ```javascript
-
 <RouteScene path="/asyncPageB" asyncSceneBundle={asyncPageB} exact strict />
-
 ```
 
 ### PrivateRouteScene
 
-An enhenced RouteScene whitch accept onValidate onPass and onReject props. Helpful when integrating with access control system.
+帮助构造需要验证登录功能的页面。相对RouteScene增加了onValidate、onPass、onReject三个回调函数。
 
 ```javascript
-
 <PrivateRouteScene path="/asyncPageB" 
     sceneBundle={pageA}
     onValidate={(cb,match,location,type)=>cb(true)}
     onPass={(data)=>console.debug("pass")}
     onReject={(data)=>this.props.jumpTo("/login")}
 />
-
 ```
 
-## Reducer
+## reducer
 
-redux-arena extends reducer of redux, add incoming reducerKey, comparing to _sceneKey of action and decide updating or not.
+redux-arena对redux的reducer进行了扩展，增加了当前模块reducerKey作为传入参数，
+与action中的_sceneKey作比较判断来源，决定是否执行更新。
 
 ```javascript
 // original reducer
@@ -190,7 +188,7 @@ function reducer(state = initState, action, reducerKey){
 }
 ```
 
-With sceneReducer, reducer will only accept action dispatched from current bundle.
+如果希望reducer只接收本模块发出的reducer请求，可以使用sceneReducer函数。
 
 ```javascript
 import { sceneReducer } from "redux-arena/sceneScope";
@@ -202,9 +200,9 @@ function reducer(state = initState, action, reducerKey){
 export default sceneReducer(reducer)
 ```
 
-## Saga operations
+## Saga操作
 
-With setSceneState and getSceneState, getting and updating bundle state easily.
+使用getSceneState和setSceneState获取和更新当前模块的state
 
 ```javascript
 import { setSceneState, getSceneState } from "redux-arena/sagaOps";
@@ -215,7 +213,7 @@ function * doSomthing(){
 }
 ```
 
-With sceneActionSaga, action saga will only accept action dispatched from current bundle.
+使用sceneActionSaga来使saga只接收来自本模块的action。
 
 ```javascript
 import { sceneActionSaga } from "redux-arena/sceneScope";

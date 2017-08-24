@@ -1,7 +1,7 @@
 {
   "name": "redux-arena",
-  "version": "0.2.2",
-  "description": "Auto switch context of redux refer to url",
+  "version": "0.3.0",
+  "description": "Modularizing redux with react component.",
   "main": "index.js",
   "scripts": {
     "example": "node ./example/devServer.js",
