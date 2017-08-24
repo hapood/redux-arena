@@ -1,0 +1,2 @@
+export const FRAME_HISTORY_PUSH = "FRAME_HISTORY_PUSH";
+export const FRAME_SET_STATE = "FRAME_SET_STATE";

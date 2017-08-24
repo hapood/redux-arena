@@ -40,7 +40,13 @@ export default class ArenaSwitch extends Component {
       )
     };
   }
-
+  /**
+   * 
+   * 
+   * @param {any} nextProps 
+   * @param {any} nextContext 
+   * @memberof ArenaSwitch
+   */
   componentWillReceiveProps(nextProps, nextContext) {
     let { reducerKey } = nextProps;
     if (reducerKey != null && reducerKey !== this.state.arenaSwitchReducerKey) {

@@ -1,12 +1,20 @@
 import React from "react";
 import { expect } from "chai";
+import { applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 import { spy } from "sinon";
 import { Provider } from "react-redux";
 import { createMount } from "../testUtils";
 import { createArenaStore } from "../../src";
-import SoloScene from "../../src/SoloScene";
+import { MemoryRouter, Link } from "react-router-dom";
+import createHistory from "history/createBrowserHistory";
+import ArenaSwitch from "../../src/ArenaSwitch";
+import RouteScene from "../../src/RouteScene";
 import reduxBundleForTest from "../reduxBundleForeTest";
-
+import reducer from "../frameForTest/redux/reducer";
+import saga from "../frameForTest/redux/saga";
+import DevTools from "../frameForTest/DevTools";
+import PrivateRouteScene from "../../src/PrivateRouteScene";
 function createMountWithRedux(store) {
   let mount = createMount(store);
   let mountWithRedux = children =>
@@ -36,11 +44,16 @@ function selectNeededStates(allStates) {
   };
 }
 
-describe("<SoloScene /> integration", () => {
+describe("<ArenaSwitch /> <RouteScene/>integration", () => {
   let store, mountWithRedux;
 
   before(() => {
-    store = createArenaStore();
+    store = createArenaStore(
+      { frame: reducer },
+      { frame: { history: createHistory() } },
+      saga,
+      [applyMiddleware(thunk), DevTools.instrument()]
+    );
     mountWithRedux = createMountWithRedux(store);
   });
 
@@ -49,12 +62,15 @@ describe("<SoloScene /> integration", () => {
     store.close();
   });
 
-  describe("random reducer key instance", () => {
+  describe("special a key for ArenaSwitch", () => {
     let wrapper;
-
     before(() => {
       wrapper = mountWithRedux(
-        <SoloScene asyncSceneBundle={reduxBundleForTest} />
+        <MemoryRouter initialEntries={["/pageA"]} initialIndex={0}>
+          <ArenaSwitch reducerKey="testkey">
+            <RouteScene path="/pageA" asyncSceneBundle={reduxBundleForTest} />
+          </ArenaSwitch>
+        </MemoryRouter>
       );
     });
 
@@ -71,7 +87,7 @@ describe("<SoloScene /> integration", () => {
           }
         });
       });
-      return flagPromise
+      return flagPromise;
     });
   });
 });
