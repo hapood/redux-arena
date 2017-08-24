@@ -23,15 +23,13 @@ And any issue or pr is welcomed.
 npm install redux-arena --save
 ```
 
-## Example
+## [Example](https://hapood.github.io/react-immutable-treeview/)
 
-An complete example is under example directory, including a lot of HOC. And add redux-devtools for state changing show.
+An complete example is under `/example` directory, including a lot of HOC. And add redux-devtools for state changing show.
+Online example can be found here: [Here](https://hapood.github.io/redux-arena/)
 
-```
-cd example
-npm install
-npm start
-```
+### Screenshots
+<img src="https://raw.githubusercontent.com/hapood/redux-arena/d6c324d44636d19e7c2b824d295620053c73b1f6/redux-arena-demo.gif" width="800"/>
 
 ## Quick Start
 

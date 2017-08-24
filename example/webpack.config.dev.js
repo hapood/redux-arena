@@ -1,4 +1,4 @@
-const webpack = require("webpack");
+var webpack = require("webpack");
 var path = require("path");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 
@@ -34,10 +34,14 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./index.html", // Load a custom template
       inject: "body", // Inject all scripts into the body
-      title: "Immutable Tree",
-      filename: "index.html"
+      title: "redux-arena",
+      filename: "index.html",
+      base: "/redux-arena"
     }),
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      "process.env.NODE_ENV": '"production"'
+    }),
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   ]

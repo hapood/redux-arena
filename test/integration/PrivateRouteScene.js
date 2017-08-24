@@ -13,8 +13,8 @@ import RouteScene from "../../src/RouteScene";
 import reduxBundleForTest from "../reduxBundleForeTest";
 import reducer from "../frameForTest/redux/reducer";
 import saga from "../frameForTest/redux/saga";
-import DevTools from "../frameForTest/DevTools";
 import PrivateRouteScene from "../../src/PrivateRouteScene";
+
 function createMountWithRedux(store) {
   let mount = createMount(store);
   let mountWithRedux = children =>
@@ -52,7 +52,7 @@ describe("<ArenaSwitch /> and <PrivateRouteScene/> integration", () => {
       { frame: reducer },
       { frame: { history: createHistory() } },
       saga,
-      [applyMiddleware(thunk), DevTools.instrument()]
+      [applyMiddleware(thunk)]
     );
     mountWithRedux = createMountWithRedux(store);
   });

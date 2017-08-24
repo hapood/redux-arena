@@ -15,7 +15,6 @@ class Frame extends Component {
     super(props);
   }
   componentWillMount() {
-    // this.state.showWidget = false;
     this.state = {
       showWidget: false,
       reducerKey: "fixedReducerkey",
@@ -30,10 +29,10 @@ class Frame extends Component {
           <div>
             <ul>
               <li>
-                <Link to="/pageA">pageA</Link>
+                <Link to="/redux-arena/pageA">pageA</Link>
               </li>
               <li>
-                <Link to="/asyncPageB">asyncPageB</Link>
+                <Link to="/redux-arena/asyncPageB">asyncPageB</Link>
               </li>
             </ul>
             <hr />
@@ -61,9 +60,9 @@ class Frame extends Component {
             <div style={{ marginTop: "1rem" }}>
               {this.state.showArenaSwitch
                 ? <ArenaSwitch reducerKey={this.state.reducerKey}>
-                    <RouteScene path="/pageA" sceneBundle={reduxBundleA} />
+                    <RouteScene path="/redux-arena/pageA" sceneBundle={reduxBundleA} />
                     <RouteScene
-                      path="/asyncPageB"
+                      path="/redux-arena/asyncPageB"
                       asyncSceneBundle={asyncReduxBundleB}
                     />
                   </ArenaSwitch>

@@ -23,15 +23,13 @@
 npm install redux-arena --save
 ```
 
-## 例子
+## 示例
 
-example目录下包含了一个完整的例子，包括了多个HOC的使用。并且使用了redux-devtool动态展示state的变化。
+`/example`目录下包含了一个完整的示例，包括了多个HOC的使用。并且使用了redux-devtool动态展示state的变化。
+在线版本的示例点击[这里](https://hapood.github.io/redux-arena/)
 
-```
-cd example
-npm install
-npm start
-```
+### Screenshots
+<img src="https://raw.githubusercontent.com/hapood/redux-arena/d6c324d44636d19e7c2b824d295620053c73b1f6/redux-arena-demo.gif" width="800"/>
 
 ## 快速入门
 
