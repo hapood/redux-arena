@@ -18,6 +18,7 @@ import {
 } from "redux-saga/effects";
 import createSenceReducer from "../reducers/createSenceReducer";
 import { addReducer, replaceReducer } from "../../utils";
+import { getArenaSwitchInitState } from "../reducers";
 
 function* forkSagaWithContext(saga, ctx) {
   yield setContext(ctx);
@@ -76,7 +77,7 @@ export function* sceneApplyRedux({
       state === curSceneBundle.state ? null : state
     );
   }
-  
+
   if (saga) {
     if (
       saga !== curSceneBundle.saga ||
@@ -102,10 +103,17 @@ export function* sceneApplyRedux({
   return newReducerKey;
 }
 
-function* sceneClearRedux({ reduxInfo }) {
+function* sceneClearRedux({ arenaSwitchReducerKey, reduxInfo }) {
   let arenaStore = yield getContext("store");
   if (reduxInfo.sagaTask) yield cancel(reduxInfo.sagaTask);
-  if (reduxInfo.reducerKey) arenaStore.removeReducer(reduxInfo.reducerKey);
+  if (reduxInfo.reducerKey) {
+    yield put({
+      type: ARENASWITCH_SET_STATE,
+      arenaSwitchKey: arenaSwitchReducerKey,
+      state: getArenaSwitchInitState()
+    });
+    arenaStore.removeReducer(reduxInfo.reducerKey);
+  }
 }
 
 export default function* saga() {

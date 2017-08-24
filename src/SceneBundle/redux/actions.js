@@ -60,9 +60,10 @@ export function sceneStopPlay(arenaSwitchKey, sceneBundle, asyncSceneBundle) {
   };
 }
 
-export function clearSceneRedux(reduxInfo) {
+export function clearSceneRedux(arenaSwitchReducerKey, reduxInfo) {
   return {
     type: SCENE_CLEAR_REDUX,
+    arenaSwitchReducerKey,
     reduxInfo
   };
 }

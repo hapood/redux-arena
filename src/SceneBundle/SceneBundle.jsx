@@ -11,10 +11,13 @@ export default class SceneBundle extends Component {
 
   componentWillUnmount() {
     let props = this.props;
-    this.setState({ isSceneContextValid: false }, () => {
+    this.setState({ isSceneBundleValid: false }, () => {
       this.props.sceneStopPlay(this.props.arenaSwitchReducerKey);
     });
-    this.props.clearSceneRedux(this.props.reduxInfo);
+    this.props.clearSceneRedux(
+      this.props.arenaSwitchReducerKey,
+      this.props.reduxInfo
+    );
   }
 
   checkAndStartPlay(props, nextProps) {
@@ -54,6 +57,11 @@ export default class SceneBundle extends Component {
       } else {
         this.loadScene(sceneBundle, asyncSceneBundle);
       }
+    }
+    if (nextProps.PlayingScene == null) {
+      this.setState({
+        isSceneBundleValid: false
+      });
     }
   }
 
