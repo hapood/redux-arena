@@ -25,25 +25,18 @@ class RouteScene extends Component {
   };
 
   componentWillMount() {
+    console.log(this.props);
     let { arenaSwitchReducerKey } = this.context;
     invariant(
       arenaSwitchReducerKey,
       "You should not use <RouteScene> outside a <ArenaSwitch>"
     );
-    let {
-      asyncSceneBundle,
-      sceneBundle,
-      SceneLoadingComponent,
-      location,
-      computedMatch
-    } = this.props;
+    let { asyncSceneBundle, sceneBundle, SceneLoadingComponent } = this.props;
     let wrappedSceneBundle = arenaSwitchConnect(arenaSwitchReducerKey);
     let sceneBundleElement = React.createElement(wrappedSceneBundle, {
       asyncSceneBundle,
       sceneBundle,
-      SceneLoadingComponent,
-      arenaSwitchLocation: location,
-      arenaSwitchMatch: computedMatch
+      SceneLoadingComponent
     });
     this.state = {
       wrappedSceneBundle,
@@ -53,13 +46,7 @@ class RouteScene extends Component {
 
   componentWillReceiveProps(nextProps, nextContext) {
     let refreshFlag = false;
-    let {
-      asyncSceneBundle,
-      sceneBundle,
-      SceneLoadingComponent,
-      location,
-      computedMatch
-    } = nextProps;
+    let { asyncSceneBundle, sceneBundle, SceneLoadingComponent } = nextProps;
     if (
       this.context.arenaSwitchReducerKey !== nextContext.arenaSwitchReducerKey
     ) {
@@ -79,22 +66,24 @@ class RouteScene extends Component {
         {
           asyncSceneBundle,
           sceneBundle,
-          SceneLoadingComponent,
-          arenaSwitchLocation: location,
-          arenaSwitchMatch: computedMatch
+          SceneLoadingComponent
         }
       );
     }
   }
 
   render() {
-    let { exact, strict, path } = this.props;
+    let { exact, strict, path, computedMatch, location } = this.props;
     return (
       <Route
+        location={location}
+        computedMatch={computedMatch}
         exact={exact}
         path={path}
         strict={strict}
-        render={() => this.state.sceneBundleElement}
+        render={props => {
+          return React.cloneElement(this.state.sceneBundleElement, props);
+        }}
       />
     );
   }
