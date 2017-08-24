@@ -1,5 +1,5 @@
 import initState from "./state";
-import { sceneReducer } from "../../src/sceneScope";
+import { sceneReducer } from "redux-arena/sceneScope";
 
 function reducer(state = initState, action) {
   switch (action.type) {

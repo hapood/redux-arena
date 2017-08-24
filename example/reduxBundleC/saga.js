@@ -1,7 +1,7 @@
 import { fork } from "redux-saga/effects";
 import { delay, takeLatest } from "redux-saga";
-import { setSceneState, getSceneState } from "../../src/sagaOps";
-import { sceneActionSaga } from "../../src/sceneScope";
+import { setSceneState, getSceneState } from "redux-arena/sagaOps";
+import { sceneActionSaga } from "redux-arena/sceneScope";
 
 function randLetter() {
   var letters = [
