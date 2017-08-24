@@ -128,7 +128,7 @@ ReactDOM.render(
 
 Redux-arena provide a set of useful HOCs to enhence react-router.
 
-###SoloScene
+### SoloScene
 
 If route is not necessary, use SoloScene.
 

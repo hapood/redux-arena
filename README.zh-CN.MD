@@ -128,7 +128,7 @@ ReactDOM.render(
 
 Redux-arena提供了一组可以和react-router整合使用的高阶组件。
 
-###SoloScene
+### SoloScene
 
 如果你不需要路由功能，直接使用SoloScene。
 
@@ -158,7 +158,7 @@ Redux-arena提供了一组可以和react-router整合使用的高阶组件。
 
 ### PrivateRouteScene
 
-帮助构造需要验证登录功能的页面。相对RouteScene增加了onValidate、onPass、onReject三个回调函数。
+帮助构造需要验证登录功能的页面。相比RouteScene增加了onValidate、onPass、onReject三个回调函数。
 
 ```javascript
 <PrivateRouteScene path="/asyncPageB" 
