@@ -1,10 +1,12 @@
 export default function createProxyMapStateToProps(
   mapStateToProps,
-  reducerKey
+  reducerKey,
+  arenaSwitchReducerKey,
+  sceneNo
 ) {
   let latestProps;
   return state => {
-    if (state[reducerKey] == null) {
+    if (state[arenaSwitchReducerKey].sceneNo > sceneNo) {
       return latestProps;
     } else {
       latestProps = mapStateToProps(state, reducerKey);

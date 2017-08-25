@@ -1,5 +1,5 @@
 import {
-  ARENASWITCH_SWITCH_SCENE,
+  ARENASWITCH_LOAD_SCENE,
   ARENASWITCH_LOAD_ASYNCSCENE,
   SCENE_LOAD_START,
   SCENE_PLAY_START,
@@ -10,7 +10,7 @@ import {
 
 export function arenaSwitchLoadScene(arenaSwitchReducerKey, sceneBundle) {
   return {
-    type: ARENASWITCH_SWITCH_SCENE,
+    type: ARENASWITCH_LOAD_SCENE,
     arenaSwitchReducerKey,
     sceneBundle
   };

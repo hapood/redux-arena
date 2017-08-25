@@ -1,119 +1,92 @@
 import {
-  ARENASWITCH_SWITCH_SCENE,
-  ARENASWITCH_SET_STATE,
-  SCENE_LOAD_END,
+  ARENASWITCH_LOAD_SCENE,
   ARENASWITCH_LOAD_ASYNCSCENE,
+  SCENE_LOAD_START,
   ARENASWITCH_INIT_SAGA,
-  ARENASWITCH_KILL_SAGA
+  ARENASWITCH_KILL_SAGA,
+  ARENASWITCH_SET_STATE
 } from "../actionTypes";
+import {
+  ARENASWITCH_EVENT_LOADSCENE_START,
+  ARENASWITCH_EVENT_LOADSCENE_CONTINUE
+} from "../../actionTypes";
 import {
   takeEvery,
   take,
   put,
-  call,
   fork,
   select,
   cancel,
-  cancelled,
   setContext,
   getContext
 } from "redux-saga/effects";
-import { connect } from "react-redux";
-import {
-  bindArenaActionCreators,
-  createProxyMapStateToProps
-} from "../../enhencedRedux";
 import { bindActionCreators } from "redux";
-import { sceneApplyRedux } from "./sceneSaga";
+import { applySceneBundle, applyAsyncSceneBundle } from "./sceneBundleSaga";
 
-/**
- * Scene of the synchronous load function, it does the following.
- * 1. load, add, replace reducer.
- * 2. Set the state of the corresponding scene.
- * 3. Run the corresponding scene of the saga, cancel the last scene of the task.
- * 4. Connect redux according to the incoming mapStateToProps and actions.
- * 
- * @param {any} { arenaSwitchReducerKey, sceneBundle } 
- */
-function* arenaSwitchSwitchScene({ arenaSwitchReducerKey, sceneBundle }) {
-  let mapDispatchToProps;
-  let {
-    curSceneBundle,
-    reduxInfo,
-    PlayingScene: OldPlayingScene
-  } = yield select(state => state[arenaSwitchReducerKey]);
-  let options = sceneBundle.options || {};
-  let reducerKey = yield* sceneApplyRedux({
-    arenaSwitchReducerKey,
-    reducerKey: options.reducerKey,
-    state: sceneBundle.state,
-    saga: sceneBundle.saga,
-    reducer: sceneBundle.reducer,
-    curSceneBundle,
-    reduxInfo
-  });
-  if (sceneBundle.actions) {
-    mapDispatchToProps = dispatch =>
-      options.isPlainActions === true
-        ? bindActionCreators(sceneBundle.actions, dispatch)
-        : bindArenaActionCreators(
-            sceneBundle.actions,
-            dispatch,
-            reducerKey
-          );
-  }
-  let mapStateToProps;
-  if (sceneBundle.mapStateToProps) {
-    mapStateToProps = createProxyMapStateToProps(
-      sceneBundle.mapStateToProps,
-      reducerKey
-    );
-  }
-  let PlayingScene = connect(mapStateToProps, mapDispatchToProps)(
-    sceneBundle.Component
-  );
-  let displayName =
-    sceneBundle.Component.displayName ||
-    sceneBundle.Component.name ||
-    "Unknown";
-  PlayingScene.displayName = `SceneConnect({reducerKey:${reducerKey},Component:${displayName}})`;
-  let newArenaState = {
-    PlayingScene,
-    curSceneBundle: sceneBundle
-  };
-  yield put({
-    type: ARENASWITCH_SET_STATE,
-    arenaSwitchReducerKey,
-    state: newArenaState
-  });
-}
-
-/**
- * The asynchronous loading function of the scene, 
- * and finally the synchronous load function
- * 
- * @param {any} { arenaSwitchReducerKey, asyncSceneBundle } 
- * @returns 
- */
-function* arenaSwitchLoadAsyncScene({ arenaSwitchReducerKey, asyncSceneBundle }) {
-  let sceneBundle;
-  try {
-    sceneBundle = yield asyncSceneBundle;
-  } finally {
-    if (yield cancelled()) {
+function* takeEverySceneBundleAction() {
+  let arenaSwitchReducerKey = yield getContext("arenaSwitchReducerKey");
+  let lastTask;
+  while (true) {
+    let action = yield take([
+      ARENASWITCH_LOAD_ASYNCSCENE,
+      ARENASWITCH_LOAD_SCENE
+    ]);
+    if (action.arenaSwitchReducerKey === arenaSwitchReducerKey) {
+      if (lastTask && lastTask.isRunning()) {
+        yield cancel(lastTask);
+      }
+      if (action.type === ARENASWITCH_LOAD_ASYNCSCENE) {
+        lastTask = yield fork(applyAsyncSceneBundle, action);
+      } else {
+        lastTask = yield fork(applySceneBundle, action);
+      }
     }
   }
-  yield put({
-    type: SCENE_LOAD_END,
-    arenaSwitchReducerKey,
-    asyncSceneBundle
-  });
-  sceneBundle = sceneBundle.default ? sceneBundle.default : sceneBundle;
-  yield* arenaSwitchSwitchScene({
-    arenaSwitchReducerKey,
-    sceneBundle
-  });
-  return true;
+}
+
+function* takeEverySceneLoadAction() {
+  let arenaSwitchReducerKey = yield getContext("arenaSwitchReducerKey");
+  while (true) {
+    let action = yield take(SCENE_LOAD_START);
+    if (action.arenaSwitchReducerKey === arenaSwitchReducerKey) {
+      yield put({
+        type: ARENASWITCH_SET_STATE,
+        arenaSwitchReducerKey,
+        state: {
+          isWaiting: true
+        }
+      });
+      let { match, location } = yield select(
+        state => state[arenaSwitchReducerKey]
+      );
+      let nextAction = Object.assign({}, action, {
+        type: ARENASWITCH_EVENT_LOADSCENE_START,
+        match,
+        location
+      });
+      yield put(nextAction);
+    }
+  }
+}
+
+function* doInstantSwitch() {
+  let arenaSwitchReducerKey = yield getContext("arenaSwitchReducerKey");
+  while (true) {
+    let action = yield take(ARENASWITCH_EVENT_LOADSCENE_START);
+    if (action.arenaSwitchReducerKey === arenaSwitchReducerKey) {
+      yield put({
+        type: ARENASWITCH_SET_STATE,
+        arenaSwitchReducerKey,
+        state: {
+          isWaiting: false
+        }
+      });
+      let nextAction = Object.assign({}, action, {
+        type: ARENASWITCH_EVENT_LOADSCENE_CONTINUE
+      });
+      yield put(nextAction);
+    }
+  }
 }
 
 /**
@@ -123,27 +96,13 @@ function* arenaSwitchLoadAsyncScene({ arenaSwitchReducerKey, asyncSceneBundle })
  * @param {any} ctx 
  */
 
-function* forkSagaWithContext(ctx) {
+function* forkSagaWithContext(ctx, isInstantSwitch) {
   yield setContext(ctx);
-  yield fork(function*() {
-    let lastTask;
-    while (true) {
-      let action = yield take([
-        ARENASWITCH_LOAD_ASYNCSCENE,
-        ARENASWITCH_SWITCH_SCENE
-      ]);
-      if (action.arenaSwitchReducerKey === ctx.arenaSwitchReducerKey) {
-        if (lastTask && lastTask.isRunning()) {
-          yield cancel(lastTask);
-        }
-        if (action.type === ARENASWITCH_LOAD_ASYNCSCENE) {
-          lastTask = yield fork(arenaSwitchLoadAsyncScene, action);
-        } else {
-          lastTask = yield fork(arenaSwitchSwitchScene, action);
-        }
-      }
-    }
-  });
+  yield fork(takeEverySceneBundleAction);
+  yield fork(takeEverySceneLoadAction);
+  if (isInstantSwitch) {
+    yield fork(doInstantSwitch);
+  }
 }
 
 /**
@@ -152,10 +111,18 @@ function* forkSagaWithContext(ctx) {
  * @param {any} { reducerKey, setSagaTask } 
  */
 
-function* initArenaSwitchSaga({ reducerKey, setSagaTask }) {
-  let sagaTask = yield fork(forkSagaWithContext, {
-    arenaSwitchReducerKey: reducerKey
-  });
+function* initArenaSwitchSaga({
+  reducerKey,
+  setSagaTask,
+  isInstantSwitch = true
+}) {
+  let sagaTask = yield fork(
+    forkSagaWithContext,
+    {
+      arenaSwitchReducerKey: reducerKey
+    },
+    isInstantSwitch
+  );
   setSagaTask(sagaTask);
 }
 

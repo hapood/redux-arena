@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Route } from "react-router-dom";
 import invariant from "invariant";
+import { ARENASWITCH_SET_STATE } from "../redux/actionTypes";
 import SceneLoading from "../SceneLoading";
 import { arenaSwitchConnect } from "../SceneBundle";
 
 class RouteScene extends Component {
   static contextTypes = {
-    arenaSwitchReducerKey: PropTypes.string
+    arenaSwitchReducerKey: PropTypes.string,
+    store: PropTypes.any
   };
 
   static propTypes = {
@@ -73,6 +75,7 @@ class RouteScene extends Component {
 
   render() {
     let { exact, strict, path, computedMatch, location } = this.props;
+    let { store, arenaSwitchReducerKey } = this.context;
     return (
       <Route
         location={location}
@@ -81,6 +84,11 @@ class RouteScene extends Component {
         path={path}
         strict={strict}
         render={props => {
+          store.dispatch({
+            type: ARENASWITCH_SET_STATE,
+            arenaSwitchReducerKey,
+            state: props
+          });
           return React.cloneElement(this.state.sceneBundleElement, props);
         }}
       />

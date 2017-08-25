@@ -2,7 +2,7 @@
 import { fork, all, setContext } from "redux-saga/effects";
 import arenaSwitchSaga from "./arenaSwitchSaga";
 import audienceSaga from "./audienceSaga";
-import sceneSaga from "./sceneSaga";
+import sceneReduxSaga from "./sceneReduxSaga";
 
 /**
  * This is a function that starts saga
@@ -12,5 +12,5 @@ import sceneSaga from "./sceneSaga";
  */
 export default function* root(ctx) {
   yield setContext(ctx);
-  yield all([fork(audienceSaga), fork(arenaSwitchSaga), fork(sceneSaga)]);
+  yield all([fork(audienceSaga), fork(arenaSwitchSaga), fork(sceneReduxSaga)]);
 }
