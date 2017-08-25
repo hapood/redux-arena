@@ -1,6 +1,6 @@
 import { ARENASWITCH_SET_STATE, SCENE_LOAD_END } from "../actionTypes";
-import { ARENASWITCH_EVENT_LOADSCENE_CONTINUE } from "../actionTypes";
-import { put, fork, select, cancel, cancelled } from "redux-saga/effects";
+import { ARENASWITCH_EVENT_LOADSCENE_CONTINUE } from "../../actionTypes";
+import { take, put, fork, select, cancel, cancelled } from "redux-saga/effects";
 import { connect } from "react-redux";
 import {
   bindArenaActionCreators,

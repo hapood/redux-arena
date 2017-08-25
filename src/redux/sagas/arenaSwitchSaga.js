@@ -2,13 +2,15 @@ import {
   ARENASWITCH_LOAD_SCENE,
   ARENASWITCH_LOAD_ASYNCSCENE,
   SCENE_LOAD_START,
+  SCENE_PLAY_START,
   ARENASWITCH_INIT_SAGA,
   ARENASWITCH_KILL_SAGA,
   ARENASWITCH_SET_STATE
 } from "../actionTypes";
 import {
   ARENASWITCH_EVENT_LOADSCENE_START,
-  ARENASWITCH_EVENT_LOADSCENE_CONTINUE
+  ARENASWITCH_EVENT_LOADSCENE_CONTINUE,
+  ARENASWITCH_EVENT_LOADSCENE_COMPLETE
 } from "../../actionTypes";
 import {
   takeEvery,
@@ -83,6 +85,31 @@ function* doInstantSwitch() {
       });
       let nextAction = Object.assign({}, action, {
         type: ARENASWITCH_EVENT_LOADSCENE_CONTINUE
+      });
+      yield put(nextAction);
+    }
+  }
+}
+
+function* takeEverySceneLoadAction() {
+  let arenaSwitchReducerKey = yield getContext("arenaSwitchReducerKey");
+  while (true) {
+    let action = yield take(SCENE_PLAY_START);
+    if (action.arenaSwitchReducerKey === arenaSwitchReducerKey) {
+      yield put({
+        type: ARENASWITCH_SET_STATE,
+        arenaSwitchReducerKey,
+        state: {
+          isWaiting: true
+        }
+      });
+      let { match, location } = yield select(
+        state => state[arenaSwitchReducerKey]
+      );
+      let nextAction = Object.assign({}, action, {
+        type: ARENASWITCH_EVENT_LOADSCENE_COMPLETE,
+        match,
+        location
       });
       yield put(nextAction);
     }
