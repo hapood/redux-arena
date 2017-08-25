@@ -46,7 +46,7 @@ function* takeEverySceneBundleAction() {
   }
 }
 
-function* takeEverySceneLoadAction() {
+function* loadSceneStart() {
   let arenaSwitchReducerKey = yield getContext("arenaSwitchReducerKey");
   while (true) {
     let action = yield take(SCENE_LOAD_START);
@@ -91,7 +91,7 @@ function* doInstantSwitch() {
   }
 }
 
-function* takeEverySceneLoadAction() {
+function* loadSceneComplete() {
   let arenaSwitchReducerKey = yield getContext("arenaSwitchReducerKey");
   while (true) {
     let action = yield take(SCENE_PLAY_START);
@@ -126,10 +126,11 @@ function* takeEverySceneLoadAction() {
 function* forkSagaWithContext(ctx, isInstantSwitch) {
   yield setContext(ctx);
   yield fork(takeEverySceneBundleAction);
-  yield fork(takeEverySceneLoadAction);
+  yield fork(loadSceneStart);
   if (isInstantSwitch) {
     yield fork(doInstantSwitch);
   }
+  yield fork(loadSceneComplete);
 }
 
 /**
