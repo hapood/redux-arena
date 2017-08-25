@@ -8,53 +8,53 @@ import {
   SCENE_CLEAR_REDUX
 } from "../../redux/actionTypes";
 
-export function arenaSwitchLoadScene(arenaSwitchKey, sceneBundle) {
+export function arenaSwitchLoadScene(arenaSwitchReducerKey, sceneBundle) {
   return {
     type: ARENASWITCH_SWITCH_SCENE,
-    arenaSwitchKey,
+    arenaSwitchReducerKey,
     sceneBundle
   };
 }
 
-export function arenaLoadAsyncScene(arenaSwitchKey, asyncSceneBundle) {
+export function arenaLoadAsyncScene(arenaSwitchReducerKey, asyncSceneBundle) {
   return {
     type: ARENASWITCH_LOAD_ASYNCSCENE,
-    arenaSwitchKey,
+    arenaSwitchReducerKey,
     asyncSceneBundle
   };
 }
 
-export function sceneLoadStart(arenaSwitchKey, sceneBundle, asyncSceneBundle) {
+export function sceneLoadStart(arenaSwitchReducerKey, sceneBundle, asyncSceneBundle) {
   return {
     type: SCENE_LOAD_START,
-    arenaSwitchKey,
+    arenaSwitchReducerKey,
     sceneBundle,
     asyncSceneBundle
   };
 }
 
-export function sceneStartPlay(arenaSwitchKey, sceneBundle, asyncSceneBundle) {
+export function sceneStartPlay(arenaSwitchReducerKey, sceneBundle, asyncSceneBundle) {
   return {
     type: SCENE_PLAY_START,
-    arenaSwitchKey,
+    arenaSwitchReducerKey,
     sceneBundle,
     asyncSceneBundle
   };
 }
 
-export function sceneLoadEnd(arenaSwitchKey, sceneBundle, asyncSceneBundle) {
+export function sceneLoadEnd(arenaSwitchReducerKey, sceneBundle, asyncSceneBundle) {
   return {
     type: SCENE_LOAD_END,
-    arenaSwitchKey,
+    arenaSwitchReducerKey,
     sceneBundle,
     asyncSceneBundle
   };
 }
 
-export function sceneStopPlay(arenaSwitchKey, sceneBundle, asyncSceneBundle) {
+export function sceneStopPlay(arenaSwitchReducerKey, sceneBundle, asyncSceneBundle) {
   return {
     type: SCENE_PLAY_END,
-    arenaSwitchKey,
+    arenaSwitchReducerKey,
     sceneBundle,
     asyncSceneBundle
   };

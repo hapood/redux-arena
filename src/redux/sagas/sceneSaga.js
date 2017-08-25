@@ -26,7 +26,7 @@ function* forkSagaWithContext(saga, ctx) {
 }
 
 export function* sceneApplyRedux({
-  arenaSwitchKey,
+  arenaSwitchReducerKey,
   reducerKey,
   state,
   saga,
@@ -65,7 +65,7 @@ export function* sceneApplyRedux({
       newReducerKey = reduxInfo.reducerKey;
       yield put({
         type: SCENE_SET_STATE,
-        _sceneKey: reduxInfo.reducerKey,
+        _sceneReducerKey: reduxInfo.reducerKey,
         state
       });
     }
@@ -85,14 +85,14 @@ export function* sceneApplyRedux({
       reduxInfo.sagaTask.isCancelled()
     ) {
       newSagaTask = yield spawn(forkSagaWithContext, saga, {
-        sceneKey: newReducerKey
+        sceneReducerKey: newReducerKey
       });
     }
   }
 
   yield put({
     type: ARENASWITCH_SET_STATE,
-    arenaSwitchKey,
+    arenaSwitchReducerKey,
     state: {
       reduxInfo: {
         sagaTask: newSagaTask,
@@ -109,7 +109,7 @@ function* sceneClearRedux({ arenaSwitchReducerKey, reduxInfo }) {
   if (reduxInfo.reducerKey) {
     yield put({
       type: ARENASWITCH_SET_STATE,
-      arenaSwitchKey: arenaSwitchReducerKey,
+      arenaSwitchReducerKey: arenaSwitchReducerKey,
       state: getArenaSwitchInitState()
     });
     arenaStore.removeReducer(reduxInfo.reducerKey);

@@ -1,7 +1,7 @@
 import { select, getContext } from "redux-saga/effects";
 
-export default function* getSceneState(sceneKey) {
-  if (sceneKey == null) sceneKey = yield getContext("sceneKey");
-  let a = yield select(state => state[sceneKey]);
-  return yield select(state => state[sceneKey]);
+export default function* getSceneState(sceneReducerKey) {
+  if (sceneReducerKey == null) sceneReducerKey = yield getContext("sceneReducerKey");
+  let a = yield select(state => state[sceneReducerKey]);
+  return yield select(state => state[sceneReducerKey]);
 }

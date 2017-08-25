@@ -172,7 +172,7 @@ Redux-arena提供了一组可以和react-router整合使用的高阶组件。
 ## reducer
 
 redux-arena对redux的reducer进行了扩展，增加了当前模块reducerKey作为传入参数，
-与action中的_sceneKey作比较判断来源，决定是否执行更新。
+与action中的_sceneReducerKey作比较判断来源，决定是否执行更新。
 
 ```javascript
 // original reducer

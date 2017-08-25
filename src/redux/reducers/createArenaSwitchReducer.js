@@ -15,9 +15,9 @@ function senceSwitchReducer(state, action) {
   }
 }
 
-export default function createArenaSwitchReducer(arenaSwitchKey) {
+export default function createArenaSwitchReducer(arenaSwitchReducerKey) {
   return function (state = getArenaSwitchInitState(), action) {
-    if (arenaSwitchKey === action.arenaSwitchKey) {
+    if (arenaSwitchReducerKey === action.arenaSwitchReducerKey) {
       state = senceSwitchReducer(state, action);
     }
     return state;

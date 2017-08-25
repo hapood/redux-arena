@@ -66,46 +66,40 @@ export default class SceneBundle extends Component {
   }
 
   loadScene(sceneBundle, asyncSceneBundle) {
+    let payload = [
+      this.props.arenaSwitchReducerKey,
+      sceneBundle,
+      asyncSceneBundle
+    ];
+    this.props.sceneLoadStart(...payload);
     if (sceneBundle) {
-      let payload = [this.props.arenaSwitchReducerKey];
-      this.props.sceneLoadStart(...payload);
       this.props.arenaSwitchLoadScene(
         this.props.arenaSwitchReducerKey,
         sceneBundle
       );
       this.props.sceneLoadEnd(...payload);
-      return;
     } else if (asyncSceneBundle) {
-      this.props.sceneLoadStart(this.props.arenaSwitchReducerKey);
       this.props.arenaLoadAsyncScene(
         this.props.arenaSwitchReducerKey,
         asyncSceneBundle
       );
-      return;
+    } else {
+      throw new Error(
+        "prop asyncSceneBundle and sceneBundle can not be both null"
+      );
     }
-    throw new Error(
-      "prop asyncSceneBundle and sceneBundle can not be both null"
-    );
   }
 
   render() {
     let { PlayingScene, SceneLoadingComponent } = this.props;
-    let {
-      match,
-      location,
-      history,
-      arenaSwitchLocation,
-      arenaSwitchMatch
-    } = this.props;
+    let { match, location, history } = this.props;
     if (this.state.isSceneBundleValid) {
       return (
         <PlayingScene
           {...{
             match,
             location,
-            history,
-            arenaSwitchLocation,
-            arenaSwitchMatch
+            history
           }}
         />
       );
@@ -119,7 +113,7 @@ SceneBundle.propTypes = {
   asyncSceneBundle: PropTypes.any,
   sceneBundle: PropTypes.any,
   location: PropTypes.object,
-  computedMatch: PropTypes.object,
+  history: PropTypes.object,
   match: PropTypes.object,
   showSwitchingLoading: PropTypes.bool,
   SceneLoadingComponent: PropTypes.any

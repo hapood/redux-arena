@@ -174,7 +174,7 @@ An enhenced RouteScene whitch accept onValidate onPass and onReject props. Helpf
 
 ## Reducer
 
-redux-arena extends reducer of redux, add incoming reducerKey, comparing to _sceneKey of action and decide updating or not.
+redux-arena extends reducer of redux, add incoming reducerKey, comparing to _sceneReducerKey of action and decide updating or not.
 
 ```javascript
 // original reducer

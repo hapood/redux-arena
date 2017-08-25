@@ -5,8 +5,8 @@ import {
 } from "../actionTypes.js";
 import getSceneInitState from "./getSceneInitState";
 
-function reducer(state = getSceneInitState(), action, sceneKey) {
-  if (action._sceneKey !== sceneKey) return state;
+function reducer(state = getSceneInitState(), action, sceneReducerKey) {
+  if (action._sceneReducerKey !== sceneReducerKey) return state;
   switch (action.type) {
     case SCENE_SET_STATE:
       return Object.assign({}, state, action.state);
@@ -19,11 +19,11 @@ function reducer(state = getSceneInitState(), action, sceneKey) {
   }
 }
 
-export default function createSenceReducer(extendSenceReducer, sceneKey) {
+export default function createSenceReducer(extendSenceReducer, sceneReducerKey) {
   return function (state, action) {
     if (extendSenceReducer) {
-      state = extendSenceReducer(state, action, sceneKey);
+      state = extendSenceReducer(state, action, sceneReducerKey);
     }
-    return reducer(state, action, sceneKey);
+    return reducer(state, action, sceneReducerKey);
   };
 }

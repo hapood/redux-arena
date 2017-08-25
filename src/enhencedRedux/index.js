@@ -1,9 +1,9 @@
-import bindActionCreatorsWithSceneKey from "./bindActionCreatorsWithSceneKey";
+import bindArenaActionCreators from "./bindArenaActionCreators";
 import createEnhancedStore from "./createEnhancedStore";
 import createProxyMapStateToProps from "./createProxyMapStateToProps";
 
 export {
-  bindActionCreatorsWithSceneKey,
+  bindArenaActionCreators,
   createEnhancedStore,
   createProxyMapStateToProps
 };

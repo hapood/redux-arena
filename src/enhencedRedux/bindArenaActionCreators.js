@@ -1,14 +1,14 @@
-function bindActionCreator(actionCreator, dispatch, sceneKey) {
+function bindArenaActionCreator(actionCreator, dispatch, sceneReducerKey) {
   return (...args) => {
     let action = actionCreator(...args);
-    if (action && action._sceneKey) {
+    if (action && action._sceneReducerKey) {
       console.warn(
-        '"Action with redux-arena should not contain an user specified "_sceneKey" property.\n' +
-          `Occurred in type: ${action.type}, _sceneKey: ${_sceneKey}.`
+        '"Action with redux-arena should not contain an user specified "_sceneReducerKey" property.\n' +
+          `Occurred in type: ${action.type}, _sceneReducerKey: ${_sceneReducerKey}.`
       );
     }
     typeof action === "object"
-      ? dispatch(Object.assign({}, { _sceneKey: sceneKey }, action))
+      ? dispatch(Object.assign({}, { _sceneReducerKey: sceneReducerKey }, action))
       : dispatch(action);
   };
 }
@@ -36,14 +36,14 @@ function bindActionCreator(actionCreator, dispatch, sceneKey) {
  * function as `actionCreators`, the return value will also be a single
  * function.
  */
-export default function bindActionCreatorsWithSceneKey(actionCreators, dispatch, sceneKey) {
+export default function bindArenaActionCreators(actionCreators, dispatch, sceneReducerKey) {
   if (typeof actionCreators === "function") {
-    return bindActionCreator(actionCreators, dispatch);
+    return bindArenaActionCreator(actionCreators, dispatch);
   }
 
   if (typeof actionCreators !== "object" || actionCreators === null) {
     throw new Error(
-      `bindActionCreators expected an object or a function, instead received ${actionCreators ===
+      `bindArenaActionCreators expected an object or a function, instead received ${actionCreators ===
       null
         ? "null"
         : typeof actionCreators}. ` +
@@ -57,10 +57,10 @@ export default function bindActionCreatorsWithSceneKey(actionCreators, dispatch,
     const key = keys[i];
     const actionCreator = actionCreators[key];
     if (typeof actionCreator === "function") {
-      boundActionCreators[key] = bindActionCreator(
+      boundActionCreators[key] = bindArenaActionCreator(
         actionCreator,
         dispatch,
-        sceneKey
+        sceneReducerKey
       );
     }
   }

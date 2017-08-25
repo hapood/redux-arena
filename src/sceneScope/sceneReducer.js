@@ -1,10 +1,10 @@
 export default function sceneReducer(srcReducer) {
-  return function(state, action, sceneKey) {
+  return function(state, action, sceneReducerKey) {
     if (
-      action._sceneKey === sceneKey ||
+      action._sceneReducerKey === sceneReducerKey ||
       (action.type && action.type.indexOf("@@") === 0)
     ) {
-      return srcReducer(state, action, sceneKey);
+      return srcReducer(state, action, sceneReducerKey);
     } else {
       return state;
     }
