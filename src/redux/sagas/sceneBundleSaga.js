@@ -17,6 +17,48 @@ import {
 import { bindActionCreators } from "redux";
 import { sceneApplyRedux } from "./sceneReduxSaga";
 
+function calcNewReduxInfo(reduxInfo, newReduxInfo, dispatch, isPlainActions) {
+  let connectedActions = reduxInfo.connectedActions;
+  if (
+    reduxInfo.reducerKey !== newReduxInfo.reducerKey ||
+    reduxInfo.uniqueReducerKey !== newReduxInfo.reducerKey ||
+    reduxInfo.vReducerKey !== newReduxInfo.vReducerKey ||
+    reduxInfo.parentArenaReducerDict !== newReduxInfo.parentArenaReducerDict ||
+    reduxInfo.actions !== newReduxInfo.actions
+  ) {
+    if (reduxInfo.actions !== newReduxInfo.actions) {
+      if (newReduxInfo.actions == null) {
+        connectedActions = {};
+      } else if (isPlainActions === true) {
+        connectedActions = bindActionCreators(
+          newReduxInfo.actions,
+          store.dispatch
+        );
+      } else {
+        connectedActions = bindArenaActionCreators(
+          newReduxInfo.actions,
+          store.dispatch,
+          newReducerKey
+        );
+      }
+    }
+    let item = {
+      reducerKey: newReduxInfo.reducerKey,
+      actions: connectedActionss
+    };
+    let newArenaReducerDict = Object.assign(
+      newReduxInfo.parentArenaReducerDict,
+      { _curScene: item }
+    );
+    if (reducerKey != null) newArenaReducerDict[reducerKey] = item;
+    if (vReducerKey != null) newArenaReducerDict[vReducerKey] = item;
+  }
+  return Object.assign({}, newReduxInfo, {
+    connectedActions,
+    arenaReducerDict: newArenaReducerDict
+  });
+}
+
 /**
  * Scene of the synchronous load function, it does the following.
  * 1. load, add, replace reducer.
@@ -24,15 +66,17 @@ import { sceneApplyRedux } from "./sceneReduxSaga";
  * 3. Run the corresponding scene of the saga, cancel the last scene of the task.
  * 4. Connect redux according to the incoming mapStateToProps and actions.
  * 
- * @param {any} { arenaSwitchReducerKey, sceneBundle } 
+ * @param {any} { arenaReducerDict, sceneBundle } 
  */
-export function* applySceneBundle({ arenaSwitchReducerKey, sceneBundle }) {
+export function* applySceneBundle({ parentArenaReducerDict, sceneBundle }) {
+  let arenaSwitchReducerKey = parentArenaReducerDict._curSwitch.reducerKey;
   let {
     curSceneBundle,
     reduxInfo,
     PlayingScene: OldPlayingScene,
     isWaiting,
-    sceneNo
+    sceneNo,
+    arenaReducerDict
   } = yield select(state => state[arenaSwitchReducerKey]);
   let newSceneNo = sceneNo + 1;
   yield put({
@@ -41,9 +85,8 @@ export function* applySceneBundle({ arenaSwitchReducerKey, sceneBundle }) {
     state: { sceneNo: newSceneNo }
   });
   let options = sceneBundle.options || {};
-  let reducerKey = yield* sceneApplyRedux({
-    arenaSwitchReducerKey,
-    reducerKey: options.reducerKey,
+  let { newReducerKey, newSagaTask } = yield* sceneApplyRedux({
+    arenaSwitchReducerKey: parentArenaReducerDict._curSwitch.reducerKey,
     state: sceneBundle.state,
     saga: sceneBundle.saga,
     reducer: sceneBundle.reducer,
@@ -51,30 +94,34 @@ export function* applySceneBundle({ arenaSwitchReducerKey, sceneBundle }) {
     reduxInfo
   });
   let store = yield getContext("store");
-  let connectedActions =
-    options.isPlainActions === true
-      ? bindActionCreators(sceneBundle.actions, store.dispatch)
-      : bindArenaActionCreators(
-          sceneBundle.actions,
-          store.dispatch,
-          reducerKey
-        );
+  let newReduxInfo = calcNewReduxInfo(
+    reduxInfo,
+    {
+      reducerKey: newReducerKey,
+      sagaTask: newSagaTask,
+      uniqueReducerKey: options.reducerKey,
+      vReducerKey: options.vReducerKey,
+      parentArenaReducerDict,
+      actions: sceneBundle.actions
+    },
+    store.dispatch,
+    options.isPlainActions
+  );
   let mapStateToProps = createProxyMapStateToProps(
     sceneBundle.mapStateToProps,
-    reducerKey,
-    arenaSwitchReducerKey,
     newSceneNo,
-    connectedActions
+    newReduxInfo.newArenaReducerDict
   );
   let PlayingScene = connect(mapStateToProps)(sceneBundle.Component);
   let displayName =
     sceneBundle.Component.displayName ||
     sceneBundle.Component.name ||
     "Unknown";
-  PlayingScene.displayName = `SceneConnect({reducerKey:${reducerKey},Component:${displayName}})`;
+  PlayingScene.displayName = `SceneConnect({reducerKey:${newReducerKey},Component:${displayName}})`;
   let newArenaState = {
     PlayingScene,
-    curSceneBundle: sceneBundle
+    curSceneBundle: sceneBundle,
+    reduxInfo: newReduxInfo
   };
   if (isWaiting) {
     yield take(ARENASWITCH_EVENT_LOADSCENE_CONTINUE);
@@ -90,13 +137,10 @@ export function* applySceneBundle({ arenaSwitchReducerKey, sceneBundle }) {
  * The asynchronous loading function of the scene, 
  * and finally the synchronous load function
  * 
- * @param {any} { arenaSwitchReducerKey, asyncSceneBundle } 
+ * @param {any} { arenaReducerDict, asyncSceneBundle } 
  * @returns 
  */
-export function* applyAsyncSceneBundle({
-  arenaSwitchReducerKey,
-  asyncSceneBundle
-}) {
+export function* applyAsyncSceneBundle({ arenaReducerDict, asyncSceneBundle }) {
   let sceneBundle;
   try {
     sceneBundle = yield asyncSceneBundle;
@@ -106,12 +150,12 @@ export function* applyAsyncSceneBundle({
   }
   yield put({
     type: SCENE_LOAD_END,
-    arenaSwitchReducerKey,
+    arenaReducerDict,
     asyncSceneBundle
   });
   sceneBundle = sceneBundle.default ? sceneBundle.default : sceneBundle;
   yield* applySceneBundle({
-    arenaSwitchReducerKey,
+    arenaReducerDict,
     sceneBundle
   });
   return true;

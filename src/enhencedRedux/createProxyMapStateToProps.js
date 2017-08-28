@@ -2,22 +2,23 @@ function nullMapFunction() {}
 
 export default function createProxyMapStateToProps(
   mapStateToProps = nullMapFunction,
-  reducerKey,
-  arenaSwitchReducerKey,
   sceneNo,
-  connectedActions = {}
+  arenaReducerDict
 ) {
   let latestProps;
+  let switchReducerKey = arenaReducerDict._curSwitch.reducerKey;
+  let sceneReducerKey = arenaReducerDict._curScene.reducerKey;
+  let sceneActions = arenaReducerDict._curScene.actions;
   return state => {
-    if (state[arenaSwitchReducerKey].sceneNo > sceneNo) {
+    if (state[switchReducerKey].sceneNo > sceneNo) {
       return latestProps;
     } else {
       latestProps = Object.assign(
         {
-          state: state[reducerKey],
-          actions: connectedActions
+          state: state[sceneReducerKey],
+          actions: sceneActions
         },
-        mapStateToProps(state, reducerKey)
+        mapStateToProps(state, arenaReducerDict)
       );
       return latestProps;
     }

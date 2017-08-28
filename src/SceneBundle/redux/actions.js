@@ -8,23 +8,27 @@ import {
   SCENE_CLEAR_REDUX
 } from "../../redux/actionTypes";
 
-export function arenaSwitchLoadScene(arenaSwitchReducerKey, sceneBundle) {
+export function arenaLoadScene(parentArenaReducerDict, sceneBundle) {
   return {
     type: ARENASWITCH_LOAD_SCENE,
-    arenaSwitchReducerKey,
+    parentArenaReducerDict,
     sceneBundle
   };
 }
 
-export function arenaLoadAsyncScene(arenaSwitchReducerKey, asyncSceneBundle) {
+export function arenaLoadAsyncScene(parentArenaReducerDict, asyncSceneBundle) {
   return {
     type: ARENASWITCH_LOAD_ASYNCSCENE,
-    arenaSwitchReducerKey,
+    parentArenaReducerDict,
     asyncSceneBundle
   };
 }
 
-export function sceneLoadStart(arenaSwitchReducerKey, sceneBundle, asyncSceneBundle) {
+export function sceneLoadStart(
+  arenaSwitchReducerKey,
+  sceneBundle,
+  asyncSceneBundle
+) {
   return {
     type: SCENE_LOAD_START,
     arenaSwitchReducerKey,
@@ -33,7 +37,11 @@ export function sceneLoadStart(arenaSwitchReducerKey, sceneBundle, asyncSceneBun
   };
 }
 
-export function sceneStartPlay(arenaSwitchReducerKey, sceneBundle, asyncSceneBundle) {
+export function sceneStartPlay(
+  arenaSwitchReducerKey,
+  sceneBundle,
+  asyncSceneBundle
+) {
   return {
     type: SCENE_PLAY_START,
     arenaSwitchReducerKey,
@@ -42,7 +50,11 @@ export function sceneStartPlay(arenaSwitchReducerKey, sceneBundle, asyncSceneBun
   };
 }
 
-export function sceneLoadEnd(arenaSwitchReducerKey, sceneBundle, asyncSceneBundle) {
+export function sceneLoadEnd(
+  arenaSwitchReducerKey,
+  sceneBundle,
+  asyncSceneBundle
+) {
   return {
     type: SCENE_LOAD_END,
     arenaSwitchReducerKey,
@@ -51,7 +63,11 @@ export function sceneLoadEnd(arenaSwitchReducerKey, sceneBundle, asyncSceneBundl
   };
 }
 
-export function sceneStopPlay(arenaSwitchReducerKey, sceneBundle, asyncSceneBundle) {
+export function sceneStopPlay(
+  arenaSwitchReducerKey,
+  sceneBundle,
+  asyncSceneBundle
+) {
   return {
     type: SCENE_PLAY_END,
     arenaSwitchReducerKey,

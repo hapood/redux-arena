@@ -13,7 +13,8 @@ import SceneLoading from "../SceneLoading";
 
 export default class SoloScene extends Component {
   static contextTypes = {
-    store: PropTypes.any
+    store: PropTypes.any,
+    arenaReducerDict: PropTypes.object
   };
 
   static propTypes = {
@@ -35,14 +36,18 @@ export default class SoloScene extends Component {
       createArenaSwitchReducer
     );
     let { asyncSceneBundle, sceneBundle, SceneLoadingComponent } = this.props;
-    let wrappedSceneBundle = arenaSwitchConnect(reducerKey);
+    let arenaReducerDict = this.calcNewReducerKeyDict(
+      this.context.arenaReducerDict,
+      reducerKey
+    );
+    let wrappedSceneBundle = arenaSwitchConnect(arenaReducerDict);
     let sceneBundleElement = React.createElement(wrappedSceneBundle, {
       asyncSceneBundle,
       sceneBundle,
       SceneLoadingComponent
     });
     this.state = {
-      arenaSwitchReducerKey: reducerKey,
+      arenaReducerDict,
       wrappedSceneBundle,
       sceneBundleElement,
       sagaTaskPromise: new Promise(resolve =>
@@ -55,7 +60,7 @@ export default class SoloScene extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextContext) {
     let refreshFlag = false;
     let {
       reducerKey,
@@ -63,7 +68,10 @@ export default class SoloScene extends Component {
       sceneBundle,
       SceneLoadingComponent
     } = nextProps;
-    if (reducerKey != null && reducerKey !== this.state.arenaSwitchReducerKey) {
+    if (
+      reducerKey != null &&
+      reducerKey !== this.state.arenaReducerDict._curSwitch.reducerKey
+    ) {
       refreshFlag = true;
       this.context.store.dispatch({
         type: ARENASWITCH_KILL_SAGA,
@@ -83,8 +91,20 @@ export default class SoloScene extends Component {
           setSagaTask: resolve
         })
       );
+    } else {
+      reducerKey = this.state.arenaReducerDict._curSwitch.reducerKey;
+    }
+    if (
+      nextContext.arenaReducerDict !== this.context.arenaReducerDict ||
+      refreshFlag === true
+    ) {
+      refreshFlag = true;
+      this.state.arenaReducerDict = this.calcNewReducerKeyDict(
+        nextContext.arenaReducerDict,
+        reducerKey
+      );
       this.state.wrappedSceneBundle = arenaSwitchConnect(
-        this.state.arenaSwitchReducerKey
+        this.state.arenaReducerDict
       );
     }
     if (
@@ -102,6 +122,20 @@ export default class SoloScene extends Component {
         }
       );
     }
+  }
+
+  calcNewReducerKeyDict(arenaReducerDict, switchReducerKey) {
+    let newDict = Object.assign({}, arenaReducerDict);
+    let item = { actions: {}, reducerKey: switchReducerKey };
+    if (this.props.reducerKey) {
+      newDict[this.props.reducerKey] = item;
+    }
+    if (this.props.vReducerKey) {
+      newDict[this.props.vReducerKey] = item;
+    }
+    newDict._curSwitch = item;
+    newDict._curScene = null;
+    return newDict;
   }
 
   componentWillUnmount() {

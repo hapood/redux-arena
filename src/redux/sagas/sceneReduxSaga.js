@@ -27,16 +27,14 @@ function* forkSagaWithContext(saga, ctx) {
 
 export function* sceneApplyRedux({
   arenaSwitchReducerKey,
-  reducerKey,
   state,
   saga,
   reducer,
   curSceneBundle,
   reduxInfo
 }) {
-  let newReducerKey, newSagaTask;
-  newReducerKey = reduxInfo.reducerKey;
-  newSagaTask = reduxInfo.sagaTask;
+  let newReducerKey = reduxInfo.reducerKey;
+  let newSagaTask = reduxInfo.sagaTask;
   let arenaStore = yield getContext("store");
   try {
     if (saga !== curSceneBundle.saga) {
@@ -90,17 +88,10 @@ export function* sceneApplyRedux({
     }
   }
 
-  yield put({
-    type: ARENASWITCH_SET_STATE,
-    arenaSwitchReducerKey,
-    state: {
-      reduxInfo: {
-        sagaTask: newSagaTask,
-        reducerKey: newReducerKey
-      }
-    }
-  });
-  return newReducerKey;
+  return {
+    newSagaTask,
+    newReducerKey
+  };
 }
 
 function* sceneClearRedux({ arenaSwitchReducerKey, reduxInfo }) {

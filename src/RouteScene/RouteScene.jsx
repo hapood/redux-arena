@@ -8,7 +8,7 @@ import { arenaSwitchConnect } from "../SceneBundle";
 
 class RouteScene extends Component {
   static contextTypes = {
-    arenaSwitchReducerKey: PropTypes.string,
+    arenaReducerDict: PropTypes.object,
     store: PropTypes.any
   };
 
@@ -33,7 +33,7 @@ class RouteScene extends Component {
       "You should not use <RouteScene> outside a <ArenaSwitch>"
     );
     let { asyncSceneBundle, sceneBundle, SceneLoadingComponent } = this.props;
-    let wrappedSceneBundle = arenaSwitchConnect(arenaSwitchReducerKey);
+    let wrappedSceneBundle = arenaSwitchConnect(this.context.arenaReducerDict);
     let sceneBundleElement = React.createElement(wrappedSceneBundle, {
       asyncSceneBundle,
       sceneBundle,
@@ -48,11 +48,9 @@ class RouteScene extends Component {
   componentWillReceiveProps(nextProps, nextContext) {
     let refreshFlag = false;
     let { asyncSceneBundle, sceneBundle, SceneLoadingComponent } = nextProps;
-    if (
-      this.context.arenaSwitchReducerKey !== nextContext.arenaSwitchReducerKey
-    ) {
+    if (this.context.arenaReducerDict !== nextContext.arenaReducerDict) {
       this.state.wrappedSceneBundle = arenaSwitchConnect(
-        nextContext.arenaSwitchReducerKey
+        nextContext.arenaReducerDict
       );
       refreshFlag = true;
     }
@@ -75,7 +73,7 @@ class RouteScene extends Component {
 
   render() {
     let { exact, strict, path, computedMatch, location } = this.props;
-    let { store, arenaSwitchReducerKey } = this.context;
+    let { store, arenaReducerDict } = this.context;
     return (
       <Route
         location={location}
@@ -86,7 +84,7 @@ class RouteScene extends Component {
         render={props => {
           store.dispatch({
             type: ARENASWITCH_SET_STATE,
-            arenaSwitchReducerKey,
+            arenaSwitchReducerKey: arenaReducerDict._curSwitch.reducerKey,
             state: props
           });
           return React.cloneElement(this.state.sceneBundleElement, props);
