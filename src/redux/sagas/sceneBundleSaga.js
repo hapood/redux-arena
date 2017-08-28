@@ -1,6 +1,14 @@
 import { ARENASWITCH_SET_STATE, SCENE_LOAD_END } from "../actionTypes";
 import { ARENASWITCH_EVENT_LOADSCENE_CONTINUE } from "../../actionTypes";
-import { take, put, fork, select, cancel, cancelled } from "redux-saga/effects";
+import {
+  take,
+  put,
+  fork,
+  select,
+  cancel,
+  cancelled,
+  getContext
+} from "redux-saga/effects";
 import { connect } from "react-redux";
 import {
   bindArenaActionCreators,
@@ -19,7 +27,6 @@ import { sceneApplyRedux } from "./sceneReduxSaga";
  * @param {any} { arenaSwitchReducerKey, sceneBundle } 
  */
 export function* applySceneBundle({ arenaSwitchReducerKey, sceneBundle }) {
-  let mapDispatchToProps;
   let {
     curSceneBundle,
     reduxInfo,
@@ -43,24 +50,23 @@ export function* applySceneBundle({ arenaSwitchReducerKey, sceneBundle }) {
     curSceneBundle,
     reduxInfo
   });
-  if (sceneBundle.actions) {
-    mapDispatchToProps = dispatch =>
-      options.isPlainActions === true
-        ? bindActionCreators(sceneBundle.actions, dispatch)
-        : bindArenaActionCreators(sceneBundle.actions, dispatch, reducerKey);
-  }
-  let mapStateToProps;
-  if (sceneBundle.mapStateToProps) {
-    mapStateToProps = createProxyMapStateToProps(
-      sceneBundle.mapStateToProps,
-      reducerKey,
-      arenaSwitchReducerKey,
-      newSceneNo
-    );
-  }
-  let PlayingScene = connect(mapStateToProps, mapDispatchToProps)(
-    sceneBundle.Component
+  let store = yield getContext("store");
+  let connectedActions =
+    options.isPlainActions === true
+      ? bindActionCreators(sceneBundle.actions, store.dispatch)
+      : bindArenaActionCreators(
+          sceneBundle.actions,
+          store.dispatch,
+          reducerKey
+        );
+  let mapStateToProps = createProxyMapStateToProps(
+    sceneBundle.mapStateToProps,
+    reducerKey,
+    arenaSwitchReducerKey,
+    newSceneNo,
+    connectedActions
   );
+  let PlayingScene = connect(mapStateToProps)(sceneBundle.Component);
   let displayName =
     sceneBundle.Component.displayName ||
     sceneBundle.Component.name ||

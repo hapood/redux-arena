@@ -7,13 +7,5 @@ export default {
   Component: Page,
   state,
   saga,
-  actions,
-  mapStateToProps(state, key) {
-    return {
-      pageB: state[key].pageB,
-      name: state[key].name,
-      dynamicState: state[key].dynamicState,
-      cnt: state[key].cnt
-    };
-  }
+  actions
 };

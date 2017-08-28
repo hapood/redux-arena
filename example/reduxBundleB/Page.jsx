@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 export default class Page extends Component {
   render() {
+    let { state, actions } = this.props;
     return (
       <div>
         <table>
@@ -13,30 +14,30 @@ export default class Page extends Component {
             <tr>
               <td>name:</td>
               <td>
-                {this.props.name}
+                {state.name}
               </td>
             </tr>
             <tr>
               <td>pageB:</td>
               <td>
-                {this.props.pageB}
+                {state.pageB}
               </td>
             </tr>
             <tr>
               <td>dynamicState:</td>
               <td>
-                {this.props.dynamicState}
+                {state.dynamicState}
               </td>
             </tr>
             <tr>
               <td>cnt:</td>
               <td>
-                {this.props.cnt}
+                {state.cnt}
               </td>
             </tr>
           </tbody>
         </table>
-        <button onClick={() => this.props.addCnt()}>Add Cnt</button>
+        <button onClick={() => actions.addCnt()}>Add Cnt</button>
       </div>
     );
   }
