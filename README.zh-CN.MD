@@ -33,9 +33,8 @@ npm install redux-arena --save
 
 ## 快速入门
 
-1. 将react组件、actions、reducer、saga、mapStateToProps打包导出
+1. 将react组件、actions、reducer、saga 打包导出
 
-redux-arena扩展了mapStateToProps函数的传入参数，reducerKey是当前模块初始化时由redux-arena自动分配的，通过reducerKey可以获取到当前bundle的state。
 
 ```javascript
 import state from "./state";
@@ -49,32 +48,39 @@ export default {
   state,
   saga,
   reducer,
-  actions,
-  mapStateToProps: function mapStateToProps(state, reducerKey) {
-    return {
-      pageA: state[reducerKey].pageA,
-      name: state[reducerKey].name,
-      dynamicState: state[reducerKey].dynamicState,
-      cnt: state[reducerKey].cnt
-    };
+  actions
+}
+```
+
+导出的state与actions默认会传入props
+
+```javascript
+import React, { Component } from "react";
+
+export default class PageA extends Component {
+  render() {
+    let { state, actions } = this.props
+    return (
+      <div>
+        <div>{state.cnt}</div>
+        <button>{actions.addCnt}</button>
+      </div>
+    );
   }
-};
+}
 ```
 
 2. 使用ArenaSwitch和RouteScene替代react-router中的Switch和Route
 
 ```javascript
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
 import { BrowserRouter, Link } from "react-router-dom";
 import { RouteScene , ArenaSwitch } from "redux-arena";
 import pageABundle from "./pageABundle";
-import * as actions from "./actions";
 
 const asyncPageB = import("./pageBBundle");
-eport default class Frame extends Component {
+
+export default class Frame extends Component {
   render() {
     return (
       <div>
@@ -108,7 +114,6 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createArenaStore } from "redux-arena";
 import Frame from "./Frame";
-import thunk from "redux-thunk";
 
 const store = createArenaStore();
 

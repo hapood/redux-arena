@@ -33,9 +33,7 @@ Online example can be found here: [Here](https://hapood.github.io/redux-arena/)
 
 ## Quick Start
 
-1. Bundle react component, actions, reducer, saga, mapStateToProps and export.
-
-redux-arena extends original mapStateToProps, reducerKey is created by redux-arena and referring to current bundle state.
+1. Bundle react component, actions, reducer, saga and export.
 
 ```javascript
 import state from "./state";
@@ -49,32 +47,39 @@ export default {
   state,
   saga,
   reducer,
-  actions,
-  mapStateToProps: function mapStateToProps(state, reducerKey) {
-    return {
-      pageA: state[reducerKey].pageA,
-      name: state[reducerKey].name,
-      dynamicState: state[reducerKey].dynamicState,
-      cnt: state[reducerKey].cnt
-    };
+  actions
+}
+```
+
+State and actions in bundle is pass as props by default
+
+```javascript
+import React, { Component } from "react";
+
+export default class PageA extends Component {
+  render() {
+    let { state, actions } = this.props
+    return (
+      <div>
+        <div>{state.cnt}</div>
+        <button>{actions.addCnt}</button>
+      </div>
+    );
   }
-};
+}
 ```
 
 2. Replace Switch/Route of react-router with ArenaSwitch/RouteScene
 
 ```javascript
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
 import { BrowserRouter, Link } from "react-router-dom";
 import { RouteScene , ArenaSwitch } from "redux-arena";
 import pageABundle from "./pageABundle";
-import * as actions from "./actions";
 
 const asyncPageB = import("./pageBBundle");
-eport default class Frame extends Component {
+
+export default class Frame extends Component {
   render() {
     return (
       <div>
@@ -108,7 +113,6 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createArenaStore } from "redux-arena";
 import Frame from "./Frame";
-import thunk from "redux-thunk";
 
 const store = createArenaStore();
 
