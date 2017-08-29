@@ -79,11 +79,10 @@ export default class SoloScene extends Component {
       });
       reducerKey = removeAndAddReducer(
         this.context.store,
-        this.state.arenaSwitchReducerKey,
+        this.state.arenaReducerDict._curSwitch.reducerKey,
         reducerKey,
         createArenaSwitchReducer
       );
-      this.state.arenaSwitchReducerKey = reducerKey;
       this.state.sagaTaskPromise = new Promise(resolve =>
         this.context.store.dispatch({
           type: ARENASWITCH_INIT_SAGA,
@@ -143,7 +142,9 @@ export default class SoloScene extends Component {
       type: ARENASWITCH_KILL_SAGA,
       sagaTaskPromise: this.state.sagaTaskPromise
     });
-    this.context.store.removeReducer(this.state.arenaSwitchReducerKey);
+    this.context.store.removeReducer(
+      this.state.arenaReducerDict._curSwitch.reducerKey
+    );
   }
 
   render() {

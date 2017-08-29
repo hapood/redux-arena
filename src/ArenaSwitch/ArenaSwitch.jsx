@@ -67,12 +67,15 @@ export default class ArenaSwitch extends Component {
       });
       reducerKey = removeAndAddReducer(
         this.context.store,
-        this.state.arenaSwitchReducerKey,
+        this.state.arenaReducerDict._curSwitch.reducerKey,
         reducerKey,
         createArenaSwitchReducer
       );
       this.state = {
-        arenaSwitchReducerKey: reducerKey,
+        arenaReducerDict: this.calcNewReducerKeyDict(
+          nextContext.arenaReducerDict,
+          reducerKey
+        ),
         sagaTaskPromise: new Promise(resolve =>
           this.context.store.dispatch({
             type: ARENASWITCH_INIT_SAGA,
@@ -81,18 +84,6 @@ export default class ArenaSwitch extends Component {
           })
         )
       };
-    } else {
-      reducerKey = this.state.arenaReducerDict._curSwitch.reducerKey;
-    }
-    if (
-      nextContext.arenaReducerDict !== this.context.arenaReducerDict ||
-      refreshFlag === true
-    ) {
-      refreshFlag = true;
-      this.state.arenaReducerDict = this.calcNewReducerKeyDict(
-        nextContext.arenaReducerDict,
-        reducerKey
-      );
     }
   }
 
@@ -101,7 +92,9 @@ export default class ArenaSwitch extends Component {
       type: ARENASWITCH_KILL_SAGA,
       sagaTaskPromise: this.state.sagaTaskPromise
     });
-    this.context.store.removeReducer(this.state.arenaSwitchReducerKey);
+    this.context.store.removeReducer(
+      this.state.arenaReducerDict._curSwitch.reducerKey
+    );
   }
 
   calcNewReducerKeyDict(arenaReducerDict, switchReducerKey) {
