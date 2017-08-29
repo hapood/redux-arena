@@ -41,6 +41,7 @@ class PrivateRouteScene extends Component {
     let {
       asyncSceneBundle,
       sceneBundle,
+      sceneProps,
       exact,
       strict,
       path,
@@ -55,6 +56,7 @@ class PrivateRouteScene extends Component {
           {...{
             asyncSceneBundle,
             sceneBundle,
+            sceneProps,
             exact,
             strict,
             path,
@@ -70,7 +72,8 @@ class PrivateRouteScene extends Component {
 
 PrivateRouteScene.propTypes = {
   asyncSceneBundle: PropTypes.any,
-  sceneBundle: PropTypes.any,
+  sceneBundle: PropTypes.object,
+  sceneProps: PropTypes.object,
   SceneLoadingComponent: PropTypes.any,
   SceneValidatingComponent: PropTypes.any,
   exact: PropTypes.bool,

@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 export default class SceneBundle extends Component {
   static propTypes = {
     asyncSceneBundle: PropTypes.any,
-    sceneBundle: PropTypes.any,
+    sceneBundle: PropTypes.object,
+    sceneProps: PropTypes.object,
     location: PropTypes.object,
     history: PropTypes.object,
     match: PropTypes.object,
@@ -114,7 +115,7 @@ export default class SceneBundle extends Component {
   }
 
   render() {
-    let { PlayingScene, SceneLoadingComponent } = this.props;
+    let { PlayingScene, SceneLoadingComponent, sceneProps } = this.props;
     let { match, location, history } = this.props;
     if (this.state.isSceneBundleValid) {
       return (
@@ -122,7 +123,8 @@ export default class SceneBundle extends Component {
           {...{
             match,
             location,
-            history
+            history,
+            ...sceneProps
           }}
         />
       );

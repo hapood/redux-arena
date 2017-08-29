@@ -20,8 +20,9 @@ export default class SoloScene extends Component {
   static propTypes = {
     children: PropTypes.any,
     reducerKey: PropTypes.string,
-    asyncSceneBuldle: PropTypes.any,
-    scene: PropTypes.any,
+    sceneBundle: PropTypes.object,
+    asyncSceneBuldle: PropTypes.object,
+    sceneProps: PropTypes.object,
     SceneLoadingComponent: PropTypes.any
   };
 
@@ -35,7 +36,12 @@ export default class SoloScene extends Component {
       this.props.reducerKey,
       createArenaSwitchReducer
     );
-    let { asyncSceneBundle, sceneBundle, SceneLoadingComponent } = this.props;
+    let {
+      asyncSceneBundle,
+      sceneBundle,
+      sceneProps,
+      SceneLoadingComponent
+    } = this.props;
     let arenaReducerDict = this.calcNewReducerKeyDict(
       this.context.arenaReducerDict,
       reducerKey
@@ -44,7 +50,8 @@ export default class SoloScene extends Component {
     let sceneBundleElement = React.createElement(wrappedSceneBundle, {
       asyncSceneBundle,
       sceneBundle,
-      SceneLoadingComponent
+      SceneLoadingComponent,
+      sceneProps
     });
     this.state = {
       arenaReducerDict,
@@ -66,6 +73,7 @@ export default class SoloScene extends Component {
       reducerKey,
       asyncSceneBundle,
       sceneBundle,
+      sceneProps,
       SceneLoadingComponent
     } = nextProps;
     if (
@@ -117,6 +125,7 @@ export default class SoloScene extends Component {
         {
           asyncSceneBundle,
           sceneBundle,
+          sceneProps,
           SceneLoadingComponent
         }
       );

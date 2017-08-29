@@ -14,8 +14,9 @@ class RouteScene extends Component {
 
   static propTypes = {
     asyncSceneBuldle: PropTypes.any,
-    scene: PropTypes.any,
+    sceneBundle: PropTypes.any,
     SceneLoadingComponent: PropTypes.any,
+    sceneProps: PropTypes.object,
     exact: PropTypes.bool,
     path: PropTypes.string,
     strict: PropTypes.bool
@@ -32,12 +33,18 @@ class RouteScene extends Component {
       arenaReducerDict,
       "You should not use <RouteScene> outside a <ArenaSwitch>"
     );
-    let { asyncSceneBundle, sceneBundle, SceneLoadingComponent } = this.props;
+    let {
+      asyncSceneBundle,
+      sceneBundle,
+      SceneLoadingComponent,
+      sceneProps
+    } = this.props;
     let wrappedSceneBundle = arenaSwitchConnect(arenaReducerDict);
     let sceneBundleElement = React.createElement(wrappedSceneBundle, {
       asyncSceneBundle,
       sceneBundle,
-      SceneLoadingComponent
+      SceneLoadingComponent,
+      sceneProps
     });
     this.state = {
       wrappedSceneBundle,
@@ -47,7 +54,12 @@ class RouteScene extends Component {
 
   componentWillReceiveProps(nextProps, nextContext) {
     let refreshFlag = false;
-    let { asyncSceneBundle, sceneBundle, SceneLoadingComponent } = nextProps;
+    let {
+      asyncSceneBundle,
+      sceneBundle,
+      sceneProps,
+      SceneLoadingComponent
+    } = nextProps;
     if (this.context.arenaReducerDict !== nextContext.arenaReducerDict) {
       this.state.wrappedSceneBundle = arenaSwitchConnect(
         nextContext.arenaReducerDict
@@ -65,6 +77,7 @@ class RouteScene extends Component {
         {
           asyncSceneBundle,
           sceneBundle,
+          sceneProps,
           SceneLoadingComponent
         }
       );
