@@ -9,13 +9,5 @@ export default {
   state,
   saga,
   reducer,
-  actions,
-  mapStateToProps: function mapStateToProps(state,key) {
-    return {
-      pageA: state[key].pageA,
-      name: state[key].name,
-      dynamicState: state[key].dynamicState,
-      cnt: state[key].cnt
-    };
-  }
+  actions
 };
