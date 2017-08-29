@@ -19,6 +19,7 @@ import { sceneApplyRedux } from "./sceneReduxSaga";
 
 function calcNewReduxInfo(reduxInfo, newReduxInfo, dispatch, isPlainActions) {
   let connectedActions = reduxInfo.connectedActions;
+  let newArenaReducerDict = reduxInfo.arenaReducerDict;
   if (
     reduxInfo.reducerKey !== newReduxInfo.reducerKey ||
     reduxInfo.uniqueReducerKey !== newReduxInfo.reducerKey ||
@@ -30,28 +31,26 @@ function calcNewReduxInfo(reduxInfo, newReduxInfo, dispatch, isPlainActions) {
       if (newReduxInfo.actions == null) {
         connectedActions = {};
       } else if (isPlainActions === true) {
-        connectedActions = bindActionCreators(
-          newReduxInfo.actions,
-          store.dispatch
-        );
+        connectedActions = bindActionCreators(newReduxInfo.actions, dispatch);
       } else {
         connectedActions = bindArenaActionCreators(
           newReduxInfo.actions,
-          store.dispatch,
-          newReducerKey
+          dispatch,
+          newReduxInfo.reducerKey
         );
       }
     }
     let item = {
       reducerKey: newReduxInfo.reducerKey,
-      actions: connectedActionss
+      actions: connectedActions
     };
-    let newArenaReducerDict = Object.assign(
-      newReduxInfo.parentArenaReducerDict,
-      { _curScene: item }
-    );
-    if (reducerKey != null) newArenaReducerDict[reducerKey] = item;
-    if (vReducerKey != null) newArenaReducerDict[vReducerKey] = item;
+    newArenaReducerDict = Object.assign(newReduxInfo.parentArenaReducerDict, {
+      _curScene: item
+    });
+    if (newReduxInfo.uniqueReducerKey != null)
+      newArenaReducerDict[newReduxInfo.uniqueReducerKey] = item;
+    if (newReduxInfo.vReducerKey != null)
+      newArenaReducerDict[newReduxInfo.vReducerKey] = item;
   }
   return Object.assign({}, newReduxInfo, {
     connectedActions,
@@ -87,6 +86,7 @@ export function* applySceneBundle({ parentArenaReducerDict, sceneBundle }) {
   let options = sceneBundle.options || {};
   let { newReducerKey, newSagaTask } = yield* sceneApplyRedux({
     arenaSwitchReducerKey: parentArenaReducerDict._curSwitch.reducerKey,
+    reducerKey: options.reducerKey,
     state: sceneBundle.state,
     saga: sceneBundle.saga,
     reducer: sceneBundle.reducer,
@@ -110,7 +110,7 @@ export function* applySceneBundle({ parentArenaReducerDict, sceneBundle }) {
   let mapStateToProps = createProxyMapStateToProps(
     sceneBundle.mapStateToProps,
     newSceneNo,
-    newReduxInfo.newArenaReducerDict
+    newReduxInfo.arenaReducerDict
   );
   let PlayingScene = connect(mapStateToProps)(sceneBundle.Component);
   let displayName =
@@ -140,7 +140,10 @@ export function* applySceneBundle({ parentArenaReducerDict, sceneBundle }) {
  * @param {any} { arenaReducerDict, asyncSceneBundle } 
  * @returns 
  */
-export function* applyAsyncSceneBundle({ arenaReducerDict, asyncSceneBundle }) {
+export function* applyAsyncSceneBundle({
+  parentArenaReducerDict,
+  asyncSceneBundle
+}) {
   let sceneBundle;
   try {
     sceneBundle = yield asyncSceneBundle;
@@ -150,12 +153,12 @@ export function* applyAsyncSceneBundle({ arenaReducerDict, asyncSceneBundle }) {
   }
   yield put({
     type: SCENE_LOAD_END,
-    arenaReducerDict,
+    arenaSwitchReducerKey: parentArenaReducerDict._curSwitch.reducerKey,
     asyncSceneBundle
   });
   sceneBundle = sceneBundle.default ? sceneBundle.default : sceneBundle;
   yield* applySceneBundle({
-    arenaReducerDict,
+    parentArenaReducerDict,
     sceneBundle
   });
   return true;

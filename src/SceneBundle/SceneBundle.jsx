@@ -24,7 +24,7 @@ export default class SceneBundle extends Component {
     this.state = {
       isSceneBundleValid: false
     };
-    this.loadScene(this.props.sceneBundle, this.props.asyncSceneBundle);
+    this.loadScene(this.props);
   }
 
   componentWillUnmount() {
@@ -78,10 +78,10 @@ export default class SceneBundle extends Component {
           {
             isSceneBundleValid: false
           },
-          this.loadScene(sceneBundle, asyncSceneBundle)
+          this.loadScene(nextProps)
         );
       } else {
-        this.loadScene(sceneBundle, asyncSceneBundle);
+        this.loadScene(nextProps);
       }
     }
     if (nextProps.PlayingScene == null) {
@@ -91,27 +91,24 @@ export default class SceneBundle extends Component {
     }
   }
 
-  loadScene(sceneBundle, asyncSceneBundle) {
+  loadScene(props) {
     let payload = [
-      this.props.parentArenaReducerDict._curSwitch.reducerKey,
-      sceneBundle,
-      asyncSceneBundle
+      props.parentArenaReducerDict._curSwitch.reducerKey,
+      props.sceneBundle,
+      props.asyncSceneBundle
     ];
-    this.props.sceneLoadStart(...payload);
-    if (sceneBundle) {
-      this.props.arenaLoadScene(
-        this.props.parentArenaReducerDict,
-        sceneBundle
-      );
-      this.props.sceneLoadEnd(...payload);
-    } else if (asyncSceneBundle) {
-      this.props.arenaLoadAsyncScene(
-        this.props.parentArenaReducerDict,
-        asyncSceneBundle
+    props.sceneLoadStart(...payload);
+    if (props.sceneBundle) {
+      props.arenaLoadScene(props.parentArenaReducerDict, props.sceneBundle);
+      props.sceneLoadEnd(...payload);
+    } else if (props.asyncSceneBundle) {
+      props.arenaLoadAsyncScene(
+        props.parentArenaReducerDict,
+        props.asyncSceneBundle
       );
     } else {
       throw new Error(
-        "prop asyncSceneBundle and sceneBundle can not be both null"
+        "props asyncSceneBundle and sceneBundle can not be both null"
       );
     }
   }

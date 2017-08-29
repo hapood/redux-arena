@@ -27,6 +27,7 @@ function* forkSagaWithContext(saga, ctx) {
 
 export function* sceneApplyRedux({
   arenaSwitchReducerKey,
+  reducerKey,
   state,
   saga,
   reducer,

@@ -55,10 +55,12 @@ export default class ArenaSwitch extends Component {
    */
   componentWillReceiveProps(nextProps, nextContext) {
     let { reducerKey } = nextProps;
+    let refreshFlag = false;
     if (
       reducerKey != null &&
       reducerKey !== this.state.arenaReducerDict._curSwitch.reducerKey
     ) {
+      refreshFlag === true;
       this.context.store.dispatch({
         type: ARENASWITCH_KILL_SAGA,
         sagaTaskPromise: this.state.sagaTaskPromise

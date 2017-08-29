@@ -33,7 +33,10 @@ function* takeEverySceneBundleAction() {
       ARENASWITCH_LOAD_ASYNCSCENE,
       ARENASWITCH_LOAD_SCENE
     ]);
-    if (action.arenaSwitchReducerKey === arenaSwitchReducerKey) {
+    if (
+      action.parentArenaReducerDict._curSwitch.reducerKey ===
+      arenaSwitchReducerKey
+    ) {
       if (lastTask && lastTask.isRunning()) {
         yield cancel(lastTask);
       }

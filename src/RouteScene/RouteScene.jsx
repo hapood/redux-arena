@@ -27,13 +27,13 @@ class RouteScene extends Component {
   };
 
   componentWillMount() {
-    let { arenaSwitchReducerKey } = this.context;
+    let { arenaReducerDict } = this.context;
     invariant(
-      arenaSwitchReducerKey,
+      arenaReducerDict,
       "You should not use <RouteScene> outside a <ArenaSwitch>"
     );
     let { asyncSceneBundle, sceneBundle, SceneLoadingComponent } = this.props;
-    let wrappedSceneBundle = arenaSwitchConnect(this.context.arenaReducerDict);
+    let wrappedSceneBundle = arenaSwitchConnect(arenaReducerDict);
     let sceneBundleElement = React.createElement(wrappedSceneBundle, {
       asyncSceneBundle,
       sceneBundle,
@@ -58,7 +58,7 @@ class RouteScene extends Component {
       asyncSceneBundle !== this.props.asyncSceneBundle ||
       sceneBundle !== this.props.sceneBundle ||
       SceneLoadingComponent !== this.props.SceneLoadingComponent ||
-      refreshFlag
+      refreshFlag === true
     ) {
       this.state.sceneBundleElement = React.createElement(
         this.state.wrappedSceneBundle,
