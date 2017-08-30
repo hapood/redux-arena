@@ -74,26 +74,6 @@ function* loadSceneStart() {
   }
 }
 
-function* doInstantSwitch() {
-  let arenaSwitchReducerKey = yield getContext("arenaSwitchReducerKey");
-  while (true) {
-    let action = yield take(ARENASWITCH_EVENT_LOADSCENE_START);
-    if (action.arenaSwitchReducerKey === arenaSwitchReducerKey) {
-      yield put({
-        type: ARENASWITCH_SET_STATE,
-        arenaSwitchReducerKey,
-        state: {
-          isWaiting: false
-        }
-      });
-      let nextAction = Object.assign({}, action, {
-        type: ARENASWITCH_EVENT_LOADSCENE_CONTINUE
-      });
-      yield put(nextAction);
-    }
-  }
-}
-
 function* loadSceneComplete() {
   let arenaSwitchReducerKey = yield getContext("arenaSwitchReducerKey");
   while (true) {
@@ -126,13 +106,10 @@ function* loadSceneComplete() {
  * @param {any} ctx 
  */
 
-function* forkSagaWithContext(ctx, isInstantSwitch) {
+function* forkSagaWithContext(ctx) {
   yield setContext(ctx);
   yield fork(takeEverySceneBundleAction);
   yield fork(loadSceneStart);
-  if (isInstantSwitch) {
-    yield fork(doInstantSwitch);
-  }
   yield fork(loadSceneComplete);
 }
 
@@ -147,13 +124,10 @@ function* initArenaSwitchSaga({
   setSagaTask,
   isInstantSwitch = true
 }) {
-  let sagaTask = yield fork(
-    forkSagaWithContext,
-    {
-      arenaSwitchReducerKey: reducerKey
-    },
+  let sagaTask = yield fork(forkSagaWithContext, {
+    arenaSwitchReducerKey: reducerKey,
     isInstantSwitch
-  );
+  });
   setSagaTask(sagaTask);
 }
 

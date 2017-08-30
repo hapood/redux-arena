@@ -100,8 +100,10 @@ export default class SceneBundle extends Component {
     ];
     props.sceneLoadStart(...payload);
     if (props.sceneBundle) {
-      props.arenaLoadScene(props.parentArenaReducerDict, props.sceneBundle);
-      props.sceneLoadEnd(...payload);
+      setImmediate(() => {
+        props.arenaLoadScene(props.parentArenaReducerDict, props.sceneBundle);
+        props.sceneLoadEnd(...payload);
+      });
     } else if (props.asyncSceneBundle) {
       props.arenaLoadAsyncScene(
         props.parentArenaReducerDict,

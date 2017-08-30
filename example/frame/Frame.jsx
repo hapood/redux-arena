@@ -3,73 +3,62 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Router, Link } from "react-router-dom";
-import { RouteScene, ArenaSwitch, SoloScene } from "../../src";
-import reduxBundleA from "../reduxBundleA";
+import { RouteScene, ArenaSwitch } from "redux-arena";
+import scopedPageBundle from "../scopedPage";
 import * as actions from "./redux/actions";
 import DevTools from "./DevTools";
 
-const asyncReduxBundleB = import("../reduxBundleB");
+const AsyncPassDownBundle = import("../passDownStateAndActions");
 const asyncReduxBundleC = import("../reduxBundleC");
+
 class Frame extends Component {
   constructor(props) {
     super(props);
   }
-  componentWillMount() {
-    this.state = {
-      showWidget: false,
-      reducerKey: "fixedReducerkey",
-      showArenaSwitch: true
-    };
-  }
+  componentWillMount() {}
 
   render() {
+    let { cnt, addCnt, clearCnt } = this.props;
     return (
       <div>
         <Router history={this.props.history}>
           <div>
             <ul>
               <li>
-                <Link to="/redux-arena/pageA">pageA</Link>
+                <Link to="/redux-arena/emptyPage">Empty Page</Link>
               </li>
               <li>
-                <Link to="/redux-arena/asyncPageB">asyncPageB</Link>
+                <Link to="/redux-arena/scopedPage">Scoped Page</Link>
+              </li>
+              <li>
+                <Link to="/redux-arena/passDownStateAndActions">
+                  Pass Down State And Actions
+                </Link>
               </li>
             </ul>
+            <div style={{ display: "flex" }}>
+              <div style={{ marginLeft: "1rem" }}>total count: {cnt}</div>
+              <button onClick={addCnt} style={{ marginLeft: "1rem" }}>
+                Add Total Count
+              </button>
+              <button onClick={clearCnt} style={{ marginLeft: "1rem" }}>
+                Clear Total Count
+              </button>
+            </div>
             <hr />
-            <button
-              onClick={() =>
-                this.setState({ showWidget: !this.state.showWidget })}
-            >
-              {this.state.showWidget ? "hideWidget" : "showWidget"}
-            </button>
-            <input
-              type="button"
-              value="reducerKey"
-              onClick={() => this.setState({ reducerKey: "YAFixedReducerKey" })}
-            />
-            <input
-              type="button"
-              value={
-                this.state.showArenaSwitch
-                  ? "hideArenaSwitch"
-                  : "showArenaSwitch"
-              }
-              onClick={() =>
-                this.setState({ showArenaSwitch: !this.state.showArenaSwitch })}
-            />
-            <div style={{ marginTop: "1rem" }}>
-              {this.state.showArenaSwitch
-                ? <ArenaSwitch reducerKey={this.state.reducerKey}>
-                    <RouteScene path="/redux-arena/pageA" sceneBundle={reduxBundleA} />
-                    <RouteScene
-                      path="/redux-arena/asyncPageB"
-                      asyncSceneBundle={asyncReduxBundleB}
-                    />
-                  </ArenaSwitch>
-                : null}
-              {this.state.showWidget
-                ? <SoloScene asyncSceneBundle={asyncReduxBundleC} />
-                : null}
+            <div>
+              <div style={{ marginTop: "1rem" }}>
+                <ArenaSwitch>
+                  <RouteScene
+                    path="/redux-arena/scopedPage"
+                    sceneBundle={scopedPageBundle}
+                  />
+                  <RouteScene
+                    path="/redux-arena/passDownStateAndActions"
+                    asyncSceneBundle={AsyncPassDownBundle}
+                  />
+                </ArenaSwitch>
+              </div>
             </div>
           </div>
         </Router>
@@ -84,7 +73,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return { cnt: state.frame.cnt };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Frame);

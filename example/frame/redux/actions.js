@@ -1,9 +1,13 @@
-import { FRAME_HISTORY_PUSH } from "./actionTypes";
+import { ADD_CNT, FRAME_CLEAR_CNT } from "./actionTypes";
 
-export function jumpTo(path, isTracing) {
+export function addCnt() {
   return {
-    type: FRAME_HISTORY_PUSH,
-    path,
-    isTracing
+    type: ADD_CNT
+  };
+}
+
+export function clearCnt() {
+  return {
+    type: FRAME_CLEAR_CNT
   };
 }

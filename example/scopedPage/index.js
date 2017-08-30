@@ -1,11 +1,13 @@
 import state from "./state";
 import reducer from "./reducer";
+import saga from "./saga";
 import * as actions from "./actions";
-import Page from "./Page";
+import ScopedPage from "./ScopedPage";
 
 export default {
-  Component: Page,
+  Component: ScopedPage,
   state,
+  saga,
   reducer,
   actions
 };

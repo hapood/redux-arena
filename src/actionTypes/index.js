@@ -1,3 +1,5 @@
+export { SCENE_SET_STATE } from "../redux/actionTypes";
+
 export const ARENASWITCH_EVENT_LOADSCENE_START =
   "ARENASWITCH_EVENT_LOADSCENE_START";
 

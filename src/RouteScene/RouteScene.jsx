@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Route } from "react-router-dom";
 import invariant from "invariant";
 import { ARENASWITCH_SET_STATE } from "../redux/actionTypes";
-import SceneLoading from "../SceneLoading";
 import { arenaSwitchConnect } from "../SceneBundle";
 
 class RouteScene extends Component {
@@ -23,7 +22,6 @@ class RouteScene extends Component {
   };
 
   static defaultProps = {
-    SceneLoadingComponent: SceneLoading,
     exact: true
   };
 

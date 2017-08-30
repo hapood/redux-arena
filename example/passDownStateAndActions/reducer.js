@@ -1,6 +1,7 @@
 import initState from "./state";
+import { sceneReducer } from "redux-arena/sceneScope";
 
-export default function reducer(state = initState, action) {
+function reducer(state = initState, action) {
   switch (action.type) {
     case "ADD_CNT":
       return Object.assign({}, state, { cnt: state.cnt + 1 });
@@ -8,3 +9,5 @@ export default function reducer(state = initState, action) {
       return state;
   }
 }
+
+export default sceneReducer(reducer);

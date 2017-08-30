@@ -9,7 +9,6 @@ import {
 import createArenaSwitchReducer from "../redux/reducers/createArenaSwitchReducer";
 import { addReducer, removeAndAddReducer } from "../utils";
 import { arenaSwitchConnect } from "../SceneBundle";
-import SceneLoading from "../SceneLoading";
 
 export default class SoloScene extends Component {
   static contextTypes = {
@@ -24,10 +23,6 @@ export default class SoloScene extends Component {
     asyncSceneBuldle: PropTypes.object,
     sceneProps: PropTypes.object,
     SceneLoadingComponent: PropTypes.any
-  };
-
-  static defaultProps = {
-    SceneLoadingComponent: SceneLoading
   };
 
   componentWillMount() {
@@ -50,8 +45,8 @@ export default class SoloScene extends Component {
     let sceneBundleElement = React.createElement(wrappedSceneBundle, {
       asyncSceneBundle,
       sceneBundle,
-      SceneLoadingComponent,
-      sceneProps
+      sceneProps,
+      SceneLoadingComponent
     });
     this.state = {
       arenaReducerDict,
