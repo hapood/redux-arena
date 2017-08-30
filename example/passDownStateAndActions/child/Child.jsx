@@ -24,7 +24,9 @@ export default class Child extends Component {
             </tr>
             <tr>
               <td>parentState:</td>
-              <td>{JSON.stringify(parentState)}</td>
+              <td>
+                <span>{JSON.stringify(parentState)}</span>
+              </td>
             </tr>
             <tr>
               <td>cnt:</td>

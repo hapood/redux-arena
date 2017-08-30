@@ -98,17 +98,20 @@ export default class SceneBundle extends Component {
       props.sceneBundle,
       props.asyncSceneBundle
     ];
-    props.sceneLoadStart(...payload);
     if (props.sceneBundle) {
       setImmediate(() => {
+        props.sceneLoadStart(...payload);
         props.arenaLoadScene(props.parentArenaReducerDict, props.sceneBundle);
         props.sceneLoadEnd(...payload);
       });
     } else if (props.asyncSceneBundle) {
-      props.arenaLoadAsyncScene(
-        props.parentArenaReducerDict,
-        props.asyncSceneBundle
-      );
+      setImmediate(() => {
+        props.sceneLoadStart(...payload);
+        props.arenaLoadAsyncScene(
+          props.parentArenaReducerDict,
+          props.asyncSceneBundle
+        );
+      });
     } else {
       throw new Error(
         "props asyncSceneBundle and sceneBundle can not be both null"

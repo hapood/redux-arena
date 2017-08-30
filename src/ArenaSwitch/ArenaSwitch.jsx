@@ -7,7 +7,7 @@ import {
   ARENASWITCH_KILL_SAGA
 } from "../redux/actionTypes";
 import createArenaSwitchReducer from "../redux/reducers/createArenaSwitchReducer";
-import { addReducer, removeAndAddReducer } from "../utils";
+import { switchAddReducer, switchRmAndAddReducer } from "../utils";
 
 export default class ArenaSwitch extends Component {
   static contextTypes = {
@@ -26,7 +26,7 @@ export default class ArenaSwitch extends Component {
   };
 
   componentWillMount() {
-    let reducerKey = addReducer(
+    let reducerKey = switchAddReducer(
       this.context.store,
       this.props.reducerKey,
       createArenaSwitchReducer
@@ -65,7 +65,7 @@ export default class ArenaSwitch extends Component {
         type: ARENASWITCH_KILL_SAGA,
         sagaTaskPromise: this.state.sagaTaskPromise
       });
-      reducerKey = removeAndAddReducer(
+      reducerKey = switchRmAndAddReducer(
         this.context.store,
         this.state.arenaReducerDict._curSwitch.reducerKey,
         reducerKey,
@@ -117,9 +117,7 @@ export default class ArenaSwitch extends Component {
 
   render() {
     return (
-      <Switch location={this.props.location}>
-        {this.props.children}
-      </Switch>
+      <Switch location={this.props.location}>{this.props.children}</Switch>
     );
   }
 }

@@ -1,23 +1,48 @@
-export default function addReducer(store, reducerKey, reducerFactory, state) {
-  if (reducerKey != null) {
+import {
+  SCENE_REPLACE_STATE,
+  ARENASWITCH_REPLACE_STATE
+} from "../redux/actionTypes";
+
+function addReducer(store, reducerKey, reducerFactory) {
+  let newReducerKey = reducerKey;
+  if (newReducerKey != null) {
     let flag = store.addReducer({
-      reducerKey,
-      reducer: reducerFactory(reducerKey),
-      state
+      reducerKey: newReducerKey,
+      reducer: reducerFactory(newReducerKey)
     });
     if (flag === false) {
-      throw new Error(`Reducer key [${reducerKey}] already exsit.`);
+      throw new Error(`Reducer key [${newReducerKey}] already exsit.`);
     }
   } else {
     do {
-      reducerKey = String(Math.random()).slice(2);
+      newReducerKey = String(Math.random()).slice(2);
       let flag = store.addReducer({
-        reducerKey,
-        reducer: reducerFactory(reducerKey),
-        state
+        reducerKey: newReducerKey,
+        reducer: reducerFactory(newReducerKey)
       });
-      if (flag === false) reducerKey = null;
-    } while (reducerKey == null);
+      if (flag === false) newReducerKey = null;
+    } while (newReducerKey == null);
   }
-  return reducerKey;
+  return newReducerKey;
+}
+
+export function switchAddReducer(store, reducerKey, reducerFactory, state) {
+  let newReducerKey = addReducer(store, reducerKey, reducerFactory, state);
+  if (state)
+    store.dispatch({
+      type: ARENASWITCH_REPLACE_STATE,
+      arenaSwitchReducerKey: newReducerKey
+    });
+  return newReducerKey;
+}
+
+export function sceneAddReducer(store, reducerKey, reducerFactory, state) {
+  let newReducerKey = addReducer(store, reducerKey, reducerFactory, state);
+  if (state)
+    store.dispatch({
+      type: SCENE_REPLACE_STATE,
+      _sceneReducerKey: newReducerKey,
+      state
+    });
+  return newReducerKey;
 }

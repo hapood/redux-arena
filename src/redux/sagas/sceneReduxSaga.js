@@ -1,6 +1,6 @@
 import {
   SCENE_CLEAR_REDUX,
-  SCENE_SET_STATE,
+  SCENE_REPLACE_STATE,
   ARENASWITCH_SET_STATE
 } from "../actionTypes";
 import {
@@ -17,7 +17,7 @@ import {
   setContext
 } from "redux-saga/effects";
 import createSenceReducer from "../reducers/createSenceReducer";
-import { addReducer, replaceReducer } from "../../utils";
+import { sceneAddReducer, sceneReplaceReducer } from "../../utils";
 import { getArenaSwitchInitState } from "../reducers";
 
 function* forkSagaWithContext(saga, ctx) {
@@ -46,7 +46,7 @@ export function* sceneApplyRedux({
     }
   }
   if (reduxInfo.reducerKey == null) {
-    newReducerKey = addReducer(
+    newReducerKey = sceneAddReducer(
       arenaStore,
       reducerKey,
       newReducerKey => createSenceReducer(reducer, newReducerKey),
@@ -54,7 +54,7 @@ export function* sceneApplyRedux({
     );
   } else if (reducerKey == null || reducerKey === reduxInfo.reducerKey) {
     if (reducer !== curSceneBundle.reducer) {
-      newReducerKey = replaceReducer(
+      newReducerKey = sceneReplaceReducer(
         arenaStore,
         reduxInfo.reducerKey,
         newReducerKey => createSenceReducer(reducer, newReducerKey),
@@ -63,7 +63,7 @@ export function* sceneApplyRedux({
     } else if (state !== curSceneBundle.state) {
       newReducerKey = reduxInfo.reducerKey;
       yield put({
-        type: SCENE_SET_STATE,
+        type: SCENE_REPLACE_STATE,
         _sceneReducerKey: reduxInfo.reducerKey,
         state
       });

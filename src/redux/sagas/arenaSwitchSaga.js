@@ -54,11 +54,12 @@ function* loadSceneStart() {
   while (true) {
     let action = yield take(SCENE_LOAD_START);
     if (action.arenaSwitchReducerKey === arenaSwitchReducerKey) {
+      let isWaitingSwitchAction = yield getContext("isWaitingSwitchAction");
       yield put({
         type: ARENASWITCH_SET_STATE,
         arenaSwitchReducerKey,
         state: {
-          isWaiting: true
+          isWaiting: isWaitingSwitchAction
         }
       });
       let { match, location } = yield select(
@@ -122,11 +123,11 @@ function* forkSagaWithContext(ctx) {
 function* initArenaSwitchSaga({
   reducerKey,
   setSagaTask,
-  isInstantSwitch = true
+  isWaitingSwitchAction = false
 }) {
   let sagaTask = yield fork(forkSagaWithContext, {
     arenaSwitchReducerKey: reducerKey,
-    isInstantSwitch
+    isWaitingSwitchAction
   });
   setSagaTask(sagaTask);
 }

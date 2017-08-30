@@ -123,10 +123,8 @@ export function* applySceneBundle({ parentArenaReducerDict, sceneBundle }) {
     curSceneBundle: sceneBundle,
     reduxInfo: newReduxInfo
   };
-  let isInstantSwitch = yield getContext("isInstantSwitch");
-  if (isInstantSwitch !== true && isWaiting) {
+  if (isWaiting) {
     yield take(ARENASWITCH_EVENT_LOADSCENE_CONTINUE);
-    console.log("pass");
   }
   yield put({
     type: ARENASWITCH_SET_STATE,

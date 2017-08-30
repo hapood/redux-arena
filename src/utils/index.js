@@ -1,4 +1,6 @@
-import addReducer from "./addReducer";
-import replaceReducer from "./replaceReducer";
-import removeAndAddReducer from "./removeAndAddReducer";
-export { addReducer, replaceReducer, removeAndAddReducer };
+export { sceneAddReducer, switchAddReducer } from "./addReducer";
+export { sceneReplaceReducer, switchReplaceReducer } from "./replaceReducer";
+export {
+  sceneRmAndAddReducer,
+  switchRmAndAddReducer
+} from "./removeAndAddReducer";
