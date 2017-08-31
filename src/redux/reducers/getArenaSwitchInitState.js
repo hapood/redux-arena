@@ -4,8 +4,8 @@ export default function getArenaSwitchInitState() {
     curSceneBundle: {},
     reduxInfo: {},
     isWaiting: true,
-    match: undefined,
-    location: undefined,
-    history: undefined
+    // match: undefined,
+    // location: undefined,
+    // history: undefined
   };
 }
