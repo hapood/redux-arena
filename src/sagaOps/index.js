@@ -1,5 +1,11 @@
 import setSceneState from "./setSceneState";
 import getSceneState from "./getSceneState";
-import getSceneEntry from "./getSceneEntry";
+import getArenaReducerDictEntry from "./getArenaReducerDictEntry";
+import getSceneActions from "./getSceneActions";
 
-export { setSceneState, getSceneState, getSceneEntry };
+export {
+  setSceneState,
+  getSceneState,
+  getArenaReducerDictEntry,
+  getSceneActions
+};
