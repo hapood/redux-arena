@@ -15,7 +15,10 @@ module.exports = {
     publicPath: "/redux-arena/"
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".js", ".jsx"]
+    alias: {
+      "redux-arena": path.resolve(__dirname, "..", "src")
+    },
+    extensions: [".js", ".jsx"]
   },
   module: {
     rules: [
