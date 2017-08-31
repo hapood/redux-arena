@@ -10,8 +10,5 @@ export default {
   reducer,
   options: {
     vReducerKey: "parent"
-  },
-  mapStateToProps: state => {
-    return {};
   }
 };

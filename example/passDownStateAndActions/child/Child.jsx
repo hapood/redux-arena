@@ -12,7 +12,11 @@ export default class Child extends Component {
           width: "20rem"
         }}
       >
-        <table style={{ width: "100%" }}>
+        <span style={{ lineHeight: "1.5rem" }}>
+          Map parent's state to props parentState by vReducerKey{" "}
+          <span style={{ color: "orange" }}>"parent"</span>.
+        </span>
+        <table style={{ width: "100%", marginTop: "1rem" }}>
           <tbody>
             <tr>
               <th>state_key</th>
@@ -41,6 +45,10 @@ export default class Child extends Component {
             padding: "1rem"
           }}
         >
+          <span style={{ lineHeight: "1.5rem" }}>
+            Map parent's actions to props parentActions by vReducerKey{" "}
+            <span style={{ color: "orange" }}>"parent"</span>.
+          </span>
           <div style={{ marginTop: "1rem" }}>
             <button onClick={actions.addCnt}>Add Count</button>
             <button style={{ marginLeft: "1rem" }} onClick={actions.clearCnt}>

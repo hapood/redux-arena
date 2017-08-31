@@ -74,15 +74,8 @@ export function* applySceneBundle({ parentArenaReducerDict, sceneBundle }) {
     reduxInfo,
     PlayingScene: OldPlayingScene,
     isWaiting,
-    sceneNo,
     arenaReducerDict
   } = yield select(state => state[arenaSwitchReducerKey]);
-  let newSceneNo = sceneNo + 1;
-  yield put({
-    type: ARENA_SWITCH_SET_STATE,
-    arenaSwitchReducerKey,
-    state: { sceneNo: newSceneNo }
-  });
   let options = sceneBundle.options || {};
   let { newReducerKey, newSagaTask } = yield* sceneApplyRedux({
     arenaSwitchReducerKey: parentArenaReducerDict._curSwitch.reducerKey,
@@ -109,7 +102,7 @@ export function* applySceneBundle({ parentArenaReducerDict, sceneBundle }) {
   );
   let mapStateToProps = createProxyMapStateToProps(
     sceneBundle.mapStateToProps,
-    newSceneNo,
+    newReduxInfo,
     newReduxInfo.arenaReducerDict
   );
   let PlayingScene = connect(mapStateToProps)(sceneBundle.Component);

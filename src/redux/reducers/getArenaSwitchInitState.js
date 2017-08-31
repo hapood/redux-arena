@@ -4,7 +4,6 @@ export default function getArenaSwitchInitState() {
     curSceneBundle: {},
     reduxInfo: {},
     isWaiting: true,
-    sceneNo: 0,
     match: undefined,
     location: undefined,
     history: undefined
