@@ -1,6 +1,6 @@
 import {
-  SCENE_REPLACE_STATE,
-  ARENASWITCH_REPLACE_STATE
+  ARENA_SCENE_REPLACE_STATE,
+  ARENA_SWITCH_REPLACE_STATE
 } from "../redux/actionTypes";
 
 export function sceneRmAndAddReducer(
@@ -17,7 +17,7 @@ export function sceneRmAndAddReducer(
     state
   });
   store.dispatch({
-    type: SCENE_REPLACE_STATE,
+    type: ARENA_SCENE_REPLACE_STATE,
     _sceneReducerKey: newReducerKey,
     state: state ? state : oldState
   });
@@ -39,7 +39,7 @@ export function switchRmAndAddReducer(
   });
   if (state)
     store.dispatch({
-      type: ARENASWITCH_REPLACE_STATE,
+      type: ARENA_SWITCH_REPLACE_STATE,
       _sceneReducerKey: newReducerKey,
       state: state ? state : oldState
     });

@@ -1,7 +1,7 @@
 import {
-  SCENE_CLEAR_REDUX,
-  SCENE_REPLACE_STATE,
-  ARENASWITCH_SET_STATE
+  ARENA_SCENE_CLEAR_REDUX,
+  ARENA_SCENE_REPLACE_STATE,
+  ARENA_SWITCH_SET_STATE
 } from "../actionTypes";
 import {
   takeEvery,
@@ -63,7 +63,7 @@ export function* sceneApplyRedux({
     } else if (state !== curSceneBundle.state) {
       newReducerKey = reduxInfo.reducerKey;
       yield put({
-        type: SCENE_REPLACE_STATE,
+        type: ARENA_SCENE_REPLACE_STATE,
         _sceneReducerKey: reduxInfo.reducerKey,
         state
       });
@@ -100,7 +100,7 @@ function* sceneClearRedux({ arenaSwitchReducerKey, reduxInfo }) {
   if (reduxInfo.sagaTask) yield cancel(reduxInfo.sagaTask);
   if (reduxInfo.reducerKey) {
     yield put({
-      type: ARENASWITCH_SET_STATE,
+      type: ARENA_SWITCH_SET_STATE,
       arenaSwitchReducerKey: arenaSwitchReducerKey,
       state: getArenaSwitchInitState()
     });
@@ -109,5 +109,5 @@ function* sceneClearRedux({ arenaSwitchReducerKey, reduxInfo }) {
 }
 
 export default function* saga() {
-  yield takeEvery(SCENE_CLEAR_REDUX, sceneClearRedux);
+  yield takeEvery(ARENA_SCENE_CLEAR_REDUX, sceneClearRedux);
 }

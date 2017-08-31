@@ -1,16 +1,16 @@
 import {
-  ARENASWITCH_LOAD_SCENE,
-  ARENASWITCH_LOAD_ASYNCSCENE,
-  SCENE_LOAD_START,
-  SCENE_PLAY_START,
-  SCENE_PLAY_END,
-  SCENE_LOAD_END,
-  SCENE_CLEAR_REDUX
+  ARENA_SWITCH_LOAD_SCENE,
+  ARENA_SWITCH_LOAD_ASYNCSCENE,
+  ARENA_SCENE_LOAD_START,
+  ARENA_SCENE_PLAY_START,
+  ARENA_SCENE_PLAY_END,
+  ARENA_SCENE_LOAD_END,
+  ARENA_SCENE_CLEAR_REDUX
 } from "../../redux/actionTypes";
 
 export function arenaLoadScene(parentArenaReducerDict, sceneBundle) {
   return {
-    type: ARENASWITCH_LOAD_SCENE,
+    type: ARENA_SWITCH_LOAD_SCENE,
     parentArenaReducerDict,
     sceneBundle
   };
@@ -18,7 +18,7 @@ export function arenaLoadScene(parentArenaReducerDict, sceneBundle) {
 
 export function arenaLoadAsyncScene(parentArenaReducerDict, asyncSceneBundle) {
   return {
-    type: ARENASWITCH_LOAD_ASYNCSCENE,
+    type: ARENA_SWITCH_LOAD_ASYNCSCENE,
     parentArenaReducerDict,
     asyncSceneBundle
   };
@@ -30,7 +30,7 @@ export function sceneLoadStart(
   asyncSceneBundle
 ) {
   return {
-    type: SCENE_LOAD_START,
+    type: ARENA_SCENE_LOAD_START,
     arenaSwitchReducerKey,
     sceneBundle,
     asyncSceneBundle
@@ -43,7 +43,7 @@ export function sceneStartPlay(
   asyncSceneBundle
 ) {
   return {
-    type: SCENE_PLAY_START,
+    type: ARENA_SCENE_PLAY_START,
     arenaSwitchReducerKey,
     sceneBundle,
     asyncSceneBundle
@@ -56,7 +56,7 @@ export function sceneLoadEnd(
   asyncSceneBundle
 ) {
   return {
-    type: SCENE_LOAD_END,
+    type: ARENA_SCENE_LOAD_END,
     arenaSwitchReducerKey,
     sceneBundle,
     asyncSceneBundle
@@ -69,7 +69,7 @@ export function sceneStopPlay(
   asyncSceneBundle
 ) {
   return {
-    type: SCENE_PLAY_END,
+    type: ARENA_SCENE_PLAY_END,
     arenaSwitchReducerKey,
     sceneBundle,
     asyncSceneBundle
@@ -78,7 +78,7 @@ export function sceneStopPlay(
 
 export function clearSceneRedux(arenaSwitchReducerKey, reduxInfo) {
   return {
-    type: SCENE_CLEAR_REDUX,
+    type: ARENA_SCENE_CLEAR_REDUX,
     arenaSwitchReducerKey,
     reduxInfo
   };

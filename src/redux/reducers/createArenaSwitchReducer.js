@@ -1,14 +1,14 @@
 import {
-  ARENASWITCH_SET_STATE,
-  ARENASWITCH_REPLACE_STATE
+  ARENA_SWITCH_SET_STATE,
+  ARENA_SWITCH_REPLACE_STATE
 } from "../actionTypes.js";
 import getArenaSwitchInitState from "./getArenaSwitchInitState";
 
 function senceSwitchReducer(state, action) {
   switch (action.type) {
-    case ARENASWITCH_SET_STATE:
+    case ARENA_SWITCH_SET_STATE:
       return Object.assign({}, state, action.state);
-    case ARENASWITCH_REPLACE_STATE:
+    case ARENA_SWITCH_REPLACE_STATE:
       return Object.assign({}, action.state);
     default:
       return state;

@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { Router, Switch } from "react-router-dom";
 import createHistory from "history/createBrowserHistory";
 import {
-  ARENASWITCH_INIT_SAGA,
-  ARENASWITCH_KILL_SAGA
+  ARENA_SWITCH_INIT_SAGA,
+  ARENA_SWITCH_KILL_SAGA
 } from "../redux/actionTypes";
 import createArenaSwitchReducer from "../redux/reducers/createArenaSwitchReducer";
 import { switchAddReducer, switchRmAndAddReducer } from "../utils";
@@ -54,7 +54,7 @@ export default class SoloScene extends Component {
       sceneBundleElement,
       sagaTaskPromise: new Promise(resolve =>
         this.context.store.dispatch({
-          type: ARENASWITCH_INIT_SAGA,
+          type: ARENA_SWITCH_INIT_SAGA,
           reducerKey,
           setSagaTask: resolve
         })
@@ -77,7 +77,7 @@ export default class SoloScene extends Component {
     ) {
       refreshFlag = true;
       this.context.store.dispatch({
-        type: ARENASWITCH_KILL_SAGA,
+        type: ARENA_SWITCH_KILL_SAGA,
         sagaTaskPromise: this.state.sagaTaskPromise
       });
       reducerKey = switchRmAndAddReducer(
@@ -88,7 +88,7 @@ export default class SoloScene extends Component {
       );
       this.state.sagaTaskPromise = new Promise(resolve =>
         this.context.store.dispatch({
-          type: ARENASWITCH_INIT_SAGA,
+          type: ARENA_SWITCH_INIT_SAGA,
           reducerKey,
           setSagaTask: resolve
         })
@@ -143,7 +143,7 @@ export default class SoloScene extends Component {
 
   componentWillUnmount() {
     this.context.store.dispatch({
-      type: ARENASWITCH_KILL_SAGA,
+      type: ARENA_SWITCH_KILL_SAGA,
       sagaTaskPromise: this.state.sagaTaskPromise
     });
     this.context.store.removeReducer(

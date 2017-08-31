@@ -47,7 +47,7 @@ export default class ScopedPage extends Component {
             }}
           >
             <button onClick={actions.clearCnt}>Clear Page Count</button>{" "}
-            dispatch action type "SCENE_SET_STATE" and set this page's cnt 0.
+            dispatch action type "ARENA_SCENE_SET_STATE" and set this page's cnt 0.
           </div>
         </div>
         <div

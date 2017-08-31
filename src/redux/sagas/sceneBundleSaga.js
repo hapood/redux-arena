@@ -1,5 +1,5 @@
-import { ARENASWITCH_SET_STATE, SCENE_LOAD_END } from "../actionTypes";
-import { ARENASWITCH_EVENT_LOADSCENE_CONTINUE } from "../../actionTypes";
+import { ARENA_SWITCH_SET_STATE, ARENA_SCENE_LOAD_END } from "../actionTypes";
+import { ARENA_SWITCH_EVENT_LOADARENA_SCENE_CONTINUE } from "../../actionTypes";
 import {
   take,
   put,
@@ -79,7 +79,7 @@ export function* applySceneBundle({ parentArenaReducerDict, sceneBundle }) {
   } = yield select(state => state[arenaSwitchReducerKey]);
   let newSceneNo = sceneNo + 1;
   yield put({
-    type: ARENASWITCH_SET_STATE,
+    type: ARENA_SWITCH_SET_STATE,
     arenaSwitchReducerKey,
     state: { sceneNo: newSceneNo }
   });
@@ -124,10 +124,10 @@ export function* applySceneBundle({ parentArenaReducerDict, sceneBundle }) {
     reduxInfo: newReduxInfo
   };
   if (isWaiting) {
-    yield take(ARENASWITCH_EVENT_LOADSCENE_CONTINUE);
+    yield take(ARENA_SWITCH_EVENT_LOADARENA_SCENE_CONTINUE);
   }
   yield put({
-    type: ARENASWITCH_SET_STATE,
+    type: ARENA_SWITCH_SET_STATE,
     arenaSwitchReducerKey,
     state: newArenaState
   });
@@ -152,7 +152,7 @@ export function* applyAsyncSceneBundle({
     }
   }
   yield put({
-    type: SCENE_LOAD_END,
+    type: ARENA_SCENE_LOAD_END,
     arenaSwitchReducerKey: parentArenaReducerDict._curSwitch.reducerKey,
     asyncSceneBundle
   });
