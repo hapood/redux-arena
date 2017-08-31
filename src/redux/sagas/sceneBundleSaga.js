@@ -27,6 +27,7 @@ function calcNewReduxInfo(reduxInfo, newReduxInfo, dispatch, isPlainActions) {
     reduxInfo.parentArenaReducerDict !== newReduxInfo.parentArenaReducerDict ||
     reduxInfo.actions !== newReduxInfo.actions
   ) {
+    //calc actions
     if (reduxInfo.actions !== newReduxInfo.actions) {
       if (newReduxInfo.actions == null) {
         connectedActions = {};
@@ -40,6 +41,7 @@ function calcNewReduxInfo(reduxInfo, newReduxInfo, dispatch, isPlainActions) {
         );
       }
     }
+    //calc arena reducer dict
     let item = {
       reducerKey: newReduxInfo.reducerKey,
       actions: connectedActions

@@ -7,7 +7,11 @@ import {
   ARENA_SWITCH_KILL_SAGA
 } from "../redux/actionTypes";
 import createArenaSwitchReducer from "../redux/reducers/createArenaSwitchReducer";
-import { switchAddReducer, switchRmAndAddReducer } from "../utils";
+import {
+  switchAddReducer,
+  switchRmAndAddReducer,
+  calcSwitchReducerDict
+} from "../utils";
 
 export default class ArenaSwitch extends Component {
   static contextTypes = {
@@ -31,9 +35,11 @@ export default class ArenaSwitch extends Component {
       this.props.reducerKey,
       createArenaSwitchReducer
     );
-    let arenaReducerDict = this.calcNewReducerKeyDict(
+    let arenaReducerDict = calcSwitchReducerDict(
       this.context.arenaReducerDict,
-      reducerKey
+      reducerKey,
+      this.props.reducerKey,
+      this.props.vReducerKey
     );
     this.state = {
       arenaReducerDict,
@@ -54,8 +60,9 @@ export default class ArenaSwitch extends Component {
    * @memberof ArenaSwitch
    */
   componentWillReceiveProps(nextProps, nextContext) {
-    let { reducerKey } = nextProps;
+    let { reducerKey, vReducerKey } = nextProps;
     let refreshFlag = false;
+    let newReducerKey = this.state.arenaReducerDict._curSwitch.reducerKey;
     if (
       reducerKey != null &&
       reducerKey !== this.state.arenaReducerDict._curSwitch.reducerKey
@@ -65,25 +72,32 @@ export default class ArenaSwitch extends Component {
         type: ARENA_SWITCH_KILL_SAGA,
         sagaTaskPromise: this.state.sagaTaskPromise
       });
-      reducerKey = switchRmAndAddReducer(
+      newReducerKey = switchRmAndAddReducer(
         this.context.store,
         this.state.arenaReducerDict._curSwitch.reducerKey,
         reducerKey,
         createArenaSwitchReducer
       );
-      this.state = {
-        arenaReducerDict: this.calcNewReducerKeyDict(
-          nextContext.arenaReducerDict,
-          reducerKey
-        ),
-        sagaTaskPromise: new Promise(resolve =>
-          this.context.store.dispatch({
-            type: ARENA_SWITCH_INIT_SAGA,
-            reducerKey,
-            setSagaTask: resolve
-          })
-        )
-      };
+      this.state.sagaTaskPromise = new Promise(resolve =>
+        this.context.store.dispatch({
+          type: ARENA_SWITCH_INIT_SAGA,
+          reducerKey,
+          setSagaTask: resolve
+        })
+      );
+    }
+    if (
+      nextContext.arenaReducerDict !== this.context.arenaReducerDict ||
+      reducerKey !== this.props.reducerKey ||
+      vReducerKey !== this.props.vReducerKey ||
+      refreshFlag === true
+    ) {
+      this.state.arenaReducerDict = calcSwitchReducerDict(
+        nextContext.arenaReducerDict,
+        newReducerKey,
+        nextProps.reducerKey,
+        nextProps.vReducerKey
+      );
     }
   }
 
@@ -95,20 +109,6 @@ export default class ArenaSwitch extends Component {
     this.context.store.removeReducer(
       this.state.arenaReducerDict._curSwitch.reducerKey
     );
-  }
-
-  calcNewReducerKeyDict(arenaReducerDict, switchReducerKey) {
-    let newDict = Object.assign({}, arenaReducerDict);
-    let item = { actions: {}, reducerKey: switchReducerKey };
-    if (this.props.reducerKey) {
-      newDict[this.props.reducerKey] = item;
-    }
-    if (this.props.vReducerKey) {
-      newDict[this.props.vReducerKey] = item;
-    }
-    newDict._curSwitch = item;
-    newDict._curScene = null;
-    return newDict;
   }
 
   getChildContext() {

@@ -4,3 +4,4 @@ export {
   sceneRmAndAddReducer,
   switchRmAndAddReducer
 } from "./removeAndAddReducer";
+export { calcSwitchReducerDict } from "./calcReducerDict";
