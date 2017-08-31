@@ -14,7 +14,7 @@ export default class OpPanel extends Component {
           border: "solid #000 1px"
         }}
       >
-        <div>Panel</div>
+        <div>Add-Total-Count Panel</div>
         <button style={{ marginTop: "1rem" }} onClick={this.addCnt}>
           Add {this.props.step}
         </button>

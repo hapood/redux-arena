@@ -8,6 +8,14 @@ export default class Container extends Component {
     return (
       <div style={{ width: "20rem", padding: "1rem" }}>
         <div>
+          All panel is from same redux module, passing diffrent{" "}
+          <span style={{ color: "orange" }}>"sceneProps"</span> for reuse.
+        </div>
+        <div
+          style={{
+            marginTop: "1rem"
+          }}
+        >
           <button onClick={actions.addPanel}>Add Panel</button>
           <button style={{ marginLeft: "1rem" }} onClick={actions.delPanel}>
             Del Panel
