@@ -161,21 +161,6 @@ An enhenced Route witch accept sceneBundle prop. Support asyncSceneBundle for co
 
 ```
 
-### PrivateRouteScene
-
-An enhenced RouteScene whitch accept onValidate onPass and onReject props. Helpful when integrating with access control system.
-
-```javascript
-
-<PrivateRouteScene path="/asyncPageB" 
-    sceneBundle={pageA}
-    onValidate={(cb,match,location,type)=>cb(true)}
-    onPass={(data)=>console.debug("pass")}
-    onReject={(data)=>this.props.jumpTo("/login")}
-/>
-
-```
-
 ## Reducer
 
 redux-arena extends reducer of redux, add incoming reducerKey, comparing to _sceneReducerKey of action and decide updating or not.

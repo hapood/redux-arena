@@ -16,9 +16,54 @@ import {
   getContext,
   setContext
 } from "redux-saga/effects";
+import { bindActionCreators } from "redux";
+import { bindArenaActionCreators } from "../../enhencedRedux";
 import createSenceReducer from "../reducers/createSenceReducer";
 import { sceneAddReducer, sceneReplaceReducer } from "../../utils";
 import { getArenaSwitchInitState } from "../reducers";
+
+function calcNewReduxInfo(reduxInfo, newReduxInfo, dispatch, isPlainActions) {
+  let connectedActions = reduxInfo.connectedActions;
+  let newArenaReducerDict = reduxInfo.arenaReducerDict;
+  if (
+    reduxInfo.reducerKey !== newReduxInfo.reducerKey ||
+    reduxInfo.uniqueReducerKey !== newReduxInfo.reducerKey ||
+    reduxInfo.vReducerKey !== newReduxInfo.vReducerKey ||
+    reduxInfo.parentArenaReducerDict !== newReduxInfo.parentArenaReducerDict ||
+    reduxInfo.actions !== newReduxInfo.actions
+  ) {
+    //calc actions
+    if (reduxInfo.actions !== newReduxInfo.actions) {
+      if (newReduxInfo.actions == null) {
+        connectedActions = {};
+      } else if (isPlainActions === true) {
+        connectedActions = bindActionCreators(newReduxInfo.actions, dispatch);
+      } else {
+        connectedActions = bindArenaActionCreators(
+          newReduxInfo.actions,
+          dispatch,
+          newReduxInfo.reducerKey
+        );
+      }
+    }
+    //calc arena reducer dict
+    let item = {
+      reducerKey: newReduxInfo.reducerKey,
+      actions: connectedActions
+    };
+    newArenaReducerDict = Object.assign(newReduxInfo.parentArenaReducerDict, {
+      _curScene: item
+    });
+    if (newReduxInfo.uniqueReducerKey != null)
+      newArenaReducerDict[newReduxInfo.uniqueReducerKey] = item;
+    if (newReduxInfo.vReducerKey != null)
+      newArenaReducerDict[newReduxInfo.vReducerKey] = item;
+  }
+  return Object.assign({}, newReduxInfo, {
+    connectedActions,
+    arenaReducerDict: newArenaReducerDict
+  });
+}
 
 function* forkSagaWithContext(saga, ctx) {
   yield setContext(ctx);
@@ -26,16 +71,16 @@ function* forkSagaWithContext(saga, ctx) {
 }
 
 export function* sceneApplyRedux({
-  arenaSwitchReducerKey,
-  reducerKey,
+  parentArenaReducerDict,
   state,
   saga,
+  actions,
   reducer,
+  options,
   curSceneBundle,
   reduxInfo
 }) {
   let newReducerKey = reduxInfo.reducerKey;
-  let newSagaTask = reduxInfo.sagaTask;
   let arenaStore = yield getContext("store");
   try {
     if (saga !== curSceneBundle.saga) {
@@ -48,11 +93,14 @@ export function* sceneApplyRedux({
   if (reduxInfo.reducerKey == null) {
     newReducerKey = sceneAddReducer(
       arenaStore,
-      reducerKey,
+      options.reducerKey,
       newReducerKey => createSenceReducer(reducer, newReducerKey),
       state
     );
-  } else if (reducerKey == null || reducerKey === reduxInfo.reducerKey) {
+  } else if (
+    options.reducerKey == null ||
+    options.reducerKey === reduxInfo.reducerKey
+  ) {
     if (reducer !== curSceneBundle.reducer) {
       newReducerKey = sceneReplaceReducer(
         arenaStore,
@@ -68,14 +116,27 @@ export function* sceneApplyRedux({
         state
       });
     }
-  } else if (reducerKey !== reduxInfo.reducerKey) {
+  } else if (options.reducerKey !== reduxInfo.reducerKey) {
     newReducerKey = add(
       arenaStore,
-      reducerKey,
+      options.reducerKey,
       newReducerKey => createSenceReducer(reducer, newReducerKey),
       state === curSceneBundle.state ? null : state
     );
   }
+
+  let newReduxInfo = calcNewReduxInfo(
+    reduxInfo,
+    {
+      reducerKey: newReducerKey,
+      uniqueReducerKey: options.reducerKey,
+      vReducerKey: options.vReducerKey,
+      parentArenaReducerDict,
+      actions
+    },
+    arenaStore.dispatch,
+    options.isPlainActions
+  );
 
   if (saga) {
     if (
@@ -83,16 +144,12 @@ export function* sceneApplyRedux({
       newReducerKey !== reduxInfo.reducerKey ||
       reduxInfo.sagaTask.isCancelled()
     ) {
-      newSagaTask = yield spawn(forkSagaWithContext, saga, {
-        sceneReducerKey: newReducerKey
+      newReduxInfo.sagaTask = yield spawn(forkSagaWithContext, saga, {
+        arenaReducerDict: newReduxInfo.arenaReducerDict
       });
     }
   }
-
-  return {
-    newSagaTask,
-    newReducerKey
-  };
+  return newReduxInfo;
 }
 
 function* sceneClearRedux({ arenaSwitchReducerKey, reduxInfo }) {

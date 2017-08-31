@@ -1,6 +1,6 @@
 {
   "name": "redux-arena",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Modularizing redux with react component.",
   "main": "index.js",
   "scripts": {
@@ -78,7 +78,7 @@
     "redux-devtools-dock-monitor": "^1.1.2",
     "redux-thunk": "^2.2.0",
     "rimraf": "^2.6.1",
-    "sinon": "^2.4.1",
+    "sinon": "^3.2.1",
     "webpack": "^3.3.0",
     "webpack-dev-server": "^2.5.1"
   }

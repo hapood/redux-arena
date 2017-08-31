@@ -10,55 +10,8 @@ import {
   getContext
 } from "redux-saga/effects";
 import { connect } from "react-redux";
-import {
-  bindArenaActionCreators,
-  createProxyMapStateToProps
-} from "../../enhencedRedux";
-import { bindActionCreators } from "redux";
+import { createProxyMapStateToProps } from "../../enhencedRedux";
 import { sceneApplyRedux } from "./sceneReduxSaga";
-
-function calcNewReduxInfo(reduxInfo, newReduxInfo, dispatch, isPlainActions) {
-  let connectedActions = reduxInfo.connectedActions;
-  let newArenaReducerDict = reduxInfo.arenaReducerDict;
-  if (
-    reduxInfo.reducerKey !== newReduxInfo.reducerKey ||
-    reduxInfo.uniqueReducerKey !== newReduxInfo.reducerKey ||
-    reduxInfo.vReducerKey !== newReduxInfo.vReducerKey ||
-    reduxInfo.parentArenaReducerDict !== newReduxInfo.parentArenaReducerDict ||
-    reduxInfo.actions !== newReduxInfo.actions
-  ) {
-    //calc actions
-    if (reduxInfo.actions !== newReduxInfo.actions) {
-      if (newReduxInfo.actions == null) {
-        connectedActions = {};
-      } else if (isPlainActions === true) {
-        connectedActions = bindActionCreators(newReduxInfo.actions, dispatch);
-      } else {
-        connectedActions = bindArenaActionCreators(
-          newReduxInfo.actions,
-          dispatch,
-          newReduxInfo.reducerKey
-        );
-      }
-    }
-    //calc arena reducer dict
-    let item = {
-      reducerKey: newReduxInfo.reducerKey,
-      actions: connectedActions
-    };
-    newArenaReducerDict = Object.assign(newReduxInfo.parentArenaReducerDict, {
-      _curScene: item
-    });
-    if (newReduxInfo.uniqueReducerKey != null)
-      newArenaReducerDict[newReduxInfo.uniqueReducerKey] = item;
-    if (newReduxInfo.vReducerKey != null)
-      newArenaReducerDict[newReduxInfo.vReducerKey] = item;
-  }
-  return Object.assign({}, newReduxInfo, {
-    connectedActions,
-    arenaReducerDict: newArenaReducerDict
-  });
-}
 
 /**
  * Scene of the synchronous load function, it does the following.
@@ -78,30 +31,23 @@ export function* applySceneBundle({ parentArenaReducerDict, sceneBundle }) {
     isWaiting,
     arenaReducerDict
   } = yield select(state => state[arenaSwitchReducerKey]);
-  let options = sceneBundle.options || {};
-  let { newReducerKey, newSagaTask } = yield* sceneApplyRedux({
-    arenaSwitchReducerKey: parentArenaReducerDict._curSwitch.reducerKey,
-    reducerKey: options.reducerKey,
+  let newReduxInfo = yield* sceneApplyRedux({
+    parentArenaReducerDict,
     state: sceneBundle.state,
     saga: sceneBundle.saga,
+    actions: sceneBundle.actions,
     reducer: sceneBundle.reducer,
+    options: sceneBundle.options || {},
     curSceneBundle,
     reduxInfo
   });
-  let store = yield getContext("store");
-  let newReduxInfo = calcNewReduxInfo(
-    reduxInfo,
-    {
-      reducerKey: newReducerKey,
-      sagaTask: newSagaTask,
-      uniqueReducerKey: options.reducerKey,
-      vReducerKey: options.vReducerKey,
-      parentArenaReducerDict,
-      actions: sceneBundle.actions
-    },
-    store.dispatch,
-    options.isPlainActions
-  );
+  yield put({
+    type: ARENA_SWITCH_SET_STATE,
+    arenaSwitchReducerKey,
+    state: {
+      reduxInfo: newReduxInfo
+    }
+  });
   let mapStateToProps = createProxyMapStateToProps(
     sceneBundle.mapStateToProps,
     newReduxInfo,
@@ -112,11 +58,10 @@ export function* applySceneBundle({ parentArenaReducerDict, sceneBundle }) {
     sceneBundle.Component.displayName ||
     sceneBundle.Component.name ||
     "Unknown";
-  PlayingScene.displayName = `SceneConnect({reducerKey:${newReducerKey},Component:${displayName}})`;
+  PlayingScene.displayName = `SceneConnect({reducerKey:${newReduxInfo.reducerKey},Component:${displayName}})`;
   let newArenaState = {
     PlayingScene,
-    curSceneBundle: sceneBundle,
-    reduxInfo: newReduxInfo
+    curSceneBundle: sceneBundle
   };
   if (isWaiting) {
     yield take(ARENA_SWITCH_EVENT_LOADARENA_SCENE_CONTINUE);

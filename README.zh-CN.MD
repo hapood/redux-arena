@@ -161,19 +161,6 @@ Redux-arena提供了一组可以和react-router整合使用的高阶组件。
 <RouteScene path="/asyncPageB" asyncSceneBundle={asyncPageB} exact strict />
 ```
 
-### PrivateRouteScene
-
-帮助构造需要验证登录功能的页面。相比RouteScene增加了onValidate、onPass、onReject三个回调函数。
-
-```javascript
-<PrivateRouteScene path="/asyncPageB" 
-    sceneBundle={pageA}
-    onValidate={(cb,match,location,type)=>cb(true)}
-    onPass={(data)=>console.debug("pass")}
-    onReject={(data)=>this.props.jumpTo("/login")}
-/>
-```
-
 ## reducer
 
 redux-arena对redux的reducer进行了扩展，增加了当前模块reducerKey作为传入参数，

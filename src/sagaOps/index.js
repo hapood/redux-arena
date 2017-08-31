@@ -1,5 +1,5 @@
 import setSceneState from "./setSceneState";
 import getSceneState from "./getSceneState";
-import getSceneReducerKey from "./getSceneReducerKey";
+import getSceneEntry from "./getSceneEntry";
 
-export { setSceneState, getSceneState, getSceneReducerKey };
+export { setSceneState, getSceneState, getSceneEntry };

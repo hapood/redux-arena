@@ -1,7 +1,7 @@
-import { select, getContext } from "redux-saga/effects";
+import { select } from "redux-saga/effects";
+import getSceneEntry from "./getSceneEntry";
 
-export default function* getSceneState(sceneReducerKey) {
-  if (sceneReducerKey == null) sceneReducerKey = yield getContext("sceneReducerKey");
-  let a = yield select(state => state[sceneReducerKey]);
-  return yield select(state => state[sceneReducerKey]);
+export default function* getSceneState(key) {
+  let entry = yield* getSceneEntry(key);
+  return yield select(state => state[entry.reducerKey]);
 }
