@@ -1,3 +1,6 @@
+## 0.4.0 (Aug 20, 2017)
+* Virtual reducer key support
+
 ## 0.3.0 (Aug 20, 2017)
 * Rename IndependentScene to SoloScene
 * Rename SceneSwitch to ArenaScene
