@@ -1,4 +1,4 @@
-## 0.4.0 (Aug 20, 2017)
+## 0.4.1 (Aug 20, 2017)
 * Virtual reducer key support
 
 ## 0.3.0 (Aug 20, 2017)
