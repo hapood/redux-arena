@@ -6,7 +6,9 @@ export default function reducer(state = initState, action) {
     case FRAME_SET_STATE:
       return Object.assign({}, state, action.state);
     case ADD_CNT:
-      return Object.assign({}, state, { cnt: state.cnt + 1 });
+      return Object.assign({}, state, {
+        cnt: state.cnt + (action.num != null ? action.num : 1)
+      });
     default:
       return state;
   }

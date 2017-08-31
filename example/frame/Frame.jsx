@@ -7,9 +7,9 @@ import { RouteScene, ArenaSwitch } from "redux-arena";
 import scopedPageBundle from "../scopedPage";
 import * as actions from "./redux/actions";
 import DevTools from "./DevTools";
+import moduleReUseBundle from "../moduleReUse";
 
 const AsyncPassDownBundle = import("../passDownStateAndActions");
-const asyncReduxBundleC = import("../reduxBundleC");
 
 class Frame extends Component {
   constructor(props) {
@@ -35,6 +35,9 @@ class Frame extends Component {
                   Pass Down State And Actions
                 </Link>
               </li>
+              <li>
+                <Link to="/redux-arena/moduleReUse">Module Re-Use</Link>
+              </li>
             </ul>
             <div style={{ display: "flex" }}>
               <div style={{ marginLeft: "1rem" }}>total count: {cnt}</div>
@@ -56,6 +59,10 @@ class Frame extends Component {
                   <RouteScene
                     path="/redux-arena/passDownStateAndActions"
                     asyncSceneBundle={AsyncPassDownBundle}
+                  />
+                  <RouteScene
+                    path="/redux-arena/moduleReUse"
+                    asyncSceneBundle={moduleReUseBundle}
                   />
                 </ArenaSwitch>
               </div>

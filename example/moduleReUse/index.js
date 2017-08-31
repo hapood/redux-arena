@@ -1,12 +1,11 @@
 import state from "./state";
-import saga from "./saga";
-import Widget from "./Widget";
 import reducer from "./reducer";
 import * as actions from "./actions";
+import Container from "./Container";
+
 export default {
-  Component: Widget,
+  Component: Container,
   state,
-  saga,
-  actions,
-  reducer
+  reducer,
+  actions
 };
