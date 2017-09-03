@@ -4,7 +4,7 @@ import childBundle from "./child";
 
 export default class Parent extends Component {
   render() {
-    let { state } = this.props;
+    let { name, cnt } = this.props;
     return (
       <div style={{ padding: "1rem" }}>
         <table style={{ width: "20rem" }}>
@@ -15,11 +15,11 @@ export default class Parent extends Component {
             </tr>
             <tr>
               <td>name:</td>
-              <td>{state.name}</td>
+              <td>{name}</td>
             </tr>
             <tr>
               <td>cnt:</td>
-              <td>{state.cnt}</td>
+              <td>{cnt}</td>
             </tr>
           </tbody>
         </table>

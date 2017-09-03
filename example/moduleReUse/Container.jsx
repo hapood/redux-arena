@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { SoloScene } from "redux-arena";
-import opPanelBundle from "./opPanel";
+import OpPanel from "./OpPanel";
 
 export default class Container extends Component {
   render() {
-    let { state, actions } = this.props;
+    let { panelNum, actions } = this.props;
     return (
       <div style={{ width: "20rem", padding: "1rem" }}>
         <div>
@@ -26,15 +25,9 @@ export default class Container extends Component {
             marginTop: "1rem"
           }}
         >
-          {Array(state.panelNum)
+          {Array(panelNum)
             .fill()
-            .map((_, i) => (
-              <SoloScene
-                key={i}
-                sceneBundle={opPanelBundle}
-                sceneProps={{ step: i }}
-              />
-            ))}
+            .map((_, i) => <OpPanel key={i} step={i} />)}
         </div>
       </div>
     );

@@ -5,28 +5,28 @@ import createHistory from "history/createBrowserHistory";
 import {
   ARENA_SWITCH_INIT_SAGA,
   ARENA_SWITCH_KILL_SAGA
-} from "../redux/actionTypes";
-import createArenaSwitchReducer from "../redux/reducers/createArenaSwitchReducer";
+} from "../../core/actionTypes";
+import createArenaSwitchReducer from "../../core/reducers/createArenaSwitchReducer";
 import {
   switchAddReducer,
   switchRmAndAddReducer,
   calcSwitchReducerDict
-} from "../utils";
-import { arenaSwitchConnect } from "../SceneBundle";
+} from "../../utils";
 
-export default class SoloScene extends Component {
+export default class ArenaSwitch extends Component {
   static contextTypes = {
     store: PropTypes.any,
+    arenaReducerDict: PropTypes.object
+  };
+
+  static childContextTypes = {
     arenaReducerDict: PropTypes.object
   };
 
   static propTypes = {
     children: PropTypes.any,
     reducerKey: PropTypes.string,
-    sceneBundle: PropTypes.object,
-    asyncSceneBuldle: PropTypes.object,
-    sceneProps: PropTypes.object,
-    SceneLoadingComponent: PropTypes.any
+    vReducerKey: PropTypes.string
   };
 
   componentWillMount() {
@@ -35,29 +35,14 @@ export default class SoloScene extends Component {
       this.props.reducerKey,
       createArenaSwitchReducer
     );
-    let {
-      asyncSceneBundle,
-      sceneBundle,
-      sceneProps,
-      SceneLoadingComponent
-    } = this.props;
     let arenaReducerDict = calcSwitchReducerDict(
       this.context.arenaReducerDict,
       reducerKey,
       this.props.reducerKey,
       this.props.vReducerKey
     );
-    let wrappedSceneBundle = arenaSwitchConnect(arenaReducerDict);
-    let sceneBundleElement = React.createElement(wrappedSceneBundle, {
-      asyncSceneBundle,
-      sceneBundle,
-      sceneProps,
-      SceneLoadingComponent
-    });
     this.state = {
       arenaReducerDict,
-      wrappedSceneBundle,
-      sceneBundleElement,
       sagaTaskPromise: new Promise(resolve =>
         this.context.store.dispatch({
           type: ARENA_SWITCH_INIT_SAGA,
@@ -67,23 +52,22 @@ export default class SoloScene extends Component {
       )
     };
   }
-
+  /**
+   * 
+   * 
+   * @param {any} nextProps 
+   * @param {any} nextContext 
+   * @memberof ArenaSwitch
+   */
   componentWillReceiveProps(nextProps, nextContext) {
+    let { reducerKey, vReducerKey } = nextProps;
     let refreshFlag = false;
-    let {
-      reducerKey,
-      vReducerKey,
-      asyncSceneBundle,
-      sceneBundle,
-      sceneProps,
-      SceneLoadingComponent
-    } = nextProps;
     let newReducerKey = this.state.arenaReducerDict._curSwitch.reducerKey;
     if (
       reducerKey != null &&
       reducerKey !== this.state.arenaReducerDict._curSwitch.reducerKey
     ) {
-      refreshFlag = true;
+      refreshFlag === true;
       this.context.store.dispatch({
         type: ARENA_SWITCH_KILL_SAGA,
         sagaTaskPromise: this.state.sagaTaskPromise
@@ -97,7 +81,7 @@ export default class SoloScene extends Component {
       this.state.sagaTaskPromise = new Promise(resolve =>
         this.context.store.dispatch({
           type: ARENA_SWITCH_INIT_SAGA,
-          reducerKey: newReducerKey,
+          reducerKey,
           setSagaTask: resolve
         })
       );
@@ -108,31 +92,11 @@ export default class SoloScene extends Component {
       vReducerKey !== this.props.vReducerKey ||
       refreshFlag === true
     ) {
-      refreshFlag = true;
       this.state.arenaReducerDict = calcSwitchReducerDict(
         nextContext.arenaReducerDict,
         newReducerKey,
         nextProps.reducerKey,
         nextProps.vReducerKey
-      );
-      this.state.wrappedSceneBundle = arenaSwitchConnect(
-        this.state.arenaReducerDict
-      );
-    }
-    if (
-      asyncSceneBundle !== this.props.asyncSceneBundle ||
-      sceneBundle !== this.props.sceneBundle ||
-      SceneLoadingComponent !== this.props.SceneLoadingComponent ||
-      refreshFlag == true
-    ) {
-      this.state.sceneBundleElement = React.createElement(
-        this.state.wrappedSceneBundle,
-        {
-          asyncSceneBundle,
-          sceneBundle,
-          sceneProps,
-          SceneLoadingComponent
-        }
       );
     }
   }
@@ -147,7 +111,13 @@ export default class SoloScene extends Component {
     );
   }
 
+  getChildContext() {
+    return { arenaReducerDict: this.state.arenaReducerDict };
+  }
+
   render() {
-    return this.state.sceneBundleElement;
+    return (
+      <Switch location={this.props.location}>{this.props.children}</Switch>
+    );
   }
 }

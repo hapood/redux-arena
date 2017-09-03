@@ -5,24 +5,22 @@ import thunk from "redux-thunk";
 import { spy } from "sinon";
 import { Provider } from "react-redux";
 import { createMount } from "../testUtils";
-import { createArenaStore } from "../../src";
+import {
+  createArenaStore,
+  ArenaSwitch,
+  RouteScene,
+  PrivateRouteScene
+} from "../../src";
 import { MemoryRouter, Link } from "react-router-dom";
 import createHistory from "history/createBrowserHistory";
-import ArenaSwitch from "../../src/ArenaSwitch";
-import RouteScene from "../../src/RouteScene";
 import reduxBundleForTest from "../reduxBundleForeTest";
 import reducer from "../frameForTest/redux/reducer";
 import saga from "../frameForTest/redux/saga";
-import PrivateRouteScene from "../../src/PrivateRouteScene";
 
 function createMountWithRedux(store) {
   let mount = createMount(store);
   let mountWithRedux = children =>
-    mount(
-      <Provider store={store}>
-        {children}
-      </Provider>
-    );
+    mount(<Provider store={store}>{children}</Provider>);
   mountWithRedux.cleanUp = mount.cleanUp;
   return mountWithRedux;
 }

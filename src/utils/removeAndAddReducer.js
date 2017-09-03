@@ -1,7 +1,7 @@
 import {
   ARENA_SCENE_REPLACE_STATE,
   ARENA_SWITCH_REPLACE_STATE
-} from "../redux/actionTypes";
+} from "../core/actionTypes";
 
 export function sceneRmAndAddReducer(
   store,

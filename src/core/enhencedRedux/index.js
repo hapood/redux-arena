@@ -1,9 +1,9 @@
 import bindArenaActionCreators from "./bindArenaActionCreators";
 import createEnhancedStore from "./createEnhancedStore";
-import createProxyMapStateToProps from "./createProxyMapStateToProps";
+import createPropsPicker from "./createPropsPicker";
 
 export {
   bindArenaActionCreators,
   createEnhancedStore,
-  createProxyMapStateToProps
+  createPropsPicker
 };

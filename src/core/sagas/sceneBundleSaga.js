@@ -10,7 +10,7 @@ import {
   getContext
 } from "redux-saga/effects";
 import { connect } from "react-redux";
-import { createProxyMapStateToProps } from "../../enhencedRedux";
+import { createPropsPicker } from "../enhencedRedux";
 import { sceneApplyRedux } from "./sceneReduxSaga";
 
 /**
@@ -48,12 +48,8 @@ export function* applySceneBundle({ parentArenaReducerDict, sceneBundle }) {
       reduxInfo: newReduxInfo
     }
   });
-  let mapStateToProps = createProxyMapStateToProps(
-    sceneBundle.mapStateToProps,
-    newReduxInfo,
-    newReduxInfo.arenaReducerDict
-  );
-  let PlayingScene = connect(mapStateToProps)(sceneBundle.Component);
+  let propsPicker = createPropsPicker(sceneBundle.propsPicker, newReduxInfo);
+  let PlayingScene = connect(propsPicker)(sceneBundle.Component);
   let displayName =
     sceneBundle.Component.displayName ||
     sceneBundle.Component.name ||

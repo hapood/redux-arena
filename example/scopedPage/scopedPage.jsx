@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export default class ScopedPage extends Component {
   render() {
-    let { state, actions } = this.props;
+    let { name, dynamicState, cnt, actions } = this.props;
     return (
       <div style={{ marginLeft: "1rem" }}>
         <table style={{ width: "20rem" }}>
@@ -13,15 +13,15 @@ export default class ScopedPage extends Component {
             </tr>
             <tr>
               <td>name:</td>
-              <td>{state.name}</td>
+              <td>{name}</td>
             </tr>
             <tr>
               <td>dynamicState:</td>
-              <td>{state.dynamicState}</td>
+              <td>{dynamicState}</td>
             </tr>
             <tr>
               <td>cnt:</td>
-              <td>{state.cnt}</td>
+              <td>{cnt}</td>
             </tr>
           </tbody>
         </table>
@@ -46,7 +46,8 @@ export default class ScopedPage extends Component {
             }}
           >
             <button onClick={actions.clearCnt}>Clear Page Count</button>{" "}
-            dispatch action type "ARENA_SCENE_SET_STATE" and set this page's cnt 0.
+            dispatch action type "ARENA_SCENE_SET_STATE" and set this page's cnt
+            0.
           </div>
         </div>
         <div

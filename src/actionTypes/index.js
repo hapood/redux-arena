@@ -1,4 +1,4 @@
-export { ARENA_SCENE_SET_STATE } from "../redux/actionTypes";
+export { ARENA_SCENE_SET_STATE } from "../core/actionTypes";
 
 export const ARENA_SWITCH_EVENT_LOADARENA_SCENE_START =
   "ARENA_SWITCH_EVENT_LOADARENA_SCENE_START";

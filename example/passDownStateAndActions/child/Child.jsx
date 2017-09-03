@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export default class Child extends Component {
   render() {
-    let { state, parentState, actions, parentActions } = this.props;
+    let { name, cnt, parentState, actions, parentActions } = this.props;
     return (
       <div
         style={{
@@ -24,7 +24,7 @@ export default class Child extends Component {
             </tr>
             <tr>
               <td>name:</td>
-              <td>{state.name}</td>
+              <td>{name}</td>
             </tr>
             <tr>
               <td>parentState:</td>
@@ -34,7 +34,7 @@ export default class Child extends Component {
             </tr>
             <tr>
               <td>cnt:</td>
-              <td>{state.cnt}</td>
+              <td>{cnt}</td>
             </tr>
           </tbody>
         </table>

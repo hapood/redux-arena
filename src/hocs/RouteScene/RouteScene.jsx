@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Route } from "react-router-dom";
 import invariant from "invariant";
-import { ARENA_SWITCH_SET_STATE } from "../redux/actionTypes";
+import { ARENA_SWITCH_SET_STATE } from "../../core/actionTypes";
 import { arenaSwitchConnect } from "../SceneBundle";
 
 class RouteScene extends Component {

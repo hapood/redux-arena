@@ -8,9 +8,12 @@ export default {
   state,
   actions,
   reducer,
-  mapStateToProps: (state, { parent }) => {
+  propsPicker: (state, actions, allState, { parent }) => {
     return {
-      parentState: state[parent.reducerKey],
+      name: state.name,
+      cnt: state.cnt,
+      actions,
+      parentState: allState[parent.reducerKey],
       parentActions: parent.actions
     };
   }

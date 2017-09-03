@@ -3,18 +3,13 @@ import { expect } from "chai";
 import { spy } from "sinon";
 import { Provider } from "react-redux";
 import { createMount } from "../testUtils";
-import { createArenaStore } from "../../src";
-import SoloScene from "../../src/SoloScene";
+import { createArenaStore, SoloScene } from "../../src";
 import reduxBundleForTest from "../reduxBundleForeTest";
 
 function createMountWithRedux(store) {
   let mount = createMount(store);
   let mountWithRedux = children =>
-    mount(
-      <Provider store={store}>
-        {children}
-      </Provider>
-    );
+    mount(<Provider store={store}>{children}</Provider>);
   mountWithRedux.cleanUp = mount.cleanUp;
   return mountWithRedux;
 }

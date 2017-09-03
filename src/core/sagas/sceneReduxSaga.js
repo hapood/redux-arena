@@ -3,6 +3,7 @@ import {
   ARENA_SCENE_REPLACE_STATE,
   ARENA_SWITCH_SET_STATE
 } from "../actionTypes";
+import { ARENA_SCENE_SET_STATE } from "../../actionTypes";
 import {
   takeEvery,
   take,
@@ -17,10 +18,18 @@ import {
   setContext
 } from "redux-saga/effects";
 import { bindActionCreators } from "redux";
-import { bindArenaActionCreators } from "../../enhencedRedux";
+import { bindArenaActionCreators } from "../enhencedRedux";
 import createSenceReducer from "../reducers/createSenceReducer";
-import { sceneAddReducer, sceneReplaceReducer } from "../../utils";
+import {
+  sceneAddReducer,
+  sceneReplaceReducer,
+  sceneRmAndAddReducer
+} from "../../utils";
 import { getArenaSwitchInitState } from "../reducers";
+
+const defaultActions = {
+  setState: state => ({ type: ARENA_SCENE_SET_STATE, state })
+};
 
 function calcNewReduxInfo(reduxInfo, newReduxInfo, dispatch, isPlainActions) {
   let connectedActions = reduxInfo.connectedActions;
@@ -34,13 +43,14 @@ function calcNewReduxInfo(reduxInfo, newReduxInfo, dispatch, isPlainActions) {
   ) {
     //calc actions
     if (reduxInfo.actions !== newReduxInfo.actions) {
-      if (newReduxInfo.actions == null) {
-        connectedActions = {};
-      } else if (isPlainActions === true) {
-        connectedActions = bindActionCreators(newReduxInfo.actions, dispatch);
+      if (isPlainActions === true) {
+        connectedActions = bindActionCreators(
+          newReduxInfo.actions || defaultActions,
+          dispatch
+        );
       } else {
         connectedActions = bindArenaActionCreators(
-          newReduxInfo.actions,
+          newReduxInfo.actions || defaultActions,
           dispatch,
           newReduxInfo.reducerKey
         );
@@ -90,38 +100,36 @@ export function* sceneApplyRedux({
     if (yield cancelled()) {
     }
   }
+  let reducerFactory = bindingReducerKey =>
+    createSenceReducer(
+      reducer,
+      bindingReducerKey,
+      state,
+      parentArenaReducerDict
+    );
   if (reduxInfo.reducerKey == null) {
     newReducerKey = sceneAddReducer(
       arenaStore,
       options.reducerKey,
-      newReducerKey => createSenceReducer(reducer, newReducerKey),
-      state
+      reducerFactory
     );
   } else if (
     options.reducerKey == null ||
     options.reducerKey === reduxInfo.reducerKey
   ) {
-    if (reducer !== curSceneBundle.reducer) {
+    if (reducer !== curSceneBundle.reducer || state !== curSceneBundle.state) {
       newReducerKey = sceneReplaceReducer(
         arenaStore,
         reduxInfo.reducerKey,
-        newReducerKey => createSenceReducer(reducer, newReducerKey),
-        state === curSceneBundle.state ? null : state
+        reducerFactory
       );
-    } else if (state !== curSceneBundle.state) {
-      newReducerKey = reduxInfo.reducerKey;
-      yield put({
-        type: ARENA_SCENE_REPLACE_STATE,
-        _sceneReducerKey: reduxInfo.reducerKey,
-        state
-      });
     }
   } else if (options.reducerKey !== reduxInfo.reducerKey) {
-    newReducerKey = add(
+    newReducerKey = sceneRmAndAddReducer(
       arenaStore,
+      reduxInfo.reducerKey,
       options.reducerKey,
-      newReducerKey => createSenceReducer(reducer, newReducerKey),
-      state === curSceneBundle.state ? null : state
+      reducerFactory
     );
   }
 

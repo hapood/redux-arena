@@ -21,9 +21,11 @@ function reducer(state = getSceneInitState(), action, sceneReducerKey) {
 
 export default function createSenceReducer(
   extendSenceReducer,
-  sceneReducerKey
+  sceneReducerKey,
+  initState,
+  arenaReducerDict
 ) {
-  return function(state, action) {
+  return function(state = initState, action) {
     if (extendSenceReducer) {
       state = extendSenceReducer(state, action, sceneReducerKey);
     }

@@ -1,7 +1,7 @@
 import {
   ARENA_SCENE_REPLACE_STATE,
   ARENA_SWITCH_REPLACE_STATE
-} from "../redux/actionTypes";
+} from "../core/actionTypes";
 
 function addReducer(store, reducerKey, reducerFactory) {
   let newReducerKey = reducerKey;
@@ -27,7 +27,7 @@ function addReducer(store, reducerKey, reducerFactory) {
 }
 
 export function switchAddReducer(store, reducerKey, reducerFactory, state) {
-  let newReducerKey = addReducer(store, reducerKey, reducerFactory, state);
+  let newReducerKey = addReducer(store, reducerKey, reducerFactory);
   if (state)
     store.dispatch({
       type: ARENA_SWITCH_REPLACE_STATE,
@@ -37,7 +37,7 @@ export function switchAddReducer(store, reducerKey, reducerFactory, state) {
 }
 
 export function sceneAddReducer(store, reducerKey, reducerFactory, state) {
-  let newReducerKey = addReducer(store, reducerKey, reducerFactory, state);
+  let newReducerKey = addReducer(store, reducerKey, reducerFactory);
   if (state)
     store.dispatch({
       type: ARENA_SCENE_REPLACE_STATE,

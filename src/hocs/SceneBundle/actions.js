@@ -6,7 +6,7 @@ import {
   ARENA_SCENE_PLAY_END,
   ARENA_SCENE_LOAD_END,
   ARENA_SCENE_CLEAR_REDUX
-} from "../../redux/actionTypes";
+} from "../../core/actionTypes";
 
 export function arenaLoadScene(parentArenaReducerDict, sceneBundle) {
   return {

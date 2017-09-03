@@ -2,7 +2,7 @@ import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import * as actions from "./redux/actions";
+import * as actions from "./actions";
 import SceneBundle from "./SceneBundle";
 
 export default function arenaSwitchConnect(arenaReducerDict) {
