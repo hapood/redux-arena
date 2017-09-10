@@ -1,3 +1,6 @@
+## 0.5.0 (Aug 20, 2017)
+* bug fixed and api update
+
 ## 0.4.1 (Aug 20, 2017)
 * Virtual reducer key support
 
