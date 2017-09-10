@@ -67,10 +67,7 @@ ReactDOM.render(
   <Provider store={store}>
     <PageA />
   </Provider>,
-  app,
-  function() {
-    document.getElementById("app").className = "";
-  }
+  app
 );
 ```
 
