@@ -1,17 +1,10 @@
 import {
   ARENA_SWITCH_LOAD_SCENE,
   ARENA_SWITCH_LOAD_ASYNCSCENE,
-  ARENA_SCENE_LOAD_START,
-  ARENA_SCENE_PLAY_START,
   ARENA_SWITCH_INIT_SAGA,
-  ARENA_SWITCH_KILL_SAGA,
+  ARENA_SWITCH_CLEAR_REDUX,
   ARENA_SWITCH_SET_STATE
 } from "../actionTypes";
-import {
-  ARENA_SWITCH_EVENT_LOADARENA_SCENE_START,
-  ARENA_SWITCH_EVENT_LOADARENA_SCENE_CONTINUE,
-  ARENA_SWITCH_EVENT_LOADARENA_SCENE_COMPLETE
-} from "../../actionTypes";
 import {
   takeEvery,
   take,
@@ -49,57 +42,6 @@ function* takeEverySceneBundleAction() {
   }
 }
 
-function* loadSceneStart() {
-  let arenaSwitchReducerKey = yield getContext("arenaSwitchReducerKey");
-  while (true) {
-    let action = yield take(ARENA_SCENE_LOAD_START);
-    if (action.arenaSwitchReducerKey === arenaSwitchReducerKey) {
-      let isWaitingSwitchAction = yield getContext("isWaitingSwitchAction");
-      yield put({
-        type: ARENA_SWITCH_SET_STATE,
-        arenaSwitchReducerKey,
-        state: {
-          isWaiting: isWaitingSwitchAction
-        }
-      });
-      let { match, location } = yield select(
-        state => state[arenaSwitchReducerKey]
-      );
-      let nextAction = Object.assign({}, action, {
-        type: ARENA_SWITCH_EVENT_LOADARENA_SCENE_START,
-        match,
-        location
-      });
-      yield put(nextAction);
-    }
-  }
-}
-
-function* loadSceneComplete() {
-  let arenaSwitchReducerKey = yield getContext("arenaSwitchReducerKey");
-  while (true) {
-    let action = yield take(ARENA_SCENE_PLAY_START);
-    if (action.arenaSwitchReducerKey === arenaSwitchReducerKey) {
-      yield put({
-        type: ARENA_SWITCH_SET_STATE,
-        arenaSwitchReducerKey,
-        state: {
-          isWaiting: true
-        }
-      });
-      let { match, location } = yield select(
-        state => state[arenaSwitchReducerKey]
-      );
-      let nextAction = Object.assign({}, action, {
-        type: ARENA_SWITCH_EVENT_LOADARENA_SCENE_COMPLETE,
-        match,
-        location
-      });
-      yield put(nextAction);
-    }
-  }
-}
-
 /**
  * Listen to the loading of each scene,
  * and handle different processing functions when handling sence switches.
@@ -110,8 +52,6 @@ function* loadSceneComplete() {
 function* forkSagaWithContext(ctx) {
   yield setContext(ctx);
   yield fork(takeEverySceneBundleAction);
-  yield fork(loadSceneStart);
-  yield fork(loadSceneComplete);
 }
 
 /**
@@ -125,9 +65,15 @@ function* initArenaSwitchSaga({
   setSagaTask,
   isWaitingSwitchAction = false
 }) {
-  let sagaTask = yield fork(forkSagaWithContext, {
+  yield put({
+    type: ARENA_SWITCH_SET_STATE,
     arenaSwitchReducerKey: reducerKey,
-    isWaitingSwitchAction
+    state: {
+      isWaiting: isWaitingSwitchAction
+    }
+  });
+  let sagaTask = yield fork(forkSagaWithContext, {
+    arenaSwitchReducerKey: reducerKey
   });
   setSagaTask(sagaTask);
 }
@@ -138,12 +84,14 @@ function* initArenaSwitchSaga({
  * @param {any} { sagaTaskPromise } 
  */
 
-function* killArenaSwitchSaga({ sagaTaskPromise }) {
+function* killArenaSwitchSaga({ sagaTaskPromise, reducerKey }) {
   let sagaTask = yield sagaTaskPromise;
   if (sagaTask) yield cancel(sagaTask);
+  let store = yield getContext("store");
+  store.removeReducer(reducerKey);
 }
 
 export default function* saga() {
   yield takeEvery(ARENA_SWITCH_INIT_SAGA, initArenaSwitchSaga);
-  yield takeEvery(ARENA_SWITCH_KILL_SAGA, killArenaSwitchSaga);
+  yield takeEvery(ARENA_SWITCH_CLEAR_REDUX, killArenaSwitchSaga);
 }

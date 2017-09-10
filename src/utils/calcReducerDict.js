@@ -1,14 +1,12 @@
 export function calcSwitchReducerDict(
   arenaReducerDict,
   switchReducerKey,
-  reducerKey,
   vReducerKey
 ) {
-  let newDict = Object.assign({}, arenaReducerDict);
-  let item = { actions: {}, reducerKey: switchReducerKey };
-  if (reducerKey) {
-    newDict[reducerKey] = item;
-  }
+  let item = { actions: {}, reducerKey: switchReducerKey, vReducerKey };
+  let newDict = Object.assign({}, arenaReducerDict, {
+    [switchReducerKey]: item
+  });
   if (vReducerKey) {
     newDict[vReducerKey] = item;
   }

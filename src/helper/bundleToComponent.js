@@ -1,6 +1,12 @@
-import React from "react";
+import React, { Component } from "react";
 import SoloScene from "../hocs/SoloScene";
 
 export default function(bundle) {
-  return props => <SoloScene sceneBundle={bundle} sceneProps={props} />;
+  let WrapperClass = class extends Component {
+    static displayName = "ScenePropsProxyWrapper";
+    render() {
+      return <SoloScene sceneBundle={bundle} sceneProps={this.props} />;
+    }
+  };
+  return WrapperClass;
 }

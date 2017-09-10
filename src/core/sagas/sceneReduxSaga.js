@@ -19,7 +19,7 @@ import {
 } from "redux-saga/effects";
 import { bindActionCreators } from "redux";
 import { bindArenaActionCreators } from "../enhencedRedux";
-import createSenceReducer from "../reducers/createSenceReducer";
+import { createSenceReducer, sceneReducerWrapper } from "../reducers";
 import {
   sceneAddReducer,
   sceneReplaceReducer,
@@ -31,19 +31,21 @@ const defaultActions = {
   setState: state => ({ type: ARENA_SCENE_SET_STATE, state })
 };
 
-function calcNewReduxInfo(reduxInfo, newReduxInfo, dispatch, isPlainActions) {
+function calcNewReduxInfo(reduxInfo, newReduxInfo, dispatch, isSceneActions) {
   let connectedActions = reduxInfo.connectedActions;
   let newArenaReducerDict = reduxInfo.arenaReducerDict;
   if (
     reduxInfo.reducerKey !== newReduxInfo.reducerKey ||
-    reduxInfo.uniqueReducerKey !== newReduxInfo.reducerKey ||
     reduxInfo.vReducerKey !== newReduxInfo.vReducerKey ||
     reduxInfo.parentArenaReducerDict !== newReduxInfo.parentArenaReducerDict ||
     reduxInfo.actions !== newReduxInfo.actions
   ) {
     //calc actions
-    if (reduxInfo.actions !== newReduxInfo.actions) {
-      if (isPlainActions === true) {
+    if (
+      reduxInfo.actions !== newReduxInfo.actions ||
+      connectedActions == null
+    ) {
+      if (isSceneActions === false) {
         connectedActions = bindActionCreators(
           newReduxInfo.actions || defaultActions,
           dispatch
@@ -59,13 +61,13 @@ function calcNewReduxInfo(reduxInfo, newReduxInfo, dispatch, isPlainActions) {
     //calc arena reducer dict
     let item = {
       reducerKey: newReduxInfo.reducerKey,
+      vReducerKey: newReduxInfo.vReducerKey,
       actions: connectedActions
     };
     newArenaReducerDict = Object.assign(newReduxInfo.parentArenaReducerDict, {
+      [newReduxInfo.reducerKey]: item,
       _curScene: item
     });
-    if (newReduxInfo.uniqueReducerKey != null)
-      newArenaReducerDict[newReduxInfo.uniqueReducerKey] = item;
     if (newReduxInfo.vReducerKey != null)
       newArenaReducerDict[newReduxInfo.vReducerKey] = item;
   }
@@ -100,13 +102,22 @@ export function* sceneApplyRedux({
     if (yield cancelled()) {
     }
   }
-  let reducerFactory = bindingReducerKey =>
-    createSenceReducer(
-      reducer,
-      bindingReducerKey,
-      state,
-      parentArenaReducerDict
-    );
+  let reducerFactory =
+    options.isSceneReducer === false
+      ? bindingReducerKey =>
+          createSenceReducer(
+            reducer,
+            bindingReducerKey,
+            state,
+            parentArenaReducerDict
+          )
+      : bindingReducerKey =>
+          createSenceReducer(
+            reducer && sceneReducerWrapper(reducer),
+            bindingReducerKey,
+            state,
+            parentArenaReducerDict
+          );
   if (reduxInfo.reducerKey == null) {
     newReducerKey = sceneAddReducer(
       arenaStore,
@@ -137,13 +148,12 @@ export function* sceneApplyRedux({
     reduxInfo,
     {
       reducerKey: newReducerKey,
-      uniqueReducerKey: options.reducerKey,
       vReducerKey: options.vReducerKey,
       parentArenaReducerDict,
       actions
     },
     arenaStore.dispatch,
-    options.isPlainActions
+    options.isSceneActions
   );
 
   if (saga) {
@@ -167,7 +177,11 @@ function* sceneClearRedux({ arenaSwitchReducerKey, reduxInfo }) {
     yield put({
       type: ARENA_SWITCH_SET_STATE,
       arenaSwitchReducerKey: arenaSwitchReducerKey,
-      state: getArenaSwitchInitState()
+      state: {
+        PlayingScene: null,
+        curSceneBundle: {},
+        reduxInfo: {}
+      }
     });
     arenaStore.removeReducer(reduxInfo.reducerKey);
   }

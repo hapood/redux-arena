@@ -5,17 +5,19 @@
 [![npm version](https://img.shields.io/npm/v/redux-arena.svg?style=flat-square)](https://www.npmjs.com/package/redux-arena)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md#pull-requests)
 
-Redux-arena is a tool for modularizing redux/redux-saga with react component. Scope redux/redux-saga within bundle, and auto clear redux/redux-saga in bundle after react component unmounted.
+Redux is a great state management container， which is elaborate and can be easily extent. But there is some problem when resuing a React component binded with Redux, refs to [RFC: Reuse complex components implemented in React plus Redux #278](https://github.com/reactjs/react-redux/issues/278).
 
-## Why redux-arena
+## Features
 
-Redux is a great state management container, I love redux-saga and react-router very much. But when I am developing a webapp for management console, packaging a dozen url related page-components into one entity is annoying.
+Redux-Arena will export Reudx/Redux-Saga code with React component as a high order component for reuse:
+1. When hoc is mounted, it will start Redux-Saga task, initializing reducer of component, and register node on state. 
+2. When hoc is unmounted, it will cancel Redux-Saga task, destory reducer of component, and delete node on state.
+3. Reducer of component will only accept actions dispatched by current component by default. Revert reducer to accept all actions by set options. 
+4. Virtual ReducerKey: Sharing state in Redux will know the node's name of state, it will cause name conflict when reuse hoc sometime. Using vReducerKey will never cause name conflict, same vReducerKey will be replaced by child hoc.
+5. Like one-way data flow of Flux, child hoc could get state and actions of parent by vReducerKey.
+6. Integration deeply with Redux-Saga, accept actions dispatched by current component and set state of current component is more easily.
 
-Every url related page-component in management console webapp is nearly independent, but when we register its state and reducer in original redux, states and reducers will work all life-circle of redux. That's not necessary, it will cause some problems like same action type conflict, reducer inefficient, etc.
-
-Redux-arena is designed to solve these problems once and for all, when scene changed, the state, actions, reducer, and saga will be replaced by redux-arena, looks like the two scene connected with irrelevant store.
-
-And any issue or pr is welcomed.
+Integration with React-Router is included.
 
 ## Install
 
@@ -33,93 +35,37 @@ Online example can be found here: [Here](https://hapood.github.io/redux-arena/)
 
 ## Quick Start
 
-1. Bundle react component, actions, reducer, saga and export.
+1. Export react component, actions, reducer, saga as React component.
 
 ```javascript
+import { bundleToComponent } from "redux-arena/helper";
 import state from "./state";
-import saga from "./saga";
-import reducer from "./reducer";
 import * as actions from "./actions";
 import PageA from "./PageA";
 
-export default {
+export default bundleToComponent({
   Component: PageA,
   state,
   saga,
-  reducer,
   actions
-}
+}）
 ```
 
-State and actions in bundle is pass as props by default
-
-```javascript
-import React, { Component } from "react";
-
-export default class PageA extends Component {
-  render() {
-    let { state, actions } = this.props
-    return (
-      <div>
-        <div>{state.cnt}</div>
-        <button>{actions.addCnt}</button>
-      </div>
-    );
-  }
-}
-```
-
-2. Replace Switch/Route of react-router with ArenaSwitch/RouteScene
-
-```javascript
-import React, { Component } from "react";
-import { BrowserRouter, Link } from "react-router-dom";
-import { RouteScene , ArenaSwitch } from "redux-arena";
-import pageABundle from "./pageABundle";
-
-const asyncPageB = import("./pageBBundle");
-
-export default class Frame extends Component {
-  render() {
-    return (
-      <div>
-        <ul>
-          <li>
-            <Link to="/pageA">pageA</Link>
-          </li>
-          <li>
-            <Link to="/asyncPageB">asyncPageB</Link>
-          </li>
-        </ul>
-        <div style={{ marginTop: "1rem" }}>
-          <BrowserRouter>
-            <ArenaSwitch>
-              <RouteScene path="/pageA" sceneBundle={pageABundle} />
-              <RouteScene path="/asyncPageB" asyncSceneBundle={asyncPageB} />
-            </ArenaSwitch>
-          </BrowserRouter>
-        </div>
-      </div>
-    );
-  }
-}
-```
-
-3. Initial arenaStore and provide it for redux. 
+2. Initial arenaStore and provide it for redux. 
 
 ```javascript
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createArenaStore } from "redux-arena";
-import Frame from "./Frame";
+import PageA from "./pageA";
 
 const store = createArenaStore();
 
 const app = document.getElementById("app");
 ReactDOM.render(
   <Provider store={store}>
-    <Frame />
+    <PageA />
   </Provider>,
   app,
   function() {
@@ -147,7 +93,7 @@ Instead of Switch of react-router.
 ```javascript
 <ArenaSwitch>
     <RouteScene path="/pageA" sceneBundle={pageABundle} />
-    <PrivateRouteScene path="/asyncPageB" asyncSceneBundle={asyncPageB} />
+    <RouteScene path="/asyncPageB" asyncSceneBundle={asyncPageB} />
 </ArenaSwitch>
 ```
 
@@ -161,34 +107,6 @@ An enhenced Route witch accept sceneBundle prop. Support asyncSceneBundle for co
 
 ```
 
-## Reducer
-
-redux-arena extends reducer of redux, add incoming reducerKey, comparing to _sceneReducerKey of action and decide updating or not.
-
-```javascript
-// original reducer
-function reducer(state = initState, action){
-  //...
-}
-
-// extended reducer
-function reducer(state = initState, action, reducerKey){
-  //...
-}
-```
-
-With sceneReducer, reducer will only accept action dispatched from current bundle.
-
-```javascript
-import { sceneReducer } from "redux-arena/sceneScope";
-
-function reducer(state = initState, action, reducerKey){
-  //...
-}
-
-export default sceneReducer(reducer)
-```
-
 ## Saga operations
 
 With setSceneState and getSceneState, getting and updating bundle state easily.
@@ -198,21 +116,20 @@ import { setSceneState, getSceneState } from "redux-arena/sagaOps";
 
 function * doSomthing(){
   let { a } = yield* getSceneState()
-  yield* setSceneState({ a:a+1 })
+  yield* setSceneState({ a : a+1 })
 }
 ```
 
-With sceneActionSaga, action saga will only accept action dispatched from current bundle.
+With takeLatestSceneAction, action saga will only accept action dispatched from current bundle.
 
 ```javascript
-import { sceneActionSaga } from "redux-arena/sceneScope";
-import { setSceneState } from "redux-arena/sagaOps";
+import { setSceneState, takeLatestSceneAction } from "redux-arena/sagaOps";
 
 function * doSomthing({ payload }){
   yield* setSceneState({ payload })
 }
 
 export function* saga (){
-  yield takeLatest("DO_SOMETHING",sceneActionSaga(doSomthing))
+  yield takeLatestSceneAction("DO_SOMETHING", doSomthing)
 }
 ```

@@ -1,8 +1,7 @@
 import initState from "./state";
 import { ADD_PANEL, DEL_PANEL } from "./actionTypes";
-import { sceneReducer } from "redux-arena/sceneScope";
 
-function reducer(state = initState, action) {
+export default function reducer(state = initState, action) {
   let newPanelNum;
   switch (action.type) {
     case ADD_PANEL:
@@ -19,5 +18,3 @@ function reducer(state = initState, action) {
       return state;
   }
 }
-
-export default sceneReducer(reducer);

@@ -1,7 +1,10 @@
-import { takeLatest, fork, put } from "redux-saga/effects";
+import { fork } from "redux-saga/effects";
 import { delay } from "redux-saga";
-import { setSceneState, getSceneState } from "redux-arena/sagaOps";
-import { sceneActionSaga } from "redux-arena/sceneScope";
+import {
+  setSceneState,
+  getSceneState,
+  takeLatestSceneAction
+} from "redux-arena/sagaOps";
 
 function randLetter() {
   var letters = [
@@ -54,5 +57,5 @@ function* switchDanymicState({ flag }) {
 }
 
 export default function* saga() {
-  yield takeLatest("SWITCH_DYNAMIC_STATE", sceneActionSaga(switchDanymicState));
+  yield takeLatestSceneAction("SWITCH_DYNAMIC_STATE", switchDanymicState);
 }

@@ -1,7 +1,6 @@
 import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { withRouter } from "react-router";
 import * as actions from "./actions";
 import SceneBundle from "./SceneBundle";
 
@@ -16,7 +15,6 @@ export default function arenaSwitchConnect(arenaReducerDict) {
       PlayingScene: state[reducerKey].PlayingScene,
       curSceneBundle: state[reducerKey].curSceneBundle,
       reduxInfo: state[reducerKey].reduxInfo,
-      newArenaReducerDict: state[reducerKey].newArenaReducerDict,
       parentArenaReducerDict: arenaReducerDict
     };
   };

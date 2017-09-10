@@ -4,7 +4,7 @@ import { Router, Switch } from "react-router-dom";
 import createHistory from "history/createBrowserHistory";
 import {
   ARENA_SWITCH_INIT_SAGA,
-  ARENA_SWITCH_KILL_SAGA
+  ARENA_SWITCH_CLEAR_REDUX
 } from "../../core/actionTypes";
 import createArenaSwitchReducer from "../../core/reducers/createArenaSwitchReducer";
 import {
@@ -20,7 +20,8 @@ export default class ArenaSwitch extends Component {
   };
 
   static childContextTypes = {
-    arenaReducerDict: PropTypes.object
+    arenaReducerDict: PropTypes.object,
+    arenaSwitchDictItem: PropTypes.object
   };
 
   static propTypes = {
@@ -38,7 +39,6 @@ export default class ArenaSwitch extends Component {
     let arenaReducerDict = calcSwitchReducerDict(
       this.context.arenaReducerDict,
       reducerKey,
-      this.props.reducerKey,
       this.props.vReducerKey
     );
     this.state = {
@@ -69,7 +69,7 @@ export default class ArenaSwitch extends Component {
     ) {
       refreshFlag === true;
       this.context.store.dispatch({
-        type: ARENA_SWITCH_KILL_SAGA,
+        type: ARENA_SWITCH_CLEAR_REDUX,
         sagaTaskPromise: this.state.sagaTaskPromise
       });
       newReducerKey = switchRmAndAddReducer(
@@ -95,7 +95,6 @@ export default class ArenaSwitch extends Component {
       this.state.arenaReducerDict = calcSwitchReducerDict(
         nextContext.arenaReducerDict,
         newReducerKey,
-        nextProps.reducerKey,
         nextProps.vReducerKey
       );
     }
@@ -103,16 +102,17 @@ export default class ArenaSwitch extends Component {
 
   componentWillUnmount() {
     this.context.store.dispatch({
-      type: ARENA_SWITCH_KILL_SAGA,
+      type: ARENA_SWITCH_CLEAR_REDUX,
+      reducerKey: this.state.arenaReducerDict._curSwitch.reducerKey,
       sagaTaskPromise: this.state.sagaTaskPromise
     });
-    this.context.store.removeReducer(
-      this.state.arenaReducerDict._curSwitch.reducerKey
-    );
   }
 
   getChildContext() {
-    return { arenaReducerDict: this.state.arenaReducerDict };
+    return {
+      arenaReducerDict: this.state.arenaReducerDict,
+      arenaSwitchDictItem: this.state.arenaReducerDict._curSwitch
+    };
   }
 
   render() {

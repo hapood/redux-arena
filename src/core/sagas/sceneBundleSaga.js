@@ -1,5 +1,8 @@
-import { ARENA_SWITCH_SET_STATE, ARENA_SCENE_LOAD_END } from "../actionTypes";
-import { ARENA_SWITCH_EVENT_LOADARENA_SCENE_CONTINUE } from "../../actionTypes";
+import { ARENA_SWITCH_SET_STATE } from "../actionTypes";
+import {
+  ARENA_SCENE_LOAD_CONTINUE,
+  ARENA_SCENE_LOAD_WAITING
+} from "../../actionTypes";
 import {
   take,
   put,
@@ -22,7 +25,11 @@ import { sceneApplyRedux } from "./sceneReduxSaga";
  * 
  * @param {any} { arenaReducerDict, sceneBundle } 
  */
-export function* applySceneBundle({ parentArenaReducerDict, sceneBundle }) {
+export function* applySceneBundle({
+  parentArenaReducerDict,
+  sceneBundle,
+  notifyAction
+}) {
   let arenaSwitchReducerKey = parentArenaReducerDict._curSwitch.reducerKey;
   let {
     curSceneBundle,
@@ -60,7 +67,16 @@ export function* applySceneBundle({ parentArenaReducerDict, sceneBundle }) {
     curSceneBundle: sceneBundle
   };
   if (isWaiting) {
-    yield take(ARENA_SWITCH_EVENT_LOADARENA_SCENE_CONTINUE);
+    yield put({
+      type: ARENA_SCENE_LOAD_WAITING,
+      ...notifyAction
+    });
+    while (true) {
+      let continueAction = yield take(ARENA_SCENE_LOAD_CONTINUE);
+      if (continueAction._sceneReducerKey === arenaSwitchReducerKey) {
+        break;
+      }
+    }
   }
   yield put({
     type: ARENA_SWITCH_SET_STATE,
@@ -78,7 +94,8 @@ export function* applySceneBundle({ parentArenaReducerDict, sceneBundle }) {
  */
 export function* applyAsyncSceneBundle({
   parentArenaReducerDict,
-  asyncSceneBundle
+  asyncSceneBundle,
+  notifyAction
 }) {
   let sceneBundle;
   try {
@@ -87,15 +104,11 @@ export function* applyAsyncSceneBundle({
     if (yield cancelled()) {
     }
   }
-  yield put({
-    type: ARENA_SCENE_LOAD_END,
-    arenaSwitchReducerKey: parentArenaReducerDict._curSwitch.reducerKey,
-    asyncSceneBundle
-  });
   sceneBundle = sceneBundle.default ? sceneBundle.default : sceneBundle;
   yield* applySceneBundle({
     parentArenaReducerDict,
-    sceneBundle
+    sceneBundle,
+    notifyAction
   });
   return true;
 }

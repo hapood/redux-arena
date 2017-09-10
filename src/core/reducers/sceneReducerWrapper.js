@@ -1,4 +1,4 @@
-export default function sceneReducer(srcReducer) {
+export default function sceneReducerWrapper(srcReducer) {
   return function(state, action, sceneReducerKey) {
     if (
       action._sceneReducerKey === sceneReducerKey ||
