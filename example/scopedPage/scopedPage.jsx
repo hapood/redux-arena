@@ -59,7 +59,7 @@ export default class ScopedPage extends Component {
             padding: "1rem"
           }}
         >
-          Saga can be scoped by wrapping with sceneActionSaga.
+          Saga can be scoped by using takeLatestSceneAction.
           <div style={{ marginTop: "1rem" }}>
             <button onClick={() => actions.switchDynamicState(true)}>
               Start DynimicState

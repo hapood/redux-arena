@@ -128,12 +128,19 @@ export function* sceneApplyRedux({
     options.reducerKey == null ||
     options.reducerKey === reduxInfo.reducerKey
   ) {
-    if (reducer !== curSceneBundle.reducer || state !== curSceneBundle.state) {
+    if (reducer !== curSceneBundle.reducer) {
       newReducerKey = sceneReplaceReducer(
         arenaStore,
         reduxInfo.reducerKey,
-        reducerFactory
+        reducerFactory,
+        state === curSceneBundle.state ? null : state
       );
+    } else if (state !== curSceneBundle.state) {
+      arenaStore.dispatch({
+        type: ARENA_SCENE_REPLACE_STATE,
+        _sceneReducerKey: newReducerKey,
+        state
+      });
     }
   } else if (options.reducerKey !== reduxInfo.reducerKey) {
     newReducerKey = sceneRmAndAddReducer(
