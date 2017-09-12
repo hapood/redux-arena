@@ -1,3 +1,6 @@
+## 0.5.1 (Aug 20, 2017)
+* Fixed state illusion bug after bundle reload.
+
 ## 0.5.0 (Aug 20, 2017)
 * bug fixed and api update
 
@@ -7,7 +10,7 @@
 ## 0.3.0 (Aug 20, 2017)
 * Rename IndependentScene to SoloScene
 * Rename SceneSwitch to ArenaScene
-* fix some bugs
+* Fix some bugs
 
 ## 0.2.3 (Aug 20, 2017)
 
