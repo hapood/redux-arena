@@ -2,7 +2,7 @@
 * Fixed state illusion bug after bundle reload.
 
 ## 0.5.0 (Aug 20, 2017)
-* bug fixed and api update
+* Bug fixed and API update
 
 ## 0.4.1 (Aug 20, 2017)
 * Virtual reducer key support
