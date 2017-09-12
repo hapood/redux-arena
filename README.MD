@@ -48,7 +48,7 @@ export default bundleToComponent({
   state,
   saga,
   actions
-}）
+})
 ```
 
 2. Initial arenaStore and provide it for redux. 
