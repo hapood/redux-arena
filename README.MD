@@ -127,6 +127,6 @@ function * doSomthing({ payload }){
 }
 
 export function* saga (){
-  yield takeLatestSceneAction("DO_SOMETHING", doSomthing)
+  yield* takeLatestSceneAction("DO_SOMETHING", doSomthing)
 }
 ```
