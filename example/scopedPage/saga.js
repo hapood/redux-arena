@@ -4,7 +4,7 @@ import {
   setSceneState,
   getSceneState,
   takeLatestSceneAction
-} from "redux-arena/sagaOps";
+} from "redux-arena/effects";
 
 function randLetter() {
   var letters = [
@@ -41,21 +41,21 @@ function randLetter() {
 
 function* setLetter() {
   while (true) {
-    yield* setSceneState({ dynamicState: randLetter() });
+    yield setSceneState({ dynamicState: randLetter() });
     yield delay(500);
   }
 }
 
 function* switchDanymicState({ flag }) {
-  let { isDynamicStateEnable } = yield* getSceneState();
+  let { isDynamicStateEnable } = yield getSceneState();
   if (flag) {
     yield fork(setLetter);
   }
-  yield* setSceneState({
+  yield setSceneState({
     isDynamicStateEnable: flag
   });
 }
 
 export default function* saga() {
-  yield* takeLatestSceneAction("SWITCH_DYNAMIC_STATE", switchDanymicState);
+  yield takeLatestSceneAction("SWITCH_DYNAMIC_STATE", switchDanymicState);
 }

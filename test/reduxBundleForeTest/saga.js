@@ -5,7 +5,7 @@ import { setSceneState } from "../../src/sagaOps";
 function* dynamicState() {
   while (true) {
     yield delay(500);
-    yield* setSceneState({ dynamicState: Math.floor(Math.random() * 100) });
+    yield setSceneState({ dynamicState: Math.floor(Math.random() * 100) });
   }
 }
 

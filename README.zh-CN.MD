@@ -108,24 +108,24 @@ Redux-arena提供了一组可以和react-router整合使用的高阶组件。
 使用getSceneState和setSceneState获取和更新当前模块的state
 
 ```javascript
-import { setSceneState, getSceneState } from "redux-arena/sagaOps";
+import { setSceneState, getSceneState } from "redux-arena/effects";
 
 function * doSomthing(){
-  let { a } = yield* getSceneState()
-  yield* setSceneState({ a : a+1 })
+  let { a } = yield getSceneState()
+  yield setSceneState({ a : a+1 })
 }
 ```
 
 使用sceneActionSaga接收来自本模块的action。
 
 ```javascript
-import { setSceneState, takeLatestSceneAction } from "redux-arena/sagaOps";
+import { setSceneState, takeLatestSceneAction } from "redux-arena/effects";
 
 function * doSomthing({ payload }){
-  yield* setSceneState({ payload })
+  yield setSceneState({ payload })
 }
 
 export function* saga (){
-  yield* takeLatestSceneAction("DO_SOMETHING", doSomthing)
+  yield takeLatestSceneAction("DO_SOMETHING", doSomthing)
 }
 ```
