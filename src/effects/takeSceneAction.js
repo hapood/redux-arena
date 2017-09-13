@@ -1,4 +1,4 @@
-import { take } from "redux-saga/effects";
+import { take, call } from "redux-saga/effects";
 import getArenaReducerDictEntry from "./getArenaReducerDictEntry";
 import { END } from "redux-saga";
 
