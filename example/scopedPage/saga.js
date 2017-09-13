@@ -57,5 +57,5 @@ function* switchDanymicState({ flag }) {
 }
 
 export default function* saga() {
-  yield takeLatestSceneAction("SWITCH_DYNAMIC_STATE", switchDanymicState);
+  yield* takeLatestSceneAction("SWITCH_DYNAMIC_STATE", switchDanymicState);
 }
