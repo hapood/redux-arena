@@ -13,7 +13,7 @@ import {
   getContext
 } from "redux-saga/effects";
 import { connect } from "react-redux";
-import { createPropsPicker } from "../enhencedRedux";
+import { createPropsPicker } from "../enhancedRedux";
 import { sceneApplyRedux } from "./sceneReduxSaga";
 
 /**

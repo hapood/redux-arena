@@ -9,9 +9,9 @@ Redux is a great state management container, which is elaborate and can be easil
 
 ## Features
 
-Redux-Arena will export Reudx/Redux-Saga code with React component as a high order component for reuse:
+Redux-Arena will export Redux/Redux-Saga code with React component as a high order component for reuse:
 1. When hoc is mounted, it will start Redux-Saga task, initializing reducer of component, and register node on state. 
-2. When hoc is unmounted, it will cancel Redux-Saga task, destory reducer of component, and delete node on state.
+2. When hoc is unmounted, it will cancel Redux-Saga task, destroy reducer of component, and delete node on state.
 3. Reducer of component will only accept actions dispatched by current component by default. Revert reducer to accept all actions by set options. 
 4. Virtual ReducerKey: Sharing state in Redux will know the node's name of state, it will cause name conflict when reuse hoc sometime. Using vReducerKey will never cause name conflict, same vReducerKey will be replaced by child hoc.
 5. Like one-way data flow of Flux, child hoc could get state and actions of parent by vReducerKey.
@@ -73,7 +73,7 @@ ReactDOM.render(
 
 ## HOC
 
-Redux-arena provide a set of useful HOCs to enhence react-router.
+Redux-arena provide a set of useful HOCs to enhance react-router.
 
 ### SoloScene
 
@@ -96,7 +96,7 @@ Instead of Switch of react-router.
 
 ### RouteScene
 
-An enhenced Route witch accept sceneBundle prop. Support asyncSceneBundle for code splitting. Prop exact and strict and other props defined in Route of react-router will work.
+An enhanced Route witch accept sceneBundle prop. Support asyncSceneBundle for code splitting. Prop exact and strict and other props defined in Route of react-router will work.
 
 ```javascript
 

@@ -18,7 +18,7 @@ import {
   setContext
 } from "redux-saga/effects";
 import { bindActionCreators } from "redux";
-import { bindArenaActionCreators } from "../enhencedRedux";
+import { bindArenaActionCreators } from "../enhancedRedux";
 import { createSenceReducer, sceneReducerWrapper } from "../reducers";
 import {
   sceneAddReducer,
