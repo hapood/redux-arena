@@ -5,7 +5,7 @@
 [![npm version](https://img.shields.io/npm/v/redux-arena.svg?style=flat-square)](https://www.npmjs.com/package/redux-arena)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md#pull-requests)
 
-Redux is a great state management container, which is elaborate and can be easily extent. But there is some problem when resuing a React component binded with Redux, refs to [RFC: Reuse complex components implemented in React plus Redux #278](https://github.com/reactjs/react-redux/issues/278).
+Redux is a great state management container, which is elaborate and can be easily extent. But there are some problems when resuing a React component binded with Redux, refs to [RFC: Reuse complex components implemented in React plus Redux #278](https://github.com/reactjs/react-redux/issues/278).
 
 ## Features
 
