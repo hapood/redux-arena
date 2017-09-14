@@ -25,11 +25,11 @@ function* _takeSceneActionMaybe() {
   }
 }
 
-const takeSceneAction = function*(pattern, key = "_curScene") {
+const takeSceneAction = function(pattern, key = "_curScene") {
   return call(_takeSceneAction, pattern, key);
 };
 
-takeSceneAction.maybe = function*(pattern, key = "_curScene") {
+takeSceneAction.maybe = function(pattern, key = "_curScene") {
   return call(_takeSceneActionMaybe, pattern, key);
 };
 

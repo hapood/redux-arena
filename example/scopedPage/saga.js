@@ -46,7 +46,7 @@ function* setLetter() {
   }
 }
 
-function* switchDanymicState({ flag }) {
+function* switchDynamicState({ flag }) {
   let { isDynamicStateEnable } = yield getSceneState();
   if (flag) {
     yield fork(setLetter);
@@ -57,5 +57,5 @@ function* switchDanymicState({ flag }) {
 }
 
 export default function* saga() {
-  yield takeLatestSceneAction("SWITCH_DYNAMIC_STATE", switchDanymicState);
+  yield takeLatestSceneAction("SWITCH_DYNAMIC_STATE", switchDynamicState);
 }
