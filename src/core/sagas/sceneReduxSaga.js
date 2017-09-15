@@ -6,7 +6,6 @@ import {
   put,
   call,
   fork,
-  spawn,
   select,
   cancel,
   cancelled,
@@ -121,7 +120,7 @@ export function* sceneApplyRedux({
     options.isSceneActions
   );
   if (saga) {
-    newReduxInfo.sagaTask = yield spawn(forkSagaWithContext, saga, {
+    newReduxInfo.sagaTask = yield fork(forkSagaWithContext, saga, {
       arenaReducerDict: newReduxInfo.arenaReducerDict
     });
   }
@@ -164,7 +163,7 @@ export function* sceneUpdateRedux({
             state,
             parentArenaReducerDict
           );
-          
+
   if (
     options.reducerKey == null ||
     options.reducerKey === reduxInfo.reducerKey
@@ -184,12 +183,13 @@ export function* sceneUpdateRedux({
       });
     }
   } else if (options.reducerKey !== reduxInfo.reducerKey) {
+    let oldState = yield select(state => state[reduxInfo.reducerKey]);
     newReducerKey = sceneRmAndAddReducer(
       arenaStore,
       reduxInfo.reducerKey,
       options.reducerKey,
       reducerFactory,
-      state === curSceneBundle.state ? null : state
+      state === curSceneBundle.state ? oldState : state
     );
   } else if (state !== curSceneBundle.state) {
     arenaStore.dispatch({
@@ -216,7 +216,7 @@ export function* sceneUpdateRedux({
       reduxInfo.sagaTask == null ||
       reduxInfo.sagaTask.isCancelled()
     ) {
-      newReduxInfo.sagaTask = yield spawn(forkSagaWithContext, saga, {
+      newReduxInfo.sagaTask = yield fork(forkSagaWithContext, saga, {
         arenaReducerDict: newReduxInfo.arenaReducerDict
       });
     }

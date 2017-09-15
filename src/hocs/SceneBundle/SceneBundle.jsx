@@ -34,7 +34,6 @@ export default class SceneBundle extends Component {
   }
 
   componentWillUnmount() {
-    let props = this.props;
     if (this.props.isNotifyOn) {
       this.props.sceneStopPlay(
         this.props.parentArenaReducerDict,

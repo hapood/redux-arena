@@ -17,11 +17,13 @@ export function sceneRmAndAddReducer(
     reducer: reducerFactory(reducerKeyAdded),
     state
   });
-  store.dispatch({
-    type: ARENA_SCENE_REPLACE_STATE,
-    _sceneReducerKey: newReducerKey,
-    state: state
-  });
+  if (state) {
+    store.dispatch({
+      type: ARENA_SCENE_REPLACE_STATE,
+      _sceneReducerKey: newReducerKey,
+      state: state
+    });
+  }
   return newReducerKey;
 }
 
@@ -41,28 +43,6 @@ export function switchRmAndAddReducer(
   if (state)
     store.dispatch({
       type: ARENA_SWITCH_REPLACE_STATE,
-      _reducerKey: newReducerKey,
-      state
-    });
-  return newReducerKey;
-}
-
-export function curtainRmAndAddReducer(
-  store,
-  reducerKeyRemoved,
-  reducerKeyAdded,
-  reducerFactory,
-  state
-) {
-  let newReducerKey = store.removeAndAddReducer({
-    reducerKeyRemoved,
-    reducerKeyAdded,
-    reducer: reducerFactory(reducerKeyAdded),
-    state
-  });
-  if (state)
-    store.dispatch({
-      type: ARENA_CURTAIN_REPLACE_STATE,
       _reducerKey: newReducerKey,
       state
     });

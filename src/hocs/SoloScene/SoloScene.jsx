@@ -7,11 +7,7 @@ import {
   ARENA_CURTAIN_CLEAR_REDUX
 } from "../../core/actionTypes";
 import { createCurtainReducer } from "../../core/reducers";
-import {
-  curtainAddReducer,
-  curtainRmAndAddReducer,
-  calcCurtainReducerDict
-} from "../../utils";
+import { curtainAddReducer, calcCurtainReducerDict } from "../../utils";
 import { arenaCurtainConnect } from "../SceneBundle";
 
 export default class SoloScene extends Component {
@@ -90,11 +86,11 @@ export default class SoloScene extends Component {
       refreshFlag = true;
       nextContext.store.dispatch({
         type: ARENA_CURTAIN_CLEAR_REDUX,
+        reducerKey: this.state.arenaReducerDict._curCurtain.reducerKey,
         sagaTaskPromise: this.state.sagaTaskPromise
       });
-      newReducerKey = curtainRmAndAddReducer(
+      newReducerKey = curtainAddReducer(
         nextContext.store,
-        this.state.arenaReducerDict._curCurtain.reducerKey,
         reducerKey,
         createCurtainReducer
       );

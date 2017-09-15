@@ -123,7 +123,7 @@ describe("<SoloScene /> integration", () => {
     return flagPromise;
   });
 
-  it("should hot replace reducer correctly", function(done) {
+  it("should remove and add reducer correctly", function(done) {
     let newProps = {
       sceneBundle: Object.assign({}, sceneBundleForTestB, {
         reducer: (state = sceneBundleForTestA.state, action) => {
@@ -135,7 +135,10 @@ describe("<SoloScene /> integration", () => {
           }
         },
         options: {
-          isSceneReducer: false
+          reducerKey: "testReducerKey2",
+          vReducerKey: "testVReducerKey2",
+          isSceneReducer: false,
+          isSceneActions: false
         }
       })
     };
@@ -147,10 +150,46 @@ describe("<SoloScene /> integration", () => {
           store.getState(),
           "PageB"
         );
-        if (bundleState.cnt !== 2) return;
-        unsubscribe();
-        resolve(true);
-        done();
+        if (bundleState) {
+          if (bundleState.cnt !== 2) return;
+          unsubscribe();
+          resolve(true);
+          done();
+        }
+      });
+    });
+  });
+
+  it("should hot replace reducer correctly", function(done) {
+    let newProps = {
+      sceneBundle: Object.assign({}, sceneBundleForTestB, {
+        reducer: (state = sceneBundleForTestA.state, action) => {
+          switch (action.type) {
+            case "ADD_CNT":
+              return Object.assign({}, state, { cnt: state.cnt + 4 });
+            default:
+              return state;
+          }
+        },
+        options: {
+          isSceneReducer: false
+        }
+      })
+    };
+    wrapper.setProps(newProps);
+    setImmediate(() => store.dispatch({ type: "ADD_CNT" }));
+    let flagPromise = new Promise(resolve => {
+      let unsubscribe = store.subscribe(() => {
+        let { arena, metaState, bundleState } = selectNeededStates(
+          store.getState(),
+          "PageB"
+        );
+        if (bundleState) {
+          if (bundleState.cnt !== 6) return;
+          unsubscribe();
+          resolve(true);
+          done();
+        }
       });
     });
   });

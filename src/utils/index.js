@@ -3,11 +3,10 @@ export {
   switchAddReducer,
   curtainAddReducer
 } from "./addReducer";
-export { sceneReplaceReducer, switchReplaceReducer } from "./replaceReducer";
+export { sceneReplaceReducer } from "./replaceReducer";
 export {
   sceneRmAndAddReducer,
   switchRmAndAddReducer,
-  curtainRmAndAddReducer
 } from "./removeAndAddReducer";
 export {
   calcCurtainReducerDict,

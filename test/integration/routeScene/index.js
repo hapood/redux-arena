@@ -61,85 +61,79 @@ describe("<ArenaSwitch /> <RouteScene/> integration", () => {
     store.close();
   });
 
-  describe("pageA sceneBundle should be mounted correctly", () => {
-    it("should generate right redux state", () => {
-      store.dispatch({ type: GO_TO_URL, url: "/pageA" });
-      let flagPromise = new Promise(resolve => {
-        let unsubscribe = store.subscribe(() => {
-          let { arena, metaState, bundleState } = selectNeededStates(
-            store.getState(),
-            "PageA"
-          );
-          if (arena && metaState && bundleState) {
-            if (bundleState.cnt !== 4 || bundleState.sagaCnt !== 1) return;
-            unsubscribe();
-            expect(bundleState.pageA).to.be.true;
-            resolve(true);
-          }
-        });
+  it("should pageA sceneBundle be mounted correctly", () => {
+    store.dispatch({ type: GO_TO_URL, url: "/pageA" });
+    let flagPromise = new Promise(resolve => {
+      let unsubscribe = store.subscribe(() => {
+        let { arena, metaState, bundleState } = selectNeededStates(
+          store.getState(),
+          "PageA"
+        );
+        if (arena && metaState && bundleState) {
+          if (bundleState.cnt !== 4 || bundleState.sagaCnt !== 1) return;
+          unsubscribe();
+          expect(bundleState.pageA).to.be.true;
+          resolve(true);
+        }
       });
-      return flagPromise;
     });
+    return flagPromise;
   });
 
-  describe("pageB asyncSceneBundle should be mounted correctly", () => {
-    it("should generate right redux state", () => {
-      store.dispatch({ type: GO_TO_URL, url: "/pageB" });
-      let flagPromise = new Promise(resolve => {
-        let unsubscribe = store.subscribe(() => {
-          let { arena, metaState, bundleState } = selectNeededStates(
-            store.getState(),
-            "PageB"
-          );
-          if (arena && metaState && bundleState) {
-            unsubscribe();
-            expect(bundleState.cnt).to.be.equal(0);
-            expect(bundleState.sagaCnt).to.be.undefined;
-            expect(bundleState.pageB).to.be.true;
-            resolve(true);
-          }
-        });
+  it("should pageB asyncSceneBundle be mounted correctly", () => {
+    store.dispatch({ type: GO_TO_URL, url: "/pageB" });
+    let flagPromise = new Promise(resolve => {
+      let unsubscribe = store.subscribe(() => {
+        let { arena, metaState, bundleState } = selectNeededStates(
+          store.getState(),
+          "PageB"
+        );
+        if (arena && metaState && bundleState) {
+          unsubscribe();
+          expect(bundleState.cnt).to.be.equal(0);
+          expect(bundleState.sagaCnt).to.be.undefined;
+          expect(bundleState.pageB).to.be.true;
+          resolve(true);
+        }
       });
-      return flagPromise;
     });
+    return flagPromise;
   });
 
-  describe("change PageA bundle with some options", () => {
-    it("should generate right redux state", () => {
-      let newPageABundle = Object.assign({}, sceneBundleForTestA, {
-        options: { reducerKey: "pageA" }
-      });
-      let newProps = {
-        reducerKey: "arenaSwitch",
-        pageABundle: newPageABundle,
-        pageAAscyncBundle: null,
-        pageAReducerKey: "pageACurtain"
-      };
-      wrapper.setProps(newProps);
-      store.dispatch({ type: GO_TO_URL, url: "/pageA" });
-      let flagPromise = new Promise(resolve => {
-        let unsubscribe = store.subscribe(() => {
-          let state = store.getState();
-          if (
-            state["arenaSwitch"] == null ||
-            state["pageA"] == null ||
-            state["pageACurtain"] == null
-          )
-            return;
-          let { arena, metaState, bundleState } = selectNeededStates(
-            state,
-            "PageA"
-          );
-          if (arena && metaState && bundleState) {
-            if (bundleState.cnt !== 4 || bundleState.sagaCnt !== 1) return;
-            unsubscribe();
-            expect(bundleState.pageA).to.be.true;
-            expect(bundleState.pageA).to.be.true;
-            resolve(true);
-          }
-        });
-      });
-      return flagPromise;
+  it("should PageA bundle with some options be mounted correctly", () => {
+    let newPageABundle = Object.assign({}, sceneBundleForTestA, {
+      options: { reducerKey: "pageA" }
     });
+    let newProps = {
+      reducerKey: "arenaSwitch",
+      pageABundle: newPageABundle,
+      pageAAscyncBundle: null
+    };
+    wrapper.setProps(newProps);
+    store.dispatch({ type: GO_TO_URL, url: "/pageA" });
+    wrapper.setProps({ pageAReducerKey: "pageACurtain" });
+    let flagPromise = new Promise(resolve => {
+      let unsubscribe = store.subscribe(() => {
+        let state = store.getState();
+        if (
+          state["arenaSwitch"] == null ||
+          state["pageA"] == null ||
+          state["pageACurtain"] == null
+        )
+          return;
+        let { arena, metaState, bundleState } = selectNeededStates(
+          state,
+          "PageA"
+        );
+        if (arena && metaState && bundleState) {
+          if (bundleState.cnt !== 4 || bundleState.sagaCnt !== 1) return;
+          unsubscribe();
+          expect(bundleState.pageA).to.be.true;
+          expect(bundleState.pageA).to.be.true;
+          resolve(true);
+        }
+      });
+    });
+    return flagPromise;
   });
 });
