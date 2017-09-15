@@ -123,7 +123,7 @@ describe("<SoloScene /> integration", () => {
     return flagPromise;
   });
 
-  it("should hot replace reducer correctly", () => {
+  it("should hot replace reducer correctly", function(done) {
     let newProps = {
       sceneBundle: Object.assign({}, sceneBundleForTestB, {
         reducer: (state = sceneBundleForTestA.state, action) => {
@@ -140,19 +140,18 @@ describe("<SoloScene /> integration", () => {
       })
     };
     wrapper.setProps(newProps);
-    store.dispatch({ type: "ADD_CNT" });
+    setTimeout(() => store.dispatch({ type: "ADD_CNT" }), 100);
     let flagPromise = new Promise(resolve => {
       let unsubscribe = store.subscribe(() => {
         let { arena, metaState, bundleState } = selectNeededStates(
           store.getState(),
           "PageB"
         );
-        console.log(bundleState.cnt);
         if (bundleState.cnt !== 2) return;
         unsubscribe();
         resolve(true);
+        done();
       });
     });
-    return flagPromise;
   });
 });
