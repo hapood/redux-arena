@@ -12,7 +12,7 @@ export function switchReplaceReducer(store, reducerKey, reducerFactory, state) {
   if (state)
     store.dispatch({
       type: ARENA_SWITCH_REPLACE_STATE,
-      arenaSwitchReducerKey: newReducerKey,
+      arenaCurtainReducerKey: newReducerKey,
       state
     });
   return reducerKey;

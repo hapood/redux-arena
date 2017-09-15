@@ -2,23 +2,23 @@ import {
   ARENA_CURTAIN_SET_STATE,
   ARENA_CURTAIN_REPLACE_STATE
 } from "../actionTypes.js";
-import getSwitchInitState from "./getSwitchInitState";
+import getCurtainInitState from "./getCurtainInitState";
 
-function senceSwitchReducer(state, action, arenaSwitchReducerKey) {
+function curtainReducer(state, action, boundReducerKey) {
   switch (action.type) {
-    case ARENA_SWITCH_SET_STATE:
+    case ARENA_CURTAIN_SET_STATE:
       return Object.assign({}, state, action.state);
-    case ARENA_SWITCH_REPLACE_STATE:
+    case ARENA_CURTAIN_REPLACE_STATE:
       return Object.assign({}, action.state);
     default:
       return state;
   }
 }
 
-export default function createArenaSwitchReducer(arenaSwitchReducerKey) {
-  return function(state = getSwitchInitState(), action) {
-    if (arenaSwitchReducerKey === action.arenaSwitchReducerKey) {
-      state = senceSwitchReducer(state, action, arenaSwitchReducerKey);
+export default function createCurtainReducer(boundReducerKey) {
+  return function(state = getCurtainInitState(), action) {
+    if (boundReducerKey === action._reducerKey) {
+      state = curtainReducer(state, action, boundReducerKey);
     }
     return state;
   };

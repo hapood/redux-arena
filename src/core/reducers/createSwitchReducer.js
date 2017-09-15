@@ -4,7 +4,7 @@ import {
 } from "../actionTypes.js";
 import getSwitchInitState from "./getSwitchInitState";
 
-function senceSwitchReducer(state, action, arenaSwitchReducerKey) {
+function switchReducer(state, action, boundReducerKey) {
   switch (action.type) {
     case ARENA_SWITCH_SET_STATE:
       return Object.assign({}, state, action.state);
@@ -15,10 +15,10 @@ function senceSwitchReducer(state, action, arenaSwitchReducerKey) {
   }
 }
 
-export default function createArenaSwitchReducer(arenaSwitchReducerKey) {
+export default function createSwitchReducer(boundReducerKey) {
   return function(state = getSwitchInitState(), action) {
-    if (arenaSwitchReducerKey === action.arenaSwitchReducerKey) {
-      state = senceSwitchReducer(state, action, arenaSwitchReducerKey);
+    if (boundReducerKey === action._reducerKey) {
+      state = switchReducer(state, action, boundReducerKey);
     }
     return state;
   };

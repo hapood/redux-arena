@@ -17,7 +17,7 @@ function* addSagaCnt() {
 
 function* addCntBySaga() {
   while (true) {
-    yield takeSceneAction("ADD_CNT_BY_SAGA");
+    let action = yield takeSceneAction("ADD_CNT_BY_SAGA");
     yield putSceneAction({ type: "ADD_CNT" });
   }
 }

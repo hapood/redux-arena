@@ -112,21 +112,26 @@ describe("<ArenaSwitch /> <RouteScene/> integration", () => {
       let newProps = {
         reducerKey: "arenaSwitch",
         pageABundle: newPageABundle,
-        pageAAscyncBundle: null
+        pageAAscyncBundle: null,
+        pageAReducerKey: "pageACurtain"
       };
       wrapper.setProps(newProps);
       store.dispatch({ type: GO_TO_URL, url: "/pageA" });
       let flagPromise = new Promise(resolve => {
         let unsubscribe = store.subscribe(() => {
           let state = store.getState();
-          if (state["arenaSwitch"] == null || state["pageA"] == null) return;
-          console.log(state)
+          if (
+            state["arenaSwitch"] == null ||
+            state["pageA"] == null ||
+            state["pageACurtain"] == null
+          )
+            return;
           let { arena, metaState, bundleState } = selectNeededStates(
             state,
             "PageA"
           );
           if (arena && metaState && bundleState) {
-            if (bundleState.cnt !== 5 || bundleState.sagaCnt !== 1) return;
+            if (bundleState.cnt !== 4 || bundleState.sagaCnt !== 1) return;
             unsubscribe();
             expect(bundleState.pageA).to.be.true;
             expect(bundleState.pageA).to.be.true;

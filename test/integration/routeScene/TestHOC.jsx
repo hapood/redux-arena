@@ -24,11 +24,13 @@ export default class TestHOC extends Component {
               path="/pageA"
               sceneBundle={props.pageABundle}
               asyncSceneBundle={props.pageAAscyncBundle}
+              reducerKey={props.pageAReducerKey}
             />
             <RouteScene
               path="/pageB"
               sceneBundle={props.pageBBundle}
               asyncSceneBundle={props.pageBAscyncBundle}
+              reducerKey={props.pageBReducerKey}
             />
           </ArenaSwitch>
         </Router>

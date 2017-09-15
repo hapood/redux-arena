@@ -4,13 +4,13 @@ import { connect } from "react-redux";
 import * as actions from "./actions";
 import SceneBundle from "./SceneBundle";
 
-export default function arenaSwitchConnect(arenaReducerDict) {
+export default function arenaCurtainConnect(arenaReducerDict) {
   let mapDispatchToProps = dispatch => {
     return bindActionCreators(actions, dispatch);
   };
 
   let mapStateToProps = state => {
-    let reducerKey = arenaReducerDict._curSwitch.reducerKey;
+    let reducerKey = arenaReducerDict._curCurtain.reducerKey;
     return {
       PlayingScene: state[reducerKey].PlayingScene,
       curSceneBundle: state[reducerKey].curSceneBundle,
@@ -23,7 +23,7 @@ export default function arenaSwitchConnect(arenaReducerDict) {
     SceneBundle
   );
 
-  wrappedComponent.displayName = `ArenaSwitchConnect({reducerKey:${arenaReducerDict
-    ._curSwitch.reducerKey}})`;
+  wrappedComponent.displayName = `arenaCurtainConnect({reducerKey:${arenaReducerDict
+    ._curCurtain.reducerKey}})`;
   return wrappedComponent;
 }

@@ -9,12 +9,12 @@ export default function createPropsPicker(
   reduxInfo
 ) {
   let { arenaReducerDict } = reduxInfo;
-  let switchReducerKey = arenaReducerDict._curSwitch.reducerKey;
+  let curtainReducerKey = arenaReducerDict._curCurtain.reducerKey;
   let sceneReducerKey = arenaReducerDict._curScene.reducerKey;
   let sceneActions = arenaReducerDict._curScene.actions;
   let latestProps;
   return state => {
-    if (state[switchReducerKey].reduxInfo !== reduxInfo) {
+    if (state[curtainReducerKey].reduxInfo !== reduxInfo) {
       return latestProps;
     } else {
       latestProps = propsPicker(

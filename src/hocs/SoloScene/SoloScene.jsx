@@ -3,16 +3,16 @@ import PropTypes from "prop-types";
 import { Router, Switch } from "react-router-dom";
 import createHistory from "history/createBrowserHistory";
 import {
-  ARENA_SWITCH_INIT_SAGA,
-  ARENA_SWITCH_CLEAR_REDUX
+  ARENA_CURTAIN_INIT_SAGA,
+  ARENA_CURTAIN_CLEAR_REDUX
 } from "../../core/actionTypes";
-import createArenaSwitchReducer from "../../core/reducers/createArenaSwitchReducer";
+import { createCurtainReducer } from "../../core/reducers";
 import {
-  switchAddReducer,
-  switchRmAndAddReducer,
-  calcSwitchReducerDict
+  curtainAddReducer,
+  curtainRmAndAddReducer,
+  calcCurtainReducerDict
 } from "../../utils";
-import { arenaSwitchConnect } from "../SceneBundle";
+import { arenaCurtainConnect } from "../SceneBundle";
 
 export default class SoloScene extends Component {
   static contextTypes = {
@@ -23,6 +23,7 @@ export default class SoloScene extends Component {
   static propTypes = {
     children: PropTypes.any,
     reducerKey: PropTypes.string,
+    vReducerKey: PropTypes.string,
     sceneBundle: PropTypes.object,
     asyncSceneBuldle: PropTypes.object,
     sceneProps: PropTypes.object,
@@ -31,10 +32,10 @@ export default class SoloScene extends Component {
   };
 
   componentWillMount() {
-    let reducerKey = switchAddReducer(
+    let reducerKey = curtainAddReducer(
       this.context.store,
       this.props.reducerKey,
-      createArenaSwitchReducer
+      createCurtainReducer
     );
     let {
       asyncSceneBundle,
@@ -43,12 +44,12 @@ export default class SoloScene extends Component {
       notifyData,
       SceneLoadingComponent
     } = this.props;
-    let arenaReducerDict = calcSwitchReducerDict(
+    let arenaReducerDict = calcCurtainReducerDict(
       this.context.arenaReducerDict,
       reducerKey,
       this.props.vReducerKey
     );
-    let wrappedSceneBundle = arenaSwitchConnect(arenaReducerDict);
+    let wrappedSceneBundle = arenaCurtainConnect(arenaReducerDict);
     let sceneBundleElement = React.createElement(wrappedSceneBundle, {
       asyncSceneBundle,
       sceneBundle,
@@ -62,7 +63,7 @@ export default class SoloScene extends Component {
       sceneBundleElement,
       sagaTaskPromise: new Promise(resolve =>
         this.context.store.dispatch({
-          type: ARENA_SWITCH_INIT_SAGA,
+          type: ARENA_CURTAIN_INIT_SAGA,
           reducerKey,
           setSagaTask: resolve
         })
@@ -81,25 +82,25 @@ export default class SoloScene extends Component {
       notifyData,
       SceneLoadingComponent
     } = nextProps;
-    let newReducerKey = this.state.arenaReducerDict._curSwitch.reducerKey;
+    let newReducerKey = this.state.arenaReducerDict._curCurtain.reducerKey;
     if (
       reducerKey != null &&
-      reducerKey !== this.state.arenaReducerDict._curSwitch.reducerKey
+      reducerKey !== this.state.arenaReducerDict._curCurtain.reducerKey
     ) {
       refreshFlag = true;
-      this.context.store.dispatch({
-        type: ARENA_SWITCH_CLEAR_REDUX,
+      nextContext.store.dispatch({
+        type: ARENA_CURTAIN_CLEAR_REDUX,
         sagaTaskPromise: this.state.sagaTaskPromise
       });
-      newReducerKey = switchRmAndAddReducer(
-        this.context.store,
-        this.state.arenaReducerDict._curSwitch.reducerKey,
+      newReducerKey = curtainRmAndAddReducer(
+        nextContext.store,
+        this.state.arenaReducerDict._curCurtain.reducerKey,
         reducerKey,
-        createArenaSwitchReducer
+        createCurtainReducer
       );
       this.state.sagaTaskPromise = new Promise(resolve =>
-        this.context.store.dispatch({
-          type: ARENA_SWITCH_INIT_SAGA,
+        nextContext.store.dispatch({
+          type: ARENA_CURTAIN_INIT_SAGA,
           reducerKey: newReducerKey,
           setSagaTask: resolve
         })
@@ -112,12 +113,12 @@ export default class SoloScene extends Component {
       refreshFlag === true
     ) {
       refreshFlag = true;
-      this.state.arenaReducerDict = calcSwitchReducerDict(
+      this.state.arenaReducerDict = calcCurtainReducerDict(
         nextContext.arenaReducerDict,
         newReducerKey,
         nextProps.vReducerKey
       );
-      this.state.wrappedSceneBundle = arenaSwitchConnect(
+      this.state.wrappedSceneBundle = arenaCurtainConnect(
         this.state.arenaReducerDict
       );
     }
@@ -143,8 +144,8 @@ export default class SoloScene extends Component {
 
   componentWillUnmount() {
     this.context.store.dispatch({
-      type: ARENA_SWITCH_CLEAR_REDUX,
-      reducerKey: this.state.arenaReducerDict._curSwitch.reducerKey,
+      type: ARENA_CURTAIN_CLEAR_REDUX,
+      reducerKey: this.state.arenaReducerDict._curCurtain.reducerKey,
       sagaTaskPromise: this.state.sagaTaskPromise
     });
   }

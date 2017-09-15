@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Route } from "react-router-dom";
 import invariant from "invariant";
-import { ARENA_SWITCH_SET_STATE } from "../../core/actionTypes";
-import { arenaSwitchConnect } from "../SceneBundle";
+import SoloScene from "../SoloScene";
+import withNotify from "./withNotify";
 
 class RouteScene extends Component {
   static contextTypes = {
@@ -13,6 +13,8 @@ class RouteScene extends Component {
   };
 
   static propTypes = {
+    reducerKey: PropTypes.string,
+    vReducerKey: PropTypes.string,
     asyncSceneBuldle: PropTypes.any,
     sceneBundle: PropTypes.any,
     SceneLoadingComponent: PropTypes.any,
@@ -30,98 +32,17 @@ class RouteScene extends Component {
   };
 
   componentWillMount() {
-    let { arenaReducerDict, arenaSwitchDictItem, store } = this.context;
-    invariant(
-      arenaSwitchDictItem,
-      "You should not use <RouteScene> outside a <ArenaSwitch>"
-    );
-    let newArenaReducerDict = Object.assign({}, arenaReducerDict, {
-      _curSwitch: arenaSwitchDictItem
-    });
+    let { arenaReducerDict, store } = this.context;
     let {
       asyncSceneBundle,
       sceneBundle,
       SceneLoadingComponent,
-      sceneProps,
-      isNotifyOn,
-      location,
-      computedMatch
+      sceneProps
     } = this.props;
-    store.dispatch({
-      type: ARENA_SWITCH_SET_STATE,
-      arenaSwitchReducerKey: newArenaReducerDict._curSwitch.reducerKey,
-      state: { location, match: computedMatch }
-    });
-    let wrappedSceneBundle = arenaSwitchConnect(newArenaReducerDict);
-    let sceneBundleElement = React.createElement(wrappedSceneBundle, {
-      asyncSceneBundle,
-      sceneBundle,
-      SceneLoadingComponent,
-      sceneProps,
-      isNotifyOn
-    });
+    let SceneHOC = withNotify(SoloScene);
     this.state = {
-      wrappedSceneBundle,
-      sceneBundleElement,
-      arenaReducerDict: newArenaReducerDict
+      SceneHOC
     };
-  }
-
-  componentWillReceiveProps(nextProps, nextContext) {
-    let {
-      location,
-      computedMatch,
-      asyncSceneBundle,
-      sceneBundle,
-      sceneProps,
-      isNotifyOn,
-      SceneLoadingComponent
-    } = nextProps;
-    let refreshFlag = false;
-    if (
-      this.context.arenaReducerDict !== nextContext.arenaReducerDict ||
-      this.context.arenaSwitchDictItem !== nextContext.arenaSwitchDictItem
-    ) {
-      let newArenaReducerDict = Object.assign(
-        {},
-        nextContext.arenaReducerDict,
-        {
-          _curSwitch: nextContext.arenaSwitchDictItem
-        }
-      );
-      this.state.arenaReducerDict = newArenaReducerDict;
-      this.state.wrappedSceneBundle = arenaSwitchConnect(newArenaReducerDict);
-      refreshFlag = true;
-    }
-    if (
-      this.props.location !== location ||
-      this.props.computedMatch !== computedMatch
-    ) {
-      nextContext.store.dispatch({
-        type: ARENA_SWITCH_SET_STATE,
-        arenaSwitchReducerKey: this.state.arenaReducerDict._curSwitch
-          .reducerKey,
-        state: { location, match: computedMatch }
-      });
-    }
-    if (
-      asyncSceneBundle !== this.props.asyncSceneBundle ||
-      sceneBundle !== this.props.sceneBundle ||
-      sceneProps !== this.props.sceneBundle ||
-      SceneLoadingComponent !== this.props.SceneLoadingComponent ||
-      isNotifyOn !== this.props.isNotifyOn ||
-      refreshFlag === true
-    ) {
-      this.setState({
-        sceneBundleElement: React.createElement(this.state.wrappedSceneBundle, {
-          asyncSceneBundle,
-          sceneBundle,
-          sceneProps,
-          isNotifyOn,
-          SceneLoadingComponent
-        })
-      });
-    }
   }
 
   render() {
@@ -131,9 +52,16 @@ class RouteScene extends Component {
       path,
       computedMatch,
       location,
-      notifyData
+      notifyData,
+      isNotifyOn,
+      reducerKey,
+      vReducerKey,
+      asyncSceneBundle,
+      sceneBundle,
+      sceneProps,
+      SceneLoadingComponent
     } = this.props;
-    let { arenaReducerDict } = this.context;
+    let { arenaReducerDict, store } = this.context;
     return (
       <Route
         location={location}
@@ -142,9 +70,18 @@ class RouteScene extends Component {
         path={path}
         strict={strict}
         render={props => {
-          return React.cloneElement(this.state.sceneBundleElement, {
+          return React.createElement(this.state.SceneHOC, {
             key: path,
-            notifyData: Object.assign({}, props, notifyData)
+            isNotifyOn,
+            store,
+            notifyData: Object.assign({}, props, notifyData),
+            switchReducerKey: arenaReducerDict._curSwitch.reducerKey,
+            reducerKey,
+            vReducerKey,
+            asyncSceneBundle,
+            sceneBundle,
+            sceneProps,
+            SceneLoadingComponent
           });
         }}
       />

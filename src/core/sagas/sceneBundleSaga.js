@@ -1,4 +1,4 @@
-import { ARENA_SWITCH_SET_STATE } from "../actionTypes";
+import { ARENA_CURTAIN_SET_STATE } from "../actionTypes";
 import {
   ARENA_SCENE_LOAD_CONTINUE,
   ARENA_SCENE_LOAD_WAITING
@@ -14,7 +14,7 @@ import {
 } from "redux-saga/effects";
 import { connect } from "react-redux";
 import { createPropsPicker } from "../enhancedRedux";
-import { sceneApplyRedux,sceneUpdateRedux } from "./sceneReduxSaga";
+import { sceneApplyRedux, sceneUpdateRedux } from "./sceneReduxSaga";
 
 /**
  * Scene of the synchronous load function, it does the following.
@@ -31,14 +31,14 @@ export function* applySceneBundle({
   sceneBundle,
   notifyAction
 }) {
-  let arenaSwitchReducerKey = parentArenaReducerDict._curSwitch.reducerKey;
+  let arenaCurtainReducerKey = parentArenaReducerDict._curCurtain.reducerKey;
   let {
     curSceneBundle,
     reduxInfo,
     PlayingScene: OldPlayingScene,
     isWaiting,
     arenaReducerDict
-  } = yield select(state => state[arenaSwitchReducerKey]);
+  } = yield select(state => state[arenaCurtainReducerKey]);
   let newReduxInfo;
   if (isInitial) {
     newReduxInfo = yield* sceneApplyRedux({
@@ -62,8 +62,8 @@ export function* applySceneBundle({
     });
   }
   yield put({
-    type: ARENA_SWITCH_SET_STATE,
-    arenaSwitchReducerKey,
+    type: ARENA_CURTAIN_SET_STATE,
+    _reducerKey: arenaCurtainReducerKey,
     state: {
       reduxInfo: newReduxInfo
     }
@@ -86,14 +86,14 @@ export function* applySceneBundle({
     });
     while (true) {
       let continueAction = yield take(ARENA_SCENE_LOAD_CONTINUE);
-      if (continueAction._sceneReducerKey === arenaSwitchReducerKey) {
+      if (continueAction._sceneReducerKey === arenaCurtainReducerKey) {
         break;
       }
     }
   }
   yield put({
-    type: ARENA_SWITCH_SET_STATE,
-    arenaSwitchReducerKey,
+    type: ARENA_CURTAIN_SET_STATE,
+    _reducerKey: arenaCurtainReducerKey,
     state: newArenaState
   });
 }

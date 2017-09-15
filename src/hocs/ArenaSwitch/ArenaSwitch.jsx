@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { Router, Switch } from "react-router-dom";
 import createHistory from "history/createBrowserHistory";
 import {
-  ARENA_SWITCH_INIT_SAGA,
-  ARENA_SWITCH_CLEAR_REDUX
+  ARENA_CURTAIN_INIT_SAGA,
+  ARENA_CURTAIN_CLEAR_REDUX
 } from "../../core/actionTypes";
-import createArenaSwitchReducer from "../../core/reducers/createArenaSwitchReducer";
+import { createSwitchReducer } from "../../core/reducers";
 import {
   switchAddReducer,
   switchRmAndAddReducer,
@@ -20,8 +20,7 @@ export default class ArenaSwitch extends Component {
   };
 
   static childContextTypes = {
-    arenaReducerDict: PropTypes.object,
-    arenaSwitchDictItem: PropTypes.object
+    arenaReducerDict: PropTypes.object
   };
 
   static propTypes = {
@@ -34,7 +33,7 @@ export default class ArenaSwitch extends Component {
     let reducerKey = switchAddReducer(
       this.context.store,
       this.props.reducerKey,
-      createArenaSwitchReducer
+      createSwitchReducer
     );
     let arenaReducerDict = calcSwitchReducerDict(
       this.context.arenaReducerDict,
@@ -42,14 +41,7 @@ export default class ArenaSwitch extends Component {
       this.props.vReducerKey
     );
     this.state = {
-      arenaReducerDict,
-      sagaTaskPromise: new Promise(resolve =>
-        this.context.store.dispatch({
-          type: ARENA_SWITCH_INIT_SAGA,
-          reducerKey,
-          setSagaTask: resolve
-        })
-      )
+      arenaReducerDict
     };
   }
   /**
@@ -61,57 +53,32 @@ export default class ArenaSwitch extends Component {
    */
   componentWillReceiveProps(nextProps, nextContext) {
     let { reducerKey, vReducerKey } = nextProps;
-    let refreshFlag = false;
-    let newReducerKey = this.state.arenaReducerDict._curSwitch.reducerKey;
-    if (
-      reducerKey != null &&
-      reducerKey !== this.state.arenaReducerDict._curSwitch.reducerKey
-    ) {
-      refreshFlag === true;
-      this.context.store.dispatch({
-        type: ARENA_SWITCH_CLEAR_REDUX,
-        sagaTaskPromise: this.state.sagaTaskPromise
-      });
-      newReducerKey = switchRmAndAddReducer(
-        this.context.store,
-        this.state.arenaReducerDict._curSwitch.reducerKey,
-        reducerKey,
-        createArenaSwitchReducer
-      );
-      this.state.sagaTaskPromise = new Promise(resolve =>
-        this.context.store.dispatch({
-          type: ARENA_SWITCH_INIT_SAGA,
-          reducerKey,
-          setSagaTask: resolve
-        })
-      );
-    }
+    let curReducerKey = this.state.arenaReducerDict._curSwitch.reducerKey;
     if (
       nextContext.arenaReducerDict !== this.context.arenaReducerDict ||
       reducerKey !== this.props.reducerKey ||
-      vReducerKey !== this.props.vReducerKey ||
-      refreshFlag === true
+      vReducerKey !== this.props.vReducerKey
     ) {
+      let newReducerKey = curReducerKey;
+      if (reducerKey !== curReducerKey && reducerKey != null) {
+        newReducerKey = switchRmAndAddReducer(
+          nextContext.store,
+          curReducerKey,
+          reducerKey,
+          createSwitchReducer
+        );
+      }
       this.state.arenaReducerDict = calcSwitchReducerDict(
         nextContext.arenaReducerDict,
         newReducerKey,
-        nextProps.vReducerKey
+        vReducerKey
       );
     }
-  }
-
-  componentWillUnmount() {
-    this.context.store.dispatch({
-      type: ARENA_SWITCH_CLEAR_REDUX,
-      reducerKey: this.state.arenaReducerDict._curSwitch.reducerKey,
-      sagaTaskPromise: this.state.sagaTaskPromise
-    });
   }
 
   getChildContext() {
     return {
-      arenaReducerDict: this.state.arenaReducerDict,
-      arenaSwitchDictItem: this.state.arenaReducerDict._curSwitch
+      arenaReducerDict: this.state.arenaReducerDict
     };
   }
 

@@ -17,8 +17,7 @@ export default class SceneBundle extends Component {
   };
 
   static childContextTypes = {
-    arenaReducerDict: PropTypes.object,
-    routerSwitchReducerKey: PropTypes.string
+    arenaReducerDict: PropTypes.object
   };
 
   getChildContext() {
@@ -44,11 +43,6 @@ export default class SceneBundle extends Component {
         this.props.notifyData
       );
     }
-    console.log('unmount',this.props)
-    this.props.clearSceneRedux(
-      this.props.parentArenaReducerDict._curSwitch.reducerKey,
-      this.props.reduxInfo
-    );
   }
 
   checkAndStartPlay(props, nextProps) {

@@ -1,2 +1,2 @@
-export function* getRouteInfo(arenaSwitchReducerKey) {
+export function* getRouteInfo(arenaCurtainReducerKey) {
 }

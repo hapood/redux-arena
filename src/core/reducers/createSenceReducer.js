@@ -5,7 +5,7 @@ import {
 } from "../actionTypes.js";
 import getSceneInitState from "./getSceneInitState";
 
-function reducer(state = getSceneInitState(), action, sceneReducerKey) {
+function sceneReducer(state = getSceneInitState(), action, sceneReducerKey) {
   if (action._sceneReducerKey !== sceneReducerKey) return state;
   switch (action.type) {
     case ARENA_SCENE_SET_STATE:
@@ -29,6 +29,6 @@ export default function createSenceReducer(
     if (extendSenceReducer) {
       state = extendSenceReducer(state, action, sceneReducerKey);
     }
-    return reducer(state, action, sceneReducerKey);
+    return sceneReducer(state, action, sceneReducerKey);
   };
 }

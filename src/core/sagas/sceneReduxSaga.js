@@ -1,7 +1,4 @@
-import {
-  ARENA_SCENE_CLEAR_REDUX,
-  ARENA_SCENE_REPLACE_STATE
-} from "../actionTypes";
+import { ARENA_SCENE_REPLACE_STATE } from "../actionTypes";
 import { ARENA_SCENE_SET_STATE } from "../../actionTypes";
 import {
   takeEvery,
@@ -211,17 +208,4 @@ export function* sceneUpdateRedux({
     }
   }
   return newReduxInfo;
-}
-
-function* sceneClearRedux({ arenaSwitchReducerKey, reduxInfo }) {
-  let arenaStore = yield getContext("store");
-  console.log(reduxInfo)
-  if (reduxInfo.sagaTask) yield cancel(reduxInfo.sagaTask);
-  if (reduxInfo.reducerKey) {
-    arenaStore.removeReducer(reduxInfo.reducerKey);
-  }
-}
-
-export default function* saga() {
-  yield takeEvery(ARENA_SCENE_CLEAR_REDUX, sceneClearRedux);
 }

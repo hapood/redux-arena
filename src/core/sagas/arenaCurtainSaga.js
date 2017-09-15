@@ -1,9 +1,9 @@
 import {
-  ARENA_SWITCH_LOAD_SCENE,
-  ARENA_SWITCH_LOAD_ASYNCSCENE,
-  ARENA_SWITCH_INIT_SAGA,
-  ARENA_SWITCH_CLEAR_REDUX,
-  ARENA_SWITCH_SET_STATE
+  ARENA_CURTAIN_LOAD_SCENE,
+  ARENA_CURTAIN_LOAD_ASYNCSCENE,
+  ARENA_CURTAIN_INIT_SAGA,
+  ARENA_CURTAIN_CLEAR_REDUX,
+  ARENA_CURTAIN_SET_STATE
 } from "../actionTypes";
 import {
   takeEvery,
@@ -15,25 +15,21 @@ import {
   setContext,
   getContext
 } from "redux-saga/effects";
-import { bindActionCreators } from "redux";
 import { applySceneBundle, applyAsyncSceneBundle } from "./sceneBundleSaga";
 
 function* takeEverySceneBundleAction() {
-  let arenaSwitchReducerKey = yield getContext("arenaSwitchReducerKey");
+  let _reducerKey = yield getContext("_reducerKey");
   let lastTask;
   while (true) {
     let action = yield take([
-      ARENA_SWITCH_LOAD_ASYNCSCENE,
-      ARENA_SWITCH_LOAD_SCENE
+      ARENA_CURTAIN_LOAD_ASYNCSCENE,
+      ARENA_CURTAIN_LOAD_SCENE
     ]);
-    if (
-      action.parentArenaReducerDict._curSwitch.reducerKey ===
-      arenaSwitchReducerKey
-    ) {
+    if (action.parentArenaReducerDict._curCurtain.reducerKey === _reducerKey) {
       if (lastTask && lastTask.isRunning()) {
         yield cancel(lastTask);
       }
-      if (action.type === ARENA_SWITCH_LOAD_ASYNCSCENE) {
+      if (action.type === ARENA_CURTAIN_LOAD_ASYNCSCENE) {
         lastTask = yield fork(applyAsyncSceneBundle, action);
       } else {
         lastTask = yield fork(applySceneBundle, action);
@@ -60,20 +56,20 @@ function* forkSagaWithContext(ctx) {
  * @param {any} { reducerKey, setSagaTask } 
  */
 
-function* initArenaSwitchSaga({
+function* initArenaCurtainSaga({
   reducerKey,
   setSagaTask,
   isWaitingSwitchAction = false
 }) {
   yield put({
-    type: ARENA_SWITCH_SET_STATE,
-    arenaSwitchReducerKey: reducerKey,
+    type: ARENA_CURTAIN_SET_STATE,
+    _reducerKey: reducerKey,
     state: {
       isWaiting: isWaitingSwitchAction
     }
   });
   let sagaTask = yield fork(forkSagaWithContext, {
-    arenaSwitchReducerKey: reducerKey
+    _reducerKey: reducerKey
   });
   setSagaTask(sagaTask);
 }
@@ -84,14 +80,21 @@ function* initArenaSwitchSaga({
  * @param {any} { sagaTaskPromise } 
  */
 
-function* killArenaSwitchSaga({ sagaTaskPromise, reducerKey }) {
+function* killArenaCurtainSaga({ sagaTaskPromise, reducerKey }) {
   let sagaTask = yield sagaTaskPromise;
   if (sagaTask) yield cancel(sagaTask);
   let store = yield getContext("store");
+  let { reduxInfo } = yield select(state => state[reducerKey]);
+  if (reduxInfo.sagaTask) {
+    yield cancel(reduxInfo.sagaTask);
+  }
+  if (reduxInfo.reducerKey) {
+    store.removeReducer(reduxInfo.reducerKey);
+  }
   store.removeReducer(reducerKey);
 }
 
 export default function* saga() {
-  yield takeEvery(ARENA_SWITCH_INIT_SAGA, initArenaSwitchSaga);
-  yield takeEvery(ARENA_SWITCH_CLEAR_REDUX, killArenaSwitchSaga);
+  yield takeEvery(ARENA_CURTAIN_INIT_SAGA, initArenaCurtainSaga);
+  yield takeEvery(ARENA_CURTAIN_CLEAR_REDUX, killArenaCurtainSaga);
 }
