@@ -1,6 +1,6 @@
 import {
-  ARENA_SWITCH_SET_STATE,
-  ARENA_SWITCH_REPLACE_STATE
+  ARENA_CURTAIN_SET_STATE,
+  ARENA_CURTAIN_REPLACE_STATE
 } from "../actionTypes.js";
 import getSwitchInitState from "./getSwitchInitState";
 

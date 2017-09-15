@@ -5,24 +5,27 @@ import {
 } from "../../core/actionTypes";
 import {
   ARENA_SCENEBUNDLE_LOAD_START,
-  ARENA_SCENEBUNDLE_LOAD_COMPLETE,
+  ARENA_SCENEBUNDLE_PLAY_START,
   ARENA_SCENEBUNDLE_UNMOUNT_START
 } from "../../actionTypes";
 
 export function arenaLoadScene(
   parentArenaReducerDict,
   sceneBundle,
-  notifyData
+  notifyData,
+  isInitial
 ) {
   return {
     type: ARENA_SWITCH_LOAD_SCENE,
     parentArenaReducerDict,
     sceneBundle,
+    isInitial,
     notifyAction: {
       arenaSwitchReducerKey: parentArenaReducerDict._curSwitch.reducerKey,
       arenaSwitchVReducerKey: parentArenaReducerDict._curSwitch.vReducerKey,
       sceneBundle,
-      notifyData
+      notifyData,
+      isInitial
     }
   };
 }
@@ -30,17 +33,20 @@ export function arenaLoadScene(
 export function arenaLoadAsyncScene(
   parentArenaReducerDict,
   asyncSceneBundle,
-  notifyData
+  notifyData,
+  isInitial
 ) {
   return {
     type: ARENA_SWITCH_LOAD_ASYNCSCENE,
     parentArenaReducerDict,
     asyncSceneBundle,
+    isInitial,
     notifyAction: {
       arenaSwitchReducerKey: parentArenaReducerDict._curSwitch.reducerKey,
       arenaSwitchVReducerKey: parentArenaReducerDict._curSwitch.vReducerKey,
       asyncSceneBundle,
-      notifyData
+      notifyData,
+      isInitial
     }
   };
 }
@@ -49,7 +55,8 @@ export function sceneLoadStart(
   parentArenaReducerDict,
   sceneBundle,
   asyncSceneBundle,
-  notifyData
+  notifyData,
+  isInitial
 ) {
   return {
     type: ARENA_SCENEBUNDLE_LOAD_START,
@@ -57,7 +64,8 @@ export function sceneLoadStart(
     arenaSwitchVReducerKey: parentArenaReducerDict._curSwitch.vReducerKey,
     sceneBundle,
     asyncSceneBundle,
-    notifyData
+    notifyData,
+    isInitial
   };
 }
 
@@ -68,7 +76,7 @@ export function sceneStartPlay(
   notifyData
 ) {
   return {
-    type: ARENA_SCENEBUNDLE_LOAD_COMPLETE,
+    type: ARENA_SCENEBUNDLE_PLAY_START,
     arenaSwitchReducerKey: parentArenaReducerDict._curSwitch.reducerKey,
     arenaSwitchVReducerKey: parentArenaReducerDict._curSwitch.vReducerKey,
     sceneBundle,

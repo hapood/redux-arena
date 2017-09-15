@@ -86,7 +86,7 @@ class RouteScene extends Component {
         {},
         nextContext.arenaReducerDict,
         {
-          _curSwitch: arenaSwitchDictItem
+          _curSwitch: nextContext.arenaSwitchDictItem
         }
       );
       this.state.arenaReducerDict = newArenaReducerDict;
@@ -143,6 +143,7 @@ class RouteScene extends Component {
         strict={strict}
         render={props => {
           return React.cloneElement(this.state.sceneBundleElement, {
+            key: path,
             notifyData: Object.assign({}, props, notifyData)
           });
         }}

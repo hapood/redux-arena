@@ -14,7 +14,7 @@ import {
 } from "redux-saga/effects";
 import { connect } from "react-redux";
 import { createPropsPicker } from "../enhancedRedux";
-import { sceneApplyRedux } from "./sceneReduxSaga";
+import { sceneApplyRedux,sceneUpdateRedux } from "./sceneReduxSaga";
 
 /**
  * Scene of the synchronous load function, it does the following.
@@ -26,6 +26,7 @@ import { sceneApplyRedux } from "./sceneReduxSaga";
  * @param {any} { arenaReducerDict, sceneBundle } 
  */
 export function* applySceneBundle({
+  isInitial,
   parentArenaReducerDict,
   sceneBundle,
   notifyAction
@@ -38,16 +39,28 @@ export function* applySceneBundle({
     isWaiting,
     arenaReducerDict
   } = yield select(state => state[arenaSwitchReducerKey]);
-  let newReduxInfo = yield* sceneApplyRedux({
-    parentArenaReducerDict,
-    state: sceneBundle.state,
-    saga: sceneBundle.saga,
-    actions: sceneBundle.actions,
-    reducer: sceneBundle.reducer,
-    options: sceneBundle.options || {},
-    curSceneBundle,
-    reduxInfo
-  });
+  let newReduxInfo;
+  if (isInitial) {
+    newReduxInfo = yield* sceneApplyRedux({
+      parentArenaReducerDict,
+      state: sceneBundle.state,
+      saga: sceneBundle.saga,
+      actions: sceneBundle.actions,
+      reducer: sceneBundle.reducer,
+      options: sceneBundle.options || {}
+    });
+  } else {
+    newReduxInfo = yield* sceneUpdateRedux({
+      parentArenaReducerDict,
+      state: sceneBundle.state,
+      saga: sceneBundle.saga,
+      actions: sceneBundle.actions,
+      reducer: sceneBundle.reducer,
+      options: sceneBundle.options || {},
+      curSceneBundle,
+      reduxInfo
+    });
+  }
   yield put({
     type: ARENA_SWITCH_SET_STATE,
     arenaSwitchReducerKey,
@@ -93,6 +106,7 @@ export function* applySceneBundle({
  * @returns 
  */
 export function* applyAsyncSceneBundle({
+  isInitial,
   parentArenaReducerDict,
   asyncSceneBundle,
   notifyAction
@@ -106,6 +120,7 @@ export function* applyAsyncSceneBundle({
   }
   sceneBundle = sceneBundle.default ? sceneBundle.default : sceneBundle;
   yield* applySceneBundle({
+    isInitial,
     parentArenaReducerDict,
     sceneBundle,
     notifyAction

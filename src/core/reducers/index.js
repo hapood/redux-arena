@@ -2,7 +2,7 @@ import arenaReducer from "./arenaReducer";
 import createSenceReducer from "./createSenceReducer";
 import getArenaInitState from "./getArenaInitState";
 import getSceneInitState from "./getSceneInitState";
-import getArenaSwitchInitState from "./getArenaSwitchInitState";
+import getSwitchInitState from "./getSwitchInitState";
 import sceneReducerWrapper from "./sceneReducerWrapper";
 
 export {
@@ -10,6 +10,6 @@ export {
   createSenceReducer,
   getArenaInitState,
   getSceneInitState,
-  getArenaSwitchInitState,
+  getSwitchInitState,
   sceneReducerWrapper
 };

@@ -7,7 +7,8 @@ export function sceneRmAndAddReducer(
   store,
   reducerKeyRemoved,
   reducerKeyAdded,
-  reducerFactory
+  reducerFactory,
+  state
 ) {
   let oldState = store.getState()[reducerKeyRemoved];
   let newReducerKey = store.removeAndAddReducer({
@@ -21,14 +22,15 @@ export function sceneRmAndAddReducer(
     _sceneReducerKey: newReducerKey,
     state: state ? state : oldState
   });
-  return reducerKey;
+  return newReducerKey;
 }
 
 export function switchRmAndAddReducer(
   store,
   reducerKeyRemoved,
   reducerKeyAdded,
-  reducerFactory
+  reducerFactory,
+  state
 ) {
   let oldState = store.getState()[reducerKeyRemoved];
   let newReducerKey = store.removeAndAddReducer({
@@ -43,5 +45,5 @@ export function switchRmAndAddReducer(
       _sceneReducerKey: newReducerKey,
       state: state ? state : oldState
     });
-  return reducerKey;
+  return newReducerKey;
 }

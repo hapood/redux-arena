@@ -1,6 +1,6 @@
 export default {
   name: "PageA",
   pageA: true,
-  dynamicState: null,
-  cnt:0
+  sagaCnt: 0,
+  cnt: 0
 };

@@ -12,7 +12,7 @@ function* _takeSceneAction(pattern, key) {
   }
 }
 
-function* _takeSceneActionMaybe() {
+function* _takeSceneActionMaybe(pattern, key) {
   while (true) {
     let action = yield take.maybe(pattern);
     let entry = yield getArenaReducerDictEntry(key);

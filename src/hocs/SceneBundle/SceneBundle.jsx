@@ -31,7 +31,7 @@ export default class SceneBundle extends Component {
     this.state = {
       isSceneBundleValid: false
     };
-    this.loadScene(this.props);
+    this.loadScene(this.props, true);
   }
 
   componentWillUnmount() {
@@ -44,6 +44,7 @@ export default class SceneBundle extends Component {
         this.props.notifyData
       );
     }
+    console.log('unmount',this.props)
     this.props.clearSceneRedux(
       this.props.parentArenaReducerDict._curSwitch.reducerKey,
       this.props.reduxInfo
@@ -89,10 +90,10 @@ export default class SceneBundle extends Component {
           {
             isSceneBundleValid: false
           },
-          this.loadScene(nextProps)
+          this.loadScene(nextProps, false)
         );
       } else {
-        this.loadScene(nextProps);
+        this.loadScene(nextProps, false);
       }
     }
     if (nextProps.PlayingScene == null) {
@@ -102,13 +103,14 @@ export default class SceneBundle extends Component {
     }
   }
 
-  loadScene(props) {
+  loadScene(props, isInitial) {
     if (props.isNotifyOn) {
       props.sceneLoadStart(
         props.parentArenaReducerDict,
         props.sceneBundle,
         props.asyncSceneBundle,
-        props.notifyData
+        props.notifyData,
+        isInitial
       );
     }
     if (props.sceneBundle) {
@@ -116,7 +118,8 @@ export default class SceneBundle extends Component {
         props.arenaLoadScene(
           props.parentArenaReducerDict,
           props.sceneBundle,
-          props.notifyData
+          props.notifyData,
+          isInitial
         );
       });
     } else if (props.asyncSceneBundle) {
@@ -124,7 +127,8 @@ export default class SceneBundle extends Component {
         props.arenaLoadAsyncScene(
           props.parentArenaReducerDict,
           props.asyncSceneBundle,
-          props.notifyData
+          props.notifyData,
+          isInitial
         );
       });
     } else {

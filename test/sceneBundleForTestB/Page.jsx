@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-export default class Page extends Component {
+export default class PageB extends Component {
   render() {
     return (
       <div>
@@ -18,15 +18,9 @@ export default class Page extends Component {
               </td>
             </tr>
             <tr>
-              <td>pageA:</td>
+              <td>pageB:</td>
               <td>
-                {this.props.pageA}
-              </td>
-            </tr>
-            <tr>
-              <td>dynamicState:</td>
-              <td>
-                {this.props.dynamicState}
+                {this.props.pageB}
               </td>
             </tr>
             <tr>
