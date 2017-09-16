@@ -1,5 +1,9 @@
+## 0.6.0 (Sep 12, 2017)
+* RouteScene and SoloScene is refactored
+* Fix bundle hot reload bugs
+
 ## 0.5.1 (Sep 12, 2017)
-* Fixed state illusion bug after bundle reload.
+* Fixed state illusion bug after bundle reload
 
 ## 0.5.0 (Aug 20, 2017)
 * Bug fixed and API update
