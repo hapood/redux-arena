@@ -1,3 +1,6 @@
+## 0.6.1 (Sep 12, 2017)
+* Fix isNotifyOn props pass down bug
+
 ## 0.6.0 (Sep 12, 2017)
 * RouteScene and SoloScene is refactored
 * Fix bundle hot reload bugs
