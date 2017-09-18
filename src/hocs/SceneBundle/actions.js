@@ -20,8 +20,7 @@ export function arenaLoadScene(
     sceneBundle,
     isInitial,
     notifyAction: {
-      arenaCurtainReducerKey: parentArenaReducerDict._curCurtain.reducerKey,
-      arenaCurtainVReducerKey: parentArenaReducerDict._curCurtain.vReducerKey,
+      arenaReducerDict: parentArenaReducerDict,
       sceneBundle,
       notifyData,
       isInitial
@@ -41,10 +40,7 @@ export function arenaLoadAsyncScene(
     asyncSceneBundle,
     isInitial,
     notifyAction: {
-      arenaSwitchReducerKey: parentArenaReducerDict._curSwitch.reducerKey,
-      arenaSwitchVReducerKey: parentArenaReducerDict._curSwitch.vReducerKey,
-      arenaCurtainReducerKey: parentArenaReducerDict._curCurtain.reducerKey,
-      arenaCurtainVReducerKey: parentArenaReducerDict._curCurtain.vReducerKey,
+      arenaReducerDict: parentArenaReducerDict,
       asyncSceneBundle,
       notifyData,
       isInitial
@@ -61,10 +57,7 @@ export function sceneLoadStart(
 ) {
   return {
     type: ARENA_SCENEBUNDLE_LOAD_START,
-    arenaSwitchReducerKey: parentArenaReducerDict._curSwitch.reducerKey,
-    arenaSwitchVReducerKey: parentArenaReducerDict._curSwitch.vReducerKey,
-    arenaCurtainReducerKey: parentArenaReducerDict._curCurtain.reducerKey,
-    arenaCurtainVReducerKey: parentArenaReducerDict._curCurtain.vReducerKey,
+    arenaReducerDict: parentArenaReducerDict,
     sceneBundle,
     asyncSceneBundle,
     notifyData,
@@ -80,10 +73,9 @@ export function sceneStartPlay(
 ) {
   return {
     type: ARENA_SCENEBUNDLE_PLAY_START,
-    arenaCurtainReducerKey: parentArenaReducerDict._curCurtain.reducerKey,
-    arenaCurtainVReducerKey: parentArenaReducerDict._curCurtain.vReducerKey,
+    arenaReducerDict: parentArenaReducerDict,
     sceneBundle,
-    asyncSceneBundle,
+    asyncSceneBundle: sceneBundle ? undefined : asyncSceneBundle,
     notifyData
   };
 }
@@ -96,10 +88,9 @@ export function sceneStopPlay(
 ) {
   return {
     type: ARENA_SCENEBUNDLE_UNMOUNT_START,
-    arenaCurtainReducerKey: parentArenaReducerDict._curCurtain.reducerKey,
-    arenaCurtainVReducerKey: parentArenaReducerDict._curCurtain.vReducerKey,
+    arenaReducerDict: parentArenaReducerDict,
     sceneBundle,
-    asyncSceneBundle,
+    asyncSceneBundle: sceneBundle ? undefined : asyncSceneBundle,
     notifyData
   };
 }

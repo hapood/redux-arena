@@ -37,8 +37,7 @@
   },
   "homepage": "https://github.com/hapood/redux-arena#readme",
   "peerDependencies": {
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react": ">=15"
   },
   "dependencies": {
     "prop-types": "^15.5.10",
