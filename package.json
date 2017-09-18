@@ -5,7 +5,6 @@
     "Bundling reducers, actions, saga and react-component when using Redux",
   "main": "index.js",
   "scripts": {
-    "example": "node ./example/devServer.js",
     "build":
       "npm run build:babel && npm run build:copy-files && npm run build:es",
     "build:es":
