@@ -37,6 +37,7 @@ export default class SoloScene extends Component {
       asyncSceneBundle,
       sceneBundle,
       sceneProps,
+      isNotifyOn,
       notifyData,
       SceneLoadingComponent
     } = this.props;
@@ -50,6 +51,7 @@ export default class SoloScene extends Component {
       asyncSceneBundle,
       sceneBundle,
       sceneProps,
+      isNotifyOn,
       notifyData,
       SceneLoadingComponent
     });
@@ -75,6 +77,7 @@ export default class SoloScene extends Component {
       asyncSceneBundle,
       sceneBundle,
       sceneProps,
+      isNotifyOn,
       notifyData,
       SceneLoadingComponent
     } = nextProps;
@@ -131,6 +134,7 @@ export default class SoloScene extends Component {
           asyncSceneBundle,
           sceneBundle,
           sceneProps,
+          isNotifyOn,
           notifyData,
           SceneLoadingComponent
         })

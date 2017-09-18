@@ -12,8 +12,6 @@
     "build:babel":
       "cross-env NODE_ENV=release babel ./src --out-dir ./build --ignore spec.js",
     "build:copy-files": "babel-node ./scripts/copy-files.js",
-    "build:example":
-      "npm run clean &&webpack --colors --config ./example/webpack.config.prod.js",
     "clean:build": "rimraf build",
     "prebuild": "npm run clean:build",
     "postpublish": "npm run build && cd build && npm publish",
