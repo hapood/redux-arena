@@ -1,7 +1,7 @@
 import { ARENA_CURTAIN_SET_STATE } from "../actionTypes";
 import {
-  ARENA_SCENE_LOAD_CONTINUE,
-  ARENA_SCENE_LOAD_WAITING
+  ARENA_SCENEBUNDLE_LOAD_CONTINUE,
+  ARENA_SCENEBUNDLE_LOAD_WAITING
 } from "../../actionTypes";
 import {
   take,
@@ -81,11 +81,11 @@ export function* applySceneBundle({
   };
   if (isWaiting) {
     yield put({
-      type: ARENA_SCENE_LOAD_WAITING,
+      type: ARENA_SCENEBUNDLE_LOAD_WAITING,
       ...notifyAction
     });
     while (true) {
-      let continueAction = yield take(ARENA_SCENE_LOAD_CONTINUE);
+      let continueAction = yield take(ARENA_SCENEBUNDLE_LOAD_CONTINUE);
       if (continueAction._sceneReducerKey === arenaCurtainReducerKey) {
         break;
       }

@@ -41,6 +41,8 @@ export function arenaLoadAsyncScene(
     asyncSceneBundle,
     isInitial,
     notifyAction: {
+      arenaSwitchReducerKey: parentArenaReducerDict._curSwitch.reducerKey,
+      arenaSwitchVReducerKey: parentArenaReducerDict._curSwitch.vReducerKey,
       arenaCurtainReducerKey: parentArenaReducerDict._curCurtain.reducerKey,
       arenaCurtainVReducerKey: parentArenaReducerDict._curCurtain.vReducerKey,
       asyncSceneBundle,
@@ -59,6 +61,8 @@ export function sceneLoadStart(
 ) {
   return {
     type: ARENA_SCENEBUNDLE_LOAD_START,
+    arenaSwitchReducerKey: parentArenaReducerDict._curSwitch.reducerKey,
+    arenaSwitchVReducerKey: parentArenaReducerDict._curSwitch.vReducerKey,
     arenaCurtainReducerKey: parentArenaReducerDict._curCurtain.reducerKey,
     arenaCurtainVReducerKey: parentArenaReducerDict._curCurtain.vReducerKey,
     sceneBundle,

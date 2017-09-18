@@ -3,12 +3,10 @@ import PropTypes from "prop-types";
 import { Route } from "react-router-dom";
 import invariant from "invariant";
 import SoloScene from "../SoloScene";
-import withNotify from "./withNotify";
+import syncSwitchState from "./syncSwitchState";
 
 class RouteScene extends Component {
   static contextTypes = {
-    arenaReducerDict: PropTypes.object,
-    arenaSwitchDictItem: PropTypes.object,
     store: PropTypes.any
   };
 
@@ -17,7 +15,6 @@ class RouteScene extends Component {
     vReducerKey: PropTypes.string,
     asyncSceneBuldle: PropTypes.any,
     sceneBundle: PropTypes.any,
-    SceneLoadingComponent: PropTypes.any,
     sceneProps: PropTypes.object,
     isNotifyOn: PropTypes.bool,
     notifyData: PropTypes.object,
@@ -32,14 +29,9 @@ class RouteScene extends Component {
   };
 
   componentWillMount() {
-    let { arenaReducerDict, store } = this.context;
-    let {
-      asyncSceneBundle,
-      sceneBundle,
-      SceneLoadingComponent,
-      sceneProps
-    } = this.props;
-    let SceneHOC = withNotify(SoloScene);
+    let { store } = this.context;
+    let { asyncSceneBundle, sceneBundle, sceneProps } = this.props;
+    let SceneHOC = syncSwitchState(SoloScene);
     this.state = {
       SceneHOC
     };
@@ -58,10 +50,9 @@ class RouteScene extends Component {
       vReducerKey,
       asyncSceneBundle,
       sceneBundle,
-      sceneProps,
-      SceneLoadingComponent
+      sceneProps
     } = this.props;
-    let { arenaReducerDict, store } = this.context;
+    let { store } = this.context;
     return (
       <Route
         location={location}
@@ -75,13 +66,11 @@ class RouteScene extends Component {
             isNotifyOn,
             store,
             notifyData: Object.assign({}, props, notifyData),
-            switchReducerKey: arenaReducerDict._curSwitch.reducerKey,
             reducerKey,
             vReducerKey,
             asyncSceneBundle,
             sceneBundle,
-            sceneProps,
-            SceneLoadingComponent
+            sceneProps
           });
         }}
       />
