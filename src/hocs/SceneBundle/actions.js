@@ -8,44 +8,45 @@ import {
   ARENA_SCENEBUNDLE_UNMOUNT_START
 } from "../../actionTypes";
 
+function chooseBundle(sceneBundle, asyncSceneBundle) {
+  return sceneBundle ? { sceneBundle } : { asyncSceneBundle };
+}
+
 export function arenaLoadScene(
   parentArenaReducerDict,
   sceneBundle,
-  notifyData,
-  isInitial
-) {
-  return {
-    type: ARENA_CURTAIN_LOAD_SCENE,
-    parentArenaReducerDict,
-    sceneBundle,
-    isInitial,
-    notifyAction: {
-      arenaReducerDict: parentArenaReducerDict,
-      sceneBundle,
-      notifyData,
-      isInitial
-    }
-  };
-}
-
-export function arenaLoadAsyncScene(
-  parentArenaReducerDict,
   asyncSceneBundle,
   notifyData,
   isInitial
 ) {
-  return {
-    type: ARENA_CURTAIN_LOAD_ASYNCSCENE,
-    parentArenaReducerDict,
-    asyncSceneBundle,
-    isInitial,
-    notifyAction: {
-      arenaReducerDict: parentArenaReducerDict,
+  let bundleObj = chooseBundle(sceneBundle, asyncSceneBundle);
+  if (bundleObj.sceneBundle) {
+    return {
+      type: ARENA_CURTAIN_LOAD_SCENE,
+      parentArenaReducerDict,
+      sceneBundle,
+      isInitial,
+      notifyAction: {
+        arenaReducerDict: parentArenaReducerDict,
+        sceneBundle,
+        notifyData,
+        isInitial
+      }
+    };
+  } else {
+    return {
+      type: ARENA_CURTAIN_LOAD_ASYNCSCENE,
+      parentArenaReducerDict,
       asyncSceneBundle,
-      notifyData,
-      isInitial
-    }
-  };
+      isInitial,
+      notifyAction: {
+        arenaReducerDict: parentArenaReducerDict,
+        asyncSceneBundle,
+        notifyData,
+        isInitial
+      }
+    };
+  }
 }
 
 export function sceneLoadStart(
@@ -55,14 +56,15 @@ export function sceneLoadStart(
   notifyData,
   isInitial
 ) {
-  return {
-    type: ARENA_SCENEBUNDLE_LOAD_START,
-    arenaReducerDict: parentArenaReducerDict,
-    sceneBundle,
-    asyncSceneBundle,
-    notifyData,
-    isInitial
-  };
+  return Object.assign(
+    {
+      type: ARENA_SCENEBUNDLE_LOAD_START,
+      arenaReducerDict: parentArenaReducerDict,
+      notifyData,
+      isInitial
+    },
+    chooseBundle(sceneBundle, asyncSceneBundle)
+  );
 }
 
 export function sceneStartPlay(
@@ -71,13 +73,14 @@ export function sceneStartPlay(
   asyncSceneBundle,
   notifyData
 ) {
-  return {
-    type: ARENA_SCENEBUNDLE_PLAY_START,
-    arenaReducerDict: parentArenaReducerDict,
-    sceneBundle,
-    asyncSceneBundle: sceneBundle ? undefined : asyncSceneBundle,
-    notifyData
-  };
+  return Object.assign(
+    {
+      type: ARENA_SCENEBUNDLE_PLAY_START,
+      arenaReducerDict: parentArenaReducerDict,
+      notifyData
+    },
+    chooseBundle(sceneBundle, asyncSceneBundle)
+  );
 }
 
 export function sceneStopPlay(
@@ -86,11 +89,12 @@ export function sceneStopPlay(
   asyncSceneBundle,
   notifyData
 ) {
-  return {
-    type: ARENA_SCENEBUNDLE_UNMOUNT_START,
-    arenaReducerDict: parentArenaReducerDict,
-    sceneBundle,
-    asyncSceneBundle: sceneBundle ? undefined : asyncSceneBundle,
-    notifyData
-  };
+  return Object.assign(
+    {
+      type: ARENA_SCENEBUNDLE_UNMOUNT_START,
+      arenaReducerDict: parentArenaReducerDict,
+      notifyData
+    },
+    chooseBundle(sceneBundle, asyncSceneBundle)
+  );
 }

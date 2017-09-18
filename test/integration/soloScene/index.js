@@ -102,7 +102,6 @@ describe("<SoloScene /> integration", () => {
         }
       })
     };
-    wrapper.setProps(newProps);
     let flagPromise = new Promise(resolve => {
       let unsubscribe = store.subscribe(() => {
         let state = store.getState();
@@ -112,18 +111,19 @@ describe("<SoloScene /> integration", () => {
         );
         if (state.testReducerKey == null) return;
         if (arena && metaState && bundleState) {
-          unsubscribe();
           expect(bundleState.cnt).to.be.equal(0);
           expect(bundleState.sagaCnt).to.be.undefined;
           expect(bundleState.pageB).to.be.true;
+          unsubscribe();
           resolve(true);
         }
       });
     });
+    wrapper.setProps(newProps);
     return flagPromise;
   });
 
-  it("should remove and add reducer correctly", function(done) {
+  it("should remove and add reducer correctly", () => {
     let newProps = {
       sceneBundle: Object.assign({}, sceneBundleForTestB, {
         reducer: (state = sceneBundleForTestA.state, action) => {
@@ -142,8 +142,6 @@ describe("<SoloScene /> integration", () => {
         }
       })
     };
-    wrapper.setProps(newProps);
-    setTimeout(() => store.dispatch({ type: "ADD_CNT" }), 100);
     let flagPromise = new Promise(resolve => {
       let unsubscribe = store.subscribe(() => {
         let { arena, metaState, bundleState } = selectNeededStates(
@@ -154,13 +152,15 @@ describe("<SoloScene /> integration", () => {
           if (bundleState.cnt !== 2) return;
           unsubscribe();
           resolve(true);
-          done();
         }
       });
     });
+    wrapper.setProps(newProps);
+    store.dispatch({ type: "ADD_CNT" });
+    return flagPromise;
   });
 
-  it("should hot replace reducer correctly", function(done) {
+  it("should hot replace reducer correctly", () => {
     let newProps = {
       sceneBundle: Object.assign({}, sceneBundleForTestB, {
         reducer: (state = sceneBundleForTestA.state, action) => {
@@ -176,8 +176,6 @@ describe("<SoloScene /> integration", () => {
         }
       })
     };
-    wrapper.setProps(newProps);
-    setImmediate(() => store.dispatch({ type: "ADD_CNT" }));
     let flagPromise = new Promise(resolve => {
       let unsubscribe = store.subscribe(() => {
         let { arena, metaState, bundleState } = selectNeededStates(
@@ -188,9 +186,11 @@ describe("<SoloScene /> integration", () => {
           if (bundleState.cnt !== 6) return;
           unsubscribe();
           resolve(true);
-          done();
         }
       });
     });
+    wrapper.setProps(newProps);
+    store.dispatch({ type: "ADD_CNT" });
+    return flagPromise;
   });
 });

@@ -7,8 +7,7 @@ export default class SceneBundle extends Component {
     sceneBundle: PropTypes.object,
     sceneProps: PropTypes.object,
     isNotifyOn: PropTypes.bool,
-    notifyData: PropTypes.object,
-    showSwitchingLoading: PropTypes.bool
+    notifyData: PropTypes.object
   };
 
   static defaultProps = {
@@ -29,7 +28,9 @@ export default class SceneBundle extends Component {
     this.state = {
       isSceneBundleValid: false
     };
-    this.loadScene(this.props, true);
+    setImmediate(() => {
+      this.loadScene(this.props, true);
+    });
   }
 
   componentWillUnmount() {
@@ -77,16 +78,7 @@ export default class SceneBundle extends Component {
       asyncSceneBundle !== this.props.asyncSceneBundle ||
       sceneBundle !== this.props.sceneBundle
     ) {
-      if (nextProps.showSwitchingLoading) {
-        this.setState(
-          {
-            isSceneBundleValid: false
-          },
-          this.loadScene(nextProps, false)
-        );
-      } else {
-        this.loadScene(nextProps, false);
-      }
+      this.loadScene(nextProps, false);
     }
     if (nextProps.PlayingScene == null) {
       this.setState({
@@ -105,29 +97,13 @@ export default class SceneBundle extends Component {
         isInitial
       );
     }
-    if (props.sceneBundle) {
-      setImmediate(() => {
-        props.arenaLoadScene(
-          props.parentArenaReducerDict,
-          props.sceneBundle,
-          props.notifyData,
-          isInitial
-        );
-      });
-    } else if (props.asyncSceneBundle) {
-      setImmediate(() => {
-        props.arenaLoadAsyncScene(
-          props.parentArenaReducerDict,
-          props.asyncSceneBundle,
-          props.notifyData,
-          isInitial
-        );
-      });
-    } else {
-      throw new Error(
-        "props asyncSceneBundle and sceneBundle can not be both null"
-      );
-    }
+    props.arenaLoadScene(
+      props.parentArenaReducerDict,
+      props.sceneBundle,
+      props.asyncSceneBundle,
+      props.notifyData,
+      isInitial
+    );
   }
 
   render() {
