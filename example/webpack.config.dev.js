@@ -42,9 +42,6 @@ module.exports = {
       base: "/redux-arena"
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.DefinePlugin({
-      "process.env.NODE_ENV": '"production"'
-    }),
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   ]
