@@ -16,8 +16,7 @@
     "prebuild": "npm run clean:build",
     "postpublish": "npm run build && cd build && npm publish",
     "test": "karma start test/karma.conf.js",
-    "test-travis":
-      "karma start test/karma.conf.js --browsers Firefox --single-run"
+    "test-travis": "karma start test/karma.conf.js --browsers Firefox --single-run"
   },
   "repository": {
     "type": "git",

@@ -21,7 +21,7 @@ export default class SoloScene extends Component {
     reducerKey: PropTypes.string,
     vReducerKey: PropTypes.string,
     sceneBundle: PropTypes.object,
-    asyncSceneBuldle: PropTypes.object,
+    asyncSceneBundle: PropTypes.object,
     sceneProps: PropTypes.object,
     notifyData: PropTypes.object
   };

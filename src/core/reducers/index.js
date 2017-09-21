@@ -1,5 +1,5 @@
 import arenaReducer from "./arenaReducer";
-import createSenceReducer from "./createSenceReducer";
+import createSceneReducer from "./createSceneReducer";
 import createSwitchReducer from "./createSwitchReducer";
 import createCurtainReducer from "./createCurtainReducer";
 import getArenaInitState from "./getArenaInitState";
@@ -9,7 +9,7 @@ import sceneReducerWrapper from "./sceneReducerWrapper";
 
 export {
   arenaReducer,
-  createSenceReducer,
+  createSceneReducer,
   createSwitchReducer,
   createCurtainReducer,
   getArenaInitState,
