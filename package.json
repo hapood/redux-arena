@@ -1,15 +1,17 @@
 {
   "name": "redux-arena",
-  "version": "0.6.0",
-  "description": "Bundling reducers, actions, saga and react-component when using Redux",
+  "version": "0.6.3",
+  "description":
+    "Bundling reducers, actions, saga and react-component when using Redux",
   "main": "index.js",
   "scripts": {
-    "example": "node ./example/devServer.js",
-    "build": "npm run build:babel && npm run build:copy-files && npm run build:es",
-    "build:es": " cross-env BABEL_ENV=es babel ./src/index.js --out-file ./build/index.es.js",
-    "build:babel": "cross-env NODE_ENV=release babel ./src --out-dir ./build --ignore spec.js",
+    "build":
+      "npm run build:babel && npm run build:copy-files && npm run build:es",
+    "build:es":
+      " cross-env BABEL_ENV=es babel ./src/index.js --out-file ./build/index.es.js",
+    "build:babel":
+      "cross-env NODE_ENV=release babel ./src --out-dir ./build --ignore spec.js",
     "build:copy-files": "babel-node ./scripts/copy-files.js",
-    "build:example": "npm run clean &&webpack --colors --config ./example/webpack.config.prod.js",
     "clean:build": "rimraf build",
     "prebuild": "npm run clean:build",
     "postpublish": "npm run build && cd build && npm publish",

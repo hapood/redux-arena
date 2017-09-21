@@ -1,3 +1,7 @@
+## 0.6.3 (Sep 18, 2017)
+* Fix isNotifyOn props pass down bug
+* Remove props SceneLoadingComponent in SceneBulde component
+
 ## 0.6.0 (Sep 12, 2017)
 * RouteScene and SoloScene is refactored
 * Fix bundle hot reload bugs

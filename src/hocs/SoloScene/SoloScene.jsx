@@ -23,8 +23,7 @@ export default class SoloScene extends Component {
     sceneBundle: PropTypes.object,
     asyncSceneBundle: PropTypes.object,
     sceneProps: PropTypes.object,
-    notifyData: PropTypes.object,
-    SceneLoadingComponent: PropTypes.any
+    notifyData: PropTypes.object
   };
 
   componentWillMount() {
@@ -37,8 +36,8 @@ export default class SoloScene extends Component {
       asyncSceneBundle,
       sceneBundle,
       sceneProps,
-      notifyData,
-      SceneLoadingComponent
+      isNotifyOn,
+      notifyData
     } = this.props;
     let arenaReducerDict = calcCurtainReducerDict(
       this.context.arenaReducerDict,
@@ -50,8 +49,8 @@ export default class SoloScene extends Component {
       asyncSceneBundle,
       sceneBundle,
       sceneProps,
-      notifyData,
-      SceneLoadingComponent
+      isNotifyOn,
+      notifyData
     });
     this.state = {
       arenaReducerDict,
@@ -75,8 +74,8 @@ export default class SoloScene extends Component {
       asyncSceneBundle,
       sceneBundle,
       sceneProps,
-      notifyData,
-      SceneLoadingComponent
+      isNotifyOn,
+      notifyData
     } = nextProps;
     let newReducerKey = this.state.arenaReducerDict._curCurtain.reducerKey;
     if (
@@ -122,7 +121,6 @@ export default class SoloScene extends Component {
       asyncSceneBundle !== this.props.asyncSceneBundle ||
       sceneBundle !== this.props.sceneBundle ||
       sceneProps !== this.props.sceneBundle ||
-      SceneLoadingComponent !== this.props.SceneLoadingComponent ||
       notifyData !== this.props.notifyData ||
       refreshFlag == true
     ) {
@@ -131,8 +129,8 @@ export default class SoloScene extends Component {
           asyncSceneBundle,
           sceneBundle,
           sceneProps,
-          notifyData,
-          SceneLoadingComponent
+          isNotifyOn,
+          notifyData
         })
       });
     }
