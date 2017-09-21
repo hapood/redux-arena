@@ -14,7 +14,7 @@ import {
 } from "redux-saga/effects";
 import { bindActionCreators } from "redux";
 import { bindArenaActionCreators } from "../enhancedRedux";
-import { createSenceReducer, sceneReducerWrapper } from "../reducers";
+import { createSceneReducer, sceneReducerWrapper } from "../reducers";
 import {
   sceneAddReducer,
   sceneReplaceReducer,
@@ -89,14 +89,14 @@ export function* sceneApplyRedux({
   let reducerFactory =
     options.isSceneReducer === false
       ? bindingReducerKey =>
-          createSenceReducer(
+          createSceneReducer(
             reducer,
             bindingReducerKey,
             state,
             parentArenaReducerDict
           )
       : bindingReducerKey =>
-          createSenceReducer(
+          createSceneReducer(
             reducer && sceneReducerWrapper(reducer),
             bindingReducerKey,
             state,
@@ -150,14 +150,14 @@ export function* sceneUpdateRedux({
   let reducerFactory =
     options.isSceneReducer === false
       ? bindingReducerKey =>
-          createSenceReducer(
+          createSceneReducer(
             reducer,
             bindingReducerKey,
             state,
             parentArenaReducerDict
           )
       : bindingReducerKey =>
-          createSenceReducer(
+          createSceneReducer(
             reducer && sceneReducerWrapper(reducer),
             bindingReducerKey,
             state,

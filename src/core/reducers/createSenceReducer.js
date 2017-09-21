@@ -19,15 +19,15 @@ function sceneReducer(state = getSceneInitState(), action, sceneReducerKey) {
   }
 }
 
-export default function createSenceReducer(
-  extendSenceReducer,
+export default function createSceneReducer(
+  extendSceneReducer,
   sceneReducerKey,
   initState,
   arenaReducerDict
 ) {
   return function(state = initState, action) {
-    if (extendSenceReducer) {
-      state = extendSenceReducer(state, action, sceneReducerKey);
+    if (extendSceneReducer) {
+      state = extendSceneReducer(state, action, sceneReducerKey);
     }
     return sceneReducer(state, action, sceneReducerKey);
   };
