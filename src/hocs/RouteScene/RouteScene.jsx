@@ -13,7 +13,7 @@ class RouteScene extends Component {
   static propTypes = {
     reducerKey: PropTypes.string,
     vReducerKey: PropTypes.string,
-    asyncSceneBuldle: PropTypes.any,
+    asyncSceneBundle: PropTypes.any,
     sceneBundle: PropTypes.any,
     sceneProps: PropTypes.object,
     isNotifyOn: PropTypes.bool,

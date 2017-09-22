@@ -40,7 +40,7 @@ function* takeEverySceneBundleAction() {
 
 /**
  * Listen to the loading of each scene,
- * and handle different processing functions when handling sence switches.
+ * and handle different processing functions when handling scene switches.
  * 
  * @param {any} ctx 
  */
