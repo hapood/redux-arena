@@ -1,0 +1,7 @@
+{
+  "name": "redux-arena/tools",
+  "private": true,
+  "main": "../lib/tools/index.js",
+  "module": "../es/tools/index.js",
+  "jsnext:main": "../es/tools/index.js"
+}
