@@ -31,7 +31,7 @@ export function* applySceneBundle({
   sceneBundle,
   notifyAction
 }) {
-  let arenaCurtainReducerKey = parentArenaReducerDict._curCurtain.reducerKey;
+  let arenaCurtainReducerKey = parentArenaReducerDict._arenaCurtain.reducerKey;
   let {
     curSceneBundle,
     reduxInfo,

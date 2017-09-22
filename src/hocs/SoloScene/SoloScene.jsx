@@ -77,15 +77,15 @@ export default class SoloScene extends Component {
       isNotifyOn,
       notifyData
     } = nextProps;
-    let newReducerKey = this.state.arenaReducerDict._curCurtain.reducerKey;
+    let newReducerKey = this.state.arenaReducerDict._arenaCurtain.reducerKey;
     if (
       reducerKey != null &&
-      reducerKey !== this.state.arenaReducerDict._curCurtain.reducerKey
+      reducerKey !== this.state.arenaReducerDict._arenaCurtain.reducerKey
     ) {
       refreshFlag = true;
       nextContext.store.dispatch({
         type: ARENA_CURTAIN_CLEAR_REDUX,
-        reducerKey: this.state.arenaReducerDict._curCurtain.reducerKey,
+        reducerKey: this.state.arenaReducerDict._arenaCurtain.reducerKey,
         sagaTaskPromise: this.state.sagaTaskPromise
       });
       newReducerKey = curtainAddReducer(
@@ -139,7 +139,7 @@ export default class SoloScene extends Component {
   componentWillUnmount() {
     this.context.store.dispatch({
       type: ARENA_CURTAIN_CLEAR_REDUX,
-      reducerKey: this.state.arenaReducerDict._curCurtain.reducerKey,
+      reducerKey: this.state.arenaReducerDict._arenaCurtain.reducerKey,
       sagaTaskPromise: this.state.sagaTaskPromise
     });
   }

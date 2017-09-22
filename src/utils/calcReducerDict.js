@@ -25,6 +25,6 @@ export function calcCurtainReducerDict(
     arenaReducerDict,
     curtainReducerKey,
     vReducerKey,
-    "_curCurtain"
+    "_arenaCurtain"
   );
 }

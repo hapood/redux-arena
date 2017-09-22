@@ -9,7 +9,7 @@ export default function createPropsPicker(
   reduxInfo
 ) {
   let { arenaReducerDict } = reduxInfo;
-  let curtainReducerKey = arenaReducerDict._curCurtain.reducerKey;
+  let curtainReducerKey = arenaReducerDict._arenaCurtain.reducerKey;
   let sceneReducerKey = arenaReducerDict._arenaScene.reducerKey;
   let sceneActions = arenaReducerDict._arenaScene.actions;
   let latestProps;
