@@ -11,6 +11,6 @@ function* _setSceneState(state, key) {
   });
 }
 
-export default function setSceneState(state, key = "_curScene") {
+export default function setSceneState(state, key = "_arenaScene") {
   return call(_setSceneState, state, key);
 }

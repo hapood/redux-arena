@@ -2,7 +2,7 @@ import { take } from "redux-saga/effects";
 import getArenaReducerDictEntry from "./getArenaReducerDictEntry";
 import { END } from "redux-saga";
 
-const takeSceneAction = function*(pattern, key = "_curScene") {
+const takeSceneAction = function*(pattern, key = "_arenaScene") {
   while (true) {
     let action = yield take(pattern);
     let entry = yield* getArenaReducerDictEntry(key);
@@ -12,7 +12,7 @@ const takeSceneAction = function*(pattern, key = "_curScene") {
   }
 };
 
-takeSceneAction.maybe = function*(pattern, key = "_curScene") {
+takeSceneAction.maybe = function*(pattern, key = "_arenaScene") {
   while (true) {
     let action = yield take.maybe(pattern);
     let entry = yield* getArenaReducerDictEntry(key);

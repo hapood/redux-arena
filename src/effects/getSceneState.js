@@ -6,6 +6,6 @@ function* _getSceneState(key) {
   return yield select(state => state[entry.reducerKey]);
 }
 
-export default function getSceneState(key = "_curScene") {
+export default function getSceneState(key = "_arenaScene") {
   return call(_getSceneState, key);
 }

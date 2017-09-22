@@ -18,11 +18,11 @@ function* _putSceneActionResolve(actionPromise, key) {
   yield put(newAction);
 }
 
-const putSceneAction = function(action, key = "_curScene") {
+const putSceneAction = function(action, key = "_arenaScene") {
   return call(_putSceneAction, action, key);
 };
 
-putSceneAction.resolve = function(actionPromise, key = "_curScene") {
+putSceneAction.resolve = function(actionPromise, key = "_arenaScene") {
   return call(_putSceneActionResolve, actionPromise, key);
 };
 

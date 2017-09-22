@@ -12,7 +12,7 @@ function calcReducerKey(
     newDict[vReducerKey] = item;
   }
   newDict[curReducerKey] = item;
-  newDict._curScene = null;
+  newDict._arenaScene = null;
   return newDict;
 }
 

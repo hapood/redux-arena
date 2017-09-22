@@ -14,7 +14,7 @@ function* _takeEverySceneAction(pattern, saga, key, args) {
 export default function takeEverySceneAction(
   pattern,
   saga,
-  key = "_curScene",
+  key = "_arenaScene",
   ...args
 ) {
   return fork(_takeEverySceneAction, pattern, saga, key, args);

@@ -16,7 +16,7 @@ function* _takeLatestSceneAction(pattern, saga, key, args) {
 export default function takeLatestSceneAction(
   pattern,
   saga,
-  key = "_curScene",
+  key = "_arenaScene",
   ...args
 ) {
   return fork(_takeLatestSceneAction, pattern, saga, key, args);
