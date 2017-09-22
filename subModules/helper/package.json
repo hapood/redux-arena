@@ -1,0 +1,7 @@
+{
+  "name": "redux-arena/helper",
+  "private": true,
+  "main": "../lib/helper/index.js",
+  "module": "../es/helper/index.js",
+  "jsnext:main": "../es/helper/index.js"
+}
