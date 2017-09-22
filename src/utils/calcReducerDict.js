@@ -28,16 +28,3 @@ export function calcCurtainReducerDict(
     "_curCurtain"
   );
 }
-
-export function calcSwitchReducerDict(
-  arenaReducerDict,
-  switchReducerKey,
-  vReducerKey
-) {
-  return calcReducerKey(
-    arenaReducerDict,
-    switchReducerKey,
-    vReducerKey,
-    "_curSwitch"
-  );
-}

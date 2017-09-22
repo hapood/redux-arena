@@ -1,6 +1,5 @@
 import {
   ARENA_SCENE_REPLACE_STATE,
-  ARENA_SWITCH_REPLACE_STATE,
   ARENA_CURTAIN_REPLACE_STATE
 } from "../core/actionTypes";
 
@@ -24,16 +23,6 @@ function addReducer(store, reducerKey, reducerFactory) {
       if (flag === false) newReducerKey = null;
     } while (newReducerKey == null);
   }
-  return newReducerKey;
-}
-
-export function switchAddReducer(store, reducerKey, reducerFactory, state) {
-  let newReducerKey = addReducer(store, reducerKey, reducerFactory);
-  if (state)
-    store.dispatch({
-      type: ARENA_SWITCH_REPLACE_STATE,
-      _reducerKey: newReducerKey
-    });
   return newReducerKey;
 }
 
