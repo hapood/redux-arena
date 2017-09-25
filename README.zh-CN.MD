@@ -39,7 +39,7 @@ npm install redux-arena --save
 1. 将react组件、actions、reducer、saga 文件导出成React组件
 
 ```javascript
-import { bundleToComponent } from "redux-arena/helper";
+import { bundleToComponent } from "redux-arena/tools";
 import state from "./state";
 import * as actions from "./actions";
 import PageA from "./PageA";
