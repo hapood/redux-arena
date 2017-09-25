@@ -75,13 +75,13 @@ ReactDOM.render(
 
 Redux-arena提供了一组可以和react-router整合使用的高阶组件。
 
-### SoloScene
+### ArenaScene
 
 如果你不需要路由功能，直接使用SoloScene。
 
 
 ```javascript
-<SoloScene asyncSceneBundle={asyncPageB} />
+<ArenaScene asyncSceneBundle={asyncPageB} />
 ```
 
 ### ArenaSwitch

@@ -75,12 +75,12 @@ ReactDOM.render(
 
 Redux-arena provide a set of useful HOCs to enhance react-router.
 
-### SoloScene
+### ArenaScene
 
-If route is not necessary, use SoloScene.
+If route is not necessary, use ArenaScene.
 
 ```javascript
-<SoloScene asyncSceneBundle={asyncPageB} />
+<ArenaScene asyncSceneBundle={asyncPageB} />
 ```
 
 ### ArenaSwitch

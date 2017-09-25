@@ -1,9 +1,5 @@
 import { ARENA_CURTAIN_SET_STATE } from "../actionTypes";
 import {
-  ARENA_SCENEBUNDLE_LOAD_CONTINUE,
-  ARENA_SCENEBUNDLE_LOAD_WAITING
-} from "../../actionTypes";
-import {
   take,
   put,
   fork,
@@ -36,7 +32,6 @@ export function* applySceneBundle({
     curSceneBundle,
     reduxInfo,
     PlayingScene: OldPlayingScene,
-    isWaiting,
     arenaReducerDict
   } = yield select(state => state[arenaCurtainReducerKey]);
   let newReduxInfo;
@@ -79,18 +74,6 @@ export function* applySceneBundle({
     PlayingScene,
     curSceneBundle: sceneBundle
   };
-  if (isWaiting) {
-    yield put({
-      type: ARENA_SCENEBUNDLE_LOAD_WAITING,
-      ...notifyAction
-    });
-    while (true) {
-      let continueAction = yield take(ARENA_SCENEBUNDLE_LOAD_CONTINUE);
-      if (continueAction._sceneReducerKey === arenaCurtainReducerKey) {
-        break;
-      }
-    }
-  }
   yield put({
     type: ARENA_CURTAIN_SET_STATE,
     _reducerKey: arenaCurtainReducerKey,

@@ -1,10 +1,10 @@
 import React from "react";
 import { expect } from "chai";
 import { spy } from "sinon";
-import { createMount } from "../../testUtils";
-import { createArenaStore } from "../../../src";
-import sceneBundleForTestA from "../../sceneBundleForTestA";
-import sceneBundleForTestB from "../../sceneBundleForTestB";
+import { createMount } from "../testUtils";
+import { createArenaStore } from "../../src";
+import sceneBundleForTestA from "../sceneBundleForTestA";
+import sceneBundleForTestB from "../sceneBundleForTestB";
 import TestHoc from "./TestHOC";
 
 function createMountWithRedux() {
@@ -31,7 +31,7 @@ function selectNeededStates(allStates, name) {
   };
 }
 
-describe("<SoloScene /> integration", () => {
+describe("<ArenaScene /> integration", () => {
   let store, mountWithRedux, wrapper;
 
   before(() => {

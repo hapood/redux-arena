@@ -10,7 +10,7 @@
           }
         ]
       ],
-      "plugins": ["transform-class-properties"]
+      "plugins": ["transform-class-properties", "transform-object-rest-spread"]
     },
     "es": {
       "presets": [
@@ -22,7 +22,7 @@
           }
         ]
       ],
-      "plugins": ["transform-class-properties"]
+      "plugins": ["transform-class-properties", "transform-object-rest-spread"]
     }
   }
 }

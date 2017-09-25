@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { SoloScene } from "redux-arena";
+import { ArenaScene } from "redux-arena";
 import childBundle from "./child";
 
 export default class Parent extends Component {
@@ -23,7 +23,7 @@ export default class Parent extends Component {
             </tr>
           </tbody>
         </table>
-        <SoloScene sceneBundle={childBundle} />
+        <ArenaScene sceneBundle={childBundle} />
       </div>
     );
   }

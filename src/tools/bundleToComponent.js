@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import SoloScene from "../hocs/SoloScene";
+import ArenaScene from "../hocs/ArenaScene";
 
 export default function(bundle) {
   let WrapperClass = class extends Component {
     static displayName = "ScenePropsProxyWrapper";
     render() {
-      return <SoloScene sceneBundle={bundle} sceneProps={this.props} />;
+      return <ArenaScene sceneBundle={bundle} sceneProps={this.props} />;
     }
   };
   return WrapperClass;

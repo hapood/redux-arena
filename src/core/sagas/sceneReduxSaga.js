@@ -153,15 +153,13 @@ export function* sceneUpdateRedux({
           createSceneReducer(
             reducer,
             bindingReducerKey,
-            state,
-            parentArenaReducerDict
+            state
           )
       : bindingReducerKey =>
           createSceneReducer(
             reducer && sceneReducerWrapper(reducer),
             bindingReducerKey,
-            state,
-            parentArenaReducerDict
+            state
           );
 
   if (

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Provider } from "react-redux";
-import { SoloScene } from "../../../src";
+import { ArenaScene } from "../../src";
 
 export default class TestHOC extends Component {
   static propTypes = {
@@ -16,7 +16,7 @@ export default class TestHOC extends Component {
     let props = this.props;
     return (
       <Provider store={props.store}>
-        <SoloScene
+        <ArenaScene
           sceneBundle={props.sceneBundle}
           asyncSceneBundle={props.asyncSceneBundle}
           reducerKey={props.reducerKey}

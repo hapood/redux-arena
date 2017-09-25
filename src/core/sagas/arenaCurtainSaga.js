@@ -61,13 +61,6 @@ function* initArenaCurtainSaga({
   setSagaTask,
   isWaitingSwitchAction = false
 }) {
-  yield put({
-    type: ARENA_CURTAIN_SET_STATE,
-    _reducerKey: reducerKey,
-    state: {
-      isWaiting: isWaitingSwitchAction
-    }
-  });
   let sagaTask = yield fork(forkSagaWithContext, {
     _reducerKey: reducerKey
   });
