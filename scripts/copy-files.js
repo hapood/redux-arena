@@ -1,7 +1,7 @@
 import path from "path";
 import fse from "fs-extra";
 
-const files = ["README.md", "LICENSE","subModules/"];
+const files = ["README.md", "LICENSE", "subModules/tools"];
 
 Promise.all(files.map(file => copyFile(file))).then(() => createPackageFile());
 

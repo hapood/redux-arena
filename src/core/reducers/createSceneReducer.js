@@ -1,7 +1,6 @@
 import {
   ARENA_SCENE_SET_STATE,
-  ARENA_SCENE_REPLACE_STATE,
-  ARENA_SCENE_SET_REND
+  ARENA_SCENE_REPLACE_STATE
 } from "../actionTypes.js";
 import getSceneInitState from "./getSceneInitState";
 
@@ -12,8 +11,6 @@ function sceneReducer(state = getSceneInitState(), action, sceneReducerKey) {
       return Object.assign({}, state, action.state);
     case ARENA_SCENE_REPLACE_STATE:
       return Object.assign({}, action.state);
-    case ARENA_SCENE_SET_REND:
-      return action.state;
     default:
       return state;
   }

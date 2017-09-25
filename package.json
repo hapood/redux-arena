@@ -7,7 +7,7 @@
     "build": "run-p build:**",
     "build:cjs": "cross-env BABEL_ENV=cjs babel ./src --out-dir ./build/lib --ignore spec.js",
     "build:es": "cross-env BABEL_ENV=es babel ./src --out-dir ./build/es --ignore spec.js",
-    "build:copy-files": "babel-node ./scripts/copy-files.js",
+    "build:copy-files": "cross-env BABEL_ENV=cjs babel-node ./scripts/copy-files.js",
     "clean:build": "rimraf build",
     "prebuild": "npm run clean:build",
     "postpublish": "npm run build && cd build && npm publish",
