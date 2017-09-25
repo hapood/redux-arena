@@ -10,7 +10,7 @@ import { createCurtainReducer } from "../../core/reducers";
 import { curtainAddReducer, calcCurtainReducerDict } from "../../utils";
 import { arenaCurtainConnect } from "../SceneBundle";
 
-export default class SoloScene extends Component {
+export default class ArenaScene extends Component {
   static contextTypes = {
     store: PropTypes.any,
     arenaReducerDict: PropTypes.object

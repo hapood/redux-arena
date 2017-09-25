@@ -1,11 +1,4 @@
 import { createArenaStore } from "./core";
-import RouteScene from "./hocs/RouteScene";
-import ArenaSwitch from "./hocs/ArenaSwitch";
-import SoloScene from "./hocs/SoloScene";
+import ArenaScene from "./hocs/ArenaScene";
 
-export {
-  createArenaStore,
-  RouteScene,
-  ArenaSwitch,
-  SoloScene
-};
+export { createArenaStore, ArenaScene };
