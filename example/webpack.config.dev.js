@@ -19,9 +19,6 @@ module.exports = {
   },
   devtool: "inline-source-map",
   resolve: {
-    alias: {
-      "redux-arena": path.resolve(__dirname, "..", "src")
-    },
     extensions: [".js", ".jsx"]
   },
   module: {

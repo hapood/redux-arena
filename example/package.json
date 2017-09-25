@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build": "npm run clean:build &&webpack --colors --config webpack.config.prod.js",
+    "build":
+      "npm run clean:build &&webpack --colors --config webpack.config.prod.js",
     "clean:build": "rimraf dist",
     "start:dist": "node expressServer.js"
   },
@@ -26,7 +27,8 @@
     "redux-devtools-chart-monitor": "^1.6.1",
     "redux-devtools-diff-monitor": "^5.0.5",
     "redux-devtools-dock-monitor": "^1.1.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "redux-devtools": "^3.4.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -39,7 +41,6 @@
     "html-webpack-plugin": "^2.30.1",
     "node-libs-browser": "^2.0.0",
     "react-hot-loader": "^3.0.0-beta.1",
-    "redux-devtools": "^3.4.0",
     "script-ext-html-webpack-plugin": "^1.8.5",
     "webpack": "^3.5.6",
     "webpack-dev-server": "^2.7.1"
