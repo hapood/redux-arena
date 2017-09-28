@@ -1,10 +1,10 @@
-import { bundleToComponent } from "redux-arena/tools";
+import { bundleToComponent } from "../../tools";
 import ArenaSceneMotion from "./ArenaSceneMotion";
 import * as actions from "./actions";
 import reducer from "./reducer";
 
 export default bundleToComponent({
-  Component: ArenaSwitchMotion,
+  Component: ArenaSceneMotion,
   actions,
   reducer,
   propsPicker: (state, actions, allState, { _arenaScene }) => ({

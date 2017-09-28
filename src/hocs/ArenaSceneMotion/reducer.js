@@ -1,9 +1,12 @@
 import initState from "./state";
-import { ARENA_SCENEBUNDLE_PLAY_START } from "../../actionTypes";
+import {
+  ARENA_SCENEBUNDLE_PLAY_START,
+  ARENA_SCENEBUNDLE_LOAD_START
+} from "../../actionTypes";
 import {
   ARENA_SCENE_ANIMATION_NEXTPHRASE,
   ARENA_SCENE_ANIMATION_LEAVING_START
-} from "./actionType";
+} from "./actionTypes";
 import { LOADING, ENTERING, IN, LEAVING, OUT } from "./animationPhase";
 
 export default function(state = initState, action, sceneReducerKey) {
@@ -14,11 +17,18 @@ export default function(state = initState, action, sceneReducerKey) {
       } else {
         return state;
       }
+    case ARENA_SCENEBUNDLE_LOAD_START:
+      if (sceneReducerKey === action.notifyData._toReducerKey) {
+        return Object.assign({}, state, {
+          isSceneReady: false,
+          phase: LOADING
+        });
+      }
   }
   if (action._sceneReducerKey !== sceneReducerKey) return state;
   switch (action.type) {
-    case ARENA_SWITCH_ANIMATION_NEXTPHRASE:
-      if (state.phase !== phase) return state;
+    case ARENA_SCENE_ANIMATION_NEXTPHRASE:
+      if (state.phase !== action.phase) return state;
       switch (state.phase) {
         case LOADING:
           return Object.assign({}, state, {

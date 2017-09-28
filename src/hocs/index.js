@@ -1,5 +1,5 @@
 import ArenaScene from "./ArenaScene";
 import SceneBundle from "./SceneBundle";
-import ArenaSceneAnimation from "./ArenaSceneAnimation";
+import ArenaSceneMotion from "./ArenaSceneMotion";
 
-export { ArenaScene, SceneBundle, ArenaSceneAnimation };
+export { ArenaScene, SceneBundle, ArenaSceneMotion };

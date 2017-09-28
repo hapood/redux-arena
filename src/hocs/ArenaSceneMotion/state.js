@@ -1,6 +1,6 @@
-import { IN } from "./animationPhase";
+import { LOADING } from "./animationPhase";
 
 export default {
   isSceneReady: false,
-  phase: IN
+  phase: LOADING
 };

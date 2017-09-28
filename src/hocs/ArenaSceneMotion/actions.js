@@ -2,7 +2,7 @@ import { ARENA_SCENE_SET_STATE } from "redux-arena/actionTypes";
 import {
   ARENA_SCENE_ANIMATION_NEXTPHRASE,
   ARENA_SCENE_ANIMATION_LEAVING_START
-} from "./actionType";
+} from "./actionTypes";
 
 export function setState(state) {
   return {

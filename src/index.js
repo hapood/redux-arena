@@ -1,5 +1,5 @@
-import { createArenaStore } from "./core";
-import { ArenaScene, ArenaSceneAnimation } from "./hocs";
+export { createArenaStore } from "./core";
+export { ArenaScene, ArenaSceneMotion } from "./hocs";
 import * as sceneMotionPhase from "./hocs/ArenaSceneMotion/animationPhase";
 
-export { createArenaStore, ArenaScene, ArenaSceneAnimation, sceneMotionPhase };
+export { sceneMotionPhase };

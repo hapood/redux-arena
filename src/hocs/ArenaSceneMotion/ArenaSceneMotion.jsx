@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { TransitionMotion } from "react-motion";
-import { LOADING, ENTERING, IN, LEAVING, OUT } from "../../animationPhase";
+import { LOADING, ENTERING, IN, LEAVING, OUT } from "./animationPhase";
 import { buildStyleCalculator, isCurPhaseEnd } from "./utils";
 
 export default class ArenaSceneAnimation extends Component {
@@ -14,39 +14,44 @@ export default class ArenaSceneAnimation extends Component {
     numberToStyle: PropTypes.func.isRequired
   };
 
+  cloneSceneWithNotify(children, reducerKey) {
+    return React.cloneElement(children, {
+      isNotifyOn: true,
+      notifyData: Object.assign({}, children.props.notifyData, {
+        _toReducerKey: reducerKey
+      })
+    });
+  }
+
   componentWillMount() {
     this.state = {
-      scenePlay: React.cloneElement(this.props.children, {
-        isNotifyOn: true,
-        notifyData: Object.assign({}, this.props.children, {
-          _toReducerKey: this.props.reducerKey
-        })
-      })
-    };
-    this.props.actions.playNext();
-    this.state = {
+      scenePlay: this.cloneSceneWithNotify(
+        this.props.children,
+        this.props.reducerKey
+      ),
       defaultStyles: this.props.defaultStyles.concat({
         key: "nextPhase",
         style: { phase: LOADING }
-      })
+      }),
+      styleCalculator: buildStyleCalculator(
+        this.props.styleCalculators,
+        this.props.phase,
+        this.props.nextPhaseCheckers,
+        this.props.isSceneReady,
+        () => setImmediate(() => this.props.actions.nextPhase(this.props.phase))
+      )
     };
-    this.state.styleCalculator = buildStyleCalculator(
-      this.props.phase,
-      this.props.styleCalculators,
-      this.props.nextPhaseCheckers,
-      this.props.isSceneReady,
-      () => setImmediate(() => this.props.actions.nextPhase(this.props.phase))
-    );
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.children !== this.props.children) {
-      this.state.scenePlay = React.cloneElement(this.props.children, {
-        isNotifyOn: true,
-        notifyData: Object.assign({}, this.props.children, {
-          _toReducerKey: this.props.reducerKey
-        })
-      });
+    if (
+      nextProps.children !== this.props.children ||
+      nextProps.reducerKey !== this.props.reducerKey
+    ) {
+      this.state.scenePlay = this.cloneSceneWithNotify(
+        nextProps.children,
+        nextProps.reducerKey
+      );
     }
     if (
       nextProps.actions !== this.props.actions ||
@@ -56,10 +61,10 @@ export default class ArenaSceneAnimation extends Component {
       nextProps.isSceneReady !== this.props.isSceneReady
     ) {
       this.state.styleCalculator = buildStyleCalculator(
-        nextProps.phase,
         nextProps.styleCalculators,
+        nextProps.phase,
         nextProps.nextPhaseCheckers,
-        nextProps.props.isSceneReady,
+        nextProps.isSceneReady,
         () => setImmediate(() => nextProps.actions.nextPhase(this.props.phase))
       );
     }
@@ -72,7 +77,7 @@ export default class ArenaSceneAnimation extends Component {
   }
 
   render() {
-    let { phase, numberToStyle } = this.props;
+    let { phase, numberToStyle, isSceneReady } = this.props;
     return (
       <TransitionMotion
         defaultStyles={this.state.defaultStyles}
@@ -100,7 +105,12 @@ export default class ArenaSceneAnimation extends Component {
           });
           return (
             <div
-              style={numberToStyle("container", containerStyle, animationPhase)}
+              style={numberToStyle(
+                "container",
+                containerStyle,
+                animationPhase,
+                isSceneReady
+              )}
             >
               {animationPhase === IN ||
               animationPhase === LEAVING ||
@@ -110,7 +120,8 @@ export default class ArenaSceneAnimation extends Component {
                   style={numberToStyle(
                     "loadingPlay",
                     loadingPlayStyle,
-                    animationPhase
+                    animationPhase,
+                    isSceneReady
                   )}
                 >
                   {this.props.loadingPlay}
@@ -122,7 +133,8 @@ export default class ArenaSceneAnimation extends Component {
                   style={numberToStyle(
                     "scenePlay",
                     scenePlayStyle,
-                    animationPhase
+                    animationPhase,
+                    isSceneReady
                   )}
                 >
                   {this.state.scenePlay}
