@@ -5,7 +5,8 @@ const files = [
   "README.md",
   "LICENSE",
   "subModules/tools",
-  "subModules/actionTypes"
+  "subModules/actionTypes",
+  "subModules/effects"
 ];
 
 Promise.all(files.map(file => copyFile(file))).then(() => createPackageFile());

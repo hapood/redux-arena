@@ -1,0 +1,7 @@
+{
+  "name": "redux-arena/effects",
+  "private": true,
+  "main": "../lib/effects/index.js",
+  "module": "../es/effects/index.js",
+  "jsnext:main": "../es/effects/index.js"
+}
