@@ -8,7 +8,7 @@ export default class ArenaSceneAnimation extends Component {
   static propTypes = {
     loadingPlay: PropTypes.element.isRequired,
     children: PropTypes.element.isRequired,
-    defaultStyles: PropTypes.array.isRequired,
+    initStyles: PropTypes.array.isRequired,
     styleCalculators: PropTypes.object.isRequired,
     nextPhaseCheckers: PropTypes.object.isRequired,
     numberToStyle: PropTypes.func.isRequired
@@ -29,16 +29,22 @@ export default class ArenaSceneAnimation extends Component {
         this.props.children,
         this.props.reducerKey
       ),
-      defaultStyles: this.props.defaultStyles.concat({
-        key: "nextPhase",
-        style: { phase: LOADING }
-      }),
+      initStyles: this.props.initStyles
+        .map(styleObj =>
+          Object.assign({}, styleObj, {
+            style: Object.assign({}, styleObj.style, { phase: LOADING })
+          })
+        )
+        .concat({
+          key: "nextPhase",
+          style: { phase: LOADING }
+        }),
       styleCalculator: buildStyleCalculator(
         this.props.styleCalculators,
         this.props.phase,
         this.props.nextPhaseCheckers,
         this.props.isSceneReady,
-        () => setImmediate(() => this.props.actions.nextPhase(this.props.phase))
+        phase => setImmediate(() => this.props.actions.nextPhase(phase))
       )
     };
   }
@@ -65,14 +71,14 @@ export default class ArenaSceneAnimation extends Component {
         nextProps.phase,
         nextProps.nextPhaseCheckers,
         nextProps.isSceneReady,
-        () => setImmediate(() => nextProps.actions.nextPhase(this.props.phase))
+        phase => setImmediate(() => nextProps.actions.nextPhase(phase))
       );
     }
-    if (nextProps.defaultStyles !== this.props.defaultStyles) {
-      let nextPhaseStyle = this.state.defaultStyles.find(
+    if (nextProps.initStyles !== this.props.initStyles) {
+      let nextPhaseStyle = this.state.initStyles.find(
         style => style.key === "nextPhase"
       );
-      this.state.defaultStyles = nextProps.defaultStyles.concat(nextPhaseStyle);
+      this.state.initStyles = nextProps.initStyles.concat(nextPhaseStyle);
     }
   }
 
@@ -80,7 +86,7 @@ export default class ArenaSceneAnimation extends Component {
     let { phase, numberToStyle, isSceneReady } = this.props;
     return (
       <TransitionMotion
-        defaultStyles={this.state.defaultStyles}
+        defaultStyles={this.state.initStyles}
         willLeave={this.willLeave}
         styles={this.state.styleCalculator}
       >

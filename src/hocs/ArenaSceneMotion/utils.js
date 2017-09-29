@@ -1,24 +1,19 @@
 import { ENTERING, IN, LEAVING, OUT } from "./animationPhase";
-export function isCurPhaseEnd(
-  prevStyles,
-  phase,
-  isSceneReady,
-  nextPhaseCheckers
-) {
+export function isCurPhaseEnd(prevStyles, isSceneReady, nextPhaseCheckers) {
   return prevStyles.find(styleObj => {
     let { key, style } = styleObj;
     switch (key) {
       case "container":
         return nextPhaseCheckers.container
-          ? nextPhaseCheckers.container(style, phase, isSceneReady)
+          ? nextPhaseCheckers.container(style, isSceneReady)
           : false;
       case "loadingPlay":
         return nextPhaseCheckers.loadingPlay
-          ? nextPhaseCheckers.loadingPlay(style, phase, isSceneReady)
+          ? nextPhaseCheckers.loadingPlay(style, isSceneReady)
           : false;
       case "scenePlay":
         return nextPhaseCheckers.scenePlay
-          ? nextPhaseCheckers.scenePlay(style, phase, isSceneReady)
+          ? nextPhaseCheckers.scenePlay(style, isSceneReady)
           : false;
       default:
         return false;
@@ -26,6 +21,12 @@ export function isCurPhaseEnd(
   }) == null
     ? false
     : true;
+}
+
+function calcStyle(style, phase, calculator) {
+  return Object.assign({}, calculator ? calculator(style, phase) : style, {
+    phase
+  });
 }
 
 export function buildStyleCalculator(
@@ -42,47 +43,29 @@ export function buildStyleCalculator(
         case "container":
           return {
             key: "container",
-            style: styleCalculators.container
-              ? styleCalculators.container(style, phase, isSceneReady)
-              : style
+            style: calcStyle(style, phase, styleCalculators.container)
           };
         case "loadingPlay":
           return {
             key: "loadingPlay",
-            style: styleCalculators.loadingPlay
-              ? styleCalculators.loadingPlay(style, phase, isSceneReady)
-              : style
+            style: calcStyle(style, phase, styleCalculators.loadingPlay)
           };
         case "scenePlay":
           return {
             key: "scenePlay",
-            style: styleCalculators.scenePlay
-              ? styleCalculators.scenePlay(style, phase, isSceneReady)
-              : style
+            style: calcStyle(style, phase, styleCalculators.scenePlay)
           };
         case "nextPhase":
-          if (phase === IN) {
-            return {
-              key: "nextPhase",
-              style: {
-                phase
-              }
-            };
+          if (isCurPhaseEnd(prevStyles, isSceneReady, nextPhaseCheckers)) {
+            nextPhase(style.phase);
           }
-          if (phase !== style.phase || isSceneReady !== style.phase) {
-            if (
-              isCurPhaseEnd(prevStyles, phase, isSceneReady, nextPhaseCheckers)
-            ) {
-              nextPhase(phase);
-              return {
-                key: "nextPhase",
-                style: {
-                  phase,
-                  isSceneReady
-                }
-              };
+          return {
+            key: "nextPhase",
+            style: {
+              phase,
+              isSceneReady
             }
-          }
+          };
           return styleObj;
         default:
           return styleObj;
