@@ -1,3 +1,9 @@
+## 0.7.0-beta (Sep 29, 2017)
+* Support redux-arena-router and redux-arena-form
+* Add react-motion animation support
+* Remove deprecated helpers and sagaOps
+* Add bundleToElement/asyncBundleToElement tools
+
 ## 0.6.3 (Sep 18, 2017)
 * Fix isNotifyOn props pass down bug
 * Remove props SceneLoadingComponent in SceneBulde component
