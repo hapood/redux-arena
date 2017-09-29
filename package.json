@@ -1,18 +1,23 @@
 {
   "name": "redux-arena",
-  "version": "0.6.3",
-  "description": "Bundling reducers, actions, saga and react-component when using Redux",
+  "version": "0.7.0-beta",
+  "description":
+    "Bundling reducers, actions, saga and react-component when using Redux",
   "main": "index.js",
   "scripts": {
     "build": "run-p build:**",
-    "build:cjs": "cross-env BABEL_ENV=cjs babel ./src --out-dir ./build/lib --ignore spec.js",
-    "build:es": "cross-env BABEL_ENV=es babel ./src --out-dir ./build/es --ignore spec.js",
-    "build:copy-files": "cross-env BABEL_ENV=cjs babel-node ./scripts/copy-files.js",
+    "build:cjs":
+      "cross-env BABEL_ENV=cjs babel ./src --out-dir ./build/lib --ignore spec.js",
+    "build:es":
+      "cross-env BABEL_ENV=es babel ./src --out-dir ./build/es --ignore spec.js",
+    "build:copy-files":
+      "cross-env BABEL_ENV=cjs babel-node ./scripts/copy-files.js",
     "clean:build": "rimraf build",
     "prebuild": "npm run clean:build",
     "postpublish": "npm run build && cd build && npm publish",
     "test": "cross-env BABEL_ENV=es karma start test/karma.conf.js",
-    "test-travis": "cross-env BABEL_ENV=es karma start test/karma.conf.js --browsers Firefox --single-run"
+    "test-travis":
+      "cross-env BABEL_ENV=es karma start test/karma.conf.js --browsers Firefox --single-run"
   },
   "repository": {
     "type": "git",
@@ -39,7 +44,8 @@
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
-    "redux-saga": "^0.15.6"
+    "redux-saga": "^0.15.6",
+    "react-motion": "^0.5.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
