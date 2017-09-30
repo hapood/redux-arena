@@ -24,7 +24,7 @@ export default class ArenaSceneAnimation extends Component {
   }
 
   componentWillMount() {
-    this.state = {
+    this.setState({
       scenePlay: this.cloneSceneWithNotify(
         this.props.children,
         this.props.reducerKey
@@ -46,7 +46,7 @@ export default class ArenaSceneAnimation extends Component {
         this.props.isSceneReady,
         phase => setImmediate(() => this.props.actions.nextPhase(phase))
       )
-    };
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -78,7 +78,9 @@ export default class ArenaSceneAnimation extends Component {
       let nextPhaseStyle = this.state.initStyles.find(
         style => style.key === "nextPhase"
       );
-      this.state.initStyles = nextProps.initStyles.concat(nextPhaseStyle);
+      this.setState({
+        initStyles: nextProps.initStyles.concat(nextPhaseStyle)
+      });
     }
   }
 

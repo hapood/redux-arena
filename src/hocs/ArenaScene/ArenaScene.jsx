@@ -52,7 +52,7 @@ export default class ArenaScene extends Component {
       isNotifyOn,
       notifyData
     });
-    this.state = {
+    this.setState({
       arenaReducerDict,
       wrappedSceneBundle,
       sceneBundleElement,
@@ -63,7 +63,7 @@ export default class ArenaScene extends Component {
           setSagaTask: resolve
         })
       )
-    };
+    });
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -93,13 +93,15 @@ export default class ArenaScene extends Component {
         reducerKey,
         createCurtainReducer
       );
-      this.state.sagaTaskPromise = new Promise(resolve =>
-        nextContext.store.dispatch({
-          type: ARENA_CURTAIN_INIT_SAGA,
-          reducerKey: newReducerKey,
-          setSagaTask: resolve
-        })
-      );
+      this.setState({
+        sagaTaskPromise: new Promise(resolve =>
+          nextContext.store.dispatch({
+            type: ARENA_CURTAIN_INIT_SAGA,
+            reducerKey: newReducerKey,
+            setSagaTask: resolve
+          })
+        )
+      });
     }
     if (
       nextContext.arenaReducerDict !== this.context.arenaReducerDict ||
@@ -108,14 +110,14 @@ export default class ArenaScene extends Component {
       refreshFlag === true
     ) {
       refreshFlag = true;
-      this.state.arenaReducerDict = calcCurtainReducerDict(
-        nextContext.arenaReducerDict,
-        newReducerKey,
-        nextProps.vReducerKey
-      );
-      this.state.wrappedSceneBundle = arenaCurtainConnect(
-        this.state.arenaReducerDict
-      );
+      this.setState({
+        arenaReducerDict: calcCurtainReducerDict(
+          nextContext.arenaReducerDict,
+          newReducerKey,
+          nextProps.vReducerKey
+        ),
+        wrappedSceneBundle: arenaCurtainConnect(this.state.arenaReducerDict)
+      });
     }
     if (
       asyncSceneBundle !== this.props.asyncSceneBundle ||

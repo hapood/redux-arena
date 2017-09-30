@@ -8,7 +8,7 @@ import {
   takeSceneAction,
   putSceneAction,
   getSceneActions
-} from "../../src/effects";
+} from "src/effects";
 
 function* addSagaCnt() {
   let { sagaCnt } = yield getSceneState();

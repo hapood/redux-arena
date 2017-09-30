@@ -1,8 +1,8 @@
 import React from "react";
 import { expect } from "chai";
 import { spy } from "sinon";
-import { createMount } from "../testUtils";
-import { createArenaStore } from "../../src";
+import { createMount } from "../../testUtils";
+import { createArenaStore } from "src";
 import sceneBundleForTestA from "../sceneBundleForTestA";
 import sceneBundleForTestB from "../sceneBundleForTestB";
 import TestHoc from "./TestHOC";
@@ -43,24 +43,6 @@ describe("<ArenaScene /> integration", () => {
   after(() => {
     mountWithRedux.cleanUp();
     store.close();
-  });
-
-  it("should generate right redux state", () => {
-    let flagPromise = new Promise(resolve => {
-      let unsubscribe = store.subscribe(() => {
-        let { arena, metaState, bundleState } = selectNeededStates(
-          store.getState(),
-          "PageA"
-        );
-        if (arena && metaState && bundleState) {
-          if (bundleState.cnt !== 4 || bundleState.sagaCnt !== 1) return;
-          unsubscribe();
-          expect(bundleState.pageA).to.be.true;
-          resolve(true);
-        }
-      });
-    });
-    return flagPromise;
   });
 
   it("should hot replace state correctly", () => {
@@ -156,7 +138,7 @@ describe("<ArenaScene /> integration", () => {
       });
     });
     wrapper.setProps(newProps);
-    store.dispatch({ type: "ADD_CNT" });
+    setTimeout(() => store.dispatch({ type: "ADD_CNT" }), 100);
     return flagPromise;
   });
 
@@ -190,7 +172,7 @@ describe("<ArenaScene /> integration", () => {
       });
     });
     wrapper.setProps(newProps);
-    store.dispatch({ type: "ADD_CNT" });
+    setTimeout(() => store.dispatch({ type: "ADD_CNT" }), 100);
     return flagPromise;
   });
 });

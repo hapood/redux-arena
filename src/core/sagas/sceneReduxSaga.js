@@ -150,11 +150,7 @@ export function* sceneUpdateRedux({
   let reducerFactory =
     options.isSceneReducer === false
       ? bindingReducerKey =>
-          createSceneReducer(
-            reducer,
-            bindingReducerKey,
-            state
-          )
+          createSceneReducer(reducer, bindingReducerKey, state)
       : bindingReducerKey =>
           createSceneReducer(
             reducer && sceneReducerWrapper(reducer),

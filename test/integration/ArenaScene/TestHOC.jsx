@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Provider } from "react-redux";
-import { ArenaScene } from "../../src";
+import { ArenaScene } from "src";
 
 export default class TestHOC extends Component {
   static propTypes = {

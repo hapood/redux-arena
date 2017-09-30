@@ -25,11 +25,14 @@ export default class SceneBundle extends Component {
   }
 
   componentWillMount() {
-    this.state = {
-      isSceneBundleValid: false
-    };
-    setImmediate(() => {
-      this.loadScene(this.props, true);
+    this.setState({
+      isSceneBundleValid: false,
+      initialPromoise: new Promise(resolve => {
+        setImmediate(() => {
+          this.loadScene(this.props, true);
+          resolve(true);
+        });
+      })
     });
   }
 
@@ -78,7 +81,7 @@ export default class SceneBundle extends Component {
       asyncSceneBundle !== this.props.asyncSceneBundle ||
       sceneBundle !== this.props.sceneBundle
     ) {
-      this.loadScene(nextProps, false);
+      this.state.initialPromoise.then(() => this.loadScene(nextProps, false));
     }
     if (nextProps.PlayingScene == null) {
       this.setState({

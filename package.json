@@ -1,23 +1,18 @@
 {
   "name": "redux-arena",
   "version": "0.7.0-beta",
-  "description":
-    "Bundling reducers, actions, saga and react-component when using Redux",
+  "description": "Bundling reducers, actions, saga and react-component when using Redux",
   "main": "index.js",
   "scripts": {
     "build": "run-p build:**",
-    "build:cjs":
-      "cross-env BABEL_ENV=cjs babel ./src --out-dir ./build/lib --ignore spec.js",
-    "build:es":
-      "cross-env BABEL_ENV=es babel ./src --out-dir ./build/es --ignore spec.js",
-    "build:copy-files":
-      "cross-env BABEL_ENV=cjs babel-node ./scripts/copy-files.js",
+    "build:cjs": "cross-env BABEL_ENV=cjs babel ./src --out-dir ./build/lib --ignore spec.js",
+    "build:es": "cross-env BABEL_ENV=es babel ./src --out-dir ./build/es --ignore spec.js",
+    "build:copy-files": "cross-env BABEL_ENV=cjs babel-node ./scripts/copy-files.js",
     "clean:build": "rimraf build",
     "prebuild": "npm run clean:build",
     "postpublish": "npm run build && cd build && npm publish",
     "test": "cross-env BABEL_ENV=es karma start test/karma.conf.js",
-    "test-travis":
-      "cross-env BABEL_ENV=es karma start test/karma.conf.js --browsers Firefox --single-run"
+    "test-travis": "cross-env BABEL_ENV=es karma start test/karma.conf.js --browsers Firefox --single-run"
   },
   "repository": {
     "type": "git",
@@ -40,12 +35,12 @@
     "react": ">=15"
   },
   "dependencies": {
-    "prop-types": "^15.5.10",
+    "prop-types": "^15.6.0",
+    "react-motion": "^0.5.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
-    "redux-saga": "^0.15.6",
-    "react-motion": "^0.5.1"
+    "redux-saga": "^0.15.6"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -57,8 +52,9 @@
     "babel-preset-react": "^6.24.1",
     "chai": "^4.1.2",
     "cross-env": "^5.0.5",
-    "enzyme": "^2.9.1",
-    "fs-extra": "^4.0.1",
+    "enzyme": "^3.0.0",
+    "enzyme-adapter-react-16": "^1.0.0",
+    "fs-extra": "^4.0.2",
     "istanbul-instrumenter-loader": "^3.0.0",
     "karma": "^1.7.1",
     "karma-chrome-launcher": "^2.2.0",
@@ -68,16 +64,16 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-verbose-reporter": "^0.0.6",
     "karma-webpack": "^2.0.4",
-    "loglevel": "^1.4.1",
-    "mocha": "^3.5.0",
+    "loglevel": "^1.5.0",
+    "mocha": "^3.5.3",
     "npm-run-all": "^4.1.1",
-    "react": "^15.6.1",
-    "react-addons-test-utils": "^15.6.0",
-    "react-dom": "^15.6.1",
-    "react-test-renderer": "^15.6.1",
-    "rimraf": "^2.6.1",
-    "sinon": "^3.2.1",
-    "webpack": "^3.5.6",
-    "webpack-dev-server": "^2.7.1"
+    "react": "^16.0.0",
+    "react-addons-test-utils": "^15.6.2",
+    "react-dom": "^16.0.0",
+    "react-test-renderer": "16",
+    "rimraf": "^2.6.2",
+    "sinon": "^4.0.0",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.9.1"
   }
 }

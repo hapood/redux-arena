@@ -1,5 +1,9 @@
 import { unmountComponentAtNode } from "react-dom";
-import { mount } from 'enzyme';
+import { configure } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+configure({ adapter: new Adapter() });
+
+import { mount } from "enzyme";
 
 // Generate an enhanced mount function.
 export default function createMount() {
