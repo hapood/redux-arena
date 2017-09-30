@@ -3,7 +3,7 @@ import { expect } from "chai";
 import { spy } from "sinon";
 import { createMount } from "../../testUtils";
 import { createArenaStore } from "src";
-import sceneBundleForTestA from "../sceneBundleForTestA";
+import sceneBundleForTestA from "../../sceneBundleForTestA";
 import TestHoc from "./TestHOC";
 
 function selectNeededStates(allStates, name) {

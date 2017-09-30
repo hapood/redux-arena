@@ -3,8 +3,8 @@ import { expect } from "chai";
 import { spy } from "sinon";
 import { createMount } from "../../testUtils";
 import { createArenaStore } from "src";
-import sceneBundleForTestA from "../sceneBundleForTestA";
-import sceneBundleForTestB from "../sceneBundleForTestB";
+import sceneBundleForTestA from "../../sceneBundleForTestA";
+import sceneBundleForTestB from "../../sceneBundleForTestB";
 import TestHoc from "./TestHOC";
 
 function createMountWithRedux() {

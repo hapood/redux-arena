@@ -50,11 +50,12 @@ export default class ArenaSceneAnimation extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    let state = Object.assign({}, state);
     if (
       nextProps.children !== this.props.children ||
       nextProps.reducerKey !== this.props.reducerKey
     ) {
-      this.state.scenePlay = this.cloneSceneWithNotify(
+      state.scenePlay = this.cloneSceneWithNotify(
         nextProps.children,
         nextProps.reducerKey
       );
@@ -66,7 +67,7 @@ export default class ArenaSceneAnimation extends Component {
       nextProps.nextPhaseCheckers !== this.props.nextPhaseCheckers ||
       nextProps.isSceneReady !== this.props.isSceneReady
     ) {
-      this.state.styleCalculator = buildStyleCalculator(
+      state.styleCalculator = buildStyleCalculator(
         nextProps.styleCalculators,
         nextProps.phase,
         nextProps.nextPhaseCheckers,
@@ -75,13 +76,12 @@ export default class ArenaSceneAnimation extends Component {
       );
     }
     if (nextProps.initStyles !== this.props.initStyles) {
-      let nextPhaseStyle = this.state.initStyles.find(
+      let nextPhaseStyle = state.initStyles.find(
         style => style.key === "nextPhase"
       );
-      this.setState({
-        initStyles: nextProps.initStyles.concat(nextPhaseStyle)
-      });
+      state.initStyles = nextProps.initStyles.concat(nextPhaseStyle);
     }
+    this.setState(state);
   }
 
   render() {

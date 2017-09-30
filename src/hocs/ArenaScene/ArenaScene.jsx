@@ -68,6 +68,7 @@ export default class ArenaScene extends Component {
 
   componentWillReceiveProps(nextProps, nextContext) {
     let refreshFlag = false;
+    let state = Object.assign({}, this.state);
     let {
       reducerKey,
       vReducerKey,
@@ -77,31 +78,29 @@ export default class ArenaScene extends Component {
       isNotifyOn,
       notifyData
     } = nextProps;
-    let newReducerKey = this.state.arenaReducerDict._arenaCurtain.reducerKey;
+    let newReducerKey = state.arenaReducerDict._arenaCurtain.reducerKey;
     if (
       reducerKey != null &&
-      reducerKey !== this.state.arenaReducerDict._arenaCurtain.reducerKey
+      reducerKey !== state.arenaReducerDict._arenaCurtain.reducerKey
     ) {
       refreshFlag = true;
       nextContext.store.dispatch({
         type: ARENA_CURTAIN_CLEAR_REDUX,
-        reducerKey: this.state.arenaReducerDict._arenaCurtain.reducerKey,
-        sagaTaskPromise: this.state.sagaTaskPromise
+        reducerKey: state.arenaReducerDict._arenaCurtain.reducerKey,
+        sagaTaskPromise: state.sagaTaskPromise
       });
       newReducerKey = curtainAddReducer(
         nextContext.store,
         reducerKey,
         createCurtainReducer
       );
-      this.setState({
-        sagaTaskPromise: new Promise(resolve =>
-          nextContext.store.dispatch({
-            type: ARENA_CURTAIN_INIT_SAGA,
-            reducerKey: newReducerKey,
-            setSagaTask: resolve
-          })
-        )
-      });
+      state.sagaTaskPromise = new Promise(resolve =>
+        nextContext.store.dispatch({
+          type: ARENA_CURTAIN_INIT_SAGA,
+          reducerKey: newReducerKey,
+          setSagaTask: resolve
+        })
+      );
     }
     if (
       nextContext.arenaReducerDict !== this.context.arenaReducerDict ||
@@ -110,14 +109,12 @@ export default class ArenaScene extends Component {
       refreshFlag === true
     ) {
       refreshFlag = true;
-      this.setState({
-        arenaReducerDict: calcCurtainReducerDict(
-          nextContext.arenaReducerDict,
-          newReducerKey,
-          nextProps.vReducerKey
-        ),
-        wrappedSceneBundle: arenaCurtainConnect(this.state.arenaReducerDict)
-      });
+      state.arenaReducerDict = calcCurtainReducerDict(
+        nextContext.arenaReducerDict,
+        newReducerKey,
+        nextProps.vReducerKey
+      );
+      state.wrappedSceneBundle = arenaCurtainConnect(state.arenaReducerDict);
     }
     if (
       asyncSceneBundle !== this.props.asyncSceneBundle ||
@@ -126,16 +123,15 @@ export default class ArenaScene extends Component {
       notifyData !== this.props.notifyData ||
       refreshFlag == true
     ) {
-      this.setState({
-        sceneBundleElement: React.createElement(this.state.wrappedSceneBundle, {
-          asyncSceneBundle,
-          sceneBundle,
-          sceneProps,
-          isNotifyOn,
-          notifyData
-        })
+      state.sceneBundleElement = React.createElement(state.wrappedSceneBundle, {
+        asyncSceneBundle,
+        sceneBundle,
+        sceneProps,
+        isNotifyOn,
+        notifyData
       });
     }
+    this.setState(state);
   }
 
   componentWillUnmount() {

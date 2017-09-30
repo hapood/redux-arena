@@ -4,7 +4,7 @@ import { spy } from "sinon";
 import { createMount } from "../../testUtils";
 import { createArenaStore, sceneMotionPhase } from "src";
 import { bundleToElement } from "src/tools";
-import sceneBundleForTestA from "../sceneBundleForTestA";
+import sceneBundleForTestA from "../../sceneBundleForTestA";
 import TestHOC from "./TestHOC";
 
 function selectAnimationState(allStates, name) {
