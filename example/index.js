@@ -8,25 +8,25 @@ import configureStore from "./configureStore";
 const history = createHistory();
 const store = configureStore(history);
 
+document.getElementById("loadingsStyle").remove();
+document.getElementById("app").className = "";
+
 let appDom = document.getElementById("app");
 
-const render = FrameComponent => {
+const render = (FrameComponent, version) => {
   ReactDOM.render(
     <Provider store={store}>
-      <FrameComponent history={history} />
+      <FrameComponent history={history} version={version} />
     </Provider>,
-    appDom,
-    function() {
-      document.getElementById("app").className = "";
-    }
+    appDom
   );
 };
 
-render(Frame);
-
+let version = 0;
+render(Frame, version);
 if (module.hot) {
   module.hot.accept("./frame/Frame", () => {
     const UpdatedFrame = require("./frame/Frame").default;
-    render(UpdatedFrame);
+    render(UpdatedFrame, ++version);
   });
 }

@@ -41,17 +41,19 @@ npm install redux-arena --save
 ```javascript
 import { bundleToComponent } from "redux-arena/tools";
 import state from "./state";
+import saga from "./saga";
 import * as actions from "./actions";
 import PageA from "./PageA";
 
 export default bundleToComponent({
   Component: PageA,
   state,
+  saga,
   actions
 })
 ```
 
-2. 初始化arenaStore并将其提供给redux
+2. 初始化arenaStore并将其提供给redux。PageA组件是上一步导出的。
 
 ```javascript
 import React from "react";
@@ -71,52 +73,182 @@ ReactDOM.render(
 );
 ```
 
-## 高阶组件介绍
+# API Reference
 
-Redux-arena提供了一组可以和react-router整合使用的高阶组件。
+* [`EnhancedRedux API`](#enhancedredux-api)
+  * [`createArenaStore(reducers, initialStates, enhencers, sagaOptions): enhancedStore`](#createarenastorereducers-initialstates-enhancers-sagaoptions-enhancedstore)
+* [`Bundle API`](#bundle-api)
+* [`HOC API`](#hoc-api)
+  * [`<ArenaScene />`](#arenascene)
+  * [`<ArenaSceneMotion />`](#arenascenemotion)
+* [`Tools API`](#tools-api)
+  * [`bundleToComponent(bundle, hocProps)`](#bundletocomponentbundle-hocprops)
+  * [`asyncBundleToComponent(asyncBundle, hocProps)`](#asyncbundletocomponentasyncbundle-hocprops)
+  * [`bundleToElement(bundle, props, hocProps)`](#bundletoelementbundle-props-hocprops)
+  * [`AsyncBundleToElement()`](#asyncbundletoelementasyncbundle-props-hocprops)
+* [`Saga API`](#tools-api)
+  * [`getSceneState()`](#getscenestate)
+  * [`getSceneActions()`](#getsceneactions)
+  * [`putSceneAction(action)`](#putsceneactionaction)
+  * [`setSceneState(state)`](#setscenestatestate)
+  * [`takeEverySceneAction(pattern, saga, ...args)`](#takeeverysceneactionpattern-saga-args)
+  * [`takeLatestSceneAction(pattern, saga, ..args)`](#takelatestsceneactionpattern-saga-args)
+  * [`takeSceneAction(pattern)`](#takesceneactionpattern)
 
-### ArenaScene
+## EnhancedRedux API
 
-如果你不需要路由功能，直接使用SoloScene。
+### `createArenaStore(reducers, initialStates, enhancers, sagaOptions): enhancedStore`
 
+为redux-arena创建增强版store
+
+- `reducers: object` - 对象形式的redux的reducer。
+
+   **Example**
+   
+     ```javascript
+     {
+       frame: (state)=>state,
+       page: (state)=>state,
+       ...
+     }
+     ```
+
+- `initialStates: object` - 对象形式的redux的state。
+
+   **Example**
+
+    ```javascript
+     {
+       frame: { location:"/" },
+       page: { cnt:0 },
+       ...
+     }
+    ```
+
+
+- `enhencers: array` - 数组形式的redux enhencers。
+
+    **Example**
+
+    ```javascript
+    import { applyMiddleware } from "redux";
+    import thunk from "redux-thunk";
+
+    const enhancers = [applyMiddleware(thunk)];
+    ```
+
+- `sagaOptions：object` - redux-saga的扩展选项。
+
+- `enhancedStore：object` - 函数返回值，拥有以下方法：
+
+  - `runSaga(saga)` -  开始一个saga任务.
+
+
+## Bundle API
+
+Bundle是一个包含react-component, actions, reducer, saga ，options的对象, 用于ArenaScene高阶组件。
+
+**Example**
 
 ```javascript
-<ArenaScene asyncSceneBundle={asyncPageB} />
-```
+import state from "./state";
+import saga from "./saga";
+import * as actions from "./actions";
+import Component from "./Component";
 
-### ArenaSwitch
-
-替代react-router的Switch组件。
-
-```javascript
-<ArenaSwitch>
-    <RouteScene path="/pageA" sceneBundle={pageABundle} />
-    <RouteScene path="/asyncPageB" asyncSceneBundle={asyncPageB} />
-</ArenaSwitch>
-```
-
-### RouteScene
-
-扩展了react-router中route的props，sceneBundle用来接收同步模块，如果模块使用import()做了代码分割，需要将异步模块传入asyncPageB。
-
-```javascript
-<RouteScene path="/asyncPageB" asyncSceneBundle={asyncPageB} exact strict />
-```
-
-## Saga操作
-
-使用getSceneState和setSceneState获取和更新当前模块的state
-
-```javascript
-import { setSceneState, getSceneState } from "redux-arena/effects";
-
-function * doSomthing(){
-  let { a } = yield getSceneState()
-  yield setSceneState({ a : a+1 })
+export default {
+  Component,
+  state,
+  saga,
+  actions,
+  options:{
+    vReducerkey:"vKey1"
+  }
 }
 ```
+### `createArenaStore(reducers, initialStates, enhencers, sagaOptions): enhancedStore`
 
-使用sceneActionSaga接收来自本模块的action。
+- `Component: React.Component` - 用于绑定Redux的React组件。
+
+- `state: object` - Bundle的初始状态。
+
+- `actions: object` - 与Redux的actions相同，当组件被挂载时初始化。
+
+- `saga: function*` - Redux-Saga的生成器函数，当组件被挂载时初始化。
+
+- `options: object` - Bundle的选项。
+
+  - `reducerKey: string` - 为bundle指定reducerKey。
+
+  - `vReducerKey: string` - 为bundle指定虚拟reducerKey。
+
+  - `isSceneAction: bool` - 如果为false, "_sceneReducerKey"不会添加到发送的action中。
+
+  - `isSceneReducer: bool` - 如果为false, reducer会接收其他bundle发送的action。
+
+## HOC API
+
+### `<ArenaScene />`
+
+将bundle转换为react element的容器，props如下所示：
+
+- `sceneBundle: object` - 需要加载的同步bundle。
+
+- `asyncSceneBundle: promise` - 需要加载的异步bundle。
+
+- `sceneProps: object` - Bundle组件接收的props。
+
+- `reducerKey: string` - 为容器指定reducerKey。
+
+- `vReducerKey: string` - 为容器指定虚拟reducerKey。
+
+- `isNotifyOn: bool` - Bundle的生命周期广播开关。
+
+- `notifyData: object` - Bundle的生命周期广播消息.
+
+### `<ArenaSceneMotion />`
+
+ArenaScene的加载动画框架，props如下所示：
+
+- `children: element` - ArenaScene渲染出的element。
+
+- `loadingPlay: element` - 加载动画的element。
+
+- `initStyles: object` - Container、loadingPlay、scenePlay的初始化样式。
+
+- `styleCalculators: object` - Container、loadingPlay、scenePlay的样式计算函数。
+
+- `numberToStyle: object` - Container、loadingPlay、scenePlay的样式转换函数。
+
+- `nextPhaseCheckers: object` - Container、loadingPlay、scenePlay的阶段检查器。
+
+## Tools API
+
+### `bundleToComponent(bundle, hocProps)`
+
+将Bundle转化为组件的帮手函数。
+
+### `asyncBundleToComponent(asyncBundle, hocProps)`
+
+将异步Bundle转化为组件的帮手函数。
+
+### `bundleToElement(bundle, props, hocProps)`
+
+将Bundle转化为element的帮手函数。
+
+### `asyncBundleToComponent(bundle, hocProps)`
+
+将异步Bundle转化为element的帮手函数。
+
+## Saga API
+
+### `bundleToComponent(bundle, hocProps)`
+
+### `getSceneState()` 
+
+获取当前scene的state。
+
+**Example**
 
 ```javascript
 import { setSceneState, takeLatestSceneAction } from "redux-arena/effects";
@@ -129,3 +261,38 @@ export function* saga (){
   yield takeLatestSceneAction("DO_SOMETHING", doSomthing)
 }
 ```
+
+### `getSceneActions()`
+
+获取当前scene的state。
+
+### `putSceneAction(action)`
+
+发送当前scene的action。
+
+### `setSceneState(state)`
+
+设置当前scene的state。
+
+**Example**
+
+```javascript
+import { setSceneState, getSceneState } from "redux-arena/effects";
+
+function * doSomthing(){
+  let { a } = yield getSceneState()
+  yield setSceneState({ a : a+1 })
+}
+```
+
+### `takeEverySceneAction(pattern, saga, ...args)`
+
+获取当前scene的每一个action
+
+### `takeLatestSceneAction(pattern, saga, ..args)`
+
+获取当前scene的最新action
+
+### `takeSceneAction(pattern)`
+
+获取当前scene的action

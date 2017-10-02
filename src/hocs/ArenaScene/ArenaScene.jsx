@@ -15,12 +15,12 @@ export default class ArenaScene extends Component {
   };
 
   static propTypes = {
-    children: PropTypes.any,
     reducerKey: PropTypes.string,
     vReducerKey: PropTypes.string,
     sceneBundle: PropTypes.object,
     asyncSceneBundle: PropTypes.object,
     sceneProps: PropTypes.object,
+    isNotifyOn: PropTypes.bool,
     notifyData: PropTypes.object
   };
 

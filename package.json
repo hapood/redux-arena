@@ -1,6 +1,6 @@
 {
   "name": "redux-arena",
-  "version": "0.7.0-beta",
+  "version": "0.7.0",
   "description": "Bundling reducers, actions, saga and react-component when using Redux",
   "main": "index.js",
   "scripts": {

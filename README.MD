@@ -40,6 +40,7 @@ Online example can be found here: [Here](https://hapood.github.io/redux-arena/)
 ```javascript
 import { bundleToComponent } from "redux-arena/tools";
 import state from "./state";
+import saga from "./saga";
 import * as actions from "./actions";
 import PageA from "./PageA";
 
@@ -51,7 +52,7 @@ export default bundleToComponent({
 })
 ```
 
-2. Initial arenaStore and provide it for redux. 
+2. Initial arenaStore and provide it for redux. PageA Component is exported in last step.
 
 ```javascript
 import React from "react";
@@ -71,53 +72,182 @@ ReactDOM.render(
 );
 ```
 
-## HOC
+# API Reference
 
-Redux-arena provide a set of useful HOCs to enhance react-router.
+* [`EnhancedRedux API`](#enhancedredux-api)
+  * [`createArenaStore(reducers, initialStates, enhencers, sagaOptions): enhancedStore`](#createarenastorereducers-initialstates-enhancers-sagaoptions-enhancedstore)
+* [`Bundle API`](#bundle-api)
+* [`HOC API`](#hoc-api)
+  * [`<ArenaScene />`](#arenascene)
+  * [`<ArenaSceneMotion />`](#arenascenemotion)
+* [`Tools API`](#tools-api)
+  * [`bundleToComponent(bundle, hocProps)`](#bundletocomponentbundle-hocprops)
+  * [`asyncBundleToComponent(asyncBundle, hocProps)`](#asyncbundletocomponentasyncbundle-hocprops)
+  * [`bundleToElement(bundle, props, hocProps)`](#bundletoelementbundle-props-hocprops)
+  * [`AsyncBundleToElement()`](#asyncbundletoelementasyncbundle-props-hocprops)
+* [`Saga API`](#tools-api)
+  * [`getSceneState()`](#getscenestate)
+  * [`getSceneActions()`](#getsceneactions)
+  * [`putSceneAction(action)`](#putsceneactionaction)
+  * [`setSceneState(state)`](#setscenestatestate)
+  * [`takeEverySceneAction(pattern, saga, ...args)`](#takeeverysceneactionpattern-saga-args)
+  * [`takeLatestSceneAction(pattern, saga, ..args)`](#takelatestsceneactionpattern-saga-args)
+  * [`takeSceneAction(pattern)`](#takesceneactionpattern)
 
-### ArenaScene
+## EnhancedRedux API
 
-If route is not necessary, use ArenaScene.
+### `createArenaStore(reducers, initialStates, enhancers, sagaOptions): enhancedStore`
+
+Creates a enhanced redux store for redux-arena
+
+- `reducers: object` - A set of reducers.
+
+   **Example**
+   
+     ```javascript
+     {
+       frame: (state)=>state,
+       page: (state)=>state,
+       ...
+     }
+     ```
+
+- `initialStates: object` - A set of initial states.
+
+   **Example**
+
+    ```javascript
+     {
+       frame: { location:"/" },
+       page: { cnt:0 },
+       ...
+     }
+    ```
+
+
+- `enhencers: array` - An array of redux enhencers.
+
+    **Example**
+
+    ```javascript
+    import { applyMiddleware } from "redux";
+    import thunk from "redux-thunk";
+
+    const enhancers = [applyMiddleware(thunk)];
+    ```
+
+- `sagaOptions：object` - Options used for redux-saga.
+
+- `enhancedStore：object` - An enhanced redux store which owning following method.
+
+  - `runSaga(saga)` -  start a saga task.
+
+
+## Bundle API
+
+A Bundle is an object which contains react-component, actions, reducer, saga and options, used for ArenaScene high order component.
+
+**Example**
 
 ```javascript
-<ArenaScene asyncSceneBundle={asyncPageB} />
-```
+import state from "./state";
+import saga from "./saga";
+import * as actions from "./actions";
+import Component from "./Component";
 
-### ArenaSwitch
-
-Instead of Switch of react-router.
-
-```javascript
-<ArenaSwitch>
-    <RouteScene path="/pageA" sceneBundle={pageABundle} />
-    <RouteScene path="/asyncPageB" asyncSceneBundle={asyncPageB} />
-</ArenaSwitch>
-```
-
-### RouteScene
-
-An enhanced Route witch accept sceneBundle prop. Support asyncSceneBundle for code splitting. Prop exact and strict and other props defined in Route of react-router will work.
-
-```javascript
-
-<RouteScene path="/asyncPageB" asyncSceneBundle={asyncPageB} exact strict />
-
-```
-
-## Saga operations
-
-With setSceneState and getSceneState, getting and updating bundle state easily.
-
-```javascript
-import { setSceneState, getSceneState } from "redux-arena/effects";
-
-function * doSomthing(){
-  let { a } = yield getSceneState()
-  yield setSceneState({ a : a+1 })
+export default {
+  Component,
+  state,
+  saga,
+  actions,
+  options:{
+    vReducerkey:"vKey1"
+  }
 }
 ```
+### `createArenaStore(reducers, initialStates, enhencers, sagaOptions): enhancedStore`
 
-With takeLatestSceneAction, action saga will only accept action dispatched from current bundle.
+- `Component: React.Component` - React component for binding redux.
+
+- `state: object` - Initial state of bundle.
+
+- `actions: object` - Same as redux's actions, connected with redux when component be mounted.
+
+- `saga: function*` - Generator of redux-Ssga, initialize when component be mounted.
+
+- `options: object` - Options of bundle.
+
+  - `reducerKey: string` - Specify a fixed reducer key for bundle.
+
+  - `vReducerKey: string` - Specify a fixed vitural reducer key for bundle.
+
+  - `isSceneAction: bool` - If false, "_sceneReducerKey" will not add to actions in bundle.
+
+  - `isSceneReducer: bool` - If false, reducer will accept actions dispatched by other bundle.
+
+## HOC API
+
+### `<ArenaScene />`
+
+A container for transforming bundle to a plain react element. Props is explained following:
+
+- `sceneBundle: object` - Sync bundle for loading.
+
+- `asyncSceneBundle: promise` - Async bundle for loading.
+
+- `sceneProps: object` - Props of bundle's Component.
+
+- `reducerKey: string` - Specify a fixed reducer key for container.
+
+- `vReducerKey: string` - Specify a fixed vitural reducer key for container.
+
+- `isNotifyOn: bool` - Bundle life circle broadcast switch.
+
+- `notifyData: object` - Bundle life circle broadcast message.
+
+### `<ArenaSceneMotion />`
+
+Loading Animation Frame for ArenaScene. Props is explained following:
+
+- `children: element` - Element of ArenaScene rendered.
+
+- `loadingPlay: element` - Element of loading animation.
+
+- `initStyles: object` - Initial style of container, loadingPlay and scenePlay.
+
+- `styleCalculators: object` - Style calculators of container, loadingPlay and scenePlay.
+
+- `numberToStyle: object` - Style transformers of container, loadingPlay and scenePlay.
+
+- `nextPhaseCheckers: object` - Phase checks of container, loadingPlay and scenePlay.
+
+## Tools API
+
+### `bundleToComponent(bundle, hocProps)`
+
+A helper function of transforming bundle to react component.
+
+### `asyncBundleToComponent(asyncBundle, hocProps)`
+
+A helper function of transforming async bundle to react component.
+
+### `bundleToElement(bundle, props, hocProps)`
+
+A helper function of transforming bundle to react element.
+
+### `asyncBundleToComponent(bundle, hocProps)`
+
+A helper function of transforming async bundle to react element.
+
+## Saga API
+
+### `bundleToComponent(bundle, hocProps)`
+
+### `getSceneState()` 
+
+Get state of current scene.
+
+**Example**
 
 ```javascript
 import { setSceneState, takeLatestSceneAction } from "redux-arena/effects";
@@ -130,3 +260,38 @@ export function* saga (){
   yield takeLatestSceneAction("DO_SOMETHING", doSomthing)
 }
 ```
+
+### `getSceneActions()`
+
+Get actions of current scene.
+
+### `putSceneAction(action)`
+
+Put an action of current scene.
+
+### `setSceneState(state)`
+
+Set state of current scene.
+
+**Example**
+
+```javascript
+import { setSceneState, getSceneState } from "redux-arena/effects";
+
+function * doSomthing(){
+  let { a } = yield getSceneState()
+  yield setSceneState({ a : a+1 })
+}
+```
+
+### `takeEverySceneAction(pattern, saga, ...args)`
+
+Take every scene action of pattern.
+
+### `takeLatestSceneAction(pattern, saga, ..args)`
+
+Take latest scene action of pattern.
+
+### `takeSceneAction(pattern)`
+
+Take scene action of pattern.
