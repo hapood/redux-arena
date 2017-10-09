@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Router, Switch } from "react-router-dom";
-import createHistory from "history/createBrowserHistory";
 import {
   ARENA_CURTAIN_INIT_SAGA,
   ARENA_CURTAIN_CLEAR_REDUX
@@ -17,12 +15,12 @@ export default class ArenaScene extends Component {
   };
 
   static propTypes = {
-    children: PropTypes.any,
     reducerKey: PropTypes.string,
     vReducerKey: PropTypes.string,
     sceneBundle: PropTypes.object,
     asyncSceneBundle: PropTypes.object,
     sceneProps: PropTypes.object,
+    isNotifyOn: PropTypes.bool,
     notifyData: PropTypes.object
   };
 

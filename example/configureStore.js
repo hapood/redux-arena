@@ -1,19 +1,18 @@
-import { createStore, applyMiddleware, compose } from "redux";
+import { applyMiddleware } from "redux";
 import thunk from "redux-thunk";
-import DevTools from "./frame/DevTools";
 import { createArenaStore } from "redux-arena";
 import saga from "./frame/redux/saga";
 import reducer from "./frame/redux/reducer";
 import state from "./frame/redux/state";
 
-const enhancers = [applyMiddleware(thunk), DevTools.instrument()];
+const enhancers = [applyMiddleware(thunk)];
 
 export default function configureStore(history) {
   const store = createArenaStore(
     { frame: reducer },
     { frame: state },
-    saga,
     enhancers
   );
+  store.runSaga(saga);
   return store;
 }

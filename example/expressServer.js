@@ -8,9 +8,9 @@ const host = process.env.npm_package_config_host || "localhost";
 const app = express();
 
 app.use(compression());
-app.use("/redux-arena", express.static(path.join(__dirname, "dist")));
+app.use("/redux-arena", express.static(path.join(__dirname, "build")));
 app.get("*", function(req, res) {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 app.listen(port, (err, result) => {
   if (err) {

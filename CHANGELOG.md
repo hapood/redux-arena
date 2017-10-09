@@ -1,3 +1,6 @@
+## 0.7.0 (Oct 2, 2017)
+* Sub-module bug fixed
+
 ## 0.7.0-beta (Sep 29, 2017)
 * Support redux-arena-router and redux-arena-form
 * Add react-motion animation support

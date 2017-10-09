@@ -22,10 +22,10 @@ import rootSaga from "./sagas";
 export function createArenaStore(
   reducers = {},
   initialStates = {},
-  saga,
-  enhencers
+  enhencers,
+  sagaOptions
 ) {
-  const sagaMiddleware = createSagaMiddleware();
+  const sagaMiddleware = createSagaMiddleware(sagaOptions);
   const store = createEnhancedStore(
     Object.assign(
       {
@@ -43,10 +43,9 @@ export function createArenaStore(
       ? compose(applyMiddleware(sagaMiddleware), ...enhencers)
       : applyMiddleware(sagaMiddleware)
   );
-  store.runSaga = sagaMiddleware.run;
+  sagaMiddleware.run(rootSaga, { store });
   store.close = () => store.dispatch(END);
-  store.runSaga(rootSaga, { store });
-  if (saga)
+  store.runSaga = saga =>
     store.dispatch({
       type: ARENA_INIT_AUDIENCE_SAGA,
       saga
