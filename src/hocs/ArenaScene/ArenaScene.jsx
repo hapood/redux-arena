@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+﻿import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {
   ARENA_CURTAIN_INIT_SAGA,
