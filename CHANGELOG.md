@@ -1,3 +1,6 @@
+## 0.7.1 (Oct 10, 2017)
+* Add ReducerDictOverrider HOC
+
 ## 0.7.0 (Oct 2, 2017)
 * Sub-module bug fixed
 
