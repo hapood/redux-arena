@@ -3,15 +3,8 @@ import PropTypes from "prop-types";
 
 export default class SceneBundle extends Component {
   static propTypes = {
-    asyncSceneBundle: PropTypes.any,
-    sceneBundle: PropTypes.object,
-    sceneProps: PropTypes.object,
-    isNotifyOn: PropTypes.bool,
-    notifyData: PropTypes.object
-  };
-
-  static defaultProps = {
-    isNotifyOn: false
+    sceneBundle: PropTypes.object.isRequired,
+    sceneProps: PropTypes.object
   };
 
   static childContextTypes = {
@@ -26,25 +19,9 @@ export default class SceneBundle extends Component {
 
   componentWillMount() {
     this.setState({
-      isSceneBundleValid: false,
-      initialPromoise: new Promise(resolve => {
-        setImmediate(() => {
-          this.loadScene(this.props, true);
-          resolve(true);
-        });
-      })
+      isSceneBundleValid: false
     });
-  }
-
-  componentWillUnmount() {
-    if (this.props.isNotifyOn) {
-      this.props.sceneStopPlay(
-        this.props.parentArenaReducerDict,
-        this.props.sceneBundle,
-        this.props.asyncSceneBundle,
-        this.props.notifyData
-      );
-    }
+    this.loadScene(this.props, true);
   }
 
   checkAndStartPlay(props, nextProps) {
@@ -52,21 +29,9 @@ export default class SceneBundle extends Component {
       nextProps.PlayingScene != null &&
       nextProps.PlayingScene !== props.PlayingScene
     ) {
-      this.setState(
-        {
-          isSceneBundleValid: true
-        },
-        () => {
-          if (nextProps.isNotifyOn) {
-            nextProps.sceneStartPlay(
-              nextProps.parentArenaReducerDict,
-              nextProps.sceneBundle,
-              nextProps.asyncSceneBundle,
-              nextProps.notifyData
-            );
-          }
-        }
-      );
+      this.setState({
+        isSceneBundleValid: true
+      });
     }
   }
 
@@ -75,36 +40,16 @@ export default class SceneBundle extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    let { asyncSceneBundle, sceneBundle } = nextProps;
-    this.checkAndStartPlay(this.props, nextProps);
-    if (
-      asyncSceneBundle !== this.props.asyncSceneBundle ||
-      sceneBundle !== this.props.sceneBundle
-    ) {
-      this.state.initialPromoise.then(() => this.loadScene(nextProps, false));
-    }
-    if (nextProps.PlayingScene == null) {
-      this.setState({
-        isSceneBundleValid: false
-      });
+    let { sceneBundle } = nextProps;
+    if (sceneBundle !== this.props.sceneBundle) {
+      this.loadScene(nextProps, false);
     }
   }
 
   loadScene(props, isInitial) {
-    if (props.isNotifyOn) {
-      props.sceneLoadStart(
-        props.parentArenaReducerDict,
-        props.sceneBundle,
-        props.asyncSceneBundle,
-        props.notifyData,
-        isInitial
-      );
-    }
     props.arenaLoadScene(
       props.parentArenaReducerDict,
       props.sceneBundle,
-      props.asyncSceneBundle,
-      props.notifyData,
       isInitial
     );
   }

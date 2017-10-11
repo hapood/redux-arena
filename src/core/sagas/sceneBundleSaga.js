@@ -1,13 +1,5 @@
 import { ARENA_CURTAIN_SET_STATE } from "../actionTypes";
-import {
-  take,
-  put,
-  fork,
-  select,
-  cancel,
-  cancelled,
-  getContext
-} from "redux-saga/effects";
+import { put, select } from "redux-saga/effects";
 import { connect } from "react-redux";
 import { createPropsPicker } from "../enhancedRedux";
 import { sceneApplyRedux, sceneUpdateRedux } from "./sceneReduxSaga";
@@ -19,20 +11,18 @@ import { sceneApplyRedux, sceneUpdateRedux } from "./sceneReduxSaga";
  * 3. Run the corresponding scene of the saga, cancel the last scene of the task.
  * 4. Connect redux according to the incoming mapStateToProps and actions.
  * 
- * @param {any} { arenaReducerDict, sceneBundle } 
+ * @param {any} { isInitial, parentArenaReducerDict, sceneBundle } 
  */
 export function* applySceneBundle({
   isInitial,
   parentArenaReducerDict,
-  sceneBundle,
-  notifyAction
+  sceneBundle
 }) {
   let arenaCurtainReducerKey = parentArenaReducerDict._arenaCurtain.reducerKey;
   let {
     curSceneBundle,
     reduxInfo,
-    PlayingScene: OldPlayingScene,
-    arenaReducerDict
+    PlayingScene: OldPlayingScene
   } = yield select(state => state[arenaCurtainReducerKey]);
   let newReduxInfo;
   if (isInitial) {
@@ -79,34 +69,4 @@ export function* applySceneBundle({
     _reducerKey: arenaCurtainReducerKey,
     state: newArenaState
   });
-}
-
-/**
- * The asynchronous loading function of the scene, 
- * and finally the synchronous load function
- * 
- * @param {any} { arenaReducerDict, asyncSceneBundle } 
- * @returns 
- */
-export function* applyAsyncSceneBundle({
-  isInitial,
-  parentArenaReducerDict,
-  asyncSceneBundle,
-  notifyAction
-}) {
-  let sceneBundle;
-  try {
-    sceneBundle = yield asyncSceneBundle;
-  } finally {
-    if (yield cancelled()) {
-    }
-  }
-  sceneBundle = sceneBundle.default ? sceneBundle.default : sceneBundle;
-  yield* applySceneBundle({
-    isInitial,
-    parentArenaReducerDict,
-    sceneBundle,
-    notifyAction
-  });
-  return true;
 }

@@ -1,17 +1,6 @@
 import { ARENA_SCENE_REPLACE_STATE } from "../actionTypes";
 import { ARENA_SCENE_SET_STATE } from "../../actionTypes";
-import {
-  takeEvery,
-  take,
-  put,
-  call,
-  fork,
-  select,
-  cancel,
-  cancelled,
-  getContext,
-  setContext
-} from "redux-saga/effects";
+import { fork, select, getContext, setContext } from "redux-saga/effects";
 import { bindActionCreators } from "redux";
 import { bindArenaActionCreators } from "../enhancedRedux";
 import { createSceneReducer, sceneReducerWrapper } from "../reducers";
@@ -77,6 +66,19 @@ function* forkSagaWithContext(saga, ctx) {
   yield fork(saga);
 }
 
+function buildReducerFactory(options, reducer, state, arenaReducerDict) {
+  return options.isSceneReducer === false
+    ? bindingReducerKey =>
+        createSceneReducer(reducer, bindingReducerKey, state, arenaReducerDict)
+    : bindingReducerKey =>
+        createSceneReducer(
+          reducer && sceneReducerWrapper(reducer),
+          bindingReducerKey,
+          state,
+          arenaReducerDict
+        );
+}
+
 export function* sceneApplyRedux({
   parentArenaReducerDict,
   state,
@@ -86,22 +88,12 @@ export function* sceneApplyRedux({
   options
 }) {
   let arenaStore = yield getContext("store");
-  let reducerFactory =
-    options.isSceneReducer === false
-      ? bindingReducerKey =>
-          createSceneReducer(
-            reducer,
-            bindingReducerKey,
-            state,
-            parentArenaReducerDict
-          )
-      : bindingReducerKey =>
-          createSceneReducer(
-            reducer && sceneReducerWrapper(reducer),
-            bindingReducerKey,
-            state,
-            parentArenaReducerDict
-          );
+  let reducerFactory = buildReducerFactory(
+    options,
+    reducer,
+    state,
+    parentArenaReducerDict
+  );
   let newReducerKey = sceneAddReducer(
     arenaStore,
     options.reducerKey,
@@ -117,10 +109,11 @@ export function* sceneApplyRedux({
       actions
     },
     arenaStore.dispatch,
-    options.isSceneActions
+    options.isSceneActions,
+    saga
   );
   if (saga) {
-    newReduxInfo.sagaTask = yield fork(forkSagaWithContext, saga, {
+    newReduxInfo.saga = yield fork(forkSagaWithContext, saga, {
       arenaReducerDict: newReduxInfo.arenaReducerDict
     });
   }
@@ -139,24 +132,12 @@ export function* sceneUpdateRedux({
 }) {
   let newReducerKey = reduxInfo.reducerKey;
   let arenaStore = yield getContext("store");
-  try {
-    if (saga !== curSceneBundle.saga) {
-      if (reduxInfo.sagaTask) yield cancel(reduxInfo.sagaTask);
-    }
-  } finally {
-    if (yield cancelled()) {
-    }
-  }
-  let reducerFactory =
-    options.isSceneReducer === false
-      ? bindingReducerKey =>
-          createSceneReducer(reducer, bindingReducerKey, state)
-      : bindingReducerKey =>
-          createSceneReducer(
-            reducer && sceneReducerWrapper(reducer),
-            bindingReducerKey,
-            state
-          );
+  let reducerFactory = buildReducerFactory(
+    options,
+    reducer,
+    state,
+    parentArenaReducerDict
+  );
 
   if (
     options.reducerKey == null ||
@@ -204,16 +185,9 @@ export function* sceneUpdateRedux({
     options.isSceneActions
   );
   if (saga) {
-    if (
-      saga !== curSceneBundle.saga ||
-      newReducerKey !== reduxInfo.reducerKey ||
-      reduxInfo.sagaTask == null ||
-      reduxInfo.sagaTask.isCancelled()
-    ) {
-      newReduxInfo.sagaTask = yield fork(forkSagaWithContext, saga, {
-        arenaReducerDict: newReduxInfo.arenaReducerDict
-      });
-    }
+    newReduxInfo.saga = yield fork(forkSagaWithContext, saga, {
+      arenaReducerDict: newReduxInfo.arenaReducerDict
+    });
   }
   return newReduxInfo;
 }

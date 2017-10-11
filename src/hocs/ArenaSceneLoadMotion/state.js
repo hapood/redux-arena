@@ -2,5 +2,6 @@ import { LOADING } from "./animationPhase";
 
 export default {
   isSceneReady: false,
-  phase: LOADING
+  phase: LOADING,
+  bundle: null
 };

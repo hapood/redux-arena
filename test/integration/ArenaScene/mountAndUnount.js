@@ -47,6 +47,7 @@ describe("<ArenaScene /> integration", () => {
           "PageA"
         );
         if (arena && metaState && bundleState) {
+          console.log(bundleState);
           if (bundleState.cnt !== 4 || bundleState.sagaCnt !== 1) return;
           unsubscribe();
           expect(bundleState.pageA).to.be.true;

@@ -30,6 +30,7 @@ function* addCntBySagaMaybe() {
 }
 
 function* sceneActionForward() {
+  console.log("111111111111")
   let { addCnt } = yield getSceneActions();
   addCnt();
 }

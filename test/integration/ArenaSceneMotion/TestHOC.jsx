@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Provider } from "react-redux";
-import { ArenaSceneMotion } from "src";
+import { ArenaSceneLoadMotion } from "src";
 import * as sceneAnimation from "./sceneAnimation";
 
 export default class TestHOC extends Component {
@@ -13,7 +13,7 @@ export default class TestHOC extends Component {
     let props = this.props;
     return (
       <Provider store={props.store}>
-        <ArenaSceneMotion
+        <ArenaSceneLoadMotion
           loadingPlay={<div />}
           initStyles={sceneAnimation.initStyles}
           styleCalculators={sceneAnimation.styleCalculators}
@@ -21,7 +21,7 @@ export default class TestHOC extends Component {
           nextPhaseCheckers={sceneAnimation.nextPhaseCheckers}
         >
           {this.props.children}
-        </ArenaSceneMotion>
+        </ArenaSceneLoadMotion>
       </Provider>
     );
   }
