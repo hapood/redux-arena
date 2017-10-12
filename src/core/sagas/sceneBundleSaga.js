@@ -16,7 +16,8 @@ import { sceneApplyRedux, sceneUpdateRedux } from "./sceneReduxSaga";
 export function* applySceneBundle({
   isInitial,
   parentArenaReducerDict,
-  sceneBundle
+  sceneBundle,
+  loadedCb
 }) {
   let arenaCurtainReducerKey = parentArenaReducerDict._arenaCurtain.reducerKey;
   let {
@@ -69,4 +70,5 @@ export function* applySceneBundle({
     _reducerKey: arenaCurtainReducerKey,
     state: newArenaState
   });
+  loadedCb();
 }

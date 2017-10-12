@@ -8,7 +8,7 @@ export default class ArenaSceneLoadMotion extends Component {
   static propTypes = {
     loadingPlay: PropTypes.element.isRequired,
     asyncBundleThunk: PropTypes.func.isRequired,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.func.isRequired,
     initStyles: PropTypes.array.isRequired,
     styleCalculators: PropTypes.object.isRequired,
     nextPhaseCheckers: PropTypes.object.isRequired,

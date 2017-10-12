@@ -18,10 +18,18 @@ export default class SceneBundle extends Component {
   }
 
   componentWillMount() {
+    let loadedPromise = new Promise(resolve =>
+      this.props.arenaLoadScene(
+        this.props.parentArenaReducerDict,
+        this.props.sceneBundle,
+        true,
+        resolve
+      )
+    );
     this.setState({
-      isSceneBundleValid: false
+      isSceneBundleValid: false,
+      loadedPromise
     });
-    this.loadScene(this.props, true);
   }
 
   checkAndStartPlay(props, nextProps) {
@@ -40,18 +48,25 @@ export default class SceneBundle extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (this.state.isSceneBundleValid === false) {
+      this.checkAndStartPlay(this.props, nextProps);
+    }
     let { sceneBundle } = nextProps;
     if (sceneBundle !== this.props.sceneBundle) {
-      this.loadScene(nextProps, false);
+      this.state.loadedPromise.then(() => {
+        let loadedPromise = new Promise(resolve =>
+          nextProps.arenaLoadScene(
+            nextProps.parentArenaReducerDict,
+            nextProps.sceneBundle,
+            false,
+            resolve
+          )
+        );
+        this.setState({
+          loadedPromise
+        });
+      });
     }
-  }
-
-  loadScene(props, isInitial) {
-    props.arenaLoadScene(
-      props.parentArenaReducerDict,
-      props.sceneBundle,
-      isInitial
-    );
   }
 
   render() {
