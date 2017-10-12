@@ -5,8 +5,22 @@ import {
   ARENA_CURTAIN_CLEAR_REDUX
 } from "../../core/actionTypes";
 import { createCurtainReducer } from "../../core/reducers";
-import { curtainAddReducer, calcCurtainReducerDict } from "../../utils";
+import {
+  curtainAddStateTreeNode,
+  curtainReplaceStateTreeNode,
+  curtainDisableStateTreeNode,
+  curtainAddReducer,
+  calcCurtainReducerDict
+} from "../../utils";
 import { arenaCurtainConnect } from "../SceneBundle";
+
+function getParentReducerKey(arenaReducerDict) {
+  return (
+    arenaReducerDict &&
+    arenaReducerDict._arenaScene &&
+    arenaReducerDict._arenaScene.reducerKey
+  );
+}
 
 export default class ArenaScene extends Component {
   static contextTypes = {
@@ -22,30 +36,34 @@ export default class ArenaScene extends Component {
   };
 
   componentWillMount() {
-    let reducerKey = curtainAddReducer(
-      this.context.store,
-      this.props.reducerKey,
+    let { store, arenaReducerDict } = this.context;
+    let { sceneBundle, sceneProps, reducerKey, vReducerKey } = this.props;
+    let newReducerKey = curtainAddReducer(
+      store,
+      reducerKey,
       createCurtainReducer
     );
-    let { sceneBundle, sceneProps } = this.props;
-    let arenaReducerDict = calcCurtainReducerDict(
-      this.context.arenaReducerDict,
-      reducerKey,
-      this.props.vReducerKey
+    let parentReducerKey = getParentReducerKey(arenaReducerDict);
+    curtainAddStateTreeNode(store, parentReducerKey, newReducerKey);
+    let newArenaReducerDict = calcCurtainReducerDict(
+      arenaReducerDict,
+      newReducerKey,
+      vReducerKey
     );
-    let wrappedSceneBundle = arenaCurtainConnect(arenaReducerDict);
+    let wrappedSceneBundle = arenaCurtainConnect(newArenaReducerDict);
     let sceneBundleElement = React.createElement(wrappedSceneBundle, {
       sceneBundle,
       sceneProps
     });
     this.setState({
-      arenaReducerDict,
+      parentReducerKey,
+      arenaReducerDict: newArenaReducerDict,
       wrappedSceneBundle,
       sceneBundleElement,
       sagaTaskPromise: new Promise(resolve =>
-        this.context.store.dispatch({
+        store.dispatch({
           type: ARENA_CURTAIN_INIT_SAGA,
-          reducerKey,
+          reducerKey: newReducerKey,
           setSagaTask: resolve
         })
       )
@@ -56,15 +74,13 @@ export default class ArenaScene extends Component {
     let refreshFlag = false;
     let state = Object.assign({}, this.state);
     let { reducerKey, vReducerKey, sceneBundle, sceneProps } = nextProps;
-    let newReducerKey = state.arenaReducerDict._arenaCurtain.reducerKey;
-    if (
-      reducerKey != null &&
-      reducerKey !== state.arenaReducerDict._arenaCurtain.reducerKey
-    ) {
+    let curReducerKey = state.arenaReducerDict._arenaCurtain.reducerKey;
+    let newReducerKey = curReducerKey;
+    if (reducerKey != null && reducerKey !== curReducerKey) {
       refreshFlag = true;
       nextContext.store.dispatch({
         type: ARENA_CURTAIN_CLEAR_REDUX,
-        reducerKey: state.arenaReducerDict._arenaCurtain.reducerKey,
+        reducerKey: curReducerKey,
         sagaTaskPromise: state.sagaTaskPromise
       });
       newReducerKey = curtainAddReducer(
@@ -79,6 +95,10 @@ export default class ArenaScene extends Component {
           setSagaTask: resolve
         })
       );
+    }
+    if (refreshFlag === true) {
+      let curReducerKey = this.state.arenaReducerDict._arenaCurtain.reducerKey;
+      curtainReplaceStateTreeNode(store, curReducerKey, newReducerKey);
     }
     if (
       nextContext.arenaReducerDict !== this.context.arenaReducerDict ||
@@ -108,9 +128,11 @@ export default class ArenaScene extends Component {
   }
 
   componentWillUnmount() {
+    let curReducerKey = this.state.arenaReducerDict._arenaCurtain.reducerKey;
+    curtainDisableStateTreeNode(this.context.store, curReducerKey);
     this.context.store.dispatch({
       type: ARENA_CURTAIN_CLEAR_REDUX,
-      reducerKey: this.state.arenaReducerDict._arenaCurtain.reducerKey,
+      reducerKey: curReducerKey,
       sagaTaskPromise: this.state.sagaTaskPromise
     });
   }

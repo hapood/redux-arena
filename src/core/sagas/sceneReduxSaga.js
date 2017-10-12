@@ -1,10 +1,12 @@
 import { ARENA_SCENE_REPLACE_STATE } from "../actionTypes";
 import { ARENA_SCENE_SET_STATE } from "../../actionTypes";
-import { fork, select, getContext, setContext } from "redux-saga/effects";
+import { put, fork, select, getContext, setContext } from "redux-saga/effects";
 import { bindActionCreators } from "redux";
 import { bindArenaActionCreators } from "../enhancedRedux";
 import { createSceneReducer, sceneReducerWrapper } from "../reducers";
 import {
+  sceneAddStateTreeNode,
+  sceneReplaceStateTreeNode,
   sceneAddReducer,
   sceneReplaceReducer,
   sceneRmAndAddReducer
@@ -79,6 +81,14 @@ function buildReducerFactory(options, reducer, state, arenaReducerDict) {
         );
 }
 
+function getParentReducerKey(arenaReducerDict) {
+  return (
+    arenaReducerDict &&
+    arenaReducerDict._arenaCurtain &&
+    arenaReducerDict._arenaCurtain.reducerKey
+  );
+}
+
 export function* sceneApplyRedux({
   parentArenaReducerDict,
   state,
@@ -99,6 +109,11 @@ export function* sceneApplyRedux({
     options.reducerKey,
     reducerFactory,
     state
+  );
+  sceneAddStateTreeNode(
+    arenaStore,
+    getParentReducerKey(parentArenaReducerDict),
+    newReducerKey
   );
   let newReduxInfo = calcNewReduxInfo(
     {},
@@ -138,7 +153,6 @@ export function* sceneUpdateRedux({
     state,
     parentArenaReducerDict
   );
-
   if (
     options.reducerKey == null ||
     options.reducerKey === reduxInfo.reducerKey
@@ -166,8 +180,9 @@ export function* sceneUpdateRedux({
       reducerFactory,
       state === curSceneBundle.state ? oldState : state
     );
+    sceneReplaceStateTreeNode(arenaStore, reduxInfo.reducerKey, newReducerKey);
   } else if (state !== curSceneBundle.state) {
-    arenaStore.dispatch({
+    yield put({
       type: ARENA_SCENE_REPLACE_STATE,
       _sceneReducerKey: newReducerKey,
       state

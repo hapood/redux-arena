@@ -10,7 +10,7 @@ function storeEnhancer(store, reducers) {
       if (name === "addReducer") {
         return ({ reducerKey, reducer }) => {
           let allStates = target.getState();
-          if (allStates[reducerKey] != null) return false;
+          if (allStates.arena.stateTreeDict[reducerKey] != null) return false;
           _currentReducers = Object.assign({}, _currentReducers, {
             [reducerKey]: reducer
           });
@@ -58,7 +58,7 @@ function storeEnhancer(store, reducers) {
           let allStates = target.getState();
           delete allStates[reducerKeyRemoved];
           delete newReducers[reducerKeyRemoved];
-          if (newReducers[reducerKeyAdded] != null)
+          if (newReducers.arena.stateTreeDict[reducerKeyAdded] != null)
             throw new Error(
               `reducer of key [${reducerKeyAdded}] already exsit.`
             );

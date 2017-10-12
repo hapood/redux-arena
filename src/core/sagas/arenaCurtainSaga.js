@@ -2,7 +2,8 @@ import {
   ARENA_CURTAIN_LOAD_SCENE,
   ARENA_CURTAIN_INIT_SAGA,
   ARENA_CURTAIN_CLEAR_REDUX,
-  ARENA_CURTAIN_SET_STATE
+  ARENA_CURTAIN_SET_STATE,
+  ARENA_STATETREE_STATE_CLEARUP
 } from "../actionTypes";
 import {
   takeEvery,
@@ -15,6 +16,7 @@ import {
   getContext
 } from "redux-saga/effects";
 import { applySceneBundle, applyAsyncSceneBundle } from "./sceneBundleSaga";
+import { sceneDisableStateTreeNode } from "../../utils";
 
 function* takeEverySceneBundleAction() {
   let _reducerKey = yield getContext("_reducerKey");
@@ -80,10 +82,12 @@ function* killArenaCurtainSaga({ sagaTaskPromise, reducerKey }) {
   if (reduxInfo.sagaTask) {
     yield cancel(reduxInfo.sagaTask);
   }
-  if (reduxInfo.reducerKey) {
-    store.removeReducer(reduxInfo.reducerKey);
-  }
+  sceneDisableStateTreeNode(store, reduxInfo.reducerKey);
+  store.removeReducer(reduxInfo.reducerKey);
   store.removeReducer(reducerKey);
+  yield put({
+    type: ARENA_STATETREE_STATE_CLEARUP
+  });
 }
 
 export default function* saga() {

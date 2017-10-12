@@ -1,6 +1,8 @@
 export default function getInitState() {
   return {
     audienceSagaTask: null,
-    propsLock: false
+    propsLock: false,
+    stateTree: {},
+    stateTreeDict: {}
   };
 }
