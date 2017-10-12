@@ -1,3 +1,8 @@
+## 0.8.0 (Oct 12, 2017)
+* Move async bundle loading of ArenaScene to ArenaSceneLoadMotion
+* Rename ArenaSceneMotion to ArenaSceneLoadMotion
+* Remove asyncBundleToComponent and asyncBundleToElement in tools
+
 ## 0.7.1 (Oct 10, 2017)
 * Add ReducerDictOverrider HOC
 

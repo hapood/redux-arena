@@ -1,5 +1,5 @@
 import { spring, presets } from "react-motion";
-import { loadMotionPhase } from "src";
+import { loadMotionPhase } from "redux-arena";
 
 export const initStyles = [
   {
@@ -59,12 +59,14 @@ export const numberToStyle = (key, style, phase, isSceneReady) => {
     case "container":
       return {
         width: "100%",
-        height: "100%"
+        height: "100%",
+        position: "absolute"
       };
     case "loadingPlay":
       return {
         width: "100%",
         height: "100%",
+        position: "absolute",
         display: phase === loadMotionPhase.LOADING ? "block" : "none"
       };
     case "scenePlay":
@@ -72,6 +74,7 @@ export const numberToStyle = (key, style, phase, isSceneReady) => {
         {
           width: "100%",
           height: "100%",
+          position: "absolute",
           display: phase === loadMotionPhase.LOADING ? "none" : "block"
         },
         style,

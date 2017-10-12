@@ -14,7 +14,7 @@ export default function createPropsPicker(
   let sceneActions = arenaReducerDict._arenaScene.actions;
   let latestProps;
   return state => {
-    if (state[curtainReducerKey].reduxInfo !== reduxInfo) {
+    if (state.arena.propsLock !== false) {
       return latestProps;
     } else {
       latestProps = propsPicker(

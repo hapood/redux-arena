@@ -1,6 +1,5 @@
 import {
   ARENA_CURTAIN_LOAD_SCENE,
-  ARENA_CURTAIN_LOAD_ASYNCSCENE,
   ARENA_CURTAIN_INIT_SAGA,
   ARENA_CURTAIN_CLEAR_REDUX,
   ARENA_CURTAIN_SET_STATE
@@ -21,19 +20,14 @@ function* takeEverySceneBundleAction() {
   let _reducerKey = yield getContext("_reducerKey");
   let lastTask;
   while (true) {
-    let action = yield take([
-      ARENA_CURTAIN_LOAD_ASYNCSCENE,
-      ARENA_CURTAIN_LOAD_SCENE
-    ]);
-    if (action.parentArenaReducerDict._arenaCurtain.reducerKey === _reducerKey) {
+    let action = yield take(ARENA_CURTAIN_LOAD_SCENE);
+    if (
+      action.parentArenaReducerDict._arenaCurtain.reducerKey === _reducerKey
+    ) {
       if (lastTask && lastTask.isRunning()) {
         yield cancel(lastTask);
       }
-      if (action.type === ARENA_CURTAIN_LOAD_ASYNCSCENE) {
-        lastTask = yield fork(applyAsyncSceneBundle, action);
-      } else {
-        lastTask = yield fork(applySceneBundle, action);
-      }
+      lastTask = yield fork(applySceneBundle, action);
     }
   }
 }
@@ -78,6 +72,11 @@ function* killArenaCurtainSaga({ sagaTaskPromise, reducerKey }) {
   if (sagaTask) yield cancel(sagaTask);
   let store = yield getContext("store");
   let { reduxInfo } = yield select(state => state[reducerKey]);
+  yield put({
+    type: ARENA_CURTAIN_SET_STATE,
+    _reducerKey: reducerKey,
+    state: { reduxInfo: {}, PlayingScene: null }
+  });
   if (reduxInfo.sagaTask) {
     yield cancel(reduxInfo.sagaTask);
   }

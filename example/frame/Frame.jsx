@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { ArenaScene } from "redux-arena";
+import AsyncLoadHOC from "../AsyncLoadHOC";
 import * as actions from "./redux/actions";
 
 import moduleReUseBundle from "../moduleReUse";
 import scopedPageBundle from "../scopedPage";
+import passDownBundle from "../passDownStateAndActions";
 
-const AsyncPassDownBundle = import("../passDownStateAndActions");
 const linkStyle = {
   textDecoration: "underline",
   color: "blue",
@@ -20,7 +21,10 @@ class Frame extends Component {
     super(props);
   }
   componentWillMount() {
-    this.setState({ page: "emptyPage" });
+    this.setState({
+      page: "emptyPage",
+      asyncBundleThunk: () => import("../scopedPage")
+    });
   }
 
   render() {
@@ -62,6 +66,14 @@ class Frame extends Component {
                 Module Re-Use
               </a>
             </li>
+            <li>
+              <a
+                style={linkStyle}
+                onClick={() => this.setState({ page: "asyncScopedPage" })}
+              >
+                Async Scoped Page
+              </a>
+            </li>
           </ul>
           <div style={{ display: "flex" }}>
             <div style={{ marginLeft: "1rem" }}>total count: {cnt}</div>
@@ -78,9 +90,11 @@ class Frame extends Component {
               {this.state.page === "scopedPage" ? (
                 <ArenaScene sceneBundle={scopedPageBundle} />
               ) : this.state.page === "passDownStateAndActions" ? (
-                <ArenaScene asyncSceneBundle={AsyncPassDownBundle} />
+                <ArenaScene sceneBundle={passDownBundle} />
               ) : this.state.page === "moduleReUse" ? (
-                <ArenaScene asyncSceneBundle={moduleReUseBundle} />
+                <ArenaScene sceneBundle={moduleReUseBundle} />
+              ) : this.state.page === "asyncScopedPage" ? (
+                <AsyncLoadHOC asyncBundleThunk={this.state.asyncBundleThunk} />
               ) : null}
             </div>
           </div>

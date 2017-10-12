@@ -3,7 +3,7 @@ import { spy } from "sinon";
 import { applyMiddleware } from "redux";
 import { createArenaStore } from "./index";
 
-describe("<ArenaScene /> integration", () => {
+describe("Redux-Arena start up", () => {
   it("should initial with config correctly", () => {
     let store = createArenaStore(
       { frame: state => state || {} },

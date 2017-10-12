@@ -10,7 +10,11 @@
           }
         ]
       ],
-      "plugins": ["transform-class-properties", "transform-object-rest-spread"]
+      "plugins": [
+        "syntax-dynamic-import",
+        "transform-class-properties",
+        "transform-object-rest-spread"
+      ]
     },
     "es": {
       "presets": [
@@ -22,7 +26,11 @@
           }
         ]
       ],
-      "plugins": ["transform-class-properties", "transform-object-rest-spread"]
+      "plugins": [
+        "syntax-dynamic-import",
+        "transform-class-properties",
+        "transform-object-rest-spread"
+      ]
     }
   }
 }

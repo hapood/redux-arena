@@ -83,9 +83,7 @@ ReactDOM.render(
   * [`<ArenaSceneMotion />`](#arenascenemotion)
 * [`Tools API`](#tools-api)
   * [`bundleToComponent(bundle, hocProps)`](#bundletocomponentbundle-hocprops)
-  * [`asyncBundleToComponent(asyncBundle, hocProps)`](#asyncbundletocomponentasyncbundle-hocprops)
-  * [`bundleToElement(bundle, props, hocProps)`](#bundletoelementbundle-props-hocprops)
-  * [`AsyncBundleToElement()`](#asyncbundletoelementasyncbundle-props-hocprops)
+  * [`asyncBundleToComponent(asyncBundle, hocProps)`](#bundletoelementbundle-props-hocprops)
 * [`Saga API`](#tools-api)
   * [`getSceneState()`](#getscenestate)
   * [`getSceneActions()`](#getsceneactions)
@@ -194,23 +192,19 @@ export default {
 
 - `sceneBundle: object` - 需要加载的同步bundle。
 
-- `asyncSceneBundle: promise` - 需要加载的异步bundle。
-
 - `sceneProps: object` - Bundle组件接收的props。
 
 - `reducerKey: string` - 为容器指定reducerKey。
 
 - `vReducerKey: string` - 为容器指定虚拟reducerKey。
 
-- `isNotifyOn: bool` - Bundle的生命周期广播开关。
-
-- `notifyData: object` - Bundle的生命周期广播消息.
-
 ### `<ArenaSceneMotion />`
 
 ArenaScene的加载动画框架，props如下所示：
 
 - `children: element` - ArenaScene渲染出的element。
+
+- `asyncBundleThunk: () => Promise` - 用于异步加载bundle的函数。
 
 - `loadingPlay: element` - 加载动画的element。
 
@@ -228,17 +222,9 @@ ArenaScene的加载动画框架，props如下所示：
 
 将Bundle转化为组件的帮手函数。
 
-### `asyncBundleToComponent(asyncBundle, hocProps)`
-
-将异步Bundle转化为组件的帮手函数。
-
 ### `bundleToElement(bundle, props, hocProps)`
 
 将Bundle转化为element的帮手函数。
-
-### `asyncBundleToComponent(bundle, hocProps)`
-
-将异步Bundle转化为element的帮手函数。
 
 ## Saga API
 

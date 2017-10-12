@@ -62,8 +62,7 @@ export function buildStyleCalculator(
           return {
             key: "nextPhase",
             style: {
-              phase,
-              isSceneReady
+              phase
             }
           };
           return styleObj;

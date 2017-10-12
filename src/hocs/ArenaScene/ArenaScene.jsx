@@ -18,10 +18,7 @@ export default class ArenaScene extends Component {
     reducerKey: PropTypes.string,
     vReducerKey: PropTypes.string,
     sceneBundle: PropTypes.object,
-    asyncSceneBundle: PropTypes.object,
-    sceneProps: PropTypes.object,
-    isNotifyOn: PropTypes.bool,
-    notifyData: PropTypes.object
+    sceneProps: PropTypes.object
   };
 
   componentWillMount() {
@@ -30,13 +27,7 @@ export default class ArenaScene extends Component {
       this.props.reducerKey,
       createCurtainReducer
     );
-    let {
-      asyncSceneBundle,
-      sceneBundle,
-      sceneProps,
-      isNotifyOn,
-      notifyData
-    } = this.props;
+    let { sceneBundle, sceneProps } = this.props;
     let arenaReducerDict = calcCurtainReducerDict(
       this.context.arenaReducerDict,
       reducerKey,
@@ -44,11 +35,8 @@ export default class ArenaScene extends Component {
     );
     let wrappedSceneBundle = arenaCurtainConnect(arenaReducerDict);
     let sceneBundleElement = React.createElement(wrappedSceneBundle, {
-      asyncSceneBundle,
       sceneBundle,
-      sceneProps,
-      isNotifyOn,
-      notifyData
+      sceneProps
     });
     this.setState({
       arenaReducerDict,
@@ -67,15 +55,7 @@ export default class ArenaScene extends Component {
   componentWillReceiveProps(nextProps, nextContext) {
     let refreshFlag = false;
     let state = Object.assign({}, this.state);
-    let {
-      reducerKey,
-      vReducerKey,
-      asyncSceneBundle,
-      sceneBundle,
-      sceneProps,
-      isNotifyOn,
-      notifyData
-    } = nextProps;
+    let { reducerKey, vReducerKey, sceneBundle, sceneProps } = nextProps;
     let newReducerKey = state.arenaReducerDict._arenaCurtain.reducerKey;
     if (
       reducerKey != null &&
@@ -115,18 +95,13 @@ export default class ArenaScene extends Component {
       state.wrappedSceneBundle = arenaCurtainConnect(state.arenaReducerDict);
     }
     if (
-      asyncSceneBundle !== this.props.asyncSceneBundle ||
       sceneBundle !== this.props.sceneBundle ||
       sceneProps !== this.props.sceneBundle ||
-      notifyData !== this.props.notifyData ||
       refreshFlag == true
     ) {
       state.sceneBundleElement = React.createElement(state.wrappedSceneBundle, {
-        asyncSceneBundle,
         sceneBundle,
-        sceneProps,
-        isNotifyOn,
-        notifyData
+        sceneProps
       });
     }
     this.setState(state);

@@ -82,9 +82,7 @@ ReactDOM.render(
   * [`<ArenaSceneMotion />`](#arenascenemotion)
 * [`Tools API`](#tools-api)
   * [`bundleToComponent(bundle, hocProps)`](#bundletocomponentbundle-hocprops)
-  * [`asyncBundleToComponent(asyncBundle, hocProps)`](#asyncbundletocomponentasyncbundle-hocprops)
-  * [`bundleToElement(bundle, props, hocProps)`](#bundletoelementbundle-props-hocprops)
-  * [`AsyncBundleToElement()`](#asyncbundletoelementasyncbundle-props-hocprops)
+  * [`bundleToElement(bundle, props, hocProps)`](#asyncbundletoelementasyncbundle-props-hocprops)
 * [`Saga API`](#tools-api)
   * [`getSceneState()`](#getscenestate)
   * [`getSceneActions()`](#getsceneactions)
@@ -193,23 +191,19 @@ A container for transforming bundle to a plain react element. Props is explained
 
 - `sceneBundle: object` - Sync bundle for loading.
 
-- `asyncSceneBundle: promise` - Async bundle for loading.
-
 - `sceneProps: object` - Props of bundle's Component.
 
 - `reducerKey: string` - Specify a fixed reducer key for container.
 
 - `vReducerKey: string` - Specify a fixed vitural reducer key for container.
 
-- `isNotifyOn: bool` - Bundle life circle broadcast switch.
-
-- `notifyData: object` - Bundle life circle broadcast message.
-
 ### `<ArenaSceneMotion />`
 
 Loading Animation Frame for ArenaScene. Props is explained following:
 
 - `children: element` - Element of ArenaScene rendered.
+
+- `asyncBundleThunk: () => Promise` - function for async loading bundle.
 
 - `loadingPlay: element` - Element of loading animation.
 
@@ -227,17 +221,9 @@ Loading Animation Frame for ArenaScene. Props is explained following:
 
 A helper function of transforming bundle to react component.
 
-### `asyncBundleToComponent(asyncBundle, hocProps)`
-
-A helper function of transforming async bundle to react component.
-
 ### `bundleToElement(bundle, props, hocProps)`
 
 A helper function of transforming bundle to react element.
-
-### `asyncBundleToComponent(bundle, hocProps)`
-
-A helper function of transforming async bundle to react element.
 
 ## Saga API
 

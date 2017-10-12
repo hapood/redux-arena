@@ -1,34 +1,23 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { TransitionMotion } from "react-motion";
-import { LOADING, ENTERING, IN, LEAVING, OUT } from "./animationPhase";
+import { LOADING } from "./animationPhase";
 import { buildStyleCalculator, isCurPhaseEnd } from "./utils";
 
-export default class ArenaSceneAnimation extends Component {
+export default class ArenaSceneLoadMotion extends Component {
   static propTypes = {
     loadingPlay: PropTypes.element.isRequired,
-    children: PropTypes.element.isRequired,
+    asyncBundleThunk: PropTypes.func.isRequired,
+    children: PropTypes.func.isRequired,
     initStyles: PropTypes.array.isRequired,
     styleCalculators: PropTypes.object.isRequired,
     nextPhaseCheckers: PropTypes.object.isRequired,
     numberToStyle: PropTypes.func.isRequired
   };
 
-  cloneSceneWithNotify(children, reducerKey) {
-    return React.cloneElement(children, {
-      isNotifyOn: true,
-      notifyData: Object.assign({}, children.props.notifyData, {
-        _toReducerKey: reducerKey
-      })
-    });
-  }
-
   componentWillMount() {
+    this.props.actions.loadSceneBundle(this.props.asyncBundleThunk);
     this.setState({
-      scenePlay: this.cloneSceneWithNotify(
-        this.props.children,
-        this.props.reducerKey
-      ),
       initStyles: this.props.initStyles
         .map(styleObj =>
           Object.assign({}, styleObj, {
@@ -45,20 +34,25 @@ export default class ArenaSceneAnimation extends Component {
         this.props.nextPhaseCheckers,
         this.props.isSceneReady,
         phase => setImmediate(() => this.props.actions.nextPhase(phase))
-      )
+      ),
+      playElement: this.props.bundle
+        ? this.props.children(this.props.bundle)
+        : null
     });
   }
 
   componentWillReceiveProps(nextProps) {
     let state = Object.assign({}, state);
     if (
-      nextProps.children !== this.props.children ||
-      nextProps.reducerKey !== this.props.reducerKey
+      this.props.bundle !== nextProps.bundle ||
+      this.props.children !== nextProps.children
     ) {
-      state.scenePlay = this.cloneSceneWithNotify(
-        nextProps.children,
-        nextProps.reducerKey
-      );
+      state.playElement = nextProps.bundle
+        ? nextProps.children(nextProps.bundle)
+        : null;
+    }
+    if (nextProps.asyncBundleThunk !== this.props.asyncBundleThunk) {
+      nextProps.actions.loadSceneBundle(nextProps.asyncBundleThunk);
     }
     if (
       nextProps.actions !== this.props.actions ||
@@ -120,34 +114,28 @@ export default class ArenaSceneAnimation extends Component {
                 isSceneReady
               )}
             >
-              {animationPhase === IN ||
-              animationPhase === LEAVING ||
-              animationPhase === OUT ? null : (
-                <div
-                  key="loadingPlay"
-                  style={numberToStyle(
-                    "loadingPlay",
-                    loadingPlayStyle,
-                    animationPhase,
-                    isSceneReady
-                  )}
-                >
-                  {this.props.loadingPlay}
-                </div>
-              )}
-              {animationPhase === OUT ? null : (
-                <div
-                  key="scenePlay"
-                  style={numberToStyle(
-                    "scenePlay",
-                    scenePlayStyle,
-                    animationPhase,
-                    isSceneReady
-                  )}
-                >
-                  {this.state.scenePlay}
-                </div>
-              )}
+              <div
+                key="loadingPlay"
+                style={numberToStyle(
+                  "loadingPlay",
+                  loadingPlayStyle,
+                  animationPhase,
+                  isSceneReady
+                )}
+              >
+                {this.props.loadingPlay}
+              </div>
+              <div
+                key="scenePlay"
+                style={numberToStyle(
+                  "scenePlay",
+                  scenePlayStyle,
+                  animationPhase,
+                  isSceneReady
+                )}
+              >
+                {this.state.playElement}
+              </div>
             </div>
           );
         }}
