@@ -72,6 +72,11 @@ function* killArenaCurtainSaga({ sagaTaskPromise, reducerKey }) {
   if (sagaTask) yield cancel(sagaTask);
   let store = yield getContext("store");
   let { reduxInfo } = yield select(state => state[reducerKey]);
+  yield put({
+    type: ARENA_CURTAIN_SET_STATE,
+    _reducerKey: reducerKey,
+    state: { reduxInfo: {}, PlayingScene: null }
+  });
   if (reduxInfo.sagaTask) {
     yield cancel(reduxInfo.sagaTask);
   }

@@ -48,30 +48,11 @@ export default class SceneBundle extends Component {
       true
     );
     this.setState({
-      isSceneBundleValid: false,
       loadedPromise
     });
   }
 
-  checkAndStartPlay(props, nextProps) {
-    if (
-      nextProps.PlayingScene != null &&
-      nextProps.PlayingScene !== props.PlayingScene
-    ) {
-      this.setState({
-        isSceneBundleValid: true
-      });
-    }
-  }
-
-  componentDidMount() {
-    this.checkAndStartPlay({}, this.props);
-  }
-
   componentWillReceiveProps(nextProps) {
-    if (this.state.isSceneBundleValid === false) {
-      this.checkAndStartPlay(this.props, nextProps);
-    }
     let { sceneBundle } = nextProps;
     if (sceneBundle !== this.props.sceneBundle) {
       this.state.loadedPromise.then(() => {
@@ -89,7 +70,7 @@ export default class SceneBundle extends Component {
 
   render() {
     let { PlayingScene, sceneProps } = this.props;
-    if (this.state.isSceneBundleValid) {
+    if (PlayingScene != null) {
       return <PlayingScene {...sceneProps} />;
     } else {
       return <div />;
