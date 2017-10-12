@@ -105,13 +105,13 @@ describe("<ArenaScene /> integration", () => {
     return flagPromise;
   });
 
-  it("should remove and add reducer correctly", () => {
+  it("should hot replace reducer correctly", () => {
     let newProps = {
       sceneBundle: Object.assign({}, sceneBundleForTestB, {
         reducer: (state = sceneBundleForTestA.state, action) => {
           switch (action.type) {
             case "ADD_CNT":
-              return Object.assign({}, state, { cnt: state.cnt + 2 });
+              return Object.assign({}, state, { cnt: state.cnt + 16 });
             default:
               return state;
           }
@@ -131,41 +131,7 @@ describe("<ArenaScene /> integration", () => {
           "PageB"
         );
         if (bundleState) {
-          if (bundleState.cnt !== 2) return;
-          unsubscribe();
-          resolve(true);
-        }
-      });
-    });
-    wrapper.setProps(newProps);
-    setTimeout(() => store.dispatch({ type: "ADD_CNT" }), 100);
-    return flagPromise;
-  });
-
-  it("should hot replace reducer correctly", () => {
-    let newProps = {
-      sceneBundle: Object.assign({}, sceneBundleForTestB, {
-        reducer: (state = sceneBundleForTestA.state, action) => {
-          switch (action.type) {
-            case "ADD_CNT":
-              return Object.assign({}, state, { cnt: state.cnt + 4 });
-            default:
-              return state;
-          }
-        },
-        options: {
-          isSceneReducer: false
-        }
-      })
-    };
-    let flagPromise = new Promise(resolve => {
-      let unsubscribe = store.subscribe(() => {
-        let { arena, metaState, bundleState } = selectNeededStates(
-          store.getState(),
-          "PageB"
-        );
-        if (bundleState) {
-          if (bundleState.cnt !== 6) return;
+          if (bundleState.cnt !== 16) return;
           unsubscribe();
           resolve(true);
         }

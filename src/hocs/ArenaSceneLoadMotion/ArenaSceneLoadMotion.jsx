@@ -34,12 +34,23 @@ export default class ArenaSceneLoadMotion extends Component {
         this.props.nextPhaseCheckers,
         this.props.isSceneReady,
         phase => setImmediate(() => this.props.actions.nextPhase(phase))
-      )
+      ),
+      playElement: this.props.bundle
+        ? this.props.children(this.props.bundle)
+        : null
     });
   }
 
   componentWillReceiveProps(nextProps) {
     let state = Object.assign({}, state);
+    if (
+      this.props.bundle !== nextProps.bundle ||
+      this.props.children !== nextProps.children
+    ) {
+      state.playElement = nextProps.bundle
+        ? nextProps.children(nextProps.bundle)
+        : null;
+    }
     if (nextProps.asyncBundleThunk !== this.props.asyncBundleThunk) {
       nextProps.actions.loadSceneBundle(nextProps.asyncBundleThunk);
     }
@@ -68,7 +79,7 @@ export default class ArenaSceneLoadMotion extends Component {
   }
 
   render() {
-    let { phase, numberToStyle, isSceneReady, bundle } = this.props;
+    let { phase, numberToStyle, isSceneReady } = this.props;
     return (
       <TransitionMotion
         defaultStyles={this.state.initStyles}
@@ -123,7 +134,7 @@ export default class ArenaSceneLoadMotion extends Component {
                   isSceneReady
                 )}
               >
-                {bundle ? this.props.children(bundle) : null}
+                {this.state.playElement}
               </div>
             </div>
           );

@@ -17,14 +17,35 @@ export default class SceneBundle extends Component {
     };
   }
 
+  buildLoadScenePromise(parentArenaReducerDict, sceneBundle, isInitial) {
+    if (isInitial) {
+      return new Promise(resolve =>
+        setImmediate(() =>
+          this.props.arenaLoadScene(
+            this.props.parentArenaReducerDict,
+            this.props.sceneBundle,
+            true,
+            resolve
+          )
+        )
+      );
+    } else {
+      return new Promise(resolve =>
+        this.props.arenaLoadScene(
+          this.props.parentArenaReducerDict,
+          this.props.sceneBundle,
+          true,
+          resolve
+        )
+      );
+    }
+  }
+
   componentWillMount() {
-    let loadedPromise = new Promise(resolve =>
-      this.props.arenaLoadScene(
-        this.props.parentArenaReducerDict,
-        this.props.sceneBundle,
-        true,
-        resolve
-      )
+    let loadedPromise = this.buildLoadScenePromise(
+      this.props.parentArenaReducerDict,
+      this.props.sceneBundle,
+      true
     );
     this.setState({
       isSceneBundleValid: false,
@@ -54,13 +75,10 @@ export default class SceneBundle extends Component {
     let { sceneBundle } = nextProps;
     if (sceneBundle !== this.props.sceneBundle) {
       this.state.loadedPromise.then(() => {
-        let loadedPromise = new Promise(resolve =>
-          nextProps.arenaLoadScene(
-            nextProps.parentArenaReducerDict,
-            nextProps.sceneBundle,
-            false,
-            resolve
-          )
+        let loadedPromise = this.buildLoadScenePromise(
+          nextProps.parentArenaReducerDict,
+          nextProps.sceneBundle,
+          false
         );
         this.setState({
           loadedPromise

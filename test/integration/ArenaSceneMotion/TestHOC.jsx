@@ -8,7 +8,7 @@ import * as sceneAnimation from "./sceneAnimation";
 export default class TestHOC extends Component {
   static propTypes = {
     store: PropTypes.any.isRequired,
-    children: PropTypes.element
+    asyncBundleThunk: PropTypes.func.isRequired
   };
   render() {
     let props = this.props;

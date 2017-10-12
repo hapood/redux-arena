@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build":
-      "npm run clean:build &&webpack --colors --config webpack.config.prod.js",
+    "build": "npm run clean:build &&webpack --colors --config webpack.config.prod.js",
     "clean:build": "rimraf dist",
     "start:dist": "node expressServer.js"
   },
@@ -23,7 +22,8 @@
     "prop-types": "^15.5.10",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "redux-arena": "^0.7.0",
+    "react-jss": "^7.2.0",
+    "redux-arena": "^0.8.0",
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {

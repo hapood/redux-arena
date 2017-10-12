@@ -2,10 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import Frame from "./frame/Frame";
-import createHistory from "history/createBrowserHistory";
 import configureStore from "./configureStore";
 
-const history = createHistory();
 const store = configureStore(history);
 
 document.getElementById("loadingsStyle").remove();
@@ -16,7 +14,7 @@ let appDom = document.getElementById("app");
 const render = (FrameComponent, version) => {
   ReactDOM.render(
     <Provider store={store}>
-      <FrameComponent history={history} version={version} />
+      <FrameComponent version={version} />
     </Provider>,
     appDom
   );

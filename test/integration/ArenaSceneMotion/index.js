@@ -2,7 +2,7 @@ import React from "react";
 import { expect } from "chai";
 import { spy } from "sinon";
 import { createMount } from "../../testUtils";
-import { createArenaStore, sceneMotionPhase } from "src";
+import { createArenaStore, loadMotionPhase } from "src";
 import TestHOC from "./TestHOC";
 
 function selectAnimationState(allStates, name) {
@@ -38,7 +38,7 @@ describe("<ArenaSceneMotion /> integration", () => {
     let flagPromise = new Promise(resolve => {
       let unsubscribe = store.subscribe(() => {
         let animationState = selectAnimationState(store.getState());
-        if (animationState && animationState.phase === sceneMotionPhase.IN) {
+        if (animationState && animationState.phase === loadMotionPhase.IN) {
           unsubscribe();
           resolve(true);
         }
