@@ -13,22 +13,23 @@ function buildReducerKey(
     newDict[vReducerKey] = item;
   }
   newDict[curReducerKey] = item;
-  newDict._arenaScene = null;
   return newDict;
 }
 
 export function buildCurtainReducerDict(
   arenaReducerDict,
-  curtainReducerKey,
+  reducerKey,
   vReducerKey
 ) {
-  return buildReducerKey(
+  let newDict = buildReducerKey(
     arenaReducerDict,
-    curtainReducerKey,
+    reducerKey,
     vReducerKey,
     {},
     "_arenaCurtain"
   );
+  newDict._arenaScene = null;
+  return newDict;
 }
 
 export function buildSceneReducerDict(
@@ -39,9 +40,9 @@ export function buildSceneReducerDict(
 ) {
   return buildReducerKey(
     arenaReducerDict,
-    curtainReducerKey,
+    reducerKey,
     vReducerKey,
     actions,
-    "_arenaCurtain"
+    "_arenaScene"
   );
 }

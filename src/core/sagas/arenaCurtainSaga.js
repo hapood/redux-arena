@@ -23,9 +23,7 @@ function* takeEverySceneBundleAction() {
   let lastTask;
   while (true) {
     let action = yield take(ARENA_CURTAIN_LOAD_SCENE);
-    if (
-      action.parentArenaReducerDict._arenaCurtain.reducerKey === _reducerKey
-    ) {
+    if (action.arenaReducerDict._arenaCurtain.reducerKey === _reducerKey) {
       if (lastTask && lastTask.isRunning()) {
         yield cancel(lastTask);
       }
@@ -73,6 +71,7 @@ function* killArenaCurtainSaga({ sagaTaskPromise, reducerKey }) {
   let sagaTask = yield sagaTaskPromise;
   if (sagaTask) yield cancel(sagaTask);
   let store = yield getContext("store");
+  let { reduxInfo } = yield select(state => state[reducerKey]);
   yield put({
     type: ARENA_STATETREE_NODE_DISABLE,
     reducerKey: reduxInfo.reducerKey

@@ -23,7 +23,6 @@ export default function arenaCurtainConnect(reducerKey, clearCurtain) {
     SceneBundle
   );
 
-  ConnectedComponent.displayName = `ArenaCurtainConnect({reducerKey:${arenaReducerDict
-    ._arenaCurtain.reducerKey}})`;
+  ConnectedComponent.displayName = `ArenaCurtainConnect({reducerKey:${reducerKey}})`;
   return ConnectedComponent;
 }

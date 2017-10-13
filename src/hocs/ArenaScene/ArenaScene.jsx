@@ -6,13 +6,13 @@ import {
 } from "../../core/actionTypes";
 import { createCurtainReducer } from "../../core/reducers";
 import {
-  curtainAddStateTreeNode,
+  addStateTreeNode,
   curtainAddReducer,
   buildCurtainReducerDict
 } from "../../utils";
 import { arenaCurtainConnect } from "../SceneBundle";
 
-function buildConnectedBundleComponent(reducerKey) {
+function buildConnectedBundleComponent(reducerKey, store) {
   let sagaTaskPromise = new Promise(resolve =>
     store.dispatch({
       type: ARENA_CURTAIN_INIT_SAGA,
@@ -21,7 +21,7 @@ function buildConnectedBundleComponent(reducerKey) {
     })
   );
   return arenaCurtainConnect(reducerKey, () =>
-    nextContext.store.dispatch({
+    store.dispatch({
       type: ARENA_CURTAIN_CLEAR_REDUX,
       reducerKey,
       sagaTaskPromise
@@ -59,13 +59,16 @@ export default class ArenaScene extends Component {
       createCurtainReducer
     );
     let parentReducerKey = getParentReducerKey(arenaReducerDict);
-    curtainAddStateTreeNode(store, parentReducerKey, newReducerKey);
+    addStateTreeNode(store, parentReducerKey, newReducerKey);
     let newArenaReducerDict = buildCurtainReducerDict(
       arenaReducerDict,
       newReducerKey,
       vReducerKey
     );
-    let ConnectedBundleComponent = buildConnectedBundleComponent(newReducerKey);
+    let ConnectedBundleComponent = buildConnectedBundleComponent(
+      newReducerKey,
+      this.context.store
+    );
     let connectedBundleElement = React.createElement(ConnectedBundleComponent, {
       sceneBundle,
       sceneProps,
@@ -92,8 +95,10 @@ export default class ArenaScene extends Component {
         reducerKey,
         createCurtainReducer
       );
+      addStateTreeNode(store, this.state.parentReducerKey, newReducerKey);
       state.ConnectedBundleComponent = buildConnectedBundleComponent(
-        newReducerKey
+        newReducerKey,
+        nextContext.store
       );
     }
     if (
@@ -115,7 +120,7 @@ export default class ArenaScene extends Component {
         {
           sceneBundle,
           sceneProps,
-          arenaReducerDict: newArenaReducerDict
+          arenaReducerDict: state.arenaReducerDict
         }
       );
     }

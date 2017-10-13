@@ -5,8 +5,7 @@ import { bindActionCreators } from "redux";
 import { bindArenaActionCreators } from "../enhancedRedux";
 import { createSceneReducer, sceneReducerWrapper } from "../reducers";
 import {
-  sceneAddStateTreeNode,
-  sceneAddStateTreeNode,
+  addStateTreeNode,
   sceneAddReducer,
   sceneReplaceReducer,
   buildSceneReducerDict
@@ -17,14 +16,14 @@ const defaultActions = {
   setState: state => ({ type: ARENA_SCENE_SET_STATE, state })
 };
 
-function bindActions(actions, dispatch, isSceneActions) {
+function bindActions(actions, reducerKey, dispatch, isSceneActions) {
   if (isSceneActions === false) {
-    return bindActionCreators(newReduxInfo.actions || defaultActions, dispatch);
+    return bindActionCreators(actions || defaultActions, dispatch);
   } else {
     return bindArenaActionCreators(
-      newReduxInfo.actions || defaultActions,
+      actions || defaultActions,
       dispatch,
-      newReduxInfo.reducerKey
+      reducerKey
     );
   }
 }
@@ -69,6 +68,7 @@ export function* sceneApplyRedux({
     options,
     bindedActions: bindActions(
       actions,
+      newReducerKey,
       arenaStore.dispatch,
       options.isSceneActions
     ),
@@ -91,7 +91,7 @@ export function* sceneApplyRedux({
     newReduxInfo.vReducerKey,
     newReduxInfo.bindedActions
   );
-  sceneAddStateTreeNode(
+  addStateTreeNode(
     arenaStore,
     getParentReducerKey(newReduxInfo.arenaReducerDict),
     newReducerKey
@@ -133,7 +133,7 @@ export function* sceneUpdateRedux({
       reducerFactory,
       state === curSceneBundle.state ? oldState : state
     );
-    sceneAddStateTreeNode(arenaStore, newReducerKey);
+    addStateTreeNode(arenaStore, newReducerKey);
   } else if (options.reducerKey === reduxInfo.reducerKey) {
     if (
       reducer !== curSceneBundle.reducer ||
@@ -167,6 +167,7 @@ export function* sceneUpdateRedux({
     newReduxInfo.actions = actions;
     newReduxInfo.bindedActions = bindActions(
       actions,
+      newReducerKey,
       arenaStore.dispatch,
       options.isSceneActions
     );
