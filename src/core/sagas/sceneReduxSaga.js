@@ -61,6 +61,17 @@ export function* sceneApplyRedux({
   options
 }) {
   let arenaStore = yield getContext("store");
+  let reducerFactory = buildReducerFactory(
+    reducer,
+    state,
+    options.isSceneReducer
+  );
+  let newReducerKey = sceneAddReducer(
+    arenaStore,
+    options.reducerKey,
+    reducerFactory,
+    state
+  );
   let newReduxInfo = {
     reducerKey: newReducerKey,
     origArenaReducerDict: arenaReducerDict,
@@ -74,17 +85,6 @@ export function* sceneApplyRedux({
     ),
     saga
   };
-  let reducerFactory = buildReducerFactory(
-    reducer,
-    state,
-    options.isSceneReducer
-  );
-  let newReducerKey = sceneAddReducer(
-    arenaStore,
-    options.reducerKey,
-    reducerFactory,
-    state
-  );
   newReduxInfo.arenaReducerDict = buildSceneReducerDict(
     arenaReducerDict,
     newReducerKey,

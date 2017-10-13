@@ -62,8 +62,8 @@ describe("<ArenaScene /> integration", () => {
         );
         if (arena && metaState && bundleState) {
           if (
-            bundleState.cnt !== 0 ||
-            bundleState.sagaCnt !== 0 ||
+            bundleState.cnt !== 4 ||
+            bundleState.sagaCnt !== 1 ||
             bundleState.pageA !== false
           )
             return;

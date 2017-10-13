@@ -1,5 +1,5 @@
 import { ARENA_CURTAIN_SET_STATE } from "../actionTypes";
-import { put, select } from "redux-saga/effects";
+import { put, select, getContext } from "redux-saga/effects";
 import { connect } from "react-redux";
 import { createPropsPicker } from "../enhancedRedux";
 import { sceneApplyRedux, sceneUpdateRedux } from "./sceneReduxSaga";
@@ -92,7 +92,7 @@ export function* applySceneBundle({
       type: ARENA_STATETREE_NODE_DISABLE,
       reducerKey: reduxInfo.reducerKey
     });
-    arenaStore.remove(reduxInfo.reducerKey);
+    arenaStore.removeReducer(reduxInfo.reducerKey);
     yield put({
       type: ARENA_STATETREE_NODE_DELETE,
       reducerKey: reduxInfo.reducerKey
