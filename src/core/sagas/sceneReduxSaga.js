@@ -6,10 +6,10 @@ import { bindArenaActionCreators } from "../enhancedRedux";
 import { createSceneReducer, sceneReducerWrapper } from "../reducers";
 import {
   sceneAddStateTreeNode,
-  sceneReplaceStateTreeNode,
+  sceneAddStateTreeNode,
   sceneAddReducer,
   sceneReplaceReducer,
-  sceneRmAndAddReducer
+  buildSceneReducerDict
 } from "../../utils";
 import { getSwitchInitState } from "../reducers";
 
@@ -17,50 +17,16 @@ const defaultActions = {
   setState: state => ({ type: ARENA_SCENE_SET_STATE, state })
 };
 
-function calcNewReduxInfo(reduxInfo, newReduxInfo, dispatch, isSceneActions) {
-  let connectedActions = reduxInfo.connectedActions;
-  let newArenaReducerDict = reduxInfo.arenaReducerDict;
-  if (
-    reduxInfo.reducerKey !== newReduxInfo.reducerKey ||
-    reduxInfo.vReducerKey !== newReduxInfo.vReducerKey ||
-    reduxInfo.parentArenaReducerDict !== newReduxInfo.parentArenaReducerDict ||
-    reduxInfo.actions !== newReduxInfo.actions
-  ) {
-    //calc actions
-    if (
-      reduxInfo.actions !== newReduxInfo.actions ||
-      connectedActions == null
-    ) {
-      if (isSceneActions === false) {
-        connectedActions = bindActionCreators(
-          newReduxInfo.actions || defaultActions,
-          dispatch
-        );
-      } else {
-        connectedActions = bindArenaActionCreators(
-          newReduxInfo.actions || defaultActions,
-          dispatch,
-          newReduxInfo.reducerKey
-        );
-      }
-    }
-    //calc arena reducer dict
-    let item = {
-      reducerKey: newReduxInfo.reducerKey,
-      vReducerKey: newReduxInfo.vReducerKey,
-      actions: connectedActions
-    };
-    newArenaReducerDict = Object.assign(newReduxInfo.parentArenaReducerDict, {
-      [newReduxInfo.reducerKey]: item,
-      _arenaScene: item
-    });
-    if (newReduxInfo.vReducerKey != null)
-      newArenaReducerDict[newReduxInfo.vReducerKey] = item;
+function bindActions(actions, dispatch, isSceneActions) {
+  if (isSceneActions === false) {
+    return bindActionCreators(newReduxInfo.actions || defaultActions, dispatch);
+  } else {
+    return bindArenaActionCreators(
+      newReduxInfo.actions || defaultActions,
+      dispatch,
+      newReduxInfo.reducerKey
+    );
   }
-  return Object.assign({}, newReduxInfo, {
-    connectedActions,
-    arenaReducerDict: newArenaReducerDict
-  });
 }
 
 function* forkSagaWithContext(saga, ctx) {
@@ -68,16 +34,14 @@ function* forkSagaWithContext(saga, ctx) {
   yield fork(saga);
 }
 
-function buildReducerFactory(options, reducer, state, arenaReducerDict) {
-  return options.isSceneReducer === false
-    ? bindingReducerKey =>
-        createSceneReducer(reducer, bindingReducerKey, state, arenaReducerDict)
+function buildReducerFactory(reducer, state, isSceneReducer) {
+  return isSceneReducer === false
+    ? bindingReducerKey => createSceneReducer(reducer, state, bindingReducerKey)
     : bindingReducerKey =>
         createSceneReducer(
           reducer && sceneReducerWrapper(reducer),
-          bindingReducerKey,
           state,
-          arenaReducerDict
+          bindingReducerKey
         );
 }
 
@@ -90,7 +54,7 @@ function getParentReducerKey(arenaReducerDict) {
 }
 
 export function* sceneApplyRedux({
-  parentArenaReducerDict,
+  arenaReducerDict,
   state,
   saga,
   actions,
@@ -98,11 +62,22 @@ export function* sceneApplyRedux({
   options
 }) {
   let arenaStore = yield getContext("store");
-  let reducerFactory = buildReducerFactory(
+  let newReduxInfo = {
+    reducerKey: newReducerKey,
+    origArenaReducerDict: arenaReducerDict,
+    actions,
     options,
+    bindedActions: bindActions(
+      actions,
+      arenaStore.dispatch,
+      options.isSceneActions
+    ),
+    saga
+  };
+  let reducerFactory = buildReducerFactory(
     reducer,
     state,
-    parentArenaReducerDict
+    options.isSceneReducer
   );
   let newReducerKey = sceneAddReducer(
     arenaStore,
@@ -110,22 +85,16 @@ export function* sceneApplyRedux({
     reducerFactory,
     state
   );
+  newReduxInfo.arenaReducerDict = buildSceneReducerDict(
+    arenaReducerDict,
+    newReducerKey,
+    newReduxInfo.vReducerKey,
+    newReduxInfo.bindedActions
+  );
   sceneAddStateTreeNode(
     arenaStore,
-    getParentReducerKey(parentArenaReducerDict),
+    getParentReducerKey(newReduxInfo.arenaReducerDict),
     newReducerKey
-  );
-  let newReduxInfo = calcNewReduxInfo(
-    {},
-    {
-      reducerKey: newReducerKey,
-      vReducerKey: options.vReducerKey,
-      parentArenaReducerDict,
-      actions
-    },
-    arenaStore.dispatch,
-    options.isSceneActions,
-    saga
   );
   if (saga) {
     newReduxInfo.saga = yield fork(forkSagaWithContext, saga, {
@@ -136,7 +105,7 @@ export function* sceneApplyRedux({
 }
 
 export function* sceneUpdateRedux({
-  parentArenaReducerDict,
+  arenaReducerDict,
   state,
   saga,
   actions,
@@ -148,16 +117,28 @@ export function* sceneUpdateRedux({
   let newReducerKey = reduxInfo.reducerKey;
   let arenaStore = yield getContext("store");
   let reducerFactory = buildReducerFactory(
-    options,
     reducer,
     state,
-    parentArenaReducerDict
+    options.isSceneReducer
   );
+  let newReduxInfo = Object.assign({}, reduxInfo, { options });
   if (
-    options.reducerKey == null ||
-    options.reducerKey === reduxInfo.reducerKey
+    options.reducerKey != null &&
+    options.reducerKey !== reduxInfo.reducerKey
   ) {
-    if (reducer !== curSceneBundle.reducer) {
+    let oldState = yield select(state => state[reduxInfo.reducerKey]);
+    newReducerKey = sceneAddReducer(
+      arenaStore,
+      options.reducerKey,
+      reducerFactory,
+      state === curSceneBundle.state ? oldState : state
+    );
+    sceneAddStateTreeNode(arenaStore, newReducerKey);
+  } else if (options.reducerKey === reduxInfo.reducerKey) {
+    if (
+      reducer !== curSceneBundle.reducer ||
+      options.isSceneReducer !== reduxInfo.options.isSceneReducer
+    ) {
       newReducerKey = sceneReplaceReducer(
         arenaStore,
         reduxInfo.reducerKey,
@@ -171,16 +152,6 @@ export function* sceneUpdateRedux({
         state
       });
     }
-  } else if (options.reducerKey !== reduxInfo.reducerKey) {
-    let oldState = yield select(state => state[reduxInfo.reducerKey]);
-    newReducerKey = sceneRmAndAddReducer(
-      arenaStore,
-      reduxInfo.reducerKey,
-      options.reducerKey,
-      reducerFactory,
-      state === curSceneBundle.state ? oldState : state
-    );
-    sceneReplaceStateTreeNode(arenaStore, reduxInfo.reducerKey, newReducerKey);
   } else if (state !== curSceneBundle.state) {
     yield put({
       type: ARENA_SCENE_REPLACE_STATE,
@@ -188,17 +159,30 @@ export function* sceneUpdateRedux({
       state
     });
   }
-  let newReduxInfo = calcNewReduxInfo(
-    reduxInfo,
-    {
-      reducerKey: newReducerKey,
-      vReducerKey: options.vReducerKey,
-      parentArenaReducerDict,
-      actions
-    },
-    arenaStore.dispatch,
-    options.isSceneActions
-  );
+  newReduxInfo.reducerKey = newReducerKey;
+  if (
+    actions !== reduxInfo.actions ||
+    options.isSceneActions !== reduxInfo.options.isSceneActions
+  ) {
+    newReduxInfo.actions = actions;
+    newReduxInfo.bindedActions = bindActions(
+      actions,
+      arenaStore.dispatch,
+      options.isSceneActions
+    );
+  }
+  if (
+    newReducerKey !== reduxInfo.reducerKey ||
+    options.vReducerKey !== reduxInfo.options.vReducerKey ||
+    arenaReducerDict !== reduxInfo.origArenaReducerDict
+  ) {
+    newReduxInfo.arenaReducerDict = buildSceneReducerDict(
+      arenaReducerDict,
+      newReducerKey,
+      options.vReducerKey,
+      newReduxInfo.actions
+    );
+  }
   if (saga) {
     newReduxInfo.saga = yield fork(forkSagaWithContext, saga, {
       arenaReducerDict: newReduxInfo.arenaReducerDict

@@ -6,7 +6,8 @@ function defaultPropsPicker(sceneState, sceneActions) {
 
 export default function createPropsPicker(
   propsPicker = defaultPropsPicker,
-  reduxInfo
+  reduxInfo,
+  mutableObj
 ) {
   let { arenaReducerDict } = reduxInfo;
   let curtainReducerKey = arenaReducerDict._arenaCurtain.reducerKey;
@@ -14,7 +15,11 @@ export default function createPropsPicker(
   let sceneActions = arenaReducerDict._arenaScene.actions;
   let latestProps;
   return state => {
-    if (state.arena.propsLock !== false) {
+    if (
+      mutableObj.isObsolete === true ||
+      state.arena.propsLock !== false ||
+      state.arena.stateTreeDict.getIn([sceneReducerKey, "isObsolete"]) === true
+    ) {
       return latestProps;
     } else {
       latestProps = propsPicker(

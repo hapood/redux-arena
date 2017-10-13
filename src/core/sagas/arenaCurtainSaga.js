@@ -3,7 +3,8 @@ import {
   ARENA_CURTAIN_INIT_SAGA,
   ARENA_CURTAIN_CLEAR_REDUX,
   ARENA_CURTAIN_SET_STATE,
-  ARENA_STATETREE_STATE_CLEARUP
+  ARENA_STATETREE_NODE_DISABLE,
+  ARENA_STATETREE_NODE_DELETE
 } from "../actionTypes";
 import {
   takeEvery,
@@ -16,7 +17,6 @@ import {
   getContext
 } from "redux-saga/effects";
 import { applySceneBundle, applyAsyncSceneBundle } from "./sceneBundleSaga";
-import { sceneDisableStateTreeNode } from "../../utils";
 
 function* takeEverySceneBundleAction() {
   let _reducerKey = yield getContext("_reducerKey");
@@ -73,20 +73,15 @@ function* killArenaCurtainSaga({ sagaTaskPromise, reducerKey }) {
   let sagaTask = yield sagaTaskPromise;
   if (sagaTask) yield cancel(sagaTask);
   let store = yield getContext("store");
-  let { reduxInfo } = yield select(state => state[reducerKey]);
   yield put({
-    type: ARENA_CURTAIN_SET_STATE,
-    _reducerKey: reducerKey,
-    state: { reduxInfo: {}, PlayingScene: null }
+    type: ARENA_STATETREE_NODE_DISABLE,
+    reducerKey: reduxInfo.reducerKey
   });
-  if (reduxInfo.sagaTask) {
-    yield cancel(reduxInfo.sagaTask);
-  }
-  sceneDisableStateTreeNode(store, reduxInfo.reducerKey);
   store.removeReducer(reduxInfo.reducerKey);
   store.removeReducer(reducerKey);
   yield put({
-    type: ARENA_STATETREE_STATE_CLEARUP
+    type: ARENA_STATETREE_NODE_DELETE,
+    reducerKey: reduxInfo.reducerKey
   });
 }
 

@@ -17,12 +17,12 @@ export default class SceneBundle extends Component {
     };
   }
 
-  buildLoadScenePromise(parentArenaReducerDict, sceneBundle, isInitial) {
+  buildLoadScenePromise(arenaReducerDict, sceneBundle, isInitial) {
     if (isInitial) {
       return new Promise(resolve =>
         setImmediate(() =>
           this.props.arenaLoadScene(
-            this.props.parentArenaReducerDict,
+            this.props.arenaReducerDict,
             this.props.sceneBundle,
             true,
             resolve
@@ -32,7 +32,7 @@ export default class SceneBundle extends Component {
     } else {
       return new Promise(resolve =>
         this.props.arenaLoadScene(
-          this.props.parentArenaReducerDict,
+          this.props.arenaReducerDict,
           this.props.sceneBundle,
           true,
           resolve
@@ -43,7 +43,7 @@ export default class SceneBundle extends Component {
 
   componentWillMount() {
     let loadedPromise = this.buildLoadScenePromise(
-      this.props.parentArenaReducerDict,
+      this.props.arenaReducerDict,
       this.props.sceneBundle,
       true
     );
@@ -57,7 +57,7 @@ export default class SceneBundle extends Component {
     if (sceneBundle !== this.props.sceneBundle) {
       this.state.loadedPromise.then(() => {
         let loadedPromise = this.buildLoadScenePromise(
-          nextProps.parentArenaReducerDict,
+          nextProps.arenaReducerDict,
           nextProps.sceneBundle,
           false
         );
@@ -66,6 +66,11 @@ export default class SceneBundle extends Component {
         });
       });
     }
+  }
+
+  componentWillUnmount() {
+    this.props.clearCurtain();
+    this.props.mutableObj.isObsolete = true;
   }
 
   render() {

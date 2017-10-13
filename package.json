@@ -35,6 +35,7 @@
     "react": ">=15"
   },
   "dependencies": {
+    "immutable": "^3.8.2",
     "prop-types": "^15.6.0",
     "react-motion": "^0.5.1",
     "react-redux": "^5.0.6",

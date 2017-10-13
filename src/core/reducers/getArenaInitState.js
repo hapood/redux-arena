@@ -1,8 +1,10 @@
-﻿export default function getInitState() {
+﻿import Immutable from "immutable";
+
+export default function getInitState() {
   return {
     audienceSagaTask: null,
     propsLock: false,
-    stateTree: {},
-    stateTreeDict: {}
+    stateTree: Immutable.Map(),
+    stateTreeDict: Immutable.Map()
   };
 }

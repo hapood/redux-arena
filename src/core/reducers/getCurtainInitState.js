@@ -2,6 +2,7 @@ export default function getSwitchInitState() {
   return {
     PlayingScene: null,
     curSceneBundle: {},
-    reduxInfo: {}
+    reduxInfo: {},
+    mutableObj: { isObsolete: false }
   };
 }

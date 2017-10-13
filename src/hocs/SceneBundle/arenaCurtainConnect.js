@@ -4,26 +4,26 @@ import { connect } from "react-redux";
 import * as actions from "./actions";
 import SceneBundle from "./SceneBundle";
 
-export default function arenaCurtainConnect(arenaReducerDict) {
+export default function arenaCurtainConnect(reducerKey, clearCurtain) {
   let mapDispatchToProps = dispatch => {
     return bindActionCreators(actions, dispatch);
   };
 
   let mapStateToProps = state => {
-    let reducerKey = arenaReducerDict._arenaCurtain.reducerKey;
     return {
       PlayingScene: state[reducerKey].PlayingScene,
       curSceneBundle: state[reducerKey].curSceneBundle,
       reduxInfo: state[reducerKey].reduxInfo,
-      parentArenaReducerDict: arenaReducerDict
+      mutableObj: state[reducerKey].mutableObj,
+      clearCurtain
     };
   };
 
-  let wrappedComponent = connect(mapStateToProps, mapDispatchToProps)(
+  let ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(
     SceneBundle
   );
 
-  wrappedComponent.displayName = `arenaCurtainConnect({reducerKey:${arenaReducerDict
+  ConnectedComponent.displayName = `ArenaCurtainConnect({reducerKey:${arenaReducerDict
     ._arenaCurtain.reducerKey}})`;
-  return wrappedComponent;
+  return ConnectedComponent;
 }

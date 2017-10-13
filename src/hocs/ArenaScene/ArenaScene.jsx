@@ -7,12 +7,27 @@ import {
 import { createCurtainReducer } from "../../core/reducers";
 import {
   curtainAddStateTreeNode,
-  curtainReplaceStateTreeNode,
-  curtainDisableStateTreeNode,
   curtainAddReducer,
-  calcCurtainReducerDict
+  buildCurtainReducerDict
 } from "../../utils";
 import { arenaCurtainConnect } from "../SceneBundle";
+
+function buildConnectedBundleComponent(reducerKey) {
+  let sagaTaskPromise = new Promise(resolve =>
+    store.dispatch({
+      type: ARENA_CURTAIN_INIT_SAGA,
+      reducerKey,
+      setSagaTask: resolve
+    })
+  );
+  return arenaCurtainConnect(reducerKey, () =>
+    nextContext.store.dispatch({
+      type: ARENA_CURTAIN_CLEAR_REDUX,
+      reducerKey,
+      sagaTaskPromise
+    })
+  );
+}
 
 function getParentReducerKey(arenaReducerDict) {
   return (
@@ -45,28 +60,22 @@ export default class ArenaScene extends Component {
     );
     let parentReducerKey = getParentReducerKey(arenaReducerDict);
     curtainAddStateTreeNode(store, parentReducerKey, newReducerKey);
-    let newArenaReducerDict = calcCurtainReducerDict(
+    let newArenaReducerDict = buildCurtainReducerDict(
       arenaReducerDict,
       newReducerKey,
       vReducerKey
     );
-    let wrappedSceneBundle = arenaCurtainConnect(newArenaReducerDict);
-    let sceneBundleElement = React.createElement(wrappedSceneBundle, {
+    let ConnectedBundleComponent = buildConnectedBundleComponent(newReducerKey);
+    let connectedBundleElement = React.createElement(ConnectedBundleComponent, {
       sceneBundle,
-      sceneProps
+      sceneProps,
+      arenaReducerDict: newArenaReducerDict
     });
     this.setState({
       parentReducerKey,
       arenaReducerDict: newArenaReducerDict,
-      wrappedSceneBundle,
-      sceneBundleElement,
-      sagaTaskPromise: new Promise(resolve =>
-        store.dispatch({
-          type: ARENA_CURTAIN_INIT_SAGA,
-          reducerKey: newReducerKey,
-          setSagaTask: resolve
-        })
-      )
+      ConnectedBundleComponent,
+      connectedBundleElement
     });
   }
 
@@ -78,66 +87,42 @@ export default class ArenaScene extends Component {
     let newReducerKey = curReducerKey;
     if (reducerKey != null && reducerKey !== curReducerKey) {
       refreshFlag = true;
-      nextContext.store.dispatch({
-        type: ARENA_CURTAIN_CLEAR_REDUX,
-        reducerKey: curReducerKey,
-        sagaTaskPromise: state.sagaTaskPromise
-      });
       newReducerKey = curtainAddReducer(
         nextContext.store,
         reducerKey,
         createCurtainReducer
       );
-      state.sagaTaskPromise = new Promise(resolve =>
-        nextContext.store.dispatch({
-          type: ARENA_CURTAIN_INIT_SAGA,
-          reducerKey: newReducerKey,
-          setSagaTask: resolve
-        })
+      state.ConnectedBundleComponent = buildConnectedBundleComponent(
+        newReducerKey
       );
-    }
-    if (refreshFlag === true) {
-      let curReducerKey = this.state.arenaReducerDict._arenaCurtain.reducerKey;
-      curtainReplaceStateTreeNode(store, curReducerKey, newReducerKey);
     }
     if (
       nextContext.arenaReducerDict !== this.context.arenaReducerDict ||
       reducerKey !== this.props.reducerKey ||
       vReducerKey !== this.props.vReducerKey ||
+      sceneBundle !== this.props.sceneBundle ||
+      sceneProps !== this.props.sceneBundle ||
       refreshFlag === true
     ) {
       refreshFlag = true;
-      state.arenaReducerDict = calcCurtainReducerDict(
+      state.arenaReducerDict = buildCurtainReducerDict(
         nextContext.arenaReducerDict,
         newReducerKey,
         nextProps.vReducerKey
       );
-      state.wrappedSceneBundle = arenaCurtainConnect(state.arenaReducerDict);
-    }
-    if (
-      sceneBundle !== this.props.sceneBundle ||
-      sceneProps !== this.props.sceneBundle ||
-      refreshFlag == true
-    ) {
-      state.sceneBundleElement = React.createElement(state.wrappedSceneBundle, {
-        sceneBundle,
-        sceneProps
-      });
+      state.connectedBundleElement = React.createElement(
+        state.ConnectedBundleComponent,
+        {
+          sceneBundle,
+          sceneProps,
+          arenaReducerDict: newArenaReducerDict
+        }
+      );
     }
     this.setState(state);
   }
 
-  componentWillUnmount() {
-    let curReducerKey = this.state.arenaReducerDict._arenaCurtain.reducerKey;
-    curtainDisableStateTreeNode(this.context.store, curReducerKey);
-    this.context.store.dispatch({
-      type: ARENA_CURTAIN_CLEAR_REDUX,
-      reducerKey: curReducerKey,
-      sagaTaskPromise: this.state.sagaTaskPromise
-    });
-  }
-
   render() {
-    return this.state.sceneBundleElement;
+    return this.state.connectedBundleElement;
   }
 }

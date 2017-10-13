@@ -1,10 +1,11 @@
-function calcReducerKey(
+function buildReducerKey(
   arenaReducerDict,
   reducerKey,
   vReducerKey,
+  actions,
   curReducerKey
 ) {
-  let item = { actions: {}, reducerKey, vReducerKey };
+  let item = { actions, reducerKey, vReducerKey };
   let newDict = Object.assign({}, arenaReducerDict, {
     [reducerKey]: item
   });
@@ -16,15 +17,31 @@ function calcReducerKey(
   return newDict;
 }
 
-export function calcCurtainReducerDict(
+export function buildCurtainReducerDict(
   arenaReducerDict,
   curtainReducerKey,
   vReducerKey
 ) {
-  return calcReducerKey(
+  return buildReducerKey(
     arenaReducerDict,
     curtainReducerKey,
     vReducerKey,
+    {},
+    "_arenaCurtain"
+  );
+}
+
+export function buildSceneReducerDict(
+  arenaReducerDict,
+  reducerKey,
+  vReducerKey,
+  actions
+) {
+  return buildReducerKey(
+    arenaReducerDict,
+    curtainReducerKey,
+    vReducerKey,
+    actions,
     "_arenaCurtain"
   );
 }
