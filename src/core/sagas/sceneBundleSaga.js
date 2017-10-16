@@ -85,7 +85,7 @@ export function* applySceneBundle({
   loadedCb();
   if (
     newReduxInfo.reducerKey !== reduxInfo.reducerKey &&
-    reduxInfo.reducerKey !== null
+    reduxInfo.reducerKey != null
   ) {
     let arenaStore = yield getContext("store");
     yield put({

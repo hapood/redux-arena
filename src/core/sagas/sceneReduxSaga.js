@@ -72,25 +72,27 @@ export function* sceneApplyRedux({
     reducerFactory,
     state
   );
+  let bindedActions = bindActions(
+    actions,
+    newReducerKey,
+    arenaStore.dispatch,
+    options.isSceneActions
+  );
+  let newArenaReducerDict = buildSceneReducerDict(
+    arenaReducerDict,
+    newReducerKey,
+    options.vReducerKey,
+    bindedActions
+  );
   let newReduxInfo = {
     reducerKey: newReducerKey,
     origArenaReducerDict: arenaReducerDict,
     actions,
     options,
-    bindedActions: bindActions(
-      actions,
-      newReducerKey,
-      arenaStore.dispatch,
-      options.isSceneActions
-    ),
-    saga
+    saga,
+    bindedActions,
+    arenaReducerDict: newArenaReducerDict
   };
-  newReduxInfo.arenaReducerDict = buildSceneReducerDict(
-    arenaReducerDict,
-    newReducerKey,
-    newReduxInfo.vReducerKey,
-    newReduxInfo.bindedActions
-  );
   addStateTreeNode(
     arenaStore,
     getParentReducerKey(newReduxInfo.arenaReducerDict),

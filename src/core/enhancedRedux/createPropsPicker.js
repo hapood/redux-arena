@@ -10,7 +10,6 @@ export default function createPropsPicker(
   mutableObj
 ) {
   let { arenaReducerDict } = reduxInfo;
-  let curtainReducerKey = arenaReducerDict._arenaCurtain.reducerKey;
   let sceneReducerKey = arenaReducerDict._arenaScene.reducerKey;
   let sceneActions = arenaReducerDict._arenaScene.actions;
   let latestProps;

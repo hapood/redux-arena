@@ -21,7 +21,10 @@ function storeEnhancer(store, reducers) {
       }
       if (name === "removeReducer") {
         return reducerKey => {
-          if (reducerKey == null) return false;
+          if (reducerKey == null) {
+            throw new Error("Can not remove reducerKey of null.")
+            return false;
+          }
           let newReducers = Object.assign({}, _currentReducers);
           let allStates = target.getState();
           delete newReducers[reducerKey];
