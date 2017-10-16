@@ -1,4 +1,4 @@
-## 0.8.0 (Oct 12, 2017)
+## 0.8.0 (Oct 16, 2017)
 * Move async bundle loading of ArenaScene to ArenaSceneLoadMotion
 * Rename ArenaSceneMotion to ArenaSceneLoadMotion
 * Remove asyncBundleToComponent and asyncBundleToElement in tools
