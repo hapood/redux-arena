@@ -1,4 +1,8 @@
+import addStateTreeNode from "./addStateTreeNode";
+export { addStateTreeNode };
 export { sceneAddReducer, curtainAddReducer } from "./addReducer";
 export { sceneReplaceReducer } from "./replaceReducer";
-export { sceneRmAndAddReducer } from "./removeAndAddReducer";
-export { calcCurtainReducerDict } from "./calcReducerDict";
+export {
+  buildCurtainReducerDict,
+  buildSceneReducerDict
+} from "./buildReducerDict";

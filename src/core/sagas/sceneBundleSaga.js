@@ -1,8 +1,12 @@
 import { ARENA_CURTAIN_SET_STATE } from "../actionTypes";
-import { put, select } from "redux-saga/effects";
+import { put, select, getContext } from "redux-saga/effects";
 import { connect } from "react-redux";
 import { createPropsPicker } from "../enhancedRedux";
 import { sceneApplyRedux, sceneUpdateRedux } from "./sceneReduxSaga";
+import {
+  ARENA_STATETREE_NODE_DISABLE,
+  ARENA_STATETREE_NODE_DELETE
+} from "../actionTypes";
 
 /**
  * Scene of the synchronous load function, it does the following.
@@ -11,24 +15,26 @@ import { sceneApplyRedux, sceneUpdateRedux } from "./sceneReduxSaga";
  * 3. Run the corresponding scene of the saga, cancel the last scene of the task.
  * 4. Connect redux according to the incoming mapStateToProps and actions.
  * 
- * @param {any} { isInitial, parentArenaReducerDict, sceneBundle } 
+ * @param {any} { isInitial, arenaReducerDict, sceneBundle } 
  */
 export function* applySceneBundle({
   isInitial,
-  parentArenaReducerDict,
+  arenaReducerDict,
   sceneBundle,
   loadedCb
 }) {
-  let arenaCurtainReducerKey = parentArenaReducerDict._arenaCurtain.reducerKey;
+  let arenaCurtainReducerKey = arenaReducerDict._arenaCurtain.reducerKey;
   let {
     curSceneBundle,
     reduxInfo,
-    PlayingScene: OldPlayingScene
+    PlayingScene: OldPlayingScene,
+    mutableObj
   } = yield select(state => state[arenaCurtainReducerKey]);
+  mutableObj.isObsolete = true;
   let newReduxInfo;
   if (isInitial) {
     newReduxInfo = yield* sceneApplyRedux({
-      parentArenaReducerDict,
+      arenaReducerDict,
       state: sceneBundle.state,
       saga: sceneBundle.saga,
       actions: sceneBundle.actions,
@@ -37,7 +43,7 @@ export function* applySceneBundle({
     });
   } else {
     newReduxInfo = yield* sceneUpdateRedux({
-      parentArenaReducerDict,
+      arenaReducerDict,
       state: sceneBundle.state,
       saga: sceneBundle.saga,
       actions: sceneBundle.actions,
@@ -47,14 +53,20 @@ export function* applySceneBundle({
       reduxInfo
     });
   }
+  let newMutableObj = { isObsolete: false };
   yield put({
     type: ARENA_CURTAIN_SET_STATE,
     _reducerKey: arenaCurtainReducerKey,
     state: {
-      reduxInfo: newReduxInfo
+      reduxInfo: newReduxInfo,
+      mutableObj: newMutableObj
     }
   });
-  let propsPicker = createPropsPicker(sceneBundle.propsPicker, newReduxInfo);
+  let propsPicker = createPropsPicker(
+    sceneBundle.propsPicker,
+    newReduxInfo,
+    newMutableObj
+  );
   let PlayingScene = connect(propsPicker)(sceneBundle.Component);
   let displayName =
     sceneBundle.Component.displayName ||
@@ -71,4 +83,19 @@ export function* applySceneBundle({
     state: newArenaState
   });
   loadedCb();
+  if (
+    newReduxInfo.reducerKey !== reduxInfo.reducerKey &&
+    reduxInfo.reducerKey !== null
+  ) {
+    let arenaStore = yield getContext("store");
+    yield put({
+      type: ARENA_STATETREE_NODE_DISABLE,
+      reducerKey: reduxInfo.reducerKey
+    });
+    arenaStore.removeReducer(reduxInfo.reducerKey);
+    yield put({
+      type: ARENA_STATETREE_NODE_DELETE,
+      reducerKey: reduxInfo.reducerKey
+    });
+  }
 }

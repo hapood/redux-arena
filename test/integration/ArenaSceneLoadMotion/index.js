@@ -15,7 +15,7 @@ function selectAnimationState(allStates, name) {
   return animationState;
 }
 
-describe("<ArenaSceneMotion /> integration", () => {
+describe("<ArenaSceneLoadMotion /> integration", () => {
   let store, mount, wrapper;
 
   before(() => {

@@ -18,8 +18,8 @@ function sceneReducer(state = getSceneInitState(), action, sceneReducerKey) {
 
 export default function createSceneReducer(
   extendSceneReducer,
-  sceneReducerKey,
-  initState
+  initState,
+  sceneReducerKey
 ) {
   return function(state = initState, action) {
     if (extendSceneReducer) {

@@ -10,7 +10,8 @@ function storeEnhancer(store, reducers) {
       if (name === "addReducer") {
         return ({ reducerKey, reducer }) => {
           let allStates = target.getState();
-          if (allStates[reducerKey] != null) return false;
+          if (allStates.arena.stateTreeDict.get(reducerKey) != null)
+            return false;
           _currentReducers = Object.assign({}, _currentReducers, {
             [reducerKey]: reducer
           });
@@ -42,30 +43,6 @@ function storeEnhancer(store, reducers) {
           });
           target.replaceReducer(combineReducers(_currentReducers));
           return reducerKey;
-        };
-      }
-      if (name === "removeAndAddReducer") {
-        return ({ reducerKeyRemoved, reducerKeyAdded, reducer }) => {
-          if (reducerKeyRemoved == null || reducerKeyAdded == null)
-            throw new Error(
-              `reducerKeyRemoved or reducerKeyAdded can not be null.`
-            );
-          if (_currentReducers[reducerKeyRemoved] == null)
-            throw new Error(
-              `reducer of key [${reducerKeyRemoved}] doesn't exsit.`
-            );
-          let newReducers = Object.assign({}, _currentReducers);
-          let allStates = target.getState();
-          delete allStates[reducerKeyRemoved];
-          delete newReducers[reducerKeyRemoved];
-          if (newReducers[reducerKeyAdded] != null)
-            throw new Error(
-              `reducer of key [${reducerKeyAdded}] already exsit.`
-            );
-          newReducers[reducerKeyAdded] = reducer;
-          _currentReducers = newReducers;
-          target.replaceReducer(combineReducers(newReducers));
-          return reducerKeyAdded;
         };
       }
       return target[name];
