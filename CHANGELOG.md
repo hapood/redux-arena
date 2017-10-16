@@ -2,6 +2,8 @@
 * Move async bundle loading of ArenaScene to ArenaSceneLoadMotion
 * Rename ArenaSceneMotion to ArenaSceneLoadMotion
 * Remove asyncBundleToComponent and asyncBundleToElement in tools
+* Add state tree description in redux store and asyncBundleToElement in tools
+* Fix unmounted component's child null reference issue
 
 ## 0.7.1 (Oct 10, 2017)
 * Add ReducerDictOverrider HOC
