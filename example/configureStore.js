@@ -5,10 +5,10 @@ import saga from "./frame/redux/saga";
 import reducer from "./frame/redux/reducer";
 import state from "./frame/redux/state";
 
-const enhancers = [applyMiddleware(thunk)];
+let enhancers = [applyMiddleware(thunk)];
 
 export default function configureStore(history) {
-  const store = createArenaStore(
+  let store = createArenaStore(
     { frame: reducer },
     { frame: state },
     enhancers

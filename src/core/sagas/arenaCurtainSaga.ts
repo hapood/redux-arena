@@ -14,9 +14,11 @@ import {
   select,
   cancel,
   setContext,
-  getContext
+  getContext,
+  ForkEffect
 } from "redux-saga/effects";
-import { applySceneBundle, applyAsyncSceneBundle } from "./sceneBundleSaga";
+import { Action } from "redux";
+import { applySceneBundle } from "./sceneBundleSaga";
 
 function* takeEverySceneBundleAction() {
   let _reducerKey = yield getContext("_reducerKey");
@@ -50,11 +52,15 @@ function* forkSagaWithContext(ctx) {
  * @param {any} { reducerKey, setSagaTask } 
  */
 
+interface InitArenaCurtainAction extends Action {
+  reducerKey: string;
+  setSagaTask: (object) => void;
+}
+
 function* initArenaCurtainSaga({
   reducerKey,
-  setSagaTask,
-  isWaitingSwitchAction = false
-}) {
+  setSagaTask
+}: InitArenaCurtainAction) {
   let sagaTask = yield fork(forkSagaWithContext, {
     _reducerKey: reducerKey
   });
@@ -67,7 +73,15 @@ function* initArenaCurtainSaga({
  * @param {any} { sagaTaskPromise } 
  */
 
-function* killArenaCurtainSaga({ sagaTaskPromise, reducerKey }) {
+interface KillArenaCurtainAction extends Action {
+  sagaTaskPromise: Promise<object>;
+  reducerKey: string;
+}
+
+function* killArenaCurtainSaga({
+  sagaTaskPromise,
+  reducerKey
+}: KillArenaCurtainAction) {
   let sagaTask = yield sagaTaskPromise;
   if (sagaTask) yield cancel(sagaTask);
   let store = yield getContext("store");

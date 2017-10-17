@@ -61,9 +61,9 @@ import { Provider } from "react-redux";
 import { createArenaStore } from "redux-arena";
 import PageA from "./pageA";
 
-const store = createArenaStore();
+let store = createArenaStore();
 
-const app = document.getElementById("app");
+let app = document.getElementById("app");
 ReactDOM.render(
   <Provider store={store}>
     <PageA />
@@ -131,7 +131,7 @@ Creates a enhanced redux store for redux-arena
     import { applyMiddleware } from "redux";
     import thunk from "redux-thunk";
 
-    const enhancers = [applyMiddleware(thunk)];
+    let enhancers = [applyMiddleware(thunk)];
     ```
 
 - `sagaOptions：object` - Options used for redux-saga.

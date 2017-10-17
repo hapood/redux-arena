@@ -1,5 +1,5 @@
 {
-  "presets": ["react"],
+  "presets": ["react", "typescript"],
   "env": {
     "cjs": {
       "presets": [
@@ -10,11 +10,7 @@
           }
         ]
       ],
-      "plugins": [
-        "syntax-dynamic-import",
-        "transform-class-properties",
-        "transform-object-rest-spread"
-      ]
+      "plugins": ["syntax-dynamic-import", "transform-class-properties"]
     },
     "es": {
       "presets": [
@@ -26,11 +22,7 @@
           }
         ]
       ],
-      "plugins": [
-        "syntax-dynamic-import",
-        "transform-class-properties",
-        "transform-object-rest-spread"
-      ]
+      "plugins": ["syntax-dynamic-import", "transform-class-properties"]
     }
   }
 }

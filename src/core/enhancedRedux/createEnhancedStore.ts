@@ -1,12 +1,42 @@
 /**
  * Create redux-arena proxy store
  */
-import { createStore, combineReducers } from "redux";
+import {
+  createStore,
+  combineReducers,
+  Reducer,
+  Store,
+  ReducersMapObject,
+  GenericStoreEnhancer,
+  Dispatch,
+  Unsubscribe
+} from "redux";
+import { ArenaState } from "../reducers/getArenaInitState";
 
-function storeEnhancer(store, reducers) {
+type ArenaStoreState = {
+  arena: ArenaState;
+};
+
+type ReducerTuple = { reducerKey: string; reducer: Reducer<any> };
+
+export interface EhencedStore<S> {
+  addReducer: (ReducerTuple) => boolean;
+  removeReducer: (string) => boolean;
+  replaceReducer: (ReducerTuple) => boolean;
+  close: () => void;
+  runSaga: (saga: () => Iterator<any>) => void;
+  dispatch: Dispatch<S>;
+  getState(): S;
+  subscribe(listener: () => void): Unsubscribe;
+}
+
+function storeEnhancer<S extends ArenaStoreState>(
+  store: Store<S>,
+  reducers: ReducersMapObject
+): EhencedStore<S> {
   let _currentReducers = reducers;
-  const handler = {
-    get: function(target, name) {
+  let handler = {
+    get: function(target: Store<S>, name) {
       if (name === "addReducer") {
         return ({ reducerKey, reducer }) => {
           let allStates = target.getState();
@@ -22,8 +52,7 @@ function storeEnhancer(store, reducers) {
       if (name === "removeReducer") {
         return reducerKey => {
           if (reducerKey == null) {
-            throw new Error("Can not remove reducerKey of null.")
-            return false;
+            throw new Error("Can not remove reducerKey of null.");
           }
           let newReducers = Object.assign({}, _currentReducers);
           let allStates = target.getState();
@@ -51,10 +80,14 @@ function storeEnhancer(store, reducers) {
       return target[name];
     }
   };
-  return new Proxy(store, handler);
+  return <EhencedStore<S>>new Proxy(store, handler);
 }
 
-export default function createEnhancedStore(reducers, initialState, enhencer) {
+export default function createEnhancedStore(
+  reducers: ReducersMapObject,
+  initialState: any,
+  enhencer: GenericStoreEnhancer
+) {
   let store = createStore(combineReducers(reducers), initialState, enhencer);
   return storeEnhancer(store, reducers);
 }

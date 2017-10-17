@@ -3,26 +3,25 @@ import {
   ARENA_REPLACE_STATE,
   ARENA_GLOBAL_PROPSPICKER_LOCK,
   ARENA_STATETREE_NODE_ADD,
-  ARENA_STATETREE_NODE_REPLACE,
   ARENA_STATETREE_NODE_DISABLE,
   ARENA_STATETREE_NODE_DELETE
 } from "../actionTypes.js";
 import getArenaInitState from "./getArenaInitState";
-import Immutable from "immutable";
+import { Map, List } from "immutable";
 
 function addStateTreeNode(state, pReducerKey, reducerKey) {
   let { stateTree, stateTreeDict } = state;
   let newStateTree, newStateTreeDict;
-  let newNode = Immutable.Map({
+  let newNode = Map({
     pReducerKey: null,
     reducerKey,
-    children: Immutable.Map()
+    children: Map()
   });
   if (pReducerKey == null) {
     newStateTree = stateTree.set(reducerKey, newNode);
     newStateTreeDict = stateTreeDict.set(
       reducerKey,
-      Immutable.Map({ path: Immutable.List([reducerKey]) })
+      Map({ path: List([reducerKey]) })
     );
   } else {
     let pPath = stateTreeDict.getIn([pReducerKey, "path"]);
@@ -31,7 +30,7 @@ function addStateTreeNode(state, pReducerKey, reducerKey) {
     let path = pPath.concat(["children", reducerKey]);
     let newPNode = pNode.setIn(["children", reducerKey], newNode);
     newStateTree = stateTree.setIn(pPath, newPNode);
-    newStateTreeDict = stateTreeDict.set(reducerKey, Immutable.Map({ path }));
+    newStateTreeDict = stateTreeDict.set(reducerKey, Map({ path }));
   }
   return Object.assign({}, state, {
     stateTree: newStateTree,
@@ -39,15 +38,12 @@ function addStateTreeNode(state, pReducerKey, reducerKey) {
   });
 }
 
-function getReducerKeysOfNode(node, breakChecker) {
-  if (breakChecker && breakChecker(node)) return Immutable.List();
+function getReducerKeysOfNode(node, breakChecker?: (Map) => boolean) {
+  if (breakChecker && breakChecker(node)) return List();
   return node
     .get("children")
     .map(child => getReducerKeysOfNode(child, breakChecker))
-    .reduce(
-      (prev, cur) => prev.concat(cur),
-      Immutable.List([node.get("reducerKey")])
-    );
+    .reduce((prev, cur) => prev.concat(cur), List([node.get("reducerKey")]));
 }
 
 function disableStateTreeNode(state, reducerKey) {
@@ -58,7 +54,7 @@ function disableStateTreeNode(state, reducerKey) {
     node,
     node => stateTreeDict.getIn([node.get("reducerKey"), "isObsolete"]) === true
   );
-  let deltaDict = Immutable.Map(
+  let deltaDict = Map(
     obsoleteKeyList.map(tmpKey => [
       tmpKey,
       stateTreeDict.get(tmpKey).set("isObsolete", true)

@@ -7,11 +7,11 @@ import { mount } from "enzyme";
 
 // Generate an enhanced mount function.
 export default function createMount() {
-  const attachTo = window.document.createElement("div");
+  let attachTo = window.document.createElement("div");
   attachTo.setAttribute("id", "app");
   window.document.body.insertBefore(attachTo, window.document.body.firstChild);
 
-  const mountWithContext = function mountWithContext(node, mountOptions = {}) {
+  let mountWithContext = function mountWithContext(node, mountOptions = {}) {
     return mount(node, {
       attachTo,
       ...mountOptions

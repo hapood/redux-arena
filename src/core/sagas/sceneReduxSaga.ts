@@ -10,7 +10,6 @@ import {
   sceneReplaceReducer,
   buildSceneReducerDict
 } from "../../utils";
-import { getSwitchInitState } from "../reducers";
 
 const defaultActions = {
   setState: state => ({ type: ARENA_SCENE_SET_STATE, state })

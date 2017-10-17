@@ -4,14 +4,14 @@ import { Provider } from "react-redux";
 import Frame from "./frame/Frame";
 import configureStore from "./configureStore";
 
-const store = configureStore(history);
+let store = configureStore(history);
 
 document.getElementById("loadingsStyle").remove();
 document.getElementById("app").className = "";
 
 let appDom = document.getElementById("app");
 
-const render = (FrameComponent, version) => {
+let render = (FrameComponent, version) => {
   ReactDOM.render(
     <Provider store={store}>
       <FrameComponent version={version} />
@@ -24,7 +24,7 @@ let version = 0;
 render(Frame, version);
 if (module.hot) {
   module.hot.accept("./frame/Frame", () => {
-    const UpdatedFrame = require("./frame/Frame").default;
+    let UpdatedFrame = require("./frame/Frame").default;
     render(UpdatedFrame, ++version);
   });
 }

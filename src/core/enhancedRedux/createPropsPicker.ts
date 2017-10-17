@@ -1,3 +1,17 @@
+import { ActionCreatorsMapObject, ActionCreator } from "redux";
+
+export type ReducerDictItem = {
+  reducerKey: string;
+  actions: ActionCreator<null>;
+};
+
+export type PropsPicker = (
+  state: any,
+  actions: ActionCreatorsMapObject,
+  allState: any,
+  reducerDict: { [key: string]: ReducerDictItem }
+) => {};
+
 function defaultPropsPicker(sceneState, sceneActions) {
   return Object.assign({}, sceneState, {
     actions: sceneActions
@@ -5,7 +19,7 @@ function defaultPropsPicker(sceneState, sceneActions) {
 }
 
 export default function createPropsPicker(
-  propsPicker = defaultPropsPicker,
+  propsPicker: PropsPicker = defaultPropsPicker,
   reduxInfo,
   mutableObj
 ) {
