@@ -1,7 +1,16 @@
-import { AnyAction, Dispatch, ActionCreatorsMapObject } from "redux";
+import {
+  AnyAction,
+  Dispatch,
+  ActionCreatorsMapObject,
+  ActionCreator
+} from "redux";
 
-function bindArenaActionCreator(actionCreator, dispatch, sceneReducerKey) {
-  return (...args) => {
+function bindArenaActionCreator(
+  actionCreator: ActionCreator<any>,
+  dispatch: Dispatch<any>,
+  sceneReducerKey: string
+) {
+  return (...args: any[]) => {
     let action = actionCreator(...args);
     if (action && action._sceneReducerKey) {
       console.warn(
@@ -19,7 +28,11 @@ function bindArenaActionCreator(actionCreator, dispatch, sceneReducerKey) {
 
 export default function bindArenaActionCreators<
   M extends ActionCreatorsMapObject
->(actionCreators, dispatch: Dispatch<any>, sceneReducerKey: string): M {
+>(
+  actionCreators: ActionCreatorsMapObject,
+  dispatch: Dispatch<any>,
+  sceneReducerKey: string
+): M {
   if (
     typeof actionCreators === "function" ||
     typeof actionCreators !== "object" ||

@@ -1,5 +1,11 @@
 /* eslint-disable no-constant-condition */
-import { fork, all, setContext } from "redux-saga/effects";
+import {
+  fork,
+  all,
+  setContext,
+  AllEffect,
+  SetContextEffect
+} from "redux-saga/effects";
 import arenaCurtainSaga from "./arenaCurtainSaga";
 import audienceSaga from "./audienceSaga";
 
@@ -9,7 +15,7 @@ import audienceSaga from "./audienceSaga";
  * @export
  * @param {any} ctx 
  */
-export default function* root(ctx) {
+export default function* root(ctx: any) {
   yield setContext(ctx);
   yield all([fork(audienceSaga), fork(arenaCurtainSaga)]);
 }

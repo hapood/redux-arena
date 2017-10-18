@@ -1,10 +1,13 @@
+import { ReducerDict, ReducerDictItem } from "../core";
+import { ActionCreatorsMapObject } from "redux";
+
 function buildReducerKey(
-  arenaReducerDict,
-  reducerKey,
-  vReducerKey,
-  actions,
-  curReducerKey
-) {
+  arenaReducerDict: ReducerDict | null,
+  reducerKey: string,
+  vReducerKey: string,
+  actions: ActionCreatorsMapObject,
+  curReducerKey: string
+): ReducerDict {
   let item = { actions, reducerKey, vReducerKey };
   let newDict = Object.assign({}, arenaReducerDict, {
     [reducerKey]: item
@@ -17,11 +20,11 @@ function buildReducerKey(
 }
 
 export function buildCurtainReducerDict(
-  arenaReducerDict,
-  reducerKey,
-  vReducerKey
-) {
-  let newDict = buildReducerKey(
+  arenaReducerDict: ReducerDict | null,
+  reducerKey: string,
+  vReducerKey: string
+): ReducerDict & { _arenaScene: ReducerDictItem } {
+  let newDict: any = buildReducerKey(
     arenaReducerDict,
     reducerKey,
     vReducerKey,
@@ -33,10 +36,10 @@ export function buildCurtainReducerDict(
 }
 
 export function buildSceneReducerDict(
-  arenaReducerDict,
-  reducerKey,
-  vReducerKey,
-  actions
+  arenaReducerDict: ReducerDict | null,
+  reducerKey: string,
+  vReducerKey: string,
+  actions: ActionCreatorsMapObject
 ) {
   return buildReducerKey(
     arenaReducerDict,

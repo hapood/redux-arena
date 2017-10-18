@@ -1,7 +1,12 @@
-import { fork, take } from "redux-saga/effects";
+import { fork, ForkEffect, take, Pattern } from "redux-saga/effects";
 import getArenaReducerDictEntry from "./getArenaReducerDictEntry";
 
-function* _takeEverySceneAction(pattern, saga, key, args) {
+function* _takeEverySceneAction(
+  pattern: Pattern,
+  saga: () => void,
+  key: string,
+  args: any
+) {
   while (true) {
     let action = yield take(pattern);
     let entry = yield getArenaReducerDictEntry(key);
@@ -12,10 +17,10 @@ function* _takeEverySceneAction(pattern, saga, key, args) {
 }
 
 export default function takeEverySceneAction(
-  pattern,
-  saga,
-  key = "_arenaScene",
-  ...args
+  pattern: Pattern,
+  saga: () => void,
+  key: string = "_arenaScene",
+  ...args: any[]
 ) {
   return fork(_takeEverySceneAction, pattern, saga, key, args);
 }

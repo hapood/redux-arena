@@ -1,9 +1,7 @@
-﻿import React, { Component } from "react";
-import PropTypes from "prop-types";
-import {
-  ARENA_CURTAIN_INIT_SAGA,
-  ARENA_CURTAIN_CLEAR_REDUX
-} from "../../core/actionTypes";
+﻿import { Component, SFC, createElement, SFCElement } from "react";
+import * as PropTypes from "prop-types";
+import { EhancedStore, ReducerDict, SceneBundle } from "../../core";
+import { actionTypes } from "../../core/actionTypes";
 import { createCurtainReducer } from "../../core/reducers";
 import {
   addStateTreeNode,
@@ -12,24 +10,41 @@ import {
 } from "../../utils";
 import { arenaCurtainConnect } from "../SceneBundle";
 
-function buildConnectedBundleComponent(reducerKey, store) {
+export type SceneProp = {
+  sceneBundle: SceneBundle;
+  sceneProps: any;
+  reducerKey: string;
+  vReducerKey: string;
+};
+
+export type SceneState = {
+  parentReducerKey: string;
+  arenaReducerDict: ReducerDict;
+  ConnectedBundleComponent: SFC<any>;
+  connectedBundleElement: SFCElement<any>;
+};
+
+function buildConnectedBundleComponent(
+  reducerKey: string,
+  store: EhancedStore<any>
+) {
   let sagaTaskPromise = new Promise(resolve =>
     store.dispatch({
-      type: ARENA_CURTAIN_INIT_SAGA,
+      type: actionTypes.ARENA_CURTAIN_INIT_SAGA,
       reducerKey,
       setSagaTask: resolve
     })
   );
-  return arenaCurtainConnect(reducerKey, () =>
+  return arenaCurtainConnect<SceneProp>(reducerKey, () =>
     store.dispatch({
-      type: ARENA_CURTAIN_CLEAR_REDUX,
+      type: actionTypes.ARENA_CURTAIN_CLEAR_REDUX,
       reducerKey,
       sagaTaskPromise
     })
   );
 }
 
-function getParentReducerKey(arenaReducerDict) {
+function getParentReducerKey(arenaReducerDict: ReducerDict) {
   return (
     arenaReducerDict &&
     arenaReducerDict._arenaScene &&
@@ -37,7 +52,7 @@ function getParentReducerKey(arenaReducerDict) {
   );
 }
 
-export default class ArenaScene extends Component {
+export default class ArenaScene extends Component<SceneProp, SceneState> {
   static contextTypes = {
     store: PropTypes.any,
     arenaReducerDict: PropTypes.object
@@ -69,7 +84,7 @@ export default class ArenaScene extends Component {
       newReducerKey,
       this.context.store
     );
-    let connectedBundleElement = React.createElement(ConnectedBundleComponent, {
+    let connectedBundleElement = createElement(ConnectedBundleComponent, {
       sceneBundle,
       sceneProps,
       arenaReducerDict: newArenaReducerDict

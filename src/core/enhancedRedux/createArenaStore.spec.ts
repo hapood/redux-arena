@@ -8,12 +8,14 @@ describe("Redux-Arena start up", () => {
   it("should initial with config correctly", () => {
     let store = createArenaStore(
       { frame: state => state || {} },
-      { frame: {} },
-      [
-        applyMiddleware(({ dispatch, getState }) => next => action => {
-          return next(action);
-        })
-      ]
+      {
+        initialStates: { frame: {} },
+        middlewares: [
+          ({ dispatch, getState }) => next => action => {
+            return next(action);
+          }
+        ]
+      }
     );
     let state = store.getState();
     expect(state.arena).to.not.be.null;

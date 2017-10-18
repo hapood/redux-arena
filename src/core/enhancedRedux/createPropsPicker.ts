@@ -1,33 +1,26 @@
-import { ActionCreatorsMapObject, ActionCreator } from "redux";
+import { ActionCreatorsMapObject } from "redux";
+import { PropsPicker } from "../types";
+import { CurtainReduxInfo, CurtainMutableObj } from "../reducers/types";
 
-export type ReducerDictItem = {
-  reducerKey: string;
-  actions: ActionCreator<null>;
-};
-
-export type PropsPicker = (
-  state: any,
-  actions: ActionCreatorsMapObject,
-  allState: any,
-  reducerDict: { [key: string]: ReducerDictItem }
-) => {};
-
-function defaultPropsPicker(sceneState, sceneActions) {
+function defaultPropsPicker(
+  sceneState: any,
+  sceneActions: ActionCreatorsMapObject
+) {
   return Object.assign({}, sceneState, {
     actions: sceneActions
   });
 }
 
-export default function createPropsPicker(
-  propsPicker: PropsPicker = defaultPropsPicker,
-  reduxInfo,
-  mutableObj
+export default function createPropsPicker<P>(
+  propsPicker: PropsPicker<any, any> = defaultPropsPicker,
+  reduxInfo: CurtainReduxInfo,
+  mutableObj: CurtainMutableObj
 ) {
   let { arenaReducerDict } = reduxInfo;
   let sceneReducerKey = arenaReducerDict._arenaScene.reducerKey;
   let sceneActions = arenaReducerDict._arenaScene.actions;
-  let latestProps;
-  return state => {
+  let latestProps: P;
+  return (state: any) => {
     if (
       mutableObj.isObsolete === true ||
       state.arena.propsLock !== false ||

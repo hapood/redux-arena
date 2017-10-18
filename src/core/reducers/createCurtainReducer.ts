@@ -1,24 +1,30 @@
-import {
-  ARENA_CURTAIN_SET_STATE,
-  ARENA_CURTAIN_REPLACE_STATE
-} from "../actionTypes.js";
+import { ActionCreatorsMapObject, ActionCreator } from "redux";
+import { ForkEffect } from "redux-saga/effects";
+import { SceneReducer } from "../types";
+import { actionTypes } from "../actionTypes.js";
 import getCurtainInitState from "./getCurtainInitState";
+import { AnyAction } from "redux";
+import { CurtainState } from "./types";
 
-function curtainReducer(state, action, boundReducerKey) {
+function curtainReducer(
+  state: CurtainState,
+  action: AnyAction,
+  bindedReducerKey: string
+) {
   switch (action.type) {
-    case ARENA_CURTAIN_SET_STATE:
+    case actionTypes.ARENA_CURTAIN_SET_STATE:
       return Object.assign({}, state, action.state);
-    case ARENA_CURTAIN_REPLACE_STATE:
+    case actionTypes.ARENA_CURTAIN_REPLACE_STATE:
       return Object.assign({}, action.state);
     default:
       return state;
   }
 }
 
-export default function createCurtainReducer(boundReducerKey) {
-  return function(state = getCurtainInitState(), action) {
-    if (boundReducerKey === action._reducerKey) {
-      state = curtainReducer(state, action, boundReducerKey);
+export default function createCurtainReducer(bindedReducerKey: string) {
+  return function(state = getCurtainInitState(), action: AnyAction) {
+    if (bindedReducerKey === action._reducerKey) {
+      state = curtainReducer(state, action, bindedReducerKey);
     }
     return state;
   };

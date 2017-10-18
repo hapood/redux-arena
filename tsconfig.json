@@ -10,9 +10,10 @@
     "strictNullChecks": true,
     "noImplicitReturns": true,
     "noImplicitUseStrict": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "moduleResolution": "node",
-    "lib": ["es6", "dom"]
+    "lib": ["es6", "dom"],
+    "jsx": "react"
   },
   "exclude": ["node_modules", "example"]
 }

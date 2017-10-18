@@ -1,7 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import * as React from "react";
+import * as PropTypes from "prop-types";
+import {
+  CurtainState,
+  ReducerDict,
+  SceneBundle as SceneBundleType
+} from "../../core";
+export type SceneBundleState = {
+  loadedPromise: Promise<null>;
+};
+export type SceneBundleProps = CurtainState & { clearCurtain: () => void };
 
-export default class SceneBundle extends Component {
+class SceneBundle extends React.Component<SceneBundleProps, SceneBundleState> {
   static propTypes = {
     sceneBundle: PropTypes.object.isRequired,
     sceneProps: PropTypes.object
@@ -17,7 +26,11 @@ export default class SceneBundle extends Component {
     };
   }
 
-  buildLoadScenePromise(arenaReducerDict, sceneBundle, isInitial) {
+  buildLoadScenePromise(
+    arenaReducerDict: ReducerDict,
+    sceneBundle: SceneBundleType,
+    isInitial: any
+  ): Promise<null> {
     if (isInitial) {
       return new Promise(resolve =>
         setImmediate(() =>
@@ -52,7 +65,7 @@ export default class SceneBundle extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: SceneBundleProps) {
     let { sceneBundle } = nextProps;
     if (sceneBundle !== this.props.sceneBundle) {
       this.state.loadedPromise.then(() => {
@@ -82,3 +95,5 @@ export default class SceneBundle extends Component {
     }
   }
 }
+
+export default SceneBundle;

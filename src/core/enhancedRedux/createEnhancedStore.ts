@@ -4,27 +4,28 @@
 import {
   createStore,
   combineReducers,
-  Reducer,
   Store,
   ReducersMapObject,
   GenericStoreEnhancer,
   Dispatch,
   Unsubscribe
 } from "redux";
-import { ArenaState } from "../reducers/getArenaInitState";
+import { ForkEffect } from "redux-saga/effects";
+import { ArenaState } from "../reducers/types";
+import { SceneReducer } from "../types";
 
 type ArenaStoreState = {
   arena: ArenaState;
 };
 
-type ReducerTuple = { reducerKey: string; reducer: Reducer<any> };
+export type ReducerObject = { reducerKey: string; reducer: SceneReducer<any> };
 
-export interface EhencedStore<S> {
-  addReducer: (ReducerTuple) => boolean;
-  removeReducer: (string) => boolean;
-  replaceReducer: (ReducerTuple) => boolean;
+export interface EhancedStore<S> {
+  addReducer: (reducerObject: ReducerObject) => boolean;
+  removeReducer: (reducerKey: string) => boolean;
+  replaceReducer: (reducerObject: ReducerObject) => boolean;
   close: () => void;
-  runSaga: (saga: () => Iterator<any>) => void;
+  runSaga: (saga: ForkEffect) => void;
   dispatch: Dispatch<S>;
   getState(): S;
   subscribe(listener: () => void): Unsubscribe;
@@ -33,12 +34,12 @@ export interface EhencedStore<S> {
 function storeEnhancer<S extends ArenaStoreState>(
   store: Store<S>,
   reducers: ReducersMapObject
-): EhencedStore<S> {
+): EhancedStore<S> {
   let _currentReducers = reducers;
   let handler = {
-    get: function(target: Store<S>, name) {
+    get: function(target: Store<S>, name: string) {
       if (name === "addReducer") {
-        return ({ reducerKey, reducer }) => {
+        return ({ reducerKey, reducer }: ReducerObject) => {
           let allStates = target.getState();
           if (allStates.arena.stateTreeDict.get(reducerKey) != null)
             return false;
@@ -50,12 +51,12 @@ function storeEnhancer<S extends ArenaStoreState>(
         };
       }
       if (name === "removeReducer") {
-        return reducerKey => {
+        return (reducerKey: string) => {
           if (reducerKey == null) {
             throw new Error("Can not remove reducerKey of null.");
           }
           let newReducers = Object.assign({}, _currentReducers);
-          let allStates = target.getState();
+          let allStates: any = target.getState();
           delete newReducers[reducerKey];
           _currentReducers = newReducers;
           delete allStates[reducerKey];
@@ -64,7 +65,7 @@ function storeEnhancer<S extends ArenaStoreState>(
         };
       }
       if (name === "replaceReducer") {
-        return ({ reducerKey, reducer }) => {
+        return ({ reducerKey, reducer }: ReducerObject) => {
           if (reducerKey == null)
             throw new Error(`reducerKey can not be null.`);
           let allStates = target.getState();
@@ -77,10 +78,10 @@ function storeEnhancer<S extends ArenaStoreState>(
           return reducerKey;
         };
       }
-      return target[name];
+      return (<any>target)[name];
     }
   };
-  return <EhencedStore<S>>new Proxy(store, handler);
+  return <any>new Proxy(store, handler);
 }
 
 export default function createEnhancedStore(

@@ -1,11 +1,4 @@
-import {
-  ARENA_CURTAIN_LOAD_SCENE,
-  ARENA_CURTAIN_INIT_SAGA,
-  ARENA_CURTAIN_CLEAR_REDUX,
-  ARENA_CURTAIN_SET_STATE,
-  ARENA_STATETREE_NODE_DISABLE,
-  ARENA_STATETREE_NODE_DELETE
-} from "../actionTypes";
+import { actionTypes } from "../actionTypes";
 import {
   takeEvery,
   take,
@@ -17,14 +10,16 @@ import {
   getContext,
   ForkEffect
 } from "redux-saga/effects";
+import { Task } from "redux-saga";
 import { Action } from "redux";
 import { applySceneBundle } from "./sceneBundleSaga";
+import { CurtainState } from "../reducers/types";
 
 function* takeEverySceneBundleAction() {
   let _reducerKey = yield getContext("_reducerKey");
   let lastTask;
   while (true) {
-    let action = yield take(ARENA_CURTAIN_LOAD_SCENE);
+    let action = yield take(actionTypes.ARENA_CURTAIN_LOAD_SCENE);
     if (action.arenaReducerDict._arenaCurtain.reducerKey === _reducerKey) {
       if (lastTask && lastTask.isRunning()) {
         yield cancel(lastTask);
@@ -41,7 +36,7 @@ function* takeEverySceneBundleAction() {
  * @param {any} ctx 
  */
 
-function* forkSagaWithContext(ctx) {
+function* forkSagaWithContext(ctx: any) {
   yield setContext(ctx);
   yield fork(takeEverySceneBundleAction);
 }
@@ -54,7 +49,7 @@ function* forkSagaWithContext(ctx) {
 
 interface InitArenaCurtainAction extends Action {
   reducerKey: string;
-  setSagaTask: (object) => void;
+  setSagaTask: (sagaTask: Task) => void;
 }
 
 function* initArenaCurtainSaga({
@@ -86,13 +81,15 @@ function* killArenaCurtainSaga({
   if (sagaTask) yield cancel(sagaTask);
   let store = yield getContext("store");
   yield put({
-    type: ARENA_STATETREE_NODE_DISABLE,
+    type: actionTypes.ARENA_STATETREE_NODE_DISABLE,
     reducerKey
   });
-  let { reduxInfo } = yield select(state => state[reducerKey]);
-  if (reduxInfo.reducerKey != null) {
+  let { reduxInfo } = <CurtainState>(yield select(
+    (state: any) => state[reducerKey]
+  ));
+  if (reduxInfo && reduxInfo.reducerKey != null) {
     yield put({
-      type: ARENA_STATETREE_NODE_DELETE,
+      type: actionTypes.ARENA_STATETREE_NODE_DELETE,
       reducerKey: reduxInfo.reducerKey
     });
     store.removeReducer(reduxInfo.reducerKey);
@@ -101,6 +98,6 @@ function* killArenaCurtainSaga({
 }
 
 export default function* saga() {
-  yield takeEvery(ARENA_CURTAIN_INIT_SAGA, initArenaCurtainSaga);
-  yield takeEvery(ARENA_CURTAIN_CLEAR_REDUX, killArenaCurtainSaga);
+  yield takeEvery(actionTypes.ARENA_CURTAIN_INIT_SAGA, initArenaCurtainSaga);
+  yield takeEvery(actionTypes.ARENA_CURTAIN_CLEAR_REDUX, killArenaCurtainSaga);
 }

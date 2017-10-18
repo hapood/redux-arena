@@ -1,15 +1,18 @@
-import {
-  ARENA_SCENE_SET_STATE,
-  ARENA_SCENE_REPLACE_STATE
-} from "../actionTypes.js";
+import { AnyAction } from "redux";
+import { actionTypes } from "../actionTypes.js";
 import getSceneInitState from "./getSceneInitState";
+import { SceneReducer } from "../types";
 
-function sceneReducer(state = getSceneInitState(), action, sceneReducerKey) {
+function sceneReducer(
+  state = getSceneInitState(),
+  action: AnyAction,
+  sceneReducerKey: string
+) {
   if (action._sceneReducerKey !== sceneReducerKey) return state;
   switch (action.type) {
-    case ARENA_SCENE_SET_STATE:
+    case actionTypes.ARENA_SCENE_SET_STATE:
       return Object.assign({}, state, action.state);
-    case ARENA_SCENE_REPLACE_STATE:
+    case actionTypes.ARENA_SCENE_REPLACE_STATE:
       return Object.assign({}, action.state);
     default:
       return state;
@@ -17,11 +20,11 @@ function sceneReducer(state = getSceneInitState(), action, sceneReducerKey) {
 }
 
 export default function createSceneReducer(
-  extendSceneReducer,
-  initState,
-  sceneReducerKey
+  extendSceneReducer: SceneReducer<any>,
+  initState: any,
+  sceneReducerKey: string
 ) {
-  return function(state = initState, action) {
+  return function(state = initState, action: AnyAction) {
     if (extendSceneReducer) {
       state = extendSceneReducer(state, action, sceneReducerKey);
     }

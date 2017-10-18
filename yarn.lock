@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@types/chai@^4.0.4":
+  version "4.0.4"
+  resolved "https://registry.npmjs.org/@types/chai/-/chai-4.0.4.tgz#fe86315d9a66827feeb16f73bc954688ec950e18"
+
 "@types/jasmine@^2.6.0":
   version "2.6.0"
   resolved "https://registry.npmjs.org/@types/jasmine/-/jasmine-2.6.0.tgz#997b41a27752b4850af2683bc4a8d8222c25bd02"
@@ -14,6 +18,10 @@
   version "6.0.88"
   resolved "https://registry.npmjs.org/@types/node/-/node-6.0.88.tgz#f618f11a944f6a18d92b5c472028728a3e3d4b66"
 
+"@types/prop-types@^15.5.2":
+  version "15.5.2"
+  resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.5.2.tgz#3c6b8dceb2906cc87fe4358e809f9d20c8d59be1"
+
 "@types/react-dom@^16.0.1":
   version "16.0.1"
   resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-16.0.1.tgz#de159d00dd70050000f462e8bcff0c08ef803dee"
@@ -21,9 +29,20 @@
     "@types/node" "*"
     "@types/react" "*"
 
+"@types/react-redux@^5.0.10":
+  version "5.0.10"
+  resolved "https://registry.npmjs.org/@types/react-redux/-/react-redux-5.0.10.tgz#f5c45a349f759d87d6b1f2aa096a756561a6d5c9"
+  dependencies:
+    "@types/react" "*"
+    redux "^3.6.0"
+
 "@types/react@*", "@types/react@^16.0.13":
   version "16.0.13"
   resolved "https://registry.npmjs.org/@types/react/-/react-16.0.13.tgz#973836e6deec10184937322cd10a1605f9de81fc"
+
+"@types/sinon@^2.3.6":
+  version "2.3.6"
+  resolved "https://registry.npmjs.org/@types/sinon/-/sinon-2.3.6.tgz#ff600951c756286e38ce14d0b0e2924e38a91006"
 
 abbrev@1:
   version "1.1.0"
@@ -4581,7 +4600,7 @@ redux-saga@^0.15.6:
   version "0.15.6"
   resolved "https://registry.npmjs.org/redux-saga/-/redux-saga-0.15.6.tgz#8638dc522de6c6c0a496fe8b2b5466287ac2dc4d"
 
-redux@^3.7.2:
+redux@^3.6.0, redux@^3.7.2:
   version "3.7.2"
   resolved "https://registry.npmjs.org/redux/-/redux-3.7.2.tgz#06b73123215901d25d065be342eb026bc1c8537b"
   dependencies:
