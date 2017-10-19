@@ -11,16 +11,16 @@ import {
 import { connect } from "react-redux";
 import { createPropsPicker } from "../enhancedRedux";
 import { sceneApplyRedux, sceneUpdateRedux } from "./sceneReduxSaga";
-import { actionTypes } from "../actionTypes";
+import ActionTypes from "../ActionTypes";
 import { CurtainState } from "../reducers/types";
-import { SceneBundle, LoadSceneAction } from "../types";
+import { SceneBundle, CurtainLoadSceneAction } from "../types";
 
 export function* applySceneBundle({
   isInitial,
   arenaReducerDict,
   sceneBundle,
   loadedCb
-}: LoadSceneAction) {
+}: CurtainLoadSceneAction) {
   let arenaCurtainReducerKey = arenaReducerDict._arenaCurtain.reducerKey;
   let curtainState: CurtainState = yield select(
     (state: any) => state[arenaCurtainReducerKey]
@@ -56,7 +56,7 @@ export function* applySceneBundle({
   }
   let newMutableObj = { isObsolete: false };
   yield put({
-    type: actionTypes.ARENA_CURTAIN_SET_STATE,
+    type: ActionTypes.ARENA_CURTAIN_SET_STATE,
     _reducerKey: arenaCurtainReducerKey,
     state: {
       reduxInfo: newReduxInfo,
@@ -79,7 +79,7 @@ export function* applySceneBundle({
     curSceneBundle: sceneBundle
   };
   yield put({
-    type: actionTypes.ARENA_CURTAIN_SET_STATE,
+    type: ActionTypes.ARENA_CURTAIN_SET_STATE,
     _reducerKey: arenaCurtainReducerKey,
     state: newArenaState
   });
@@ -91,12 +91,12 @@ export function* applySceneBundle({
   ) {
     let arenaStore = yield getContext("store");
     yield put({
-      type: actionTypes.ARENA_STATETREE_NODE_DISABLE,
+      type: ActionTypes.ARENA_STATETREE_NODE_DISABLE,
       reducerKey: reduxInfo.reducerKey
     });
     arenaStore.removeReducer(reduxInfo.reducerKey);
     yield put({
-      type: actionTypes.ARENA_STATETREE_NODE_DELETE,
+      type: ActionTypes.ARENA_STATETREE_NODE_DELETE,
       reducerKey: reduxInfo.reducerKey
     });
   }

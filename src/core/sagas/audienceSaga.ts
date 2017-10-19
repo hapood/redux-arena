@@ -1,6 +1,6 @@
 import { takeLatest, fork, put, ForkEffect } from "redux-saga/effects";
 import { Action } from "redux";
-import { actionTypes } from "../actionTypes";
+import ActionTypes from "../ActionTypes";
 
 /**
  *This function is run at the beginning of the incoming saga, and then saved in the arena
@@ -15,7 +15,7 @@ interface InitAudienceAction extends Action {
 function* initAudienceSaga({ saga }: InitAudienceAction) {
   let newAudienceSagaTask = yield fork(saga);
   yield put({
-    type: actionTypes.ARENA_SET_STATE,
+    type: ActionTypes.ARENA_SET_STATE,
     state: {
       audienceSagaTask: newAudienceSagaTask
     }
@@ -23,5 +23,5 @@ function* initAudienceSaga({ saga }: InitAudienceAction) {
 }
 
 export default function* saga() {
-  yield takeLatest(actionTypes.ARENA_INIT_AUDIENCE_SAGA, initAudienceSaga);
+  yield takeLatest(ActionTypes.ARENA_INIT_AUDIENCE_SAGA, initAudienceSaga);
 }

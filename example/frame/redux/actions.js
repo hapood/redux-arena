@@ -1,4 +1,4 @@
-import { ADD_CNT, FRAME_CLEAR_CNT } from "./actionTypes";
+import { ADD_CNT, FRAME_CLEAR_CNT } from "./ActionTypes";
 
 export function addCnt() {
   return {

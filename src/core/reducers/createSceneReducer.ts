@@ -1,5 +1,5 @@
 import { AnyAction } from "redux";
-import { actionTypes } from "../actionTypes.js";
+import ActionTypes from "../ActionTypes.js";
 import getSceneInitState from "./getSceneInitState";
 import { SceneReducer } from "../types";
 
@@ -10,9 +10,9 @@ function sceneReducer(
 ) {
   if (action._sceneReducerKey !== sceneReducerKey) return state;
   switch (action.type) {
-    case actionTypes.ARENA_SCENE_SET_STATE:
+    case ActionTypes.ARENA_SCENE_SET_STATE:
       return Object.assign({}, state, action.state);
-    case actionTypes.ARENA_SCENE_REPLACE_STATE:
+    case ActionTypes.ARENA_SCENE_REPLACE_STATE:
       return Object.assign({}, action.state);
     default:
       return state;

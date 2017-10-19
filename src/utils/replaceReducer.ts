@@ -1,8 +1,8 @@
-import { actionTypes } from "../core/actionTypes";
+import { ActionTypes } from "../core/ActionTypes";
 
 export function sceneReplaceReducer(store, reducerKey, reducerFactory, state) {
   store.dispatch({
-    type: actionTypes.ARENA_GLOBAL_PROPSPICKER_LOCK,
+    type: ActionTypes.ARENA_GLOBAL_PROPSPICKER_LOCK,
     lock: true
   });
   let newReducerKey = store.replaceReducer({
@@ -12,12 +12,12 @@ export function sceneReplaceReducer(store, reducerKey, reducerFactory, state) {
   });
   if (state)
     store.dispatch({
-      type: actionTypes.ARENA_SCENE_REPLACE_STATE,
+      type: ActionTypes.ARENA_SCENE_REPLACE_STATE,
       _sceneReducerKey: newReducerKey,
       state
     });
   store.dispatch({
-    type: actionTypes.ARENA_GLOBAL_PROPSPICKER_LOCK,
+    type: ActionTypes.ARENA_GLOBAL_PROPSPICKER_LOCK,
     lock: false
   });
   return reducerKey;

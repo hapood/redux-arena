@@ -1,12 +1,12 @@
-import { actionTypes } from "../core/actionTypes";
+import { ActionTypes } from "../core/ActionTypes";
 import { EhancedStore, SceneReducer, ReducerFactory } from "../core";
 
 function addReducer(
   store: EhancedStore<any>,
-  reducerKey: string,
+  reducerKey: string | null | undefined,
   reducerFactory: ReducerFactory
 ) {
-  let newReducerKey: string | null = reducerKey;
+  let newReducerKey = reducerKey;
   if (newReducerKey != null) {
     let flag = store.addReducer({
       reducerKey: newReducerKey,
@@ -30,14 +30,14 @@ function addReducer(
 
 export function sceneAddReducer(
   store: EhancedStore<any>,
-  reducerKey: string,
+  reducerKey: string | null | undefined,
   reducerFactory: ReducerFactory,
-  state: any
+  state?: any
 ) {
   let newReducerKey = addReducer(store, reducerKey, reducerFactory);
   if (state)
     store.dispatch({
-      type: actionTypes.ARENA_SCENE_REPLACE_STATE,
+      type: ActionTypes.ARENA_SCENE_REPLACE_STATE,
       _sceneReducerKey: newReducerKey,
       state
     });
@@ -46,14 +46,14 @@ export function sceneAddReducer(
 
 export function curtainAddReducer(
   store: EhancedStore<any>,
-  reducerKey: string,
+  reducerKey: string | null | undefined,
   reducerFactory: ReducerFactory,
-  state: any
+  state?: any
 ) {
   let newReducerKey = addReducer(store, reducerKey, reducerFactory);
   if (state)
     store.dispatch({
-      type: actionTypes.ARENA_CURTAIN_REPLACE_STATE,
+      type: ActionTypes.ARENA_CURTAIN_REPLACE_STATE,
       _reducerKey: newReducerKey,
       state
     });

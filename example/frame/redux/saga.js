@@ -1,6 +1,6 @@
 import { takeLatest, put } from "redux-saga/effects";
 
-import { FRAME_CLEAR_CNT, FRAME_SET_STATE } from "./actionTypes";
+import { FRAME_CLEAR_CNT, FRAME_SET_STATE } from "./ActionTypes";
 
 function* clearCnt() {
   yield put({

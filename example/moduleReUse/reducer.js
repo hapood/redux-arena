@@ -1,5 +1,5 @@
 import initState from "./state";
-import { ADD_PANEL, DEL_PANEL } from "./actionTypes";
+import { ADD_PANEL, DEL_PANEL } from "./ActionTypes";
 
 export default function reducer(state = initState, action) {
   let newPanelNum;

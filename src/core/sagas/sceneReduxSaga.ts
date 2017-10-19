@@ -1,4 +1,4 @@
-﻿import { actionTypes } from "../actionTypes";
+﻿import ActionTypes from "../ActionTypes";
 import {
   put,
   PutEffect,
@@ -26,10 +26,10 @@ import {
   SceneBundleOptions,
   SceneBundle
 } from "../types";
-import { ReduxInfo } from "../reducers/types";
+import { CurtainReduxInfo } from "../reducers/types";
 
 const defaultActions = {
-  setState: (state: any) => ({ type: actionTypes.ARENA_SCENE_SET_STATE, state })
+  setState: (state: any) => ({ type: ActionTypes.ARENA_SCENE_SET_STATE, state })
 };
 
 function bindActions(
@@ -78,12 +78,12 @@ function getParentReducerKey(arenaReducerDict: ReducerDict) {
   );
 }
 
-export interface ApplyReduxPayload<S> {
+export interface ApplyReduxPayload {
   arenaReducerDict: ReducerDict;
-  state: S;
+  state: {};
   saga: () => null;
   actions: ActionCreatorsMapObject;
-  reducer: SceneReducer<S>;
+  reducer: SceneReducer;
   options: SceneBundleOptions;
 }
 
@@ -94,7 +94,7 @@ export function* sceneApplyRedux({
   actions,
   reducer,
   options = {}
-}: ApplyReduxPayload<any>) {
+}: ApplyReduxPayload) {
   let arenaStore = yield getContext("store");
   let reducerFactory = buildReducerFactory<any>(
     reducer,
@@ -140,9 +140,9 @@ export function* sceneApplyRedux({
   }
   return newReduxInfo;
 }
-export interface UpdateReduxPayload<S> extends ApplyReduxPayload<S> {
+export interface UpdateReduxPayload extends ApplyReduxPayload {
   curSceneBundle: SceneBundle;
-  reduxInfo: ReduxInfo;
+  reduxInfo: CurtainReduxInfo;
 }
 
 export function* sceneUpdateRedux({
@@ -154,7 +154,7 @@ export function* sceneUpdateRedux({
   options = {},
   curSceneBundle,
   reduxInfo
-}: UpdateReduxPayload<any>) {
+}: UpdateReduxPayload) {
   let newReducerKey = reduxInfo.reducerKey;
   let arenaStore = yield getContext("store");
   let reducerFactory = buildReducerFactory(
@@ -174,7 +174,11 @@ export function* sceneUpdateRedux({
       reducerFactory,
       state === curSceneBundle.state ? oldState : state
     );
-    addStateTreeNode(arenaStore, newReducerKey);
+    addStateTreeNode(
+      arenaStore,
+      getParentReducerKey(newReduxInfo.arenaReducerDict),
+      newReducerKey
+    );
   } else if (options.reducerKey === reduxInfo.reducerKey) {
     if (
       reducer !== curSceneBundle.reducer ||
@@ -188,14 +192,14 @@ export function* sceneUpdateRedux({
       );
     } else if (state !== curSceneBundle.state) {
       arenaStore.dispatch({
-        type: actionTypes.ARENA_SCENE_REPLACE_STATE,
+        type: ActionTypes.ARENA_SCENE_REPLACE_STATE,
         _sceneReducerKey: newReducerKey,
         state
       });
     }
   } else if (state !== curSceneBundle.state) {
     yield put({
-      type: actionTypes.ARENA_SCENE_REPLACE_STATE,
+      type: ActionTypes.ARENA_SCENE_REPLACE_STATE,
       _sceneReducerKey: newReducerKey,
       state
     });

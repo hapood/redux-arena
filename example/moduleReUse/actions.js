@@ -1,4 +1,4 @@
-import { ADD_PANEL, DEL_PANEL } from "./actionTypes";
+import { ADD_PANEL, DEL_PANEL } from "./ActionTypes";
 
 export function addPanel() {
   return {

@@ -1,4 +1,4 @@
-import { FRAME_SET_STATE, ADD_CNT } from "./actionTypes";
+import { FRAME_SET_STATE, ADD_CNT } from "./ActionTypes";
 import initState from "./state";
 
 export default function reducer(state = initState, action) {

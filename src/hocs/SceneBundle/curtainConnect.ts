@@ -2,17 +2,20 @@ import { Component, SFC } from "react";
 import { bindActionCreators, Dispatch, ActionCreator } from "redux";
 import { connect } from "react-redux";
 import actions from "./actions";
-import SceneBundle from "./SceneBundle";
+import BundleComponent, {
+  BundleComponentExternalProps,
+  BundleComponentBaseProps
+} from "./SceneBundle";
 
-export default function arenaCurtainConnect<P>(
+export default function curtainConnect(
   reducerKey: string,
   clearCurtain: () => void
-): SFC<P> {
+): SFC<BundleComponentExternalProps> {
   let mapDispatchToProps = (dispatch: Dispatch<any>) => {
     return bindActionCreators(actions, dispatch);
   };
 
-  let mapStateToProps = (state: any) => {
+  let mapStateToProps = (state: any): BundleComponentBaseProps => {
     return {
       PlayingScene: state[reducerKey].PlayingScene,
       curSceneBundle: state[reducerKey].curSceneBundle,
@@ -23,9 +26,9 @@ export default function arenaCurtainConnect<P>(
   };
 
   let ConnectedComponent: any = connect(mapStateToProps, mapDispatchToProps)(
-    SceneBundle
+    BundleComponent
   );
 
-  ConnectedComponent.displayName = `ArenaCurtainConnect({reducerKey:${reducerKey}})`;
-  return <SFC<P>>ConnectedComponent;
+  ConnectedComponent.displayName = `curtainConnect({reducerKey:${reducerKey}})`;
+  return <SFC<BundleComponentExternalProps>>ConnectedComponent;
 }

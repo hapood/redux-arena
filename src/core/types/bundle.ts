@@ -1,9 +1,10 @@
-import { ComponentClass } from "react";
+import { ComponentClass, SFC } from "react";
 import { ActionCreatorsMapObject } from "redux";
 import { ReducerDict } from "./reducerDict";
 import { SceneReducer } from "./reducer";
+import { RootState } from "../reducers/types";
 
-export type PropsPicker<S, AS> = (
+export type PropsPicker<S, AS extends RootState = RootState> = (
   state: S,
   actions: ActionCreatorsMapObject,
   allState: AS,
@@ -17,12 +18,12 @@ export type SceneBundleOptions = {
   isSceneReducer?: boolean;
 };
 
-export type SceneBundle = {
-  Component: ComponentClass;
+export type SceneBundle<P = {}, S = {}> = {
+  Component: ComponentClass<P> | SFC<P>;
   state: any;
   actions: ActionCreatorsMapObject;
-  propsPicker: PropsPicker<any, any>;
+  propsPicker: PropsPicker<S, any>;
   saga: () => null;
-  reducer: SceneReducer<any>;
+  reducer: SceneReducer<S>;
   options?: SceneBundleOptions;
 };

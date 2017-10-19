@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 import { Map, List } from "immutable";
-import { actionTypes } from "../actionTypes.js";
+import ActionTypes from "../ActionTypes.js";
 import getArenaInitState from "./getArenaInitState";
 import { ArenaState, StateTreeNode, StateTree, StateTreeDict } from "./types";
 
@@ -133,17 +133,17 @@ export default function reducer(
   action: AnyAction
 ) {
   switch (action.type) {
-    case actionTypes.ARENA_SET_STATE:
+    case ActionTypes.ARENA_SET_STATE:
       return Object.assign({}, state, action.state);
-    case actionTypes.ARENA_REPLACE_STATE:
+    case ActionTypes.ARENA_REPLACE_STATE:
       return Object.assign({}, action.state);
-    case actionTypes.ARENA_GLOBAL_PROPSPICKER_LOCK:
+    case ActionTypes.ARENA_GLOBAL_PROPSPICKER_LOCK:
       return Object.assign({ propsLock: action.lock });
-    case actionTypes.ARENA_STATETREE_NODE_ADD:
+    case ActionTypes.ARENA_STATETREE_NODE_ADD:
       return addStateTreeNode(state, action.pReducerKey, action.reducerKey);
-    case actionTypes.ARENA_STATETREE_NODE_DISABLE:
+    case ActionTypes.ARENA_STATETREE_NODE_DISABLE:
       return disableStateTreeNode(state, action.reducerKey);
-    case actionTypes.ARENA_STATETREE_NODE_DELETE:
+    case ActionTypes.ARENA_STATETREE_NODE_DELETE:
       return deleteStateTreeNode(state, action.reducerKey);
     default:
       return state;

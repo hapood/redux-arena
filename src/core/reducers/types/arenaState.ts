@@ -2,7 +2,7 @@ import { Map, List } from "immutable";
 
 export type StateTreeNode = {
   reducerKey: string;
-  pReducerKey: string | null;
+  pReducerKey: string | null | undefined;
   children: Map<string, any>;
 };
 
@@ -18,8 +18,13 @@ export type StateTreeDict = Map<string, Map<string, any>>;
 export type StateTree = Map<string, Map<string, any>>;
 
 export type ArenaState = {
-  audienceSagaTask: object | null;
+  audienceSagaTask: object | null | undefined;
   propsLock: boolean;
   stateTree: StateTree;
   stateTreeDict: StateTreeDict;
+};
+
+export type RootState = {
+  arena: ArenaState;
+  [key: string]: any;
 };

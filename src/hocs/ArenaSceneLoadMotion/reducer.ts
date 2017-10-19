@@ -2,7 +2,7 @@ import initState from "./state";
 import {
   ARENA_SCENE_ANIMATION_NEXTPHRASE,
   ARENA_SCENE_ANIMATION_LEAVING_START
-} from "./actionTypes";
+} from "./ActionTypes";
 import { LOADING, ENTERING, IN, LEAVING, OUT } from "./animationPhase";
 
 export default function(state = initState, action, sceneReducerKey) {

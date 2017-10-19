@@ -1,5 +1,5 @@
 import { applyMiddleware, compose } from "redux";
-import { actionTypes } from "../actionTypes";
+import ActionTypes from "../ActionTypes";
 import { ReducersMapObject, GenericStoreEnhancer, Middleware } from "redux";
 import createSagaMiddleware, { END, SagaMiddlewareOptions } from "redux-saga";
 import { getArenaInitState, arenaReducer } from "../reducers";
@@ -44,7 +44,7 @@ export default function createArenaStore(
   store.close = () => store.dispatch(END);
   store.runSaga = saga =>
     store.dispatch({
-      type: actionTypes.ARENA_INIT_AUDIENCE_SAGA,
+      type: ActionTypes.ARENA_INIT_AUDIENCE_SAGA,
       saga
     });
   return store;

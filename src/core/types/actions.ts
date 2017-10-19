@@ -1,9 +1,9 @@
-import { actionTypes } from "../actionTypes";
+import ActionTypes from "../ActionTypes";
 import { ReducerDict } from "./reducerDict";
 import { SceneBundle } from "./bundle";
 
-export type LoadSceneAction = {
-  type: actionTypes.ARENA_CURTAIN_LOAD_SCENE;
+export type CurtainLoadSceneAction = {
+  type: ActionTypes.ARENA_CURTAIN_LOAD_SCENE;
   arenaReducerDict: ReducerDict;
   sceneBundle: SceneBundle;
   isInitial: boolean;

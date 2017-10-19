@@ -2,9 +2,9 @@ import { ReducerDict, ReducerDictItem } from "../core";
 import { ActionCreatorsMapObject } from "redux";
 
 function buildReducerKey(
-  arenaReducerDict: ReducerDict | null,
+  arenaReducerDict: ReducerDict | null | undefined,
   reducerKey: string,
-  vReducerKey: string,
+  vReducerKey: string | null | undefined,
   actions: ActionCreatorsMapObject,
   curReducerKey: string
 ): ReducerDict {
@@ -20,9 +20,9 @@ function buildReducerKey(
 }
 
 export function buildCurtainReducerDict(
-  arenaReducerDict: ReducerDict | null,
+  arenaReducerDict: ReducerDict | null | undefined,
   reducerKey: string,
-  vReducerKey: string
+  vReducerKey: string | null | undefined
 ): ReducerDict & { _arenaScene: ReducerDictItem } {
   let newDict: any = buildReducerKey(
     arenaReducerDict,
@@ -36,9 +36,9 @@ export function buildCurtainReducerDict(
 }
 
 export function buildSceneReducerDict(
-  arenaReducerDict: ReducerDict | null,
+  arenaReducerDict: ReducerDict | null | undefined,
   reducerKey: string,
-  vReducerKey: string,
+  vReducerKey: string | null | undefined,
   actions: ActionCreatorsMapObject
 ) {
   return buildReducerKey(

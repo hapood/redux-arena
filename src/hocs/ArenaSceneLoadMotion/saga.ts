@@ -1,5 +1,5 @@
 import { takeLatestSceneAction, setSceneState } from "../../effects";
-import { ARENA_SCENE_ANIMATION_LOAD_BUNDLE } from "./actionTypes";
+import { ARENA_SCENE_ANIMATION_LOAD_BUNDLE } from "./ActionTypes";
 import { LOADING } from "./animationPhase";
 
 /**

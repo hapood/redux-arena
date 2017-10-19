@@ -1,7 +1,13 @@
-import { LOADING } from "./animationPhase";
+import AnimationPhase from "./AnimationPhase";
+
+export type State = {
+  sSceneReady: boolean;
+  phase: AnimationPhase;
+  bundle: null;
+};
 
 export default {
   isSceneReady: false,
-  phase: LOADING,
+  phase: AnimationPhase.LOADING,
   bundle: null
 };

@@ -1,5 +1,5 @@
 import { EhancedStore } from "../core";
-import { actionTypes } from "../core/actionTypes";
+import { ActionTypes } from "../core/ActionTypes";
 
 export default function addStateTreeNode(
   store: EhancedStore<any>,
@@ -7,7 +7,7 @@ export default function addStateTreeNode(
   reducerKey: string
 ) {
   store.dispatch({
-    type: actionTypes.ARENA_STATETREE_NODE_ADD,
+    type: ActionTypes.ARENA_STATETREE_NODE_ADD,
     pReducerKey,
     reducerKey
   });

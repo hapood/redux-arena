@@ -5,7 +5,7 @@ const files = [
   "README.md",
   "LICENSE",
   "subModules/tools",
-  "subModules/actionTypes",
+  "subModules/ActionTypes",
   "subModules/effects"
 ];
 

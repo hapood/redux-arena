@@ -1,16 +1,32 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import {
-  CurtainState,
-  ReducerDict,
-  SceneBundle as SceneBundleType
-} from "../../core";
-export type SceneBundleState = {
+import { CurtainState, ReducerDict, SceneBundle } from "../../core";
+import { CurtainLoadScene } from "./actions";
+
+export type BundleComponentState = {
   loadedPromise: Promise<null>;
 };
-export type SceneBundleProps = CurtainState & { clearCurtain: () => void };
 
-class SceneBundle extends React.Component<SceneBundleProps, SceneBundleState> {
+export type BundleComponentBaseProps = CurtainState & {
+  clearCurtain: () => void;
+};
+
+export type BundleComponentConnectedProps = BundleComponentBaseProps & {
+  curtainLoadScene: CurtainLoadScene;
+};
+
+export type BundleComponentExternalProps = {
+  arenaReducerDict:ReducerDict;
+  sceneBundle: SceneBundle;
+  sceneProps: any;
+};
+export type BundleComponentProps = BundleComponentConnectedProps &
+  BundleComponentExternalProps;
+
+export default class BundleComponent extends React.Component<
+  BundleComponentProps,
+  BundleComponentState
+> {
   static propTypes = {
     sceneBundle: PropTypes.object.isRequired,
     sceneProps: PropTypes.object
@@ -22,19 +38,20 @@ class SceneBundle extends React.Component<SceneBundleProps, SceneBundleState> {
 
   getChildContext() {
     return {
-      arenaReducerDict: this.props.reduxInfo.arenaReducerDict
+      arenaReducerDict:
+        this.props.reduxInfo && this.props.reduxInfo.arenaReducerDict
     };
   }
 
   buildLoadScenePromise(
     arenaReducerDict: ReducerDict,
-    sceneBundle: SceneBundleType,
+    sceneBundle: SceneBundle,
     isInitial: any
   ): Promise<null> {
     if (isInitial) {
       return new Promise(resolve =>
         setImmediate(() =>
-          this.props.arenaLoadScene(
+          this.props.curtainLoadScene(
             this.props.arenaReducerDict,
             this.props.sceneBundle,
             true,
@@ -44,7 +61,7 @@ class SceneBundle extends React.Component<SceneBundleProps, SceneBundleState> {
       );
     } else {
       return new Promise(resolve =>
-        this.props.arenaLoadScene(
+        this.props.curtainLoadScene(
           this.props.arenaReducerDict,
           this.props.sceneBundle,
           true,
@@ -65,7 +82,7 @@ class SceneBundle extends React.Component<SceneBundleProps, SceneBundleState> {
     });
   }
 
-  componentWillReceiveProps(nextProps: SceneBundleProps) {
+  componentWillReceiveProps(nextProps: BundleComponentProps) {
     let { sceneBundle } = nextProps;
     if (sceneBundle !== this.props.sceneBundle) {
       this.state.loadedPromise.then(() => {
@@ -95,5 +112,3 @@ class SceneBundle extends React.Component<SceneBundleProps, SceneBundleState> {
     }
   }
 }
-
-export default SceneBundle;

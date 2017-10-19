@@ -4,10 +4,10 @@ import {
   ActionCreatorsMapObject,
   ActionCreator
 } from "redux";
-
+import { RootState } from "../reducers/types";
 function bindArenaActionCreator(
-  actionCreator: ActionCreator<any>,
-  dispatch: Dispatch<any>,
+  actionCreator: ActionCreator<AnyAction>,
+  dispatch: Dispatch<RootState>,
   sceneReducerKey: string
 ) {
   return (...args: any[]) => {
@@ -30,7 +30,7 @@ export default function bindArenaActionCreators<
   M extends ActionCreatorsMapObject
 >(
   actionCreators: ActionCreatorsMapObject,
-  dispatch: Dispatch<any>,
+  dispatch: Dispatch<RootState>,
   sceneReducerKey: string
 ): M {
   if (

@@ -1,3 +1,5 @@
-import { actionTypes } from "../core/actionTypes";
+enum ActionTypes {
+  ARENA_SCENE_SET_STATE = "ARENA_SCENE_SET_STATE"
+}
 
-export const ARENA_SCENE_SET_STATE = actionTypes.ARENA_SCENE_SET_STATE;
+export default ActionTypes;

@@ -8,5 +8,6 @@ export {
   StateTreeNode,
   StateTreeDictItem,
   StateTreeDict,
-  StateTree
+  StateTree,
+  RootState
 } from "./arenaState";

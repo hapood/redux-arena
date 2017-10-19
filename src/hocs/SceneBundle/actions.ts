@@ -1,19 +1,26 @@
-import { actionTypes } from "../../core/actionTypes";
-import { LoadSceneAction, ReducerDict, SceneBundle } from "../../core";
+import { ActionTypes } from "../../core/ActionTypes";
+import { CurtainLoadSceneAction, ReducerDict, SceneBundle } from "../../core";
 
-export function arenaLoadScene(
+export type CurtainLoadScene = (
   arenaReducerDict: ReducerDict,
   sceneBundle: SceneBundle,
   isInitial: any,
   loadedCb: () => void
-): LoadSceneAction {
+) => CurtainLoadSceneAction;
+
+export const curtainLoadScene: CurtainLoadScene = function(
+  arenaReducerDict: ReducerDict,
+  sceneBundle: SceneBundle,
+  isInitial: any,
+  loadedCb: () => void
+): CurtainLoadSceneAction {
   return {
-    type: actionTypes.ARENA_CURTAIN_LOAD_SCENE,
+    type: ActionTypes.ARENA_CURTAIN_LOAD_SCENE,
     arenaReducerDict,
     sceneBundle,
     isInitial,
     loadedCb
   };
-}
+};
 
-export default { arenaLoadScene };
+export default { curtainLoadScene };

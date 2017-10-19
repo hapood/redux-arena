@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { SFC } from "react";
 import { ActionCreatorsMapObject } from "redux";
 import { ForkEffect } from "redux-saga/effects";
 import { SceneBundle, ReducerDict, SceneBundleOptions } from "../../types";
@@ -17,9 +17,9 @@ export type CurtainMutableObj = {
   isObsolete: boolean;
 };
 
-export type CurtainState = {
-  PlayingScene: ReactElement<any> | null;
-  curSceneBundle: SceneBundle | null;
+export type CurtainState<P = {}, RS = {}> = {
+  PlayingScene: SFC<P> | null;
+  curSceneBundle: SceneBundle<P, RS> | null;
   reduxInfo: CurtainReduxInfo | null;
   mutableObj: CurtainMutableObj;
 };

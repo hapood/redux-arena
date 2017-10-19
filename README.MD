@@ -81,8 +81,8 @@ ReactDOM.render(
   * [`<ArenaScene />`](#arenascene)
   * [`<ArenaSceneMotion />`](#arenascenemotion)
 * [`Tools API`](#tools-api)
-  * [`bundleToComponent(bundle, hocProps)`](#bundletocomponentbundle-hocprops)
-  * [`bundleToElement(bundle, props, hocProps)`](#asyncbundletoelementasyncbundle-props-hocprops)
+  * [`bundleToComponent(bundle, extraProps)`](#bundletocomponentbundle-extraProps)
+  * [`bundleToElement(bundle, props, extraProps)`](#asyncbundletoelementasyncbundle-props-extraProps)
 * [`Saga API`](#tools-api)
   * [`getSceneState()`](#getscenestate)
   * [`getSceneActions()`](#getsceneactions)
@@ -217,17 +217,17 @@ Loading Animation Frame for ArenaScene. Props is explained following:
 
 ## Tools API
 
-### `bundleToComponent(bundle, hocProps)`
+### `bundleToComponent(bundle, extraProps)`
 
 A helper function of transforming bundle to react component.
 
-### `bundleToElement(bundle, props, hocProps)`
+### `bundleToElement(bundle, props, extraProps)`
 
 A helper function of transforming bundle to react element.
 
 ## Saga API
 
-### `bundleToComponent(bundle, hocProps)`
+### `bundleToComponent(bundle, extraProps)`
 
 ### `getSceneState()` 
 

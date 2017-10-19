@@ -9,6 +9,7 @@ export {
   CurtainReduxInfo,
   CurtainMutableObj,
   ArenaState,
+  RootState,
   StateTreeNode,
   StateTreeDictItem,
   StateTreeDict,

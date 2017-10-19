@@ -1,4 +1,4 @@
-import { ARENA_SCENE_SET_STATE } from "redux-arena/actionTypes";
+import { ARENA_SCENE_SET_STATE } from "redux-arena/ActionTypes";
 
 export function addCnt() {
   return {

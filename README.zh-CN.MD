@@ -82,8 +82,8 @@ ReactDOM.render(
   * [`<ArenaScene />`](#arenascene)
   * [`<ArenaSceneMotion />`](#arenascenemotion)
 * [`Tools API`](#tools-api)
-  * [`bundleToComponent(bundle, hocProps)`](#bundletocomponentbundle-hocprops)
-  * [`asyncBundleToComponent(asyncBundle, hocProps)`](#bundletoelementbundle-props-hocprops)
+  * [`bundleToComponent(bundle, extraProps)`](#bundletocomponentbundle-extraProps)
+  * [`asyncBundleToComponent(asyncBundle, extraProps)`](#bundletoelementbundle-props-extraProps)
 * [`Saga API`](#tools-api)
   * [`getSceneState()`](#getscenestate)
   * [`getSceneActions()`](#getsceneactions)
@@ -218,17 +218,17 @@ ArenaScene的加载动画框架，props如下所示：
 
 ## Tools API
 
-### `bundleToComponent(bundle, hocProps)`
+### `bundleToComponent(bundle, extraProps)`
 
 将Bundle转化为组件的帮手函数。
 
-### `bundleToElement(bundle, props, hocProps)`
+### `bundleToElement(bundle, props, extraProps)`
 
 将Bundle转化为element的帮手函数。
 
 ## Saga API
 
-### `bundleToComponent(bundle, hocProps)`
+### `bundleToComponent(bundle, extraProps)`
 
 ### `getSceneState()` 
 

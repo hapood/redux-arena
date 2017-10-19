@@ -1,7 +1,7 @@
 {
-  "name": "redux-arena/actionTypes",
+  "name": "redux-arena/ActionTypes",
   "private": true,
-  "main": "../lib/actionTypes/index.js",
-  "module": "../es/actionTypes/index.js",
-  "jsnext:main": "../es/actionTypes/index.js"
+  "main": "../lib/ActionTypes/index.js",
+  "module": "../es/ActionTypes/index.js",
+  "jsnext:main": "../es/ActionTypes/index.js"
 }
