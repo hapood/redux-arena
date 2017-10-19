@@ -78,10 +78,10 @@ function storeEnhancer<S extends ArenaStoreState>(
           return reducerKey;
         };
       }
-      return (<any>target)[name];
+      return (target as any)[name];
     }
   };
-  return <any>new Proxy(store, handler);
+  return new Proxy(store, handler) as any;
 }
 
 export default function createEnhancedStore(

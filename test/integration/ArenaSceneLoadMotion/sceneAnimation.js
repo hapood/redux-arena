@@ -54,30 +54,8 @@ export const nextPhaseCheckers = {
   }
 };
 
-export const numberToStyle = (key, style, phase, isSceneReady) => {
-  switch (key) {
-    case "container":
-      return {
-        width: "100%",
-        height: "100%"
-      };
-    case "loadingPlay":
-      return {
-        width: "100%",
-        height: "100%",
-        display: phase === loadMotionPhase.LOADING ? "block" : "none"
-      };
-    case "scenePlay":
-      return Object.assign(
-        {
-          width: "100%",
-          height: "100%",
-          display: phase === loadMotionPhase.LOADING ? "none" : "block"
-        },
-        style,
-        { opacity: String(style.opacity) }
-      );
-    default:
-      return style;
-  }
+export const numberToStyles = {
+  container: (style, phase, isSceneReady) => {},
+  loadingPlay: (style, phase, isSceneReady) => {},
+  container: (style, phase, isSceneReady) => {}
 };

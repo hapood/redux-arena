@@ -1,39 +1,40 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import * as React from "react";
 import { TransitionMotion } from "react-motion";
-import { LOADING } from "./animationPhase";
-import { buildStyleCalculator, isCurPhaseEnd } from "./utils";
+import AnimationPhase from "./AnimationPhase";
+import { combineStyleCalculator, isCurPhaseEnd } from "./utils";
+import {
+  ArenaSceneLoadMotionProps,
+  ArenaSceneLoadMotionConnectedProps,
+  ExtendedMotionStyles,
+  CombinedStyleCalculator
+} from "./types";
 
-export default class ArenaSceneLoadMotion extends Component {
-  static propTypes = {
-    loadingPlay: PropTypes.element.isRequired,
-    asyncBundleThunk: PropTypes.func.isRequired,
-    children: PropTypes.func.isRequired,
-    initStyles: PropTypes.array.isRequired,
-    styleCalculators: PropTypes.object.isRequired,
-    nextPhaseCheckers: PropTypes.object.isRequired,
-    numberToStyle: PropTypes.func.isRequired
-  };
+export type InnerState = {
+  initStyles: ExtendedMotionStyles;
+  styleCalculator: CombinedStyleCalculator;
+  playElement: React.ReactElement<{}> | null;
+};
 
+export default class ArenaSceneLoadMotion extends React.Component<
+  ArenaSceneLoadMotionProps & ArenaSceneLoadMotionConnectedProps,
+  InnerState
+> {
   componentWillMount() {
     this.props.actions.loadSceneBundle(this.props.asyncBundleThunk);
     this.setState({
-      initStyles: this.props.initStyles
-        .map(styleObj =>
-          Object.assign({}, styleObj, {
-            style: Object.assign({}, styleObj.style, { phase: LOADING })
-          })
-        )
-        .concat({
+      initStyles: (this.props.initStyles as ExtendedMotionStyles).concat([
+        {
           key: "nextPhase",
-          style: { phase: LOADING }
-        }),
-      styleCalculator: buildStyleCalculator(
+          style: { phase: AnimationPhase.LOADING }
+        }
+      ]),
+      styleCalculator: combineStyleCalculator(
         this.props.styleCalculators,
         this.props.phase,
         this.props.nextPhaseCheckers,
         this.props.isSceneReady,
-        phase => setImmediate(() => this.props.actions.nextPhase(phase))
+        (phase: AnimationPhase) =>
+          setImmediate(() => this.props.actions.nextPhase(phase))
       ),
       playElement: this.props.bundle
         ? this.props.children(this.props.bundle)
@@ -41,8 +42,10 @@ export default class ArenaSceneLoadMotion extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    let state = Object.assign({}, state);
+  componentWillReceiveProps(
+    nextProps: ArenaSceneLoadMotionProps & ArenaSceneLoadMotionConnectedProps
+  ) {
+    let state: InnerState = Object.assign({}, this.state);
     if (
       this.props.bundle !== nextProps.bundle ||
       this.props.children !== nextProps.children
@@ -61,7 +64,7 @@ export default class ArenaSceneLoadMotion extends Component {
       nextProps.nextPhaseCheckers !== this.props.nextPhaseCheckers ||
       nextProps.isSceneReady !== this.props.isSceneReady
     ) {
-      state.styleCalculator = buildStyleCalculator(
+      state.styleCalculator = combineStyleCalculator(
         nextProps.styleCalculators,
         nextProps.phase,
         nextProps.nextPhaseCheckers,
@@ -70,35 +73,51 @@ export default class ArenaSceneLoadMotion extends Component {
       );
     }
     if (nextProps.initStyles !== this.props.initStyles) {
-      let nextPhaseStyle = state.initStyles.find(
+      let nextPhaseStyle: any = state.initStyles.find(
         style => style.key === "nextPhase"
       );
-      state.initStyles = nextProps.initStyles.concat(nextPhaseStyle);
+      if (nextPhaseStyle) {
+        state.initStyles = (nextProps.initStyles as ExtendedMotionStyles).concat(
+          [nextPhaseStyle]
+        );
+      }
     }
     this.setState(state);
   }
 
   render() {
-    let { phase, numberToStyle, isSceneReady } = this.props;
+    let { phase, numberToStyles, isSceneReady } = this.props;
+    let { initStyles, styleCalculator } = this.state;
     return (
-      <TransitionMotion
-        defaultStyles={this.state.initStyles}
-        willLeave={this.willLeave}
-        styles={this.state.styleCalculator}
-      >
+      <TransitionMotion defaultStyles={initStyles} styles={styleCalculator}>
         {interpolatedStyles => {
-          let containerStyle, scenePlayStyle, loadingPlayStyle, animationPhase;
+          let containerStyle,
+            scenePlayStyle,
+            loadingPlayStyle,
+            animationPhase: number;
           interpolatedStyles.forEach(styleObj => {
             let { key, style } = styleObj;
             switch (key) {
               case "container":
-                containerStyle = style;
+                containerStyle = numberToStyles.container(
+                  style,
+                  animationPhase,
+                  isSceneReady
+                );
                 break;
               case "loadingPlay":
-                loadingPlayStyle = style;
+                loadingPlayStyle = numberToStyles.loadingPlay(
+                  style,
+                  animationPhase,
+                  isSceneReady
+                );
                 break;
               case "scenePlay":
-                scenePlayStyle = style;
+                scenePlayStyle = numberToStyles.scenePlay(
+                  style,
+                  animationPhase,
+                  isSceneReady
+                );
                 break;
               case "nextPhase":
                 animationPhase = style.phase;
@@ -106,34 +125,11 @@ export default class ArenaSceneLoadMotion extends Component {
             }
           });
           return (
-            <div
-              style={numberToStyle(
-                "container",
-                containerStyle,
-                animationPhase,
-                isSceneReady
-              )}
-            >
-              <div
-                key="loadingPlay"
-                style={numberToStyle(
-                  "loadingPlay",
-                  loadingPlayStyle,
-                  animationPhase,
-                  isSceneReady
-                )}
-              >
+            <div style={containerStyle}>
+              <div key="loadingPlay" style={loadingPlayStyle}>
                 {this.props.loadingPlay}
               </div>
-              <div
-                key="scenePlay"
-                style={numberToStyle(
-                  "scenePlay",
-                  scenePlayStyle,
-                  animationPhase,
-                  isSceneReady
-                )}
-              >
+              <div key="scenePlay" style={scenePlayStyle}>
                 {this.state.playElement}
               </div>
             </div>

@@ -15,23 +15,16 @@ export type BundleComponentConnectedProps = BundleComponentBaseProps & {
   curtainLoadScene: CurtainLoadScene;
 };
 
-export type BundleComponentExternalProps = {
-  arenaReducerDict:ReducerDict;
+export type BundleComponentProps = {
+  arenaReducerDict: ReducerDict;
   sceneBundle: SceneBundle;
   sceneProps: any;
 };
-export type BundleComponentProps = BundleComponentConnectedProps &
-  BundleComponentExternalProps;
 
 export default class BundleComponent extends React.Component<
-  BundleComponentProps,
+  BundleComponentConnectedProps & BundleComponentProps,
   BundleComponentState
 > {
-  static propTypes = {
-    sceneBundle: PropTypes.object.isRequired,
-    sceneProps: PropTypes.object
-  };
-
   static childContextTypes = {
     arenaReducerDict: PropTypes.object
   };

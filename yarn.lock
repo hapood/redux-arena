@@ -29,6 +29,12 @@
     "@types/node" "*"
     "@types/react" "*"
 
+"@types/react-motion@^0.0.23":
+  version "0.0.23"
+  resolved "https://registry.npmjs.org/@types/react-motion/-/react-motion-0.0.23.tgz#8d433a875228d8e343d383cdc66e16c68e73a89f"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-redux@^5.0.10":
   version "5.0.10"
   resolved "https://registry.npmjs.org/@types/react-redux/-/react-redux-5.0.10.tgz#f5c45a349f759d87d6b1f2aa096a756561a6d5c9"

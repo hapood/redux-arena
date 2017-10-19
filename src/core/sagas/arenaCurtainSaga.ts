@@ -84,9 +84,9 @@ function* killArenaCurtainSaga({
     type: ActionTypes.ARENA_STATETREE_NODE_DISABLE,
     reducerKey
   });
-  let { reduxInfo } = <CurtainState>(yield select(
+  let { reduxInfo } = (yield select(
     (state: any) => state[reducerKey]
-  ))
+  )) as CurtainState;
   if (reduxInfo && reduxInfo.reducerKey != null) {
     yield put({
       type: ActionTypes.ARENA_STATETREE_NODE_DELETE,

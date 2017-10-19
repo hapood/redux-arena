@@ -68,13 +68,6 @@ export default class ArenaScene<SP, SS> extends React.Component<
     arenaReducerDict: PropTypes.object
   };
 
-  static propTypes = {
-    reducerKey: PropTypes.string,
-    vReducerKey: PropTypes.string,
-    sceneBundle: PropTypes.object,
-    sceneProps: PropTypes.object
-  };
-
   componentWillMount() {
     let { store, arenaReducerDict } = this.context;
     let { sceneBundle, sceneProps, reducerKey, vReducerKey } = this.props;

@@ -1,5 +1,20 @@
-import { ENTERING, IN, LEAVING, OUT } from "./animationPhase";
-export function isCurPhaseEnd(prevStyles, isSceneReady, nextPhaseCheckers) {
+import AnimationPhase from "./AnimationPhase";
+import { TransitionPlainStyle, TransitionStyle, Style } from "react-motion";
+import {
+  CombinedNumberToStyle,
+  CombinedStyleCalculator,
+  StyleCalculators,
+  StyleCalculator,
+  NextPhaseCheckers,
+  ExtendedPlainMotionStyles,
+  ExtendedMotionStyles
+} from "./types";
+
+export function isCurPhaseEnd(
+  prevStyles: ExtendedPlainMotionStyles,
+  isSceneReady: boolean,
+  nextPhaseCheckers: NextPhaseCheckers
+) {
   return prevStyles.find(styleObj => {
     let { key, style } = styleObj;
     switch (key) {
@@ -23,21 +38,25 @@ export function isCurPhaseEnd(prevStyles, isSceneReady, nextPhaseCheckers) {
     : true;
 }
 
-function calcStyle(style, phase, calculator) {
+function calcStyle(
+  style: Style,
+  phase: AnimationPhase,
+  calculator: StyleCalculator
+): Style {
   return Object.assign({}, calculator ? calculator(style, phase) : style, {
     phase
   });
 }
 
-export function buildStyleCalculator(
-  styleCalculators,
-  phase,
-  nextPhaseCheckers,
-  isSceneReady,
-  nextPhase
-) {
-  return function(prevStyles) {
-    return prevStyles.map(styleObj => {
+export function combineStyleCalculator(
+  styleCalculators: StyleCalculators,
+  phase: AnimationPhase,
+  nextPhaseCheckers: NextPhaseCheckers,
+  isSceneReady: boolean,
+  nextPhase: (curPhase: AnimationPhase) => void
+): CombinedStyleCalculator {
+  return function(prevStyles: ExtendedPlainMotionStyles) {
+    return <ExtendedMotionStyles>prevStyles.map(styleObj => {
       let { key, style } = styleObj;
       switch (key) {
         case "container":
@@ -57,7 +76,7 @@ export function buildStyleCalculator(
           };
         case "nextPhase":
           if (isCurPhaseEnd(prevStyles, isSceneReady, nextPhaseCheckers)) {
-            nextPhase(style.phase);
+            nextPhase(style.phase as number);
           }
           return {
             key: "nextPhase",
@@ -65,7 +84,6 @@ export function buildStyleCalculator(
               phase
             }
           };
-          return styleObj;
         default:
           return styleObj;
       }
