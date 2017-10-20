@@ -11,7 +11,7 @@
     "noImplicitReturns": true,
     "noImplicitUseStrict": true,
     "noImplicitAny": true,
-    "moduleResolution": "node",
+    "moduleResolution ": "node",
     "lib": ["es6", "dom"],
     "jsx": "react"
   },

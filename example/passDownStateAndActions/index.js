@@ -1,14 +1,14 @@
-import state from "./state";
-import reducer from "./reducer";
-import Parent from "./Parent";
-import * as actions from "./actions";
+import state from "./state"
+import reducer from "./reducer"
+import Parent from "./Parent"
+import * as actions from "./actions"
 
 export default {
-  Component: Parent,
-  state,
-  actions,
-  reducer,
-  options: {
-    vReducerKey: "parent"
-  }
-};
+    Component: Parent,
+    state,
+    actions,
+    reducer,
+    options: {
+        vReducerKey: "parent"
+    }
+}

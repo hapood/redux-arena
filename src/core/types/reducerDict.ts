@@ -1,9 +1,9 @@
-import { ActionCreatorsMapObject } from "redux";
+import { ActionCreatorsMapObject } from "redux"
 
 export type ReducerDictItem = {
-  reducerKey: string;
-  vReducerKey: string | null | undefined;
-  actions: ActionCreatorsMapObject;
-};
+    reducerKey: string
+    vReducerKey: string | null | undefined
+    actions: ActionCreatorsMapObject
+}
 
-export type ReducerDict = { [key: string]: ReducerDictItem };
+export type ReducerDict = { [key: string]: ReducerDictItem }

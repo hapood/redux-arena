@@ -1,3 +1,3 @@
-import AsyncLoadHOC from "./AsyncLoadHOC";
+import AsyncLoadHOC from "./AsyncLoadHOC"
 
-export default AsyncLoadHOC;
+export default AsyncLoadHOC

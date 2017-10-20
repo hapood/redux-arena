@@ -1,4 +1,4 @@
 export default {
-  name: "Child",
-  cnt:0
-};
+    name: "Child",
+    cnt: 0
+}

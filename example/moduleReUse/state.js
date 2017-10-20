@@ -1,3 +1,3 @@
 export default {
-  panelNum: 3
-};
+    panelNum: 3
+}

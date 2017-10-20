@@ -1,18 +1,26 @@
 {
   "name": "redux-arena",
   "version": "0.8.0",
-  "description": "Bundling reducers, actions, saga and react-component when using Redux",
-  "main": "index.js",
+  "description":
+    "Bundling reducers, actions, saga and react-component when using Redux",
+  "main": "lib/mobx.js",
+  "module": "lib/redux-arena.module.js",
+  "jsnext:main": "lib/redux-arena.module.js",
+  "typings": "lib/redux-arena.d.ts",
   "scripts": {
+    "prettier":
+      "prettier --write --print-width 100 --tab-width 4 --no-semi \"**/*.js\" \"**/*.jsx\" \"**/*.tsx\" \"**/*.ts\"",
     "build": "run-p build:**",
-    "build:cjs": "cross-env BABEL_ENV=cjs babel ./src --out-dir ./build/lib --ignore spec.js",
-    "build:es": "cross-env BABEL_ENV=es babel ./src --out-dir ./build/es --ignore spec.js",
-    "build:copy-files": "cross-env BABEL_ENV=cjs babel-node ./scripts/copy-files.js",
+    "build:cjs":
+      "cross-env BABEL_ENV=cjs babel ./src --out-dir ./build/lib --ignore spec.js",
+    "build:es":
+      "cross-env BABEL_ENV=es babel ./src --out-dir ./build/es --ignore spec.js",
     "clean:build": "rimraf build",
     "prebuild": "npm run clean:build",
     "postpublish": "npm run build && cd build && npm publish",
     "test": "cross-env BABEL_ENV=es karma start test/karma.conf.js",
-    "test-travis": "cross-env BABEL_ENV=es karma start test/karma.conf.js --browsers Firefox --single-run"
+    "test-travis":
+      "cross-env BABEL_ENV=es karma start test/karma.conf.js --browsers Firefox --single-run"
   },
   "repository": {
     "type": "git",
@@ -51,14 +59,6 @@
     "@types/react-motion": "^0.0.23",
     "@types/react-redux": "^5.0.10",
     "@types/sinon": "^2.3.6",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-typescript": "^7.0.0-alpha.19",
     "chai": "^4.1.2",
     "cross-env": "^5.0.5",
     "enzyme": "^3.0.0",
@@ -77,6 +77,7 @@
     "loglevel": "^1.5.0",
     "mocha": "^4.0.1",
     "npm-run-all": "^4.1.1",
+    "prettier": "^1.7.4",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "16",

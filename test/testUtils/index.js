@@ -1,3 +1,3 @@
-import createMount from "./createMount";
+import createMount from "./createMount"
 
-export { createMount };
+export { createMount }

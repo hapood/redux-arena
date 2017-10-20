@@ -1,9 +1,9 @@
 enum AnimationPhase {
-  LOADING,
-  ENTERING,
-  IN,
-  LEAVING,
-  OUT
+    LOADING,
+    ENTERING,
+    IN,
+    LEAVING,
+    OUT
 }
 
-export default AnimationPhase;
+export default AnimationPhase
