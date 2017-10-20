@@ -1,6 +1,6 @@
 export default {
-    name: "ScopedPage",
-    dynamicState: 0,
-    isDynamicStateEnable: false,
-    cnt: 0
-}
+  name: "ScopedPage",
+  dynamicState: 0,
+  isDynamicStateEnable: false,
+  cnt: 0
+};

@@ -1,20 +1,20 @@
-import { CurtainLoadScene } from "./actions"
-import { CurtainState, ReducerDict, SceneBundle } from "../../core"
+import { CurtainLoadScene } from "./actions";
+import { CurtainState, ReducerDict, SceneBundle } from "../../core";
 
 export type BundleComponentState = {
-    loadedPromise: Promise<null>
-}
+  loadedPromise: Promise<null>;
+};
 
 export type BundleComponentBaseProps = CurtainState & {
-    clearCurtain: () => void
-}
+  clearCurtain: () => void;
+};
 
 export type BundleComponentConnectedProps = BundleComponentBaseProps & {
-    curtainLoadScene: CurtainLoadScene
-}
+  curtainLoadScene: CurtainLoadScene;
+};
 
 export type BundleComponentProps = {
-    arenaReducerDict: ReducerDict
-    sceneBundle: SceneBundle
-    sceneProps: any
-}
+  arenaReducerDict: ReducerDict;
+  sceneBundle: SceneBundle;
+  sceneProps: any;
+};

@@ -1,8 +1,7 @@
+export { default, default as ArenaScene } from "./ArenaScene";
 export {
-    default,
-    default as ArenaScene,
-    ArenaSceneProps,
-    ArenaSceneExtraProps,
-    ArenaSceneState,
-    ArenaSceneContext
-} from "./ArenaScene"
+  ArenaSceneProps,
+  ArenaSceneExtraProps,
+  ArenaSceneState,
+  ArenaSceneContext
+} from "./types";

@@ -1,3 +1,3 @@
-import ReducerDictOverrider from "./ReducerDictOverrider"
+import ReducerDictOverrider from "./ReducerDictOverrider";
 
-export default ReducerDictOverrider
+export default ReducerDictOverrider;

@@ -1,7 +1,7 @@
-import { ReactElement } from "react"
-import { ReducerDict } from "../../core"
+import { ReactElement } from "react";
+import { ReducerDict } from "../../core";
 
 export type ReducerDictOverriderProps = {
-    reducerDict: ReducerDict
-    children: ReactElement<{}>
-}
+  reducerDict: ReducerDict;
+  children: ReactElement<{}>;
+};

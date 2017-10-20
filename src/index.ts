@@ -1,5 +1,18 @@
-export { createArenaStore } from "./core";
-export { ArenaScene, ArenaSceneLoadMotion, ReducerDictOverrider } from "./hocs";
 export {
-  default as loadMotionPhase
-} from "./hocs/ArenaSceneLoadMotion/animationPhase";
+  createArenaStore,
+  SceneBundle,
+  EnhancedStore,
+  SceneBundleThunk
+} from "./core";
+export {
+  ArenaScene,
+  ArenaSceneLoadMotion,
+  ReducerDictOverrider,
+  StyleCalculators,
+  NextPhaseCheckers,
+  NumberToStyles,
+  InitMotionStyles
+} from "./hocs";
+export {
+  default as LoadMotionPhase
+} from "./hocs/ArenaSceneLoadMotion/AnimationPhase";

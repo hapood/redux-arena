@@ -203,7 +203,7 @@ Loading Animation Frame for ArenaScene. Props is explained following:
 
 - `children: element` - Element of ArenaScene rendered.
 
-- `asyncBundleThunk: () => Promise` - function for async loading bundle.
+- `sceneBundleThunk: () => Promise` - function for async loading bundle.
 
 - `loadingPlay: element` - Element of loading animation.
 

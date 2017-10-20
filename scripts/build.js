@@ -1,7 +1,6 @@
 const fs = require("fs-extra");
 const path = require("path");
 const ts = require("typescript");
-const exec = require("child_process").execSync;
 
 const files = [
   "README.md",
@@ -19,11 +18,11 @@ const buildFolder = "build";
 
 fs.removeSync(buildFolder);
 
-function runTypeScriptBuild(outDir, target) {
+function runTypeScriptBuild(outDir, target, moduleKind) {
   console.log(
     `Running typescript build (target: ${ts.ScriptTarget[
       target
-    ]}) in ${outDir}/`
+    ]}, moduleKind: ${moduleKind}) in ${outDir}/`
   );
 
   const tsConfig = path.resolve("tsconfig.json");
@@ -41,11 +40,11 @@ function runTypeScriptBuild(outDir, target) {
 
   options.target = target;
   options.outDir = outDir;
+  options.paths = undefined;
 
-  options.module = ts.ModuleKind.ES2015;
-  options.importHelpers = true;
-  options.noEmitHelpers = true;
+  options.module = moduleKind;
   options.declarationDir = path.resolve(outDir);
+  options.sourceMap = false;
 
   const rootFile = path.resolve("src", "index.ts");
   const host = ts.createCompilerHost(options, true);
@@ -131,11 +130,19 @@ function createPackageFile() {
 
 function build() {
   let buildCJSPromise = new Promise(resolve => {
-    runTypeScriptBuild(`${buildFolder}/lib`, ts.ScriptTarget.ES5);
+    runTypeScriptBuild(
+      `${buildFolder}/lib`,
+      ts.ScriptTarget.ES5,
+      ts.ModuleKind.CommonJS
+    );
     resolve();
   });
   let buildESPromise = new Promise(resolve => {
-    runTypeScriptBuild(`${buildFolder}/es`, ts.ScriptTarget.ES2015);
+    runTypeScriptBuild(
+      `${buildFolder}/es`,
+      ts.ScriptTarget.ES5,
+      ts.ModuleKind.ES2015
+    );
     resolve();
   });
   return Promise.all([buildCJSPromise, buildESPromise]).then(() =>

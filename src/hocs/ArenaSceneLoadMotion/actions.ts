@@ -1,33 +1,33 @@
-import ArenaActionTypes from "../../ActionTypes"
-import ActionTypes from "./ActionTypes"
-import AnimationPhase from "./AnimationPhase"
-import { AsyncBundleThunk, State } from "./types"
+import ArenaActionTypes from "../../ActionTypes";
+import ActionTypes from "./ActionTypes";
+import AnimationPhase from "./AnimationPhase";
+import { SceneBundleThunk, State } from "./types";
 
 export function setState(state: State) {
-    return {
-        type: ArenaActionTypes.ARENA_SCENE_SET_STATE,
-        state
-    }
+  return {
+    type: ArenaActionTypes.ARENA_SCENE_SET_STATE,
+    state
+  };
 }
 
 export function nextPhase(phase: AnimationPhase) {
-    return {
-        type: ActionTypes.ARENA_SCENE_ANIMATION_NEXTPHRASE,
-        phase
-    }
+  return {
+    type: ActionTypes.ARENA_SCENE_ANIMATION_NEXTPHRASE,
+    phase
+  };
 }
 
 export function startLeaving() {
-    return {
-        type: ActionTypes.ARENA_SCENE_ANIMATION_LEAVING_START
-    }
+  return {
+    type: ActionTypes.ARENA_SCENE_ANIMATION_LEAVING_START
+  };
 }
 
-export function loadSceneBundle(asyncBundleThunk: AsyncBundleThunk) {
-    return {
-        type: ActionTypes.ARENA_SCENE_ANIMATION_LOAD_BUNDLE,
-        asyncBundleThunk
-    }
+export function loadSceneBundle(sceneBundleThunk: SceneBundleThunk) {
+  return {
+    type: ActionTypes.ARENA_SCENE_ANIMATION_LOAD_BUNDLE,
+    sceneBundleThunk
+  };
 }
 
-export default { setState, nextPhase, startLeaving, loadSceneBundle }
+export default { setState, nextPhase, startLeaving, loadSceneBundle };

@@ -1,25 +1,25 @@
-import { SFC } from "react"
-import { ActionCreatorsMapObject } from "redux"
-import { ForkEffect } from "redux-saga/effects"
-import { SceneBundle, ReducerDict, SceneBundleOptions } from "../../types"
+import { SFC } from "react";
+import { ActionCreatorsMapObject } from "redux";
+import { SceneBundle, ReducerDict, SceneBundleOptions } from "../../types";
 
 export type CurtainReduxInfo = {
-    reducerKey: string
-    origArenaReducerDict: ReducerDict
-    actions: ActionCreatorsMapObject
-    options: SceneBundleOptions
-    saga: ForkEffect
-    bindedActions: ActionCreatorsMapObject
-    arenaReducerDict: ReducerDict
-}
+  reducerKey: string;
+  state?: {} | null | undefined;
+  origArenaReducerDict: ReducerDict;
+  actions: ActionCreatorsMapObject | null | undefined;
+  options: SceneBundleOptions;
+  saga: (...params: any[]) => any;
+  bindedActions: ActionCreatorsMapObject;
+  arenaReducerDict: ReducerDict;
+};
 
 export type CurtainMutableObj = {
-    isObsolete: boolean
-}
+  isObsolete: boolean;
+};
 
 export type CurtainState<P = {}, RS = {}> = {
-    PlayingScene: SFC<P> | null
-    curSceneBundle: SceneBundle<P, RS> | null
-    reduxInfo: CurtainReduxInfo | null
-    mutableObj: CurtainMutableObj
-}
+  PlayingScene: SFC<P> | null | undefined;
+  curSceneBundle: SceneBundle<P, RS> | null | undefined;
+  reduxInfo: CurtainReduxInfo | null | undefined;
+  mutableObj: CurtainMutableObj;
+};
