@@ -14,8 +14,8 @@ export type PropsPicker<S, AS extends RootState = RootState> = (
 export type SceneBundleOptions = {
   reducerKey?: string;
   vReducerKey?: string;
-  isSceneActions?: boolean;
-  isSceneReducer?: boolean;
+  isSceneActions?: boolean | null | undefined;
+  isSceneReducer?: boolean | null | undefined;
 };
 
 export type SceneBundle<P = {}, S = {}> = {

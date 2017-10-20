@@ -21,7 +21,6 @@ export default function createMount() {
       ...mountOptions
     });
   };
-
   return [
     mountWithContext,
     () => {

@@ -2,15 +2,15 @@ import * as React from "react";
 import { ReactWrapper } from "enzyme";
 import { expect } from "chai";
 import { spy } from "sinon";
-import { createMount } from "../../testUtils";
 import {
   createArenaStore,
   LoadMotionPhase,
   EnhancedStore,
   SceneBundleThunk
 } from "src";
+import { MountBundleThunk } from "./types";
 import TestHOC from "./TestHOC";
-import createBundleMounter from "./createBundleThunkMounter";
+import createBundleThunkMounter from "./createBundleThunkMounter";
 
 function selectAnimationState(allStates: any): any {
   let animationState;
@@ -24,12 +24,12 @@ function selectAnimationState(allStates: any): any {
 
 describe("<ArenaSceneLoadMotion /> integration", () => {
   let store: EnhancedStore,
-    mount: (sceneBundleThunk: SceneBundleThunk) => ReactWrapper,
+    mount: MountBundleThunk,
     cleanUp: () => void,
     wrapper;
 
   before(() => {
-    [mount, cleanUp] = createMount();
+    [mount, cleanUp] = createBundleThunkMounter();
     store = createArenaStore();
   });
 
@@ -39,7 +39,7 @@ describe("<ArenaSceneLoadMotion /> integration", () => {
   });
 
   it("should step into IN phase correctly", () => {
-    wrapper = mount((() => import("../../sceneBundleForTestA")) as any);
+    wrapper = mount(store, (() => import("../../sceneBundleForTestA")) as any);
     let flagPromise = new Promise(resolve => {
       let unsubscribe = store.subscribe(() => {
         let animationState = selectAnimationState(store.getState());

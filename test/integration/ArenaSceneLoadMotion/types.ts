@@ -3,5 +3,5 @@ import { EnhancedStore, SceneBundle, SceneBundleThunk } from "src";
 
 export type MountBundleThunk = (
   store: EnhancedStore,
-  bundleThunk: SceneBundleThunk
+  sceneBundleThunk: SceneBundleThunk
 ) => ReactWrapper;
