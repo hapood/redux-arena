@@ -1,17 +1,17 @@
 {
-  "version": "2.5",
+  "version": "2.5.3",
   "compilerOptions": {
     "target": "es5",
     "outDir": "lib",
     "sourceMap": false,
     "declaration": true,
-    "module": "commonjs",
+    "module": "es2015",
     "removeComments": false,
     "strictNullChecks": true,
     "noImplicitReturns": true,
     "noImplicitUseStrict": true,
     "noImplicitAny": true,
-    "moduleResolution ": "node",
+    "moduleResolution": "node",
     "lib": ["es6", "dom"],
     "jsx": "react"
   },

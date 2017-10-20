@@ -3,20 +3,14 @@
   "version": "0.8.0",
   "description":
     "Bundling reducers, actions, saga and react-component when using Redux",
-  "main": "lib/mobx.js",
-  "module": "lib/redux-arena.module.js",
-  "jsnext:main": "lib/redux-arena.module.js",
-  "typings": "lib/redux-arena.d.ts",
   "scripts": {
     "prettier":
       "prettier --write --print-width 100 --tab-width 4 --no-semi \"**/*.js\" \"**/*.jsx\" \"**/*.tsx\" \"**/*.ts\"",
-    "build": "run-p build:**",
+    "build": "node scripts/build.js",
     "build:cjs":
       "cross-env BABEL_ENV=cjs babel ./src --out-dir ./build/lib --ignore spec.js",
     "build:es":
       "cross-env BABEL_ENV=es babel ./src --out-dir ./build/es --ignore spec.js",
-    "clean:build": "rimraf build",
-    "prebuild": "npm run clean:build",
     "postpublish": "npm run build && cd build && npm publish",
     "test": "cross-env BABEL_ENV=es karma start test/karma.conf.js",
     "test-travis":
@@ -76,13 +70,16 @@
     "karma-webpack": "^2.0.4",
     "loglevel": "^1.5.0",
     "mocha": "^4.0.1",
-    "npm-run-all": "^4.1.1",
     "prettier": "^1.7.4",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "16",
-    "rimraf": "^2.6.2",
+    "rollup": "^0.50.0",
+    "rollup-plugin-filesize": "^1.4.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
     "sinon": "^4.0.0",
+    "typescript": "^2.5.3",
+    "uglify-js": "^3.1.4",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1"
   }
