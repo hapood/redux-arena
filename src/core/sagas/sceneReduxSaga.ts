@@ -38,7 +38,7 @@ function bindActions(
   dispatch: Dispatch<any>,
   isSceneActions: boolean
 ) {
-  if (isSceneActions === true) {
+  if (isSceneActions === false) {
     return bindActionCreators(actions || defaultActions, dispatch);
   } else {
     return bindArenaActionCreators(
@@ -100,7 +100,7 @@ export function* sceneApplyRedux({
   let reducerFactory = buildReducerFactory(
     reducer,
     state,
-    curOptions.isSceneReducer || false
+    curOptions.isSceneReducer === false ? false : true
   );
   let newReducerKey = sceneAddReducer(
     arenaStore,
@@ -112,7 +112,7 @@ export function* sceneApplyRedux({
     actions,
     newReducerKey,
     arenaStore.dispatch,
-    curOptions.isSceneActions || false
+    curOptions.isSceneActions === false ? false : true
   );
   let newArenaReducerDict = buildSceneReducerDict(
     arenaReducerDict,
@@ -162,7 +162,7 @@ export function* sceneUpdateRedux({
   let reducerFactory = buildReducerFactory(
     reducer,
     state,
-    curOptions.isSceneReducer || true
+    curOptions.isSceneReducer === false ? false : true
   );
   let newReduxInfo = Object.assign({}, reduxInfo, { options: curOptions });
   if (
@@ -216,7 +216,7 @@ export function* sceneUpdateRedux({
       actions,
       newReducerKey,
       arenaStore.dispatch,
-      curOptions.isSceneActions || false
+      curOptions.isSceneActions === false ? false : true
     );
   }
   if (
