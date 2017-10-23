@@ -1,6 +1,6 @@
 {
   "name": "redux-arena",
-  "version": "0.9.0",
+  "version": "0.9.0-alpha-1",
   "description": "Bundling reducers, actions, saga and react-component when using Redux",
   "scripts": {
     "prettier": "prettier --write \"**/*.js\" \"**/*.jsx\" \"**/*.tsx\" \"**/*.ts\"",
