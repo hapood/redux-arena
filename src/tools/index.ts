@@ -1,4 +1,2 @@
-import bundleToComponent from "./bundleToComponent";
-import bundleToElement from "./bundleToElement";
-
-export { bundleToComponent, bundleToElement };
+export { default as bundleToComponent } from "./bundleToComponent";
+export { default as bundleToElement } from "./bundleToElement";

@@ -18,7 +18,7 @@ const buildFolder = "build";
 
 fs.removeSync(buildFolder);
 
-function runTypeScriptBuild(outDir, target, moduleKind) {
+function runTypeScriptBuild(outDir, target, moduleKind, isDeclarationOut) {
   console.log(
     `Running typescript build (target: ${ts.ScriptTarget[
       target
@@ -41,9 +41,14 @@ function runTypeScriptBuild(outDir, target, moduleKind) {
   options.target = target;
   options.outDir = outDir;
   options.paths = undefined;
+  if (isDeclarationOut) {
+    options.declaration = true;
+    options.declarationDir = buildFolder;
+  } else {
+    options.declaration = false;
+  }
 
   options.module = moduleKind;
-  options.declarationDir = path.resolve(outDir);
   options.sourceMap = false;
 
   const rootFile = path.resolve("src", "index.ts");
@@ -106,7 +111,7 @@ function createPackageFile() {
         main: "lib/index.js",
         module: "es/index.js",
         "jsnext:main": "es/index.js",
-        typings: "es/index.d.ts",
+        typings: "index.d.ts",
         keywords,
         repository,
         license,
@@ -133,7 +138,8 @@ function build() {
     runTypeScriptBuild(
       `${buildFolder}/lib`,
       ts.ScriptTarget.ES5,
-      ts.ModuleKind.CommonJS
+      ts.ModuleKind.CommonJS,
+      true
     );
     resolve();
   });
@@ -145,7 +151,18 @@ function build() {
     );
     resolve();
   });
-  return Promise.all([buildCJSPromise, buildESPromise]).then(() =>
+  let buildTDPromise = new Promise(resolve => {
+    require("dts-bundle").bundle({
+      name: "../index.d.ts",
+      main: "src/index.ts"
+    });
+    resolve();
+  });
+  return Promise.all([
+    buildCJSPromise,
+    buildESPromise,
+    buildTDPromise
+  ]).then(() =>
     Promise.all(files.map(file => copyFile(file))).then(() =>
       createPackageFile()
     )

@@ -3,7 +3,9 @@ export {
   SceneBundle,
   EnhancedStore,
   SceneBundleThunk,
-  DefaultSceneActions
+  DefaultSceneActions,
+  ReducerDict,
+  ReducerDictItem
 } from "./core";
 export {
   ArenaScene,
