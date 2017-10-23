@@ -1,4 +1,16 @@
 {
-  "presets": ["latest", "stage-1", "react"],
-  "plugins": ["react-hot-loader/babel"]
+  "presets": [
+    [
+      "env",
+      {
+        "loose": true
+      }
+    ],
+    "react"
+  ],
+  "plugins": [
+    "syntax-dynamic-import",
+    "transform-class-properties",
+    "syntax-object-rest-spread"
+  ]
 }
