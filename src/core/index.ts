@@ -11,7 +11,8 @@ export {
   SceneBundleThunk,
   ReducerDict,
   ReducerDictItem,
-  ReducerFactory
+  ReducerFactory,
+  DefaultSceneActions
 } from "./types";
 export {
   arenaReducer,

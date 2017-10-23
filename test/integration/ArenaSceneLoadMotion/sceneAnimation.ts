@@ -4,10 +4,10 @@ import {
   StyleCalculators,
   NextPhaseCheckers,
   NumberToStyles,
-  InitMotionStyles
+  InitMotionStyle
 } from "src";
 
-export const initStyles: InitMotionStyles = [
+export const initStyles: InitMotionStyle[] = [
   {
     key: "container",
     style: {}

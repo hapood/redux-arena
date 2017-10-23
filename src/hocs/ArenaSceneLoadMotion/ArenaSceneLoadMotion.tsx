@@ -1,16 +1,16 @@
 import * as React from "react";
 import { TransitionMotion } from "react-motion";
-import AnimationPhase from "./AnimationPhase";
+import AnimationPhases from "./AnimationPhases";
 import { combineStyleCalculator, isCurPhaseEnd } from "./utils";
 import {
   ArenaSceneLoadMotionProps,
   ArenaSceneLoadMotionConnectedProps,
-  ExtendedMotionStyles,
+  ExtendedMotionStyle,
   CombinedStyleCalculator
 } from "./types";
 
 export type InnerState = {
-  initStyles: ExtendedMotionStyles;
+  initStyles: ExtendedMotionStyle[];
   styleCalculator: CombinedStyleCalculator;
   playElement: React.ReactElement<{}> | null;
 };
@@ -22,10 +22,10 @@ export default class ArenaSceneLoadMotion extends React.Component<
   componentWillMount() {
     this.props.actions.loadSceneBundle(this.props.sceneBundleThunk);
     this.setState({
-      initStyles: (this.props.initStyles as ExtendedMotionStyles).concat([
+      initStyles: (this.props.initStyles as ExtendedMotionStyle[]).concat([
         {
           key: "nextPhase",
-          style: { phase: AnimationPhase.LOADING }
+          style: { phase: AnimationPhases.LOADING }
         }
       ]),
       styleCalculator: combineStyleCalculator(
@@ -33,7 +33,7 @@ export default class ArenaSceneLoadMotion extends React.Component<
         this.props.phase,
         this.props.nextPhaseCheckers,
         this.props.isSceneReady,
-        (phase: AnimationPhase) =>
+        (phase: AnimationPhases) =>
           setImmediate(() => this.props.actions.nextPhase(phase))
       ),
       playElement: this.props.bundle
@@ -77,7 +77,7 @@ export default class ArenaSceneLoadMotion extends React.Component<
         style => style.key === "nextPhase"
       );
       if (nextPhaseStyle) {
-        state.initStyles = (nextProps.initStyles as ExtendedMotionStyles).concat(
+        state.initStyles = (nextProps.initStyles as ExtendedMotionStyle[]).concat(
           [nextPhaseStyle]
         );
       }

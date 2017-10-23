@@ -6,13 +6,13 @@ import {
   PlainStyle
 } from "react-motion";
 import { SceneBundle, SceneBundleThunk } from "../../core";
-import AnimationPhase from "./AnimationPhase";
+import AnimationPhases from "./AnimationPhases";
 
 export type SceneBundleThunk = () => Promise<SceneBundle>;
 
 export type StyleCalculator = (
   style: PlainStyle,
-  phase: AnimationPhase
+  phase: AnimationPhases
 ) => Style;
 
 export type StyleCalculators = {
@@ -32,11 +32,10 @@ export type StyleKeys = "container" | "loadingPlay" | "scenePlay";
 export interface InitMotionStyle extends TransitionPlainStyle {
   key: StyleKeys;
 }
-export type InitMotionStyles = InitMotionStyle[];
 
 export type NumberToStyle = (
   style: PlainStyle,
-  phase: AnimationPhase,
+  phase: AnimationPhases,
   isSceneReady: boolean
 ) => { [key: string]: string };
 
@@ -50,7 +49,7 @@ export type ArenaSceneLoadMotionProps = {
   loadingPlay: React.ReactElement<{}>;
   sceneBundleThunk: SceneBundleThunk;
   children: (bundle: SceneBundle) => React.ReactElement<{}>;
-  initStyles: InitMotionStyles;
+  initStyles: InitMotionStyle[];
   styleCalculators: StyleCalculators;
   nextPhaseCheckers: NextPhaseCheckers;
   numberToStyles: NumberToStyles;
@@ -59,7 +58,7 @@ export type ArenaSceneLoadMotionProps = {
 export type ArenaSceneLoadMotionConnectedProps = {
   actions: {
     setState: (state: State) => void;
-    nextPhase: (phase: AnimationPhase) => void;
+    nextPhase: (phase: AnimationPhases) => void;
     startLeaving: () => void;
     loadSceneBundle: (sceneBundleThunk: SceneBundleThunk) => void;
   };
@@ -67,7 +66,7 @@ export type ArenaSceneLoadMotionConnectedProps = {
 
 export type State = {
   isSceneReady: boolean;
-  phase: AnimationPhase;
+  phase: AnimationPhases;
   bundle: SceneBundle | null;
 };
 
@@ -81,10 +80,6 @@ export interface ExtendedPlainMotionStyle extends TransitionPlainStyle {
   key: StyleKeys | "nextPhase";
 }
 
-export type ExtendedMotionStyles = ExtendedMotionStyle[];
-
-export type ExtendedPlainMotionStyles = ExtendedPlainMotionStyle[];
-
 export type CombinedStyleCalculator = (
-  prevStyles: ExtendedPlainMotionStyles
-) => ExtendedMotionStyles;
+  prevStyles: ExtendedPlainMotionStyle[]
+) => ExtendedMotionStyle[];

@@ -27,5 +27,5 @@ export {
   StyleCalculators,
   NextPhaseCheckers,
   NumberToStyles,
-  InitMotionStyles
+  InitMotionStyle
 } from "./types";

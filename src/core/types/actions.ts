@@ -9,3 +9,7 @@ export type CurtainLoadSceneAction = {
   isInitial: boolean;
   loadedCb: () => void;
 };
+
+export type DefaultSceneActions<S = {}> = {
+  setState: (state: S) => void;
+};

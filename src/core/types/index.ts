@@ -5,5 +5,5 @@ export {
   PropsPicker
 } from "./bundle";
 export { ReducerDict, ReducerDictItem } from "./reducerDict";
-export { CurtainLoadSceneAction } from "./actions";
+export { CurtainLoadSceneAction, DefaultSceneActions } from "./actions";
 export { SceneReducer, ReducerFactory } from "./reducer";

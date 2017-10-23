@@ -17,6 +17,6 @@ export {
   StyleCalculators,
   NextPhaseCheckers,
   NumberToStyles,
-  InitMotionStyles
+  InitMotionStyle
 } from "./ArenaSceneLoadMotion";
 export { default as ReducerDictOverrider } from "./ReducerDictOverrider";

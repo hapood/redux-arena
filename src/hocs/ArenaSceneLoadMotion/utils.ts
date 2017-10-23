@@ -1,4 +1,4 @@
-import AnimationPhase from "./AnimationPhase";
+import AnimationPhases from "./AnimationPhases";
 import {
   TransitionPlainStyle,
   TransitionStyle,
@@ -10,12 +10,12 @@ import {
   StyleCalculators,
   StyleCalculator,
   NextPhaseCheckers,
-  ExtendedPlainMotionStyles,
-  ExtendedMotionStyles
+  ExtendedPlainMotionStyle,
+  ExtendedMotionStyle
 } from "./types";
 
 export function isCurPhaseEnd(
-  prevStyles: ExtendedPlainMotionStyles,
+  prevStyles: ExtendedPlainMotionStyle[],
   isSceneReady: boolean,
   nextPhaseCheckers: NextPhaseCheckers
 ) {
@@ -44,7 +44,7 @@ export function isCurPhaseEnd(
 
 function calcStyle(
   style: PlainStyle,
-  phase: AnimationPhase,
+  phase: AnimationPhases,
   calculator: StyleCalculator
 ): Style {
   return Object.assign({}, calculator ? calculator(style, phase) : style, {
@@ -54,13 +54,13 @@ function calcStyle(
 
 export function combineStyleCalculator(
   styleCalculators: StyleCalculators,
-  phase: AnimationPhase,
+  phase: AnimationPhases,
   nextPhaseCheckers: NextPhaseCheckers,
   isSceneReady: boolean,
-  nextPhase: (curPhase: AnimationPhase) => void
+  nextPhase: (curPhase: AnimationPhases) => void
 ): CombinedStyleCalculator {
-  return function(prevStyles: ExtendedPlainMotionStyles) {
-    return <ExtendedMotionStyles>prevStyles.map(styleObj => {
+  return function(prevStyles: ExtendedPlainMotionStyle[]) {
+    return <ExtendedMotionStyle[]>prevStyles.map(styleObj => {
       let { key, style } = styleObj;
       switch (key) {
         case "container":

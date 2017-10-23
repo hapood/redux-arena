@@ -2,7 +2,8 @@ export {
   createArenaStore,
   SceneBundle,
   EnhancedStore,
-  SceneBundleThunk
+  SceneBundleThunk,
+  DefaultSceneActions
 } from "./core";
 export {
   ArenaScene,
@@ -11,8 +12,8 @@ export {
   StyleCalculators,
   NextPhaseCheckers,
   NumberToStyles,
-  InitMotionStyles
+  InitMotionStyle
 } from "./hocs";
 export {
   default as LoadMotionPhase
-} from "./hocs/ArenaSceneLoadMotion/AnimationPhase";
+} from "./hocs/ArenaSceneLoadMotion/AnimationPhases";

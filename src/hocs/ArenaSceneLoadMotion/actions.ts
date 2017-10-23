@@ -1,6 +1,6 @@
 import ArenaActionTypes from "../../ActionTypes";
 import ActionTypes from "./ActionTypes";
-import AnimationPhase from "./AnimationPhase";
+import AnimationPhases from "./AnimationPhases";
 import { SceneBundleThunk, State } from "./types";
 
 export function setState(state: State) {
@@ -10,7 +10,7 @@ export function setState(state: State) {
   };
 }
 
-export function nextPhase(phase: AnimationPhase) {
+export function nextPhase(phase: AnimationPhases) {
   return {
     type: ActionTypes.ARENA_SCENE_ANIMATION_NEXTPHRASE,
     phase

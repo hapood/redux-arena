@@ -1,6 +1,6 @@
 import initState from "./state";
 import ActionTypes from "./ActionTypes";
-import AnimationPhase from "./AnimationPhase";
+import AnimationPhases from "./AnimationPhases";
 import { State } from "./types";
 import { AnyAction } from "redux";
 
@@ -14,22 +14,22 @@ export default function(
     case ActionTypes.ARENA_SCENE_ANIMATION_NEXTPHRASE:
       if (state.phase !== action.phase) return state;
       switch (state.phase) {
-        case AnimationPhase.LOADING:
+        case AnimationPhases.LOADING:
           return Object.assign({}, state, {
-            phase: AnimationPhase.ENTERING
+            phase: AnimationPhases.ENTERING
           });
-        case AnimationPhase.ENTERING:
+        case AnimationPhases.ENTERING:
           return Object.assign({}, state, {
-            phase: AnimationPhase.IN
+            phase: AnimationPhases.IN
           });
-        case AnimationPhase.LEAVING:
-          return Object.assign({}, state, { phase: AnimationPhase.OUT });
+        case AnimationPhases.LEAVING:
+          return Object.assign({}, state, { phase: AnimationPhases.OUT });
         default:
           return state;
       }
     case ActionTypes.ARENA_SCENE_ANIMATION_LEAVING_START:
-      if (state.phase === AnimationPhase.IN)
-        return Object.assign({}, state, { phase: AnimationPhase.LEAVING });
+      if (state.phase === AnimationPhases.IN)
+        return Object.assign({}, state, { phase: AnimationPhases.LEAVING });
     default:
       return state;
   }
