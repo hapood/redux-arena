@@ -1,4 +1,4 @@
-﻿enum ActionTypes {
+enum ActionTypes {
   ARENA_SET_STATE = "ARENA_SET_STATE",
   ARENA_REPLACE_STATE = "ARENA_REPLACE_STATE",
 

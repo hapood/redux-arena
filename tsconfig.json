@@ -1,11 +1,15 @@
 {
-  "version": "2.5",
+  "version": "2.5.3",
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "src": ["src"]
+    },
     "target": "es5",
-    "outDir": "lib",
-    "sourceMap": false,
+    "outDir": "tmp",
+    "sourceMap": true,
     "declaration": true,
-    "module": "commonjs",
+    "module": "esnext",
     "removeComments": false,
     "strictNullChecks": true,
     "noImplicitReturns": true,

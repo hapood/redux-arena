@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 import { Map, List } from "immutable";
-import ActionTypes from "../ActionTypes.js";
+import ActionTypes from "../ActionTypes";
 import getArenaInitState from "./getArenaInitState";
 import { ArenaState, StateTreeNode, StateTree, StateTreeDict } from "./types";
 

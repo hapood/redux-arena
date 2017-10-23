@@ -1,12 +1,13 @@
-import React from "react";
+import * as React from "react";
+import { ReactWrapper } from "enzyme";
 import { expect } from "chai";
 import { spy } from "sinon";
-import { createMount } from "../../testUtils";
-import { createArenaStore } from "src";
+import { createArenaStore, EnhancedStore, SceneBundle } from "src";
 import sceneBundleForTestA from "../../sceneBundleForTestA";
-import TestHoc from "./TestHOC";
+import { MountBundle } from "./types";
+import createBundleMounter from "./createBundleMounter";
 
-function selectNeededStates(allStates, name) {
+function selectNeededStates(allStates: any, name: string): any {
   let { arena, ...otherState } = allStates;
   let metaState, bundleState;
   Object.keys(otherState).forEach(key => {
@@ -24,22 +25,21 @@ function selectNeededStates(allStates, name) {
 }
 
 describe("<ArenaScene /> integration", () => {
-  let mount, store, wrapper;
+  let store: EnhancedStore,
+    mountSceneBundle: MountBundle,
+    wrapper: ReactWrapper,
+    cleanUp: () => void;
 
   before(() => {
-    mount = createMount();
+    [mountSceneBundle, cleanUp] = createBundleMounter();
     store = createArenaStore();
   });
 
   after(() => {
-    mount.cleanUp();
     store.close();
   });
 
   it("should mount with right redux state", () => {
-    wrapper = mount(
-      <TestHoc sceneBundle={sceneBundleForTestA} store={store} />
-    );
     let flagPromise = new Promise(resolve => {
       let unsubscribe = store.subscribe(() => {
         let { arena, metaState, bundleState } = selectNeededStates(
@@ -54,14 +54,15 @@ describe("<ArenaScene /> integration", () => {
         }
       });
     });
+    wrapper = mountSceneBundle(store, sceneBundleForTestA);
     return flagPromise;
   });
 
   it("should unmount with right redux state", () => {
-    mount(<div />);
+    cleanUp();
     let flagPromise = new Promise(resolve => {
       let unsubscribe = store.subscribe(() => {
-        let state = store.getState();
+        let state: any = store.getState();
         Object.keys(state).length == 1;
         if (Object.keys(state).length == 1) {
           unsubscribe();

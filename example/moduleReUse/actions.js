@@ -1,13 +1,13 @@
-import { ADD_PANEL, DEL_PANEL } from "./ActionTypes";
+import ActionTypes from "./ActionTypes";
 
 export function addPanel() {
   return {
-    type: ADD_PANEL
+    type: ActionTypes.ADD_PANEL
   };
 }
 
 export function delPanel() {
   return {
-    type: DEL_PANEL
+    type: ActionTypes.DEL_PANEL
   };
 }

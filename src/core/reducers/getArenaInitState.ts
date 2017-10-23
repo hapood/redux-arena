@@ -1,4 +1,4 @@
-﻿import { Map } from "immutable";
+import { Map } from "immutable";
 import { ArenaState } from "./types";
 
 export default function getInitState(): ArenaState {

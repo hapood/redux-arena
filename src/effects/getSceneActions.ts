@@ -6,6 +6,6 @@ function* _getSceneActions(key: string) {
   return entry.actions;
 }
 
-export default function getSceneActions(key: string = "_arenaScene") {
-  return call(_getSceneActions, key);
+export default function getSceneActions(key?: string) {
+  return call(_getSceneActions, key ? key : "_arenaScene");
 }

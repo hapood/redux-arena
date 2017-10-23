@@ -1,6 +1,7 @@
+import { ReactElement } from "react";
 import { unmountComponentAtNode } from "react-dom";
 import { configure } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import * as Adapter from "enzyme-adapter-react-16";
 configure({ adapter: new Adapter() });
 
 import { mount } from "enzyme";
@@ -11,18 +12,20 @@ export default function createMount() {
   attachTo.setAttribute("id", "app");
   window.document.body.insertBefore(attachTo, window.document.body.firstChild);
 
-  let mountWithContext = function mountWithContext(node, mountOptions = {}) {
+  let mountWithContext: any = function(
+    node: ReactElement<{}>,
+    mountOptions = {}
+  ) {
     return mount(node, {
       attachTo,
       ...mountOptions
     });
   };
-
-  mountWithContext.attachTo = attachTo;
-  mountWithContext.cleanUp = () => {
-    unmountComponentAtNode(attachTo);
-    attachTo.parentNode.removeChild(attachTo);
-  };
-
-  return mountWithContext;
+  return [
+    mountWithContext,
+    () => {
+      unmountComponentAtNode(attachTo);
+      attachTo.parentNode && attachTo.parentNode.removeChild(attachTo);
+    }
+  ];
 }

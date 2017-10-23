@@ -1,4 +1,4 @@
 export default {
   name: "Parent",
-  cnt:0
+  cnt: 0
 };

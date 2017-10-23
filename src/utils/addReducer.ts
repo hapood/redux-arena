@@ -1,14 +1,14 @@
-import { ActionTypes } from "../core/ActionTypes";
-import { EhancedStore, SceneReducer, ReducerFactory } from "../core";
+import ActionTypes from "../core/ActionTypes";
+import { EnhancedStore, SceneReducer, ReducerFactory } from "../core";
 
 function addReducer(
-  store: EhancedStore<any>,
+  store: EnhancedStore<any>,
   reducerKey: string | null | undefined,
   reducerFactory: ReducerFactory
 ) {
   let newReducerKey = reducerKey;
   if (newReducerKey != null) {
-    let flag = store.addReducer({
+    let flag = store.addSingleReducer({
       reducerKey: newReducerKey,
       reducer: reducerFactory(newReducerKey)
     });
@@ -18,7 +18,7 @@ function addReducer(
   } else {
     do {
       newReducerKey = String(Math.random()).slice(2);
-      let flag = store.addReducer({
+      let flag = store.addSingleReducer({
         reducerKey: newReducerKey,
         reducer: reducerFactory(newReducerKey)
       });
@@ -29,7 +29,7 @@ function addReducer(
 }
 
 export function sceneAddReducer(
-  store: EhancedStore<any>,
+  store: EnhancedStore<any>,
   reducerKey: string | null | undefined,
   reducerFactory: ReducerFactory,
   state?: any
@@ -45,7 +45,7 @@ export function sceneAddReducer(
 }
 
 export function curtainAddReducer(
-  store: EhancedStore<any>,
+  store: EnhancedStore<any>,
   reducerKey: string | null | undefined,
   reducerFactory: ReducerFactory,
   state?: any

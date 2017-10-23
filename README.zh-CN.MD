@@ -204,7 +204,7 @@ ArenaScene的加载动画框架，props如下所示：
 
 - `children: element` - ArenaScene渲染出的element。
 
-- `asyncBundleThunk: () => Promise` - 用于异步加载bundle的函数。
+- `sceneBundleThunk: () => Promise` - 用于异步加载bundle的函数。
 
 - `loadingPlay: element` - 加载动画的element。
 

@@ -1,4 +1,4 @@
-﻿export { default as arenaReducer } from "./arenaReducer";
+export { default as arenaReducer } from "./arenaReducer";
 export { default as createSceneReducer } from "./createSceneReducer";
 export { default as createCurtainReducer } from "./createCurtainReducer";
 export { default as getArenaInitState } from "./getArenaInitState";

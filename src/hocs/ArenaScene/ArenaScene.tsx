@@ -1,6 +1,6 @@
-﻿import * as React from "react";
+import * as React from "react";
 import * as PropTypes from "prop-types";
-import { EhancedStore, ReducerDict, SceneBundle } from "../../core";
+import { EnhancedStore, ReducerDict } from "../../core";
 import ActionTypes from "../../core/ActionTypes";
 import { createCurtainReducer } from "../../core/reducers";
 import {
@@ -8,32 +8,12 @@ import {
   curtainAddReducer,
   buildCurtainReducerDict
 } from "../../utils";
-import { curtainConnect } from "../SceneBundle";
-
-export type ArenaSceneExtraProps = {
-  reducerKey?: string;
-  vReducerKey?: string;
-};
-export type ArenaSceneProps<SP, SS> = ArenaSceneExtraProps & {
-  sceneProps: SP;
-  sceneBundle: SceneBundle<SP, SS>;
-};
-
-export type ArenaSceneState = {
-  parentReducerKey: string;
-  arenaReducerDict: ReducerDict;
-  ConnectedBundleComponent: React.SFC<any>;
-  connectedBundleElement: React.SFCElement<any>;
-};
-
-export type ArenaSceneContext = {
-  store: EhancedStore<any>;
-  arenaReducerDict: ReducerDict | null | undefined;
-};
+import { curtainConnect } from "../BundleComponent";
+import { ArenaSceneProps, ArenaSceneState, ArenaSceneContext } from "./types";
 
 function buildConnectedSceneBundle(
   reducerKey: string,
-  store: EhancedStore<any>
+  store: EnhancedStore<any>
 ) {
   let sagaTaskPromise = new Promise(resolve =>
     store.dispatch({

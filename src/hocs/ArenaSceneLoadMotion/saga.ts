@@ -1,7 +1,8 @@
+import { ForkEffect } from "redux-saga/effects";
 import { takeLatestSceneAction, setSceneState } from "../../effects";
-import { ARENA_SCENE_ANIMATION_LOAD_BUNDLE } from "./ActionTypes";
-import { LOADING } from "./animationPhase";
-
+import ActionTypes from "./ActionTypes";
+import AnimationPhase from "./AnimationPhase";
+import { SceneBundleThunk } from "./types";
 /**
  * The asynchronous loading function of the scene, 
  * and finally the synchronous load function
@@ -9,13 +10,17 @@ import { LOADING } from "./animationPhase";
  * @param {any} { arenaReducerDict, asyncSceneBundle } 
  * @returns 
  */
-function* loadSceneBundle({ asyncBundleThunk }) {
+function* loadSceneBundle({
+  sceneBundleThunk
+}: {
+  sceneBundleThunk: SceneBundleThunk;
+}) {
   yield setSceneState({
     isSceneReady: false,
-    phase: LOADING,
+    phase: AnimationPhase.LOADING,
     bundle: null
   });
-  let bundleModule = yield asyncBundleThunk();
+  let bundleModule = yield sceneBundleThunk();
   let bundle = bundleModule.default ? bundleModule.default : bundleModule;
   yield setSceneState({
     isSceneReady: true,
@@ -25,7 +30,7 @@ function* loadSceneBundle({ asyncBundleThunk }) {
 
 export default function*() {
   yield takeLatestSceneAction(
-    ARENA_SCENE_ANIMATION_LOAD_BUNDLE,
+    ActionTypes.ARENA_SCENE_ANIMATION_LOAD_BUNDLE,
     loadSceneBundle
   );
 }

@@ -3,3 +3,5 @@ export function addCnt() {
     type: "ADD_CNT"
   };
 }
+
+export default { addCnt };

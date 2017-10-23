@@ -1,7 +1,11 @@
 import AnimationPhase from "./AnimationPhase";
-import { TransitionPlainStyle, TransitionStyle, Style } from "react-motion";
 import {
-  CombinedNumberToStyle,
+  TransitionPlainStyle,
+  TransitionStyle,
+  PlainStyle,
+  Style
+} from "react-motion";
+import {
   CombinedStyleCalculator,
   StyleCalculators,
   StyleCalculator,
@@ -39,7 +43,7 @@ export function isCurPhaseEnd(
 }
 
 function calcStyle(
-  style: Style,
+  style: PlainStyle,
   phase: AnimationPhase,
   calculator: StyleCalculator
 ): Style {

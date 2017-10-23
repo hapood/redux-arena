@@ -92,9 +92,9 @@ function* killArenaCurtainSaga({
       type: ActionTypes.ARENA_STATETREE_NODE_DELETE,
       reducerKey: reduxInfo.reducerKey
     });
-    store.removeReducer(reduxInfo.reducerKey);
+    store.removeSingleReducer(reduxInfo.reducerKey);
   }
-  store.removeReducer(reducerKey);
+  store.removeSingleReducer(reducerKey);
 }
 
 export default function* saga() {

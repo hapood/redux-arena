@@ -20,9 +20,15 @@ function* _takeLatestSceneAction(
 
 export default function takeLatestSceneAction(
   pattern: Pattern,
-  saga: () => void,
-  key: string = "_arenaScene",
+  saga: (...params: any[]) => any,
+  key?: string,
   ...args: any[]
 ) {
-  return fork(_takeLatestSceneAction, pattern, saga, key, args);
+  return fork(
+    _takeLatestSceneAction,
+    pattern,
+    saga,
+    key ? key : "_arenaScene",
+    args
+  );
 }

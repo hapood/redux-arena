@@ -5,15 +5,15 @@ import {
   Style,
   PlainStyle
 } from "react-motion";
-import { SceneBundle } from "../../core";
+import { SceneBundle, SceneBundleThunk } from "../../core";
 import AnimationPhase from "./AnimationPhase";
 
-export type AsyncBundleThunk = () => Promise<SceneBundle>;
+export type SceneBundleThunk = () => Promise<SceneBundle>;
 
 export type StyleCalculator = (
-  style: Style,
+  style: PlainStyle,
   phase: AnimationPhase
-) => TransitionStyle;
+) => Style;
 
 export type StyleCalculators = {
   container: StyleCalculator;
@@ -48,7 +48,7 @@ export type NumberToStyles = {
 
 export type ArenaSceneLoadMotionProps = {
   loadingPlay: React.ReactElement<{}>;
-  asyncBundleThunk: AsyncBundleThunk;
+  sceneBundleThunk: SceneBundleThunk;
   children: (bundle: SceneBundle) => React.ReactElement<{}>;
   initStyles: InitMotionStyles;
   styleCalculators: StyleCalculators;
@@ -61,7 +61,7 @@ export type ArenaSceneLoadMotionConnectedProps = {
     setState: (state: State) => void;
     nextPhase: (phase: AnimationPhase) => void;
     startLeaving: () => void;
-    loadSceneBundle: (asyncBundleThunk: AsyncBundleThunk) => void;
+    loadSceneBundle: (sceneBundleThunk: SceneBundleThunk) => void;
   };
 } & State;
 
@@ -77,7 +77,7 @@ export interface ExtendedMotionStyle extends TransitionPlainStyle {
   key: StyleKeys | "nextPhase";
 }
 
-export interface ExtendedPlainMotionStyle extends TransitionStyle {
+export interface ExtendedPlainMotionStyle extends TransitionPlainStyle {
   key: StyleKeys | "nextPhase";
 }
 

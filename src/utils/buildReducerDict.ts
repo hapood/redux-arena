@@ -39,13 +39,13 @@ export function buildSceneReducerDict(
   arenaReducerDict: ReducerDict | null | undefined,
   reducerKey: string,
   vReducerKey: string | null | undefined,
-  actions: ActionCreatorsMapObject
+  actions: ActionCreatorsMapObject | null | undefined
 ) {
   return buildReducerKey(
     arenaReducerDict,
     reducerKey,
     vReducerKey,
-    actions,
+    actions || {},
     "_arenaScene"
   );
 }

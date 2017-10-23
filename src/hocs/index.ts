@@ -9,9 +9,14 @@ export {
   BundleComponent,
   BundleComponentBaseProps,
   BundleComponentConnectedProps,
-  BundleComponentExternalProps,
   BundleComponentProps,
   BundleComponentState
-} from "./SceneBundle";
-export { default as ArenaSceneLoadMotion } from "./ArenaSceneLoadMotion";
+} from "./BundleComponent";
+export {
+  default as ArenaSceneLoadMotion,
+  StyleCalculators,
+  NextPhaseCheckers,
+  NumberToStyles,
+  InitMotionStyles
+} from "./ArenaSceneLoadMotion";
 export { default as ReducerDictOverrider } from "./ReducerDictOverrider";

@@ -6,9 +6,26 @@
   version "4.0.4"
   resolved "https://registry.npmjs.org/@types/chai/-/chai-4.0.4.tgz#fe86315d9a66827feeb16f73bc954688ec950e18"
 
-"@types/jasmine@^2.6.0":
-  version "2.6.0"
-  resolved "https://registry.npmjs.org/@types/jasmine/-/jasmine-2.6.0.tgz#997b41a27752b4850af2683bc4a8d8222c25bd02"
+"@types/cheerio@*":
+  version "0.22.3"
+  resolved "https://registry.npmjs.org/@types/cheerio/-/cheerio-0.22.3.tgz#c448036ec3d1b4fd8a61c6b37b3faa6d9c8b7b97"
+
+"@types/enzyme-adapter-react-16@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@types/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.0.0.tgz#2feefeb0e0df43634378598d6f42c2290d1ac7d5"
+  dependencies:
+    "@types/enzyme" "*"
+
+"@types/enzyme@*", "@types/enzyme@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.npmjs.org/@types/enzyme/-/enzyme-3.1.0.tgz#6b5b2d85232ee4200c78d4fcf19a97921f438c7c"
+  dependencies:
+    "@types/cheerio" "*"
+    "@types/react" "*"
+
+"@types/mocha@^2.2.43":
+  version "2.2.43"
+  resolved "https://registry.npmjs.org/@types/mocha/-/mocha-2.2.43.tgz#03c54589c43ad048cbcbfd63999b55d0424eec27"
 
 "@types/node@*":
   version "8.0.41"
@@ -135,7 +152,7 @@ ansi-styles@^2.2.1:
   version "2.2.1"
   resolved "https://registry.npmjs.org/ansi-styles/-/ansi-styles-2.2.1.tgz#b432dd3358b634cf75e1e4664368240533c1ddbe"
 
-ansi-styles@^3.1.0, ansi-styles@^3.2.0:
+ansi-styles@^3.1.0:
   version "3.2.0"
   resolved "https://registry.npmjs.org/ansi-styles/-/ansi-styles-3.2.0.tgz#c159b8d5be0f9e5a6f346dab94f16ce022161b88"
   dependencies:
@@ -185,10 +202,6 @@ array-differ@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/array-differ/-/array-differ-1.0.0.tgz#eff52e3758249d33be402b8bb8e564bb2b5d4031"
 
-array-filter@~0.0.0:
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/array-filter/-/array-filter-0.0.1.tgz#7da8cf2e26628ed732803581fd21f67cacd2eeec"
-
 array-find-index@^1.0.1:
   version "1.0.2"
   resolved "https://registry.npmjs.org/array-find-index/-/array-find-index-1.0.2.tgz#df010aa1287e164bbda6f9723b0a96a1ec4187a1"
@@ -207,14 +220,6 @@ array-includes@^3.0.3:
   dependencies:
     define-properties "^1.1.2"
     es-abstract "^1.7.0"
-
-array-map@~0.0.0:
-  version "0.0.0"
-  resolved "https://registry.npmjs.org/array-map/-/array-map-0.0.0.tgz#88a2bab73d1cf7bcd5c1b118a003f66f665fa662"
-
-array-reduce@~0.0.0:
-  version "0.0.0"
-  resolved "https://registry.npmjs.org/array-reduce/-/array-reduce-0.0.0.tgz#173899d3ffd1c7d9383e4479525dbe278cab5f2b"
 
 array-slice@^0.2.3:
   version "0.2.3"
@@ -302,27 +307,6 @@ aws4@^1.2.1:
   version "1.6.0"
   resolved "https://registry.npmjs.org/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
 
-babel-cli@^6.26.0:
-  version "6.26.0"
-  resolved "http://registry.npm.taobao.org/babel-cli/download/babel-cli-6.26.0.tgz#502ab54874d7db88ad00b887a06383ce03d002f1"
-  dependencies:
-    babel-core "^6.26.0"
-    babel-polyfill "^6.26.0"
-    babel-register "^6.26.0"
-    babel-runtime "^6.26.0"
-    commander "^2.11.0"
-    convert-source-map "^1.5.0"
-    fs-readdir-recursive "^1.0.0"
-    glob "^7.1.2"
-    lodash "^4.17.4"
-    output-file-sync "^1.1.2"
-    path-is-absolute "^1.0.1"
-    slash "^1.0.0"
-    source-map "^0.5.6"
-    v8flags "^2.1.1"
-  optionalDependencies:
-    chokidar "^1.6.1"
-
 babel-code-frame@^6.22.0:
   version "6.22.0"
   resolved "https://registry.npmjs.org/babel-code-frame/-/babel-code-frame-6.22.0.tgz#027620bee567a88c32561574e7fd0801d33118e4"
@@ -330,38 +314,6 @@ babel-code-frame@^6.22.0:
     chalk "^1.1.0"
     esutils "^2.0.2"
     js-tokens "^3.0.0"
-
-babel-code-frame@^6.26.0:
-  version "6.26.0"
-  resolved "http://registry.npm.taobao.org/babel-code-frame/download/babel-code-frame-6.26.0.tgz#63fd43f7dc1e3bb7ce35947db8fe369a3f58c74b"
-  dependencies:
-    chalk "^1.1.3"
-    esutils "^2.0.2"
-    js-tokens "^3.0.2"
-
-babel-core@^6.26.0:
-  version "6.26.0"
-  resolved "http://registry.npm.taobao.org/babel-core/download/babel-core-6.26.0.tgz#af32f78b31a6fcef119c87b0fd8d9753f03a0bb8"
-  dependencies:
-    babel-code-frame "^6.26.0"
-    babel-generator "^6.26.0"
-    babel-helpers "^6.24.1"
-    babel-messages "^6.23.0"
-    babel-register "^6.26.0"
-    babel-runtime "^6.26.0"
-    babel-template "^6.26.0"
-    babel-traverse "^6.26.0"
-    babel-types "^6.26.0"
-    babylon "^6.18.0"
-    convert-source-map "^1.5.0"
-    debug "^2.6.8"
-    json5 "^0.5.1"
-    lodash "^4.17.4"
-    minimatch "^3.0.4"
-    path-is-absolute "^1.0.1"
-    private "^0.1.7"
-    slash "^1.0.0"
-    source-map "^0.5.6"
 
 babel-generator@^6.18.0:
   version "6.25.0"
@@ -376,529 +328,20 @@ babel-generator@^6.18.0:
     source-map "^0.5.0"
     trim-right "^1.0.1"
 
-babel-generator@^6.26.0:
-  version "6.26.0"
-  resolved "http://registry.npm.taobao.org/babel-generator/download/babel-generator-6.26.0.tgz#ac1ae20070b79f6e3ca1d3269613053774f20dc5"
-  dependencies:
-    babel-messages "^6.23.0"
-    babel-runtime "^6.26.0"
-    babel-types "^6.26.0"
-    detect-indent "^4.0.0"
-    jsesc "^1.3.0"
-    lodash "^4.17.4"
-    source-map "^0.5.6"
-    trim-right "^1.0.1"
-
-babel-helper-builder-binary-assignment-operator-visitor@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-helper-builder-binary-assignment-operator-visitor/-/babel-helper-builder-binary-assignment-operator-visitor-6.24.1.tgz#cce4517ada356f4220bcae8a02c2b346f9a56664"
-  dependencies:
-    babel-helper-explode-assignable-expression "^6.24.1"
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-
-babel-helper-builder-react-jsx@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-helper-builder-react-jsx/-/babel-helper-builder-react-jsx-6.24.1.tgz#0ad7917e33c8d751e646daca4e77cc19377d2cbc"
-  dependencies:
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-    esutils "^2.0.0"
-
-babel-helper-call-delegate@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-helper-call-delegate/-/babel-helper-call-delegate-6.24.1.tgz#ece6aacddc76e41c3461f88bfc575bd0daa2df8d"
-  dependencies:
-    babel-helper-hoist-variables "^6.24.1"
-    babel-runtime "^6.22.0"
-    babel-traverse "^6.24.1"
-    babel-types "^6.24.1"
-
-babel-helper-define-map@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-helper-define-map/-/babel-helper-define-map-6.24.1.tgz#7a9747f258d8947d32d515f6aa1c7bd02204a080"
-  dependencies:
-    babel-helper-function-name "^6.24.1"
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-    lodash "^4.2.0"
-
-babel-helper-explode-assignable-expression@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-helper-explode-assignable-expression/-/babel-helper-explode-assignable-expression-6.24.1.tgz#f25b82cf7dc10433c55f70592d5746400ac22caa"
-  dependencies:
-    babel-runtime "^6.22.0"
-    babel-traverse "^6.24.1"
-    babel-types "^6.24.1"
-
-babel-helper-function-name@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-helper-function-name/-/babel-helper-function-name-6.24.1.tgz#d3475b8c03ed98242a25b48351ab18399d3580a9"
-  dependencies:
-    babel-helper-get-function-arity "^6.24.1"
-    babel-runtime "^6.22.0"
-    babel-template "^6.24.1"
-    babel-traverse "^6.24.1"
-    babel-types "^6.24.1"
-
-babel-helper-get-function-arity@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-helper-get-function-arity/-/babel-helper-get-function-arity-6.24.1.tgz#8f7782aa93407c41d3aa50908f89b031b1b6853d"
-  dependencies:
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-
-babel-helper-hoist-variables@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-helper-hoist-variables/-/babel-helper-hoist-variables-6.24.1.tgz#1ecb27689c9d25513eadbc9914a73f5408be7a76"
-  dependencies:
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-
-babel-helper-optimise-call-expression@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-helper-optimise-call-expression/-/babel-helper-optimise-call-expression-6.24.1.tgz#f7a13427ba9f73f8f4fa993c54a97882d1244257"
-  dependencies:
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-
-babel-helper-regex@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-helper-regex/-/babel-helper-regex-6.24.1.tgz#d36e22fab1008d79d88648e32116868128456ce8"
-  dependencies:
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-    lodash "^4.2.0"
-
-babel-helper-remap-async-to-generator@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-helper-remap-async-to-generator/-/babel-helper-remap-async-to-generator-6.24.1.tgz#5ec581827ad723fecdd381f1c928390676e4551b"
-  dependencies:
-    babel-helper-function-name "^6.24.1"
-    babel-runtime "^6.22.0"
-    babel-template "^6.24.1"
-    babel-traverse "^6.24.1"
-    babel-types "^6.24.1"
-
-babel-helper-replace-supers@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-helper-replace-supers/-/babel-helper-replace-supers-6.24.1.tgz#bf6dbfe43938d17369a213ca8a8bf74b6a90ab1a"
-  dependencies:
-    babel-helper-optimise-call-expression "^6.24.1"
-    babel-messages "^6.23.0"
-    babel-runtime "^6.22.0"
-    babel-template "^6.24.1"
-    babel-traverse "^6.24.1"
-    babel-types "^6.24.1"
-
-babel-helpers@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-helpers/-/babel-helpers-6.24.1.tgz#3471de9caec388e5c850e597e58a26ddf37602b2"
-  dependencies:
-    babel-runtime "^6.22.0"
-    babel-template "^6.24.1"
-
-babel-loader@^7.1.2:
-  version "7.1.2"
-  resolved "http://registry.npm.taobao.org/babel-loader/download/babel-loader-7.1.2.tgz#f6cbe122710f1aa2af4d881c6d5b54358ca24126"
-  dependencies:
-    find-cache-dir "^1.0.0"
-    loader-utils "^1.0.2"
-    mkdirp "^0.5.1"
-
 babel-messages@^6.23.0:
   version "6.23.0"
   resolved "https://registry.npmjs.org/babel-messages/-/babel-messages-6.23.0.tgz#f3cdf4703858035b2a2951c6ec5edf6c62f2630e"
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-check-es2015-constants@^6.22.0:
-  version "6.22.0"
-  resolved "https://registry.npmjs.org/babel-plugin-check-es2015-constants/-/babel-plugin-check-es2015-constants-6.22.0.tgz#35157b101426fd2ffd3da3f75c7d1e91835bbf8a"
-  dependencies:
-    babel-runtime "^6.22.0"
-
-babel-plugin-syntax-async-functions@^6.8.0:
-  version "6.13.0"
-  resolved "https://registry.npmjs.org/babel-plugin-syntax-async-functions/-/babel-plugin-syntax-async-functions-6.13.0.tgz#cad9cad1191b5ad634bf30ae0872391e0647be95"
-
-babel-plugin-syntax-class-properties@^6.8.0:
-  version "6.13.0"
-  resolved "https://registry.npmjs.org/babel-plugin-syntax-class-properties/-/babel-plugin-syntax-class-properties-6.13.0.tgz#d7eb23b79a317f8543962c505b827c7d6cac27de"
-
-babel-plugin-syntax-dynamic-import@^6.18.0:
-  version "6.18.0"
-  resolved "https://registry.npmjs.org/babel-plugin-syntax-dynamic-import/-/babel-plugin-syntax-dynamic-import-6.18.0.tgz#8d6a26229c83745a9982a441051572caa179b1da"
-
-babel-plugin-syntax-exponentiation-operator@^6.8.0:
-  version "6.13.0"
-  resolved "https://registry.npmjs.org/babel-plugin-syntax-exponentiation-operator/-/babel-plugin-syntax-exponentiation-operator-6.13.0.tgz#9ee7e8337290da95288201a6a57f4170317830de"
-
-babel-plugin-syntax-flow@^6.18.0:
-  version "6.18.0"
-  resolved "https://registry.npmjs.org/babel-plugin-syntax-flow/-/babel-plugin-syntax-flow-6.18.0.tgz#4c3ab20a2af26aa20cd25995c398c4eb70310c8d"
-
-babel-plugin-syntax-jsx@^6.3.13, babel-plugin-syntax-jsx@^6.8.0:
-  version "6.18.0"
-  resolved "https://registry.npmjs.org/babel-plugin-syntax-jsx/-/babel-plugin-syntax-jsx-6.18.0.tgz#0af32a9a6e13ca7a3fd5069e62d7b0f58d0d8946"
-
-babel-plugin-syntax-trailing-function-commas@^6.22.0:
-  version "6.22.0"
-  resolved "https://registry.npmjs.org/babel-plugin-syntax-trailing-function-commas/-/babel-plugin-syntax-trailing-function-commas-6.22.0.tgz#ba0360937f8d06e40180a43fe0d5616fff532cf3"
-
-babel-plugin-syntax-typescript@7.0.0-beta.3:
-  version "7.0.0-beta.3"
-  resolved "https://registry.npmjs.org/babel-plugin-syntax-typescript/-/babel-plugin-syntax-typescript-7.0.0-beta.3.tgz#44b6f3ae2b95da5470bf18a4a3c8eb0e3fb5b911"
-
-babel-plugin-transform-async-to-generator@^6.22.0:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-async-to-generator/-/babel-plugin-transform-async-to-generator-6.24.1.tgz#6536e378aff6cb1d5517ac0e40eb3e9fc8d08761"
-  dependencies:
-    babel-helper-remap-async-to-generator "^6.24.1"
-    babel-plugin-syntax-async-functions "^6.8.0"
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-class-properties@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-class-properties/-/babel-plugin-transform-class-properties-6.24.1.tgz#6a79763ea61d33d36f37b611aa9def81a81b46ac"
-  dependencies:
-    babel-helper-function-name "^6.24.1"
-    babel-plugin-syntax-class-properties "^6.8.0"
-    babel-runtime "^6.22.0"
-    babel-template "^6.24.1"
-
-babel-plugin-transform-es2015-arrow-functions@^6.22.0:
-  version "6.22.0"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-arrow-functions/-/babel-plugin-transform-es2015-arrow-functions-6.22.0.tgz#452692cb711d5f79dc7f85e440ce41b9f244d221"
-  dependencies:
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-es2015-block-scoped-functions@^6.22.0:
-  version "6.22.0"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-block-scoped-functions/-/babel-plugin-transform-es2015-block-scoped-functions-6.22.0.tgz#bbc51b49f964d70cb8d8e0b94e820246ce3a6141"
-  dependencies:
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-es2015-block-scoping@^6.23.0:
-  version "6.26.0"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-block-scoping/-/babel-plugin-transform-es2015-block-scoping-6.26.0.tgz#d70f5299c1308d05c12f463813b0a09e73b1895f"
-  dependencies:
-    babel-runtime "^6.26.0"
-    babel-template "^6.26.0"
-    babel-traverse "^6.26.0"
-    babel-types "^6.26.0"
-    lodash "^4.17.4"
-
-babel-plugin-transform-es2015-classes@^6.23.0:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-classes/-/babel-plugin-transform-es2015-classes-6.24.1.tgz#5a4c58a50c9c9461e564b4b2a3bfabc97a2584db"
-  dependencies:
-    babel-helper-define-map "^6.24.1"
-    babel-helper-function-name "^6.24.1"
-    babel-helper-optimise-call-expression "^6.24.1"
-    babel-helper-replace-supers "^6.24.1"
-    babel-messages "^6.23.0"
-    babel-runtime "^6.22.0"
-    babel-template "^6.24.1"
-    babel-traverse "^6.24.1"
-    babel-types "^6.24.1"
-
-babel-plugin-transform-es2015-computed-properties@^6.22.0:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-computed-properties/-/babel-plugin-transform-es2015-computed-properties-6.24.1.tgz#6fe2a8d16895d5634f4cd999b6d3480a308159b3"
-  dependencies:
-    babel-runtime "^6.22.0"
-    babel-template "^6.24.1"
-
-babel-plugin-transform-es2015-destructuring@^6.23.0:
-  version "6.23.0"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-destructuring/-/babel-plugin-transform-es2015-destructuring-6.23.0.tgz#997bb1f1ab967f682d2b0876fe358d60e765c56d"
-  dependencies:
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-es2015-duplicate-keys@^6.22.0:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-duplicate-keys/-/babel-plugin-transform-es2015-duplicate-keys-6.24.1.tgz#73eb3d310ca969e3ef9ec91c53741a6f1576423e"
-  dependencies:
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-
-babel-plugin-transform-es2015-for-of@^6.23.0:
-  version "6.23.0"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-for-of/-/babel-plugin-transform-es2015-for-of-6.23.0.tgz#f47c95b2b613df1d3ecc2fdb7573623c75248691"
-  dependencies:
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-es2015-function-name@^6.22.0:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-function-name/-/babel-plugin-transform-es2015-function-name-6.24.1.tgz#834c89853bc36b1af0f3a4c5dbaa94fd8eacaa8b"
-  dependencies:
-    babel-helper-function-name "^6.24.1"
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-
-babel-plugin-transform-es2015-literals@^6.22.0:
-  version "6.22.0"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-literals/-/babel-plugin-transform-es2015-literals-6.22.0.tgz#4f54a02d6cd66cf915280019a31d31925377ca2e"
-  dependencies:
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-es2015-modules-amd@^6.22.0, babel-plugin-transform-es2015-modules-amd@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-modules-amd/-/babel-plugin-transform-es2015-modules-amd-6.24.1.tgz#3b3e54017239842d6d19c3011c4bd2f00a00d154"
-  dependencies:
-    babel-plugin-transform-es2015-modules-commonjs "^6.24.1"
-    babel-runtime "^6.22.0"
-    babel-template "^6.24.1"
-
-babel-plugin-transform-es2015-modules-commonjs@^6.23.0:
-  version "6.26.0"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-modules-commonjs/-/babel-plugin-transform-es2015-modules-commonjs-6.26.0.tgz#0d8394029b7dc6abe1a97ef181e00758dd2e5d8a"
-  dependencies:
-    babel-plugin-transform-strict-mode "^6.24.1"
-    babel-runtime "^6.26.0"
-    babel-template "^6.26.0"
-    babel-types "^6.26.0"
-
-babel-plugin-transform-es2015-modules-commonjs@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-modules-commonjs/-/babel-plugin-transform-es2015-modules-commonjs-6.24.1.tgz#d3e310b40ef664a36622200097c6d440298f2bfe"
-  dependencies:
-    babel-plugin-transform-strict-mode "^6.24.1"
-    babel-runtime "^6.22.0"
-    babel-template "^6.24.1"
-    babel-types "^6.24.1"
-
-babel-plugin-transform-es2015-modules-systemjs@^6.23.0:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-modules-systemjs/-/babel-plugin-transform-es2015-modules-systemjs-6.24.1.tgz#ff89a142b9119a906195f5f106ecf305d9407d23"
-  dependencies:
-    babel-helper-hoist-variables "^6.24.1"
-    babel-runtime "^6.22.0"
-    babel-template "^6.24.1"
-
-babel-plugin-transform-es2015-modules-umd@^6.23.0:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-modules-umd/-/babel-plugin-transform-es2015-modules-umd-6.24.1.tgz#ac997e6285cd18ed6176adb607d602344ad38468"
-  dependencies:
-    babel-plugin-transform-es2015-modules-amd "^6.24.1"
-    babel-runtime "^6.22.0"
-    babel-template "^6.24.1"
-
-babel-plugin-transform-es2015-object-super@^6.22.0:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-object-super/-/babel-plugin-transform-es2015-object-super-6.24.1.tgz#24cef69ae21cb83a7f8603dad021f572eb278f8d"
-  dependencies:
-    babel-helper-replace-supers "^6.24.1"
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-es2015-parameters@^6.23.0:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-parameters/-/babel-plugin-transform-es2015-parameters-6.24.1.tgz#57ac351ab49caf14a97cd13b09f66fdf0a625f2b"
-  dependencies:
-    babel-helper-call-delegate "^6.24.1"
-    babel-helper-get-function-arity "^6.24.1"
-    babel-runtime "^6.22.0"
-    babel-template "^6.24.1"
-    babel-traverse "^6.24.1"
-    babel-types "^6.24.1"
-
-babel-plugin-transform-es2015-shorthand-properties@^6.22.0:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-shorthand-properties/-/babel-plugin-transform-es2015-shorthand-properties-6.24.1.tgz#24f875d6721c87661bbd99a4622e51f14de38aa0"
-  dependencies:
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-
-babel-plugin-transform-es2015-spread@^6.22.0:
-  version "6.22.0"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-spread/-/babel-plugin-transform-es2015-spread-6.22.0.tgz#d6d68a99f89aedc4536c81a542e8dd9f1746f8d1"
-  dependencies:
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-es2015-sticky-regex@^6.22.0:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-sticky-regex/-/babel-plugin-transform-es2015-sticky-regex-6.24.1.tgz#00c1cdb1aca71112cdf0cf6126c2ed6b457ccdbc"
-  dependencies:
-    babel-helper-regex "^6.24.1"
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-
-babel-plugin-transform-es2015-template-literals@^6.22.0:
-  version "6.22.0"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-template-literals/-/babel-plugin-transform-es2015-template-literals-6.22.0.tgz#a84b3450f7e9f8f1f6839d6d687da84bb1236d8d"
-  dependencies:
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-es2015-typeof-symbol@^6.23.0:
-  version "6.23.0"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-typeof-symbol/-/babel-plugin-transform-es2015-typeof-symbol-6.23.0.tgz#dec09f1cddff94b52ac73d505c84df59dcceb372"
-  dependencies:
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-es2015-unicode-regex@^6.22.0:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-es2015-unicode-regex/-/babel-plugin-transform-es2015-unicode-regex-6.24.1.tgz#d38b12f42ea7323f729387f18a7c5ae1faeb35e9"
-  dependencies:
-    babel-helper-regex "^6.24.1"
-    babel-runtime "^6.22.0"
-    regexpu-core "^2.0.0"
-
-babel-plugin-transform-exponentiation-operator@^6.22.0:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-exponentiation-operator/-/babel-plugin-transform-exponentiation-operator-6.24.1.tgz#2ab0c9c7f3098fa48907772bb813fe41e8de3a0e"
-  dependencies:
-    babel-helper-builder-binary-assignment-operator-visitor "^6.24.1"
-    babel-plugin-syntax-exponentiation-operator "^6.8.0"
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-flow-strip-types@^6.22.0:
-  version "6.22.0"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-flow-strip-types/-/babel-plugin-transform-flow-strip-types-6.22.0.tgz#84cb672935d43714fdc32bce84568d87441cf7cf"
-  dependencies:
-    babel-plugin-syntax-flow "^6.18.0"
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-react-display-name@^6.23.0:
-  version "6.25.0"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-react-display-name/-/babel-plugin-transform-react-display-name-6.25.0.tgz#67e2bf1f1e9c93ab08db96792e05392bf2cc28d1"
-  dependencies:
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-react-jsx-self@^6.22.0:
-  version "6.22.0"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-react-jsx-self/-/babel-plugin-transform-react-jsx-self-6.22.0.tgz#df6d80a9da2612a121e6ddd7558bcbecf06e636e"
-  dependencies:
-    babel-plugin-syntax-jsx "^6.8.0"
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-react-jsx-source@^6.22.0:
-  version "6.22.0"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-react-jsx-source/-/babel-plugin-transform-react-jsx-source-6.22.0.tgz#66ac12153f5cd2d17b3c19268f4bf0197f44ecd6"
-  dependencies:
-    babel-plugin-syntax-jsx "^6.8.0"
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-react-jsx@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-react-jsx/-/babel-plugin-transform-react-jsx-6.24.1.tgz#840a028e7df460dfc3a2d29f0c0d91f6376e66a3"
-  dependencies:
-    babel-helper-builder-react-jsx "^6.24.1"
-    babel-plugin-syntax-jsx "^6.8.0"
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-regenerator@^6.22.0:
-  version "6.26.0"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-regenerator/-/babel-plugin-transform-regenerator-6.26.0.tgz#e0703696fbde27f0a3efcacf8b4dca2f7b3a8f2f"
-  dependencies:
-    regenerator-transform "^0.10.0"
-
-babel-plugin-transform-strict-mode@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-strict-mode/-/babel-plugin-transform-strict-mode-6.24.1.tgz#d5faf7aa578a65bbe591cf5edae04a0c67020758"
-  dependencies:
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-
-babel-plugin-transform-typescript@7.0.0-beta.3:
-  version "7.0.0-beta.3"
-  resolved "https://registry.npmjs.org/babel-plugin-transform-typescript/-/babel-plugin-transform-typescript-7.0.0-beta.3.tgz#a789ef68635f60cb7299e56bf38b6daa8bdbede3"
-  dependencies:
-    babel-plugin-syntax-typescript "7.0.0-beta.3"
-
-babel-polyfill@^6.26.0:
-  version "6.26.0"
-  resolved "http://registry.npm.taobao.org/babel-polyfill/download/babel-polyfill-6.26.0.tgz#379937abc67d7895970adc621f284cd966cf2153"
-  dependencies:
-    babel-runtime "^6.26.0"
-    core-js "^2.5.0"
-    regenerator-runtime "^0.10.5"
-
-babel-preset-env@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.npmjs.org/babel-preset-env/-/babel-preset-env-1.6.0.tgz#2de1c782a780a0a5d605d199c957596da43c44e4"
-  dependencies:
-    babel-plugin-check-es2015-constants "^6.22.0"
-    babel-plugin-syntax-trailing-function-commas "^6.22.0"
-    babel-plugin-transform-async-to-generator "^6.22.0"
-    babel-plugin-transform-es2015-arrow-functions "^6.22.0"
-    babel-plugin-transform-es2015-block-scoped-functions "^6.22.0"
-    babel-plugin-transform-es2015-block-scoping "^6.23.0"
-    babel-plugin-transform-es2015-classes "^6.23.0"
-    babel-plugin-transform-es2015-computed-properties "^6.22.0"
-    babel-plugin-transform-es2015-destructuring "^6.23.0"
-    babel-plugin-transform-es2015-duplicate-keys "^6.22.0"
-    babel-plugin-transform-es2015-for-of "^6.23.0"
-    babel-plugin-transform-es2015-function-name "^6.22.0"
-    babel-plugin-transform-es2015-literals "^6.22.0"
-    babel-plugin-transform-es2015-modules-amd "^6.22.0"
-    babel-plugin-transform-es2015-modules-commonjs "^6.23.0"
-    babel-plugin-transform-es2015-modules-systemjs "^6.23.0"
-    babel-plugin-transform-es2015-modules-umd "^6.23.0"
-    babel-plugin-transform-es2015-object-super "^6.22.0"
-    babel-plugin-transform-es2015-parameters "^6.23.0"
-    babel-plugin-transform-es2015-shorthand-properties "^6.22.0"
-    babel-plugin-transform-es2015-spread "^6.22.0"
-    babel-plugin-transform-es2015-sticky-regex "^6.22.0"
-    babel-plugin-transform-es2015-template-literals "^6.22.0"
-    babel-plugin-transform-es2015-typeof-symbol "^6.23.0"
-    babel-plugin-transform-es2015-unicode-regex "^6.22.0"
-    babel-plugin-transform-exponentiation-operator "^6.22.0"
-    babel-plugin-transform-regenerator "^6.22.0"
-    browserslist "^2.1.2"
-    invariant "^2.2.2"
-    semver "^5.3.0"
-
-babel-preset-flow@^6.23.0:
-  version "6.23.0"
-  resolved "https://registry.npmjs.org/babel-preset-flow/-/babel-preset-flow-6.23.0.tgz#e71218887085ae9a24b5be4169affb599816c49d"
-  dependencies:
-    babel-plugin-transform-flow-strip-types "^6.22.0"
-
-babel-preset-react@^6.24.1:
-  version "6.24.1"
-  resolved "https://registry.npmjs.org/babel-preset-react/-/babel-preset-react-6.24.1.tgz#ba69dfaea45fc3ec639b6a4ecea6e17702c91380"
-  dependencies:
-    babel-plugin-syntax-jsx "^6.3.13"
-    babel-plugin-transform-react-display-name "^6.23.0"
-    babel-plugin-transform-react-jsx "^6.24.1"
-    babel-plugin-transform-react-jsx-self "^6.22.0"
-    babel-plugin-transform-react-jsx-source "^6.22.0"
-    babel-preset-flow "^6.23.0"
-
-babel-preset-typescript@^7.0.0-alpha.19:
-  version "7.0.0-beta.3"
-  resolved "https://registry.npmjs.org/babel-preset-typescript/-/babel-preset-typescript-7.0.0-beta.3.tgz#83b48b3e97ef46f3f8a61845a686ead07b65403c"
-  dependencies:
-    babel-plugin-transform-typescript "7.0.0-beta.3"
-
-babel-register@^6.26.0:
-  version "6.26.0"
-  resolved "http://registry.npm.taobao.org/babel-register/download/babel-register-6.26.0.tgz#6ed021173e2fcb486d7acb45c6009a856f647071"
-  dependencies:
-    babel-core "^6.26.0"
-    babel-runtime "^6.26.0"
-    core-js "^2.5.0"
-    home-or-tmp "^2.0.0"
-    lodash "^4.17.4"
-    mkdirp "^0.5.1"
-    source-map-support "^0.4.15"
-
-babel-runtime@^6.18.0, babel-runtime@^6.22.0:
+babel-runtime@^6.22.0:
   version "6.25.0"
   resolved "https://registry.npmjs.org/babel-runtime/-/babel-runtime-6.25.0.tgz#33b98eaa5d482bb01a8d1aa6b437ad2b01aec41c"
   dependencies:
     core-js "^2.4.0"
     regenerator-runtime "^0.10.0"
 
-babel-runtime@^6.26.0:
-  version "6.26.0"
-  resolved "http://registry.npm.taobao.org/babel-runtime/download/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
-  dependencies:
-    core-js "^2.4.0"
-    regenerator-runtime "^0.11.0"
-
-babel-template@^6.16.0, babel-template@^6.24.1:
+babel-template@^6.16.0:
   version "6.25.0"
   resolved "https://registry.npmjs.org/babel-template/-/babel-template-6.25.0.tgz#665241166b7c2aa4c619d71e192969552b10c071"
   dependencies:
@@ -908,17 +351,7 @@ babel-template@^6.16.0, babel-template@^6.24.1:
     babylon "^6.17.2"
     lodash "^4.2.0"
 
-babel-template@^6.26.0:
-  version "6.26.0"
-  resolved "http://registry.npm.taobao.org/babel-template/download/babel-template-6.26.0.tgz#de03e2d16396b069f46dd9fff8521fb1a0e35e02"
-  dependencies:
-    babel-runtime "^6.26.0"
-    babel-traverse "^6.26.0"
-    babel-types "^6.26.0"
-    babylon "^6.18.0"
-    lodash "^4.17.4"
-
-babel-traverse@^6.18.0, babel-traverse@^6.24.1, babel-traverse@^6.25.0:
+babel-traverse@^6.18.0, babel-traverse@^6.25.0:
   version "6.25.0"
   resolved "https://registry.npmjs.org/babel-traverse/-/babel-traverse-6.25.0.tgz#2257497e2fcd19b89edc13c4c91381f9512496f1"
   dependencies:
@@ -932,21 +365,7 @@ babel-traverse@^6.18.0, babel-traverse@^6.24.1, babel-traverse@^6.25.0:
     invariant "^2.2.0"
     lodash "^4.2.0"
 
-babel-traverse@^6.26.0:
-  version "6.26.0"
-  resolved "http://registry.npm.taobao.org/babel-traverse/download/babel-traverse-6.26.0.tgz#46a9cbd7edcc62c8e5c064e2d2d8d0f4035766ee"
-  dependencies:
-    babel-code-frame "^6.26.0"
-    babel-messages "^6.23.0"
-    babel-runtime "^6.26.0"
-    babel-types "^6.26.0"
-    babylon "^6.18.0"
-    debug "^2.6.8"
-    globals "^9.18.0"
-    invariant "^2.2.2"
-    lodash "^4.17.4"
-
-babel-types@^6.18.0, babel-types@^6.19.0, babel-types@^6.24.1, babel-types@^6.25.0:
+babel-types@^6.18.0, babel-types@^6.25.0:
   version "6.25.0"
   resolved "https://registry.npmjs.org/babel-types/-/babel-types-6.25.0.tgz#70afb248d5660e5d18f811d91c8303b54134a18e"
   dependencies:
@@ -955,22 +374,9 @@ babel-types@^6.18.0, babel-types@^6.19.0, babel-types@^6.24.1, babel-types@^6.25
     lodash "^4.2.0"
     to-fast-properties "^1.0.1"
 
-babel-types@^6.26.0:
-  version "6.26.0"
-  resolved "http://registry.npm.taobao.org/babel-types/download/babel-types-6.26.0.tgz#a3b073f94ab49eb6fa55cd65227a334380632497"
-  dependencies:
-    babel-runtime "^6.26.0"
-    esutils "^2.0.2"
-    lodash "^4.17.4"
-    to-fast-properties "^1.0.3"
-
 babylon@^6.17.2, babylon@^6.17.4:
   version "6.17.4"
   resolved "https://registry.npmjs.org/babylon/-/babylon-6.17.4.tgz#3e8b7402b88d22c3423e137a1577883b15ff869a"
-
-babylon@^6.18.0:
-  version "6.18.0"
-  resolved "http://registry.npm.taobao.org/babylon/download/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"
 
 backo2@1.0.2:
   version "1.0.2"
@@ -1166,13 +572,6 @@ browserify-zlib@^0.2.0:
   dependencies:
     pako "~1.0.5"
 
-browserslist@^2.1.2:
-  version "2.4.0"
-  resolved "https://registry.npmjs.org/browserslist/-/browserslist-2.4.0.tgz#693ee93d01e66468a6348da5498e011f578f87f8"
-  dependencies:
-    caniuse-lite "^1.0.30000718"
-    electron-to-chromium "^1.3.18"
-
 buffer-indexof@^1.0.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/buffer-indexof/-/buffer-indexof-1.1.0.tgz#f54f647c4f4e25228baa656a2e57e43d5f270982"
@@ -1239,10 +638,6 @@ camelcase@^4.1.0:
   version "4.1.0"
   resolved "https://registry.npmjs.org/camelcase/-/camelcase-4.1.0.tgz#d545635be1e33c542649c69173e5de6acfae34dd"
 
-caniuse-lite@^1.0.30000718:
-  version "1.0.30000734"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30000734.tgz#492791fb0557978fcc1b7a8f486270b35ea6e569"
-
 caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.npmjs.org/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
@@ -1265,7 +660,7 @@ chai@^4.1.2:
     pathval "^1.0.0"
     type-detect "^4.0.0"
 
-chalk@^1.0.0, chalk@^1.1.0, chalk@^1.1.1, chalk@^1.1.3:
+chalk@^1.0.0, chalk@^1.1.0, chalk@^1.1.1:
   version "1.1.3"
   resolved "https://registry.npmjs.org/chalk/-/chalk-1.1.3.tgz#a8115c55e4a702fe4d150abd3872822a7e09fc98"
   dependencies:
@@ -1275,9 +670,9 @@ chalk@^1.0.0, chalk@^1.1.0, chalk@^1.1.1, chalk@^1.1.3:
     strip-ansi "^3.0.0"
     supports-color "^2.0.0"
 
-chalk@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/chalk/-/chalk-2.1.0.tgz#ac5becf14fa21b99c6c92ca7a7d7cfd5b17e743e"
+chalk@^2.0.1:
+  version "2.2.0"
+  resolved "https://registry.npmjs.org/chalk/-/chalk-2.2.0.tgz#477b3bf2f9b8fd5ca9e429747e37f724ee7af240"
   dependencies:
     ansi-styles "^3.1.0"
     escape-string-regexp "^1.0.5"
@@ -1298,7 +693,7 @@ cheerio@^1.0.0-rc.2:
     lodash "^4.15.0"
     parse5 "^3.0.1"
 
-chokidar@^1.4.1, chokidar@^1.6.0, chokidar@^1.6.1, chokidar@^1.7.0:
+chokidar@^1.4.1, chokidar@^1.6.0, chokidar@^1.7.0:
   version "1.7.0"
   resolved "https://registry.npmjs.org/chokidar/-/chokidar-1.7.0.tgz#798e689778151c8076b4b360e5edd28cda2bb468"
   dependencies:
@@ -1395,13 +790,9 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@2.11.0, commander@^2.11.0:
+commander@2.11.0:
   version "2.11.0"
   resolved "https://registry.npmjs.org/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
-
-commondir@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
 
 component-bind@1.0.0:
   version "1.0.0"
@@ -1500,10 +891,6 @@ core-js@^2.2.0, core-js@^2.4.0:
   version "2.4.1"
   resolved "https://registry.npmjs.org/core-js/-/core-js-2.4.1.tgz#4de911e667b0eae9124e34254b53aea6fc618d3e"
 
-core-js@^2.5.0:
-  version "2.5.1"
-  resolved "http://registry.npm.taobao.org/core-js/download/core-js-2.5.1.tgz#ae6874dc66937789b80754ff5428df66819ca50b"
-
 core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.npmjs.org/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
@@ -1535,14 +922,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-cross-env@^5.0.5:
-  version "5.0.5"
-  resolved "http://registry.npm.taobao.org/cross-env/download/cross-env-5.0.5.tgz#4383d364d9660873dd185b398af3bfef5efffef3"
-  dependencies:
-    cross-spawn "^5.1.0"
-    is-windows "^1.0.0"
-
-cross-spawn@^5.0.1, cross-spawn@^5.1.0:
+cross-spawn@^5.0.1:
   version "5.1.0"
   resolved "https://registry.npmjs.org/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
   dependencies:
@@ -1647,7 +1027,7 @@ debug@2.6.8, debug@^2.2.0, debug@^2.6.3, debug@^2.6.6, debug@^2.6.8:
 
 debug@3.1.0:
   version "3.1.0"
-  resolved "http://registry.npm.taobao.org/debug/download/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
+  resolved "https://registry.npmjs.org/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
   dependencies:
     ms "2.0.0"
 
@@ -1840,10 +1220,6 @@ duplexer2@0.0.2:
   dependencies:
     readable-stream "~1.1.9"
 
-duplexer@~0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/duplexer/-/duplexer-0.1.1.tgz#ace6ff808c1ce66b57d1ebf97977acb02334cfc1"
-
 ecc-jsbn@~0.1.1:
   version "0.1.1"
   resolved "https://registry.npmjs.org/ecc-jsbn/-/ecc-jsbn-0.1.1.tgz#0fc73a9ed5f0d53c38193398523ef7e543777505"
@@ -1853,10 +1229,6 @@ ecc-jsbn@~0.1.1:
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
-
-electron-to-chromium@^1.3.18:
-  version "1.3.21"
-  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.3.21.tgz#a967ebdcfe8ed0083fc244d1894022a8e8113ea2"
 
 elliptic@^6.0.0:
   version "6.4.0"
@@ -1923,7 +1295,7 @@ engine.io@1.8.3:
     engine.io-parser "1.3.2"
     ws "1.1.2"
 
-enhanced-resolve@^3.4.0:
+enhanced-resolve@^3.0.0, enhanced-resolve@^3.4.0:
   version "3.4.1"
   resolved "https://registry.npmjs.org/enhanced-resolve/-/enhanced-resolve-3.4.1.tgz#0421e339fd71419b3da13d129b3979040230476e"
   dependencies:
@@ -1985,16 +1357,6 @@ error-ex@^1.2.0:
   dependencies:
     is-arrayish "^0.2.1"
 
-es-abstract@^1.4.3, es-abstract@^1.7.0:
-  version "1.8.2"
-  resolved "https://registry.npmjs.org/es-abstract/-/es-abstract-1.8.2.tgz#25103263dc4decbda60e0c737ca32313518027ee"
-  dependencies:
-    es-to-primitive "^1.1.1"
-    function-bind "^1.1.1"
-    has "^1.0.1"
-    is-callable "^1.1.3"
-    is-regex "^1.0.4"
-
 es-abstract@^1.6.1:
   version "1.7.0"
   resolved "https://registry.npmjs.org/es-abstract/-/es-abstract-1.7.0.tgz#dfade774e01bfcd97f96180298c449c8623fb94c"
@@ -2003,6 +1365,16 @@ es-abstract@^1.6.1:
     function-bind "^1.1.0"
     is-callable "^1.1.3"
     is-regex "^1.0.3"
+
+es-abstract@^1.7.0:
+  version "1.8.2"
+  resolved "https://registry.npmjs.org/es-abstract/-/es-abstract-1.8.2.tgz#25103263dc4decbda60e0c737ca32313518027ee"
+  dependencies:
+    es-to-primitive "^1.1.1"
+    function-bind "^1.1.1"
+    has "^1.0.1"
+    is-callable "^1.1.3"
+    is-regex "^1.0.4"
 
 es-to-primitive@^1.1.1:
   version "1.1.1"
@@ -2119,7 +1491,7 @@ estraverse@^4.1.0, estraverse@^4.1.1:
   version "4.2.0"
   resolved "https://registry.npmjs.org/estraverse/-/estraverse-4.2.0.tgz#0dee3fed31fcd469618ce7342099fc1afa0bdb13"
 
-esutils@^2.0.0, esutils@^2.0.2:
+esutils@^2.0.2:
   version "2.0.2"
   resolved "https://registry.npmjs.org/esutils/-/esutils-2.0.2.tgz#0abf4f1caa5bcb1f7a9d8acc6dea4faaa04bac9b"
 
@@ -2133,18 +1505,6 @@ event-emitter@~0.3.5:
   dependencies:
     d "1"
     es5-ext "~0.10.14"
-
-event-stream@~3.3.0:
-  version "3.3.4"
-  resolved "https://registry.npmjs.org/event-stream/-/event-stream-3.3.4.tgz#4ab4c9a0f5a54db9338b4c34d86bfce8f4b35571"
-  dependencies:
-    duplexer "~0.1.1"
-    from "~0"
-    map-stream "~0.1.0"
-    pause-stream "0.0.11"
-    split "0.3"
-    stream-combiner "~0.0.4"
-    through "~2.3.1"
 
 eventemitter3@1.x.x:
   version "1.2.0"
@@ -2336,14 +1696,6 @@ finalhandler@1.0.3, finalhandler@~1.0.3:
     statuses "~1.3.1"
     unpipe "~1.0.0"
 
-find-cache-dir@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/find-cache-dir/-/find-cache-dir-1.0.0.tgz#9288e3e9e3cc3748717d39eade17cf71fc30ee6f"
-  dependencies:
-    commondir "^1.0.1"
-    make-dir "^1.0.0"
-    pkg-dir "^2.0.0"
-
 find-up@^1.0.0:
   version "1.1.2"
   resolved "https://registry.npmjs.org/find-up/-/find-up-1.1.2.tgz#6b2e9822b1a2ce0a60ab64d610eccad53cb24d0f"
@@ -2351,7 +1703,7 @@ find-up@^1.0.0:
     path-exists "^2.0.0"
     pinkie-promise "^2.0.0"
 
-find-up@^2.0.0, find-up@^2.1.0:
+find-up@^2.0.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/find-up/-/find-up-2.1.0.tgz#45d1b7e506c717ddd482775a2b77920a3c0c57a7"
   dependencies:
@@ -2397,10 +1749,6 @@ fresh@0.5.0:
   version "0.5.0"
   resolved "https://registry.npmjs.org/fresh/-/fresh-0.5.0.tgz#f474ca5e6a9246d6fd8e0953cfa9b9c805afa78e"
 
-from@~0:
-  version "0.1.7"
-  resolved "https://registry.npmjs.org/from/-/from-0.1.7.tgz#83c60afc58b9c56997007ed1a768b3ab303a44fe"
-
 fs-access@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npmjs.org/fs-access/-/fs-access-1.0.1.tgz#d6a87f262271cefebec30c553407fb995da8777a"
@@ -2414,10 +1762,6 @@ fs-extra@^4.0.2:
     graceful-fs "^4.1.2"
     jsonfile "^4.0.0"
     universalify "^0.1.0"
-
-fs-readdir-recursive@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/fs-readdir-recursive/-/fs-readdir-recursive-1.0.0.tgz#8cd1745c8b4f8a29c8caec392476921ba195f560"
 
 fs.realpath@^1.0.0:
   version "1.0.0"
@@ -2511,7 +1855,7 @@ glob-parent@^2.0.0:
   dependencies:
     is-glob "^2.0.0"
 
-glob@7.1.2, glob@^7.0.3, glob@^7.0.5, glob@^7.1.1, glob@^7.1.2:
+glob@7.1.2, glob@^7.0.3, glob@^7.0.5, glob@^7.1.1:
   version "7.1.2"
   resolved "https://registry.npmjs.org/glob/-/glob-7.1.2.tgz#c19c9df9a028702d678612384a6552404c636d15"
   dependencies:
@@ -2539,7 +1883,7 @@ global@^4.3.2:
     min-document "^2.19.0"
     process "~0.5.1"
 
-globals@^9.0.0, globals@^9.18.0:
+globals@^9.0.0:
   version "9.18.0"
   resolved "https://registry.npmjs.org/globals/-/globals-9.18.0.tgz#aa3896b3e69b487f17e31ed2143d69a8e30c2d8a"
 
@@ -2559,7 +1903,7 @@ glogg@^1.0.0:
   dependencies:
     sparkles "^1.0.0"
 
-graceful-fs@^4.1.2, graceful-fs@^4.1.4, graceful-fs@^4.1.6:
+graceful-fs@^4.1.2, graceful-fs@^4.1.6:
   version "4.1.11"
   resolved "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
 
@@ -2703,13 +2047,6 @@ hoist-non-react-statics@^2.2.1:
   version "2.3.1"
   resolved "http://registry.npm.taobao.org/hoist-non-react-statics/download/hoist-non-react-statics-2.3.1.tgz#343db84c6018c650778898240135a1420ee22ce0"
 
-home-or-tmp@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/home-or-tmp/-/home-or-tmp-2.0.0.tgz#e36c3f2d2cae7d746a857e38d18d5f32a7882db8"
-  dependencies:
-    os-homedir "^1.0.0"
-    os-tmpdir "^1.0.1"
-
 hosted-git-info@^2.1.4:
   version "2.5.0"
   resolved "https://registry.npmjs.org/hosted-git-info/-/hosted-git-info-2.5.0.tgz#6d60e34b3abbc8313062c3b798ef8d901a07af3c"
@@ -2840,7 +2177,7 @@ interpret@^1.0.0:
   version "1.0.3"
   resolved "https://registry.npmjs.org/interpret/-/interpret-1.0.3.tgz#cbc35c62eeee73f19ab7b10a801511401afc0f90"
 
-invariant@^2.0.0, invariant@^2.2.0, invariant@^2.2.2:
+invariant@^2.0.0, invariant@^2.2.0:
   version "2.2.2"
   resolved "https://registry.npmjs.org/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
   dependencies:
@@ -3002,10 +2339,6 @@ is-utf8@^0.2.0:
   version "0.2.1"
   resolved "https://registry.npmjs.org/is-utf8/-/is-utf8-0.2.1.tgz#4b0da1442104d1b336340e80797e865cf39f7d72"
 
-is-windows@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/is-windows/-/is-windows-1.0.1.tgz#310db70f742d259a16a369202b51af84233310d9"
-
 is-wsl@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/is-wsl/-/is-wsl-1.1.0.tgz#1f16e4aa22b04d1336b66188a66af3c600c3a66d"
@@ -3134,7 +2467,7 @@ istanbul@0.4.5, istanbul@^0.4.0:
     which "^1.1.1"
     wordwrap "^1.0.0"
 
-js-tokens@^3.0.0, js-tokens@^3.0.2:
+js-tokens@^3.0.0:
   version "3.0.2"
   resolved "https://registry.npmjs.org/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
@@ -3159,10 +2492,6 @@ jsbn@~0.1.0:
 jsesc@^1.3.0:
   version "1.3.0"
   resolved "https://registry.npmjs.org/jsesc/-/jsesc-1.3.0.tgz#46c3fec8c1892b12b0833db9bc7622176dbab34b"
-
-jsesc@~0.5.0:
-  version "0.5.0"
-  resolved "https://registry.npmjs.org/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
 
 json-loader@^0.5.4:
   version "0.5.7"
@@ -3217,6 +2546,10 @@ just-extend@^1.1.22:
   version "1.1.22"
   resolved "https://registry.npmjs.org/just-extend/-/just-extend-1.1.22.tgz#3330af756cab6a542700c64b2e4e4aa062d52fff"
 
+karma-chai@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/karma-chai/-/karma-chai-0.1.0.tgz#bee5ad40400517811ae34bb945f762909108b79a"
+
 karma-chrome-launcher@^2.2.0:
   version "2.2.0"
   resolved "https://registry.npmjs.org/karma-chrome-launcher/-/karma-chrome-launcher-2.2.0.tgz#cf1b9d07136cc18fe239327d24654c3dbc368acf"
@@ -3250,6 +2583,10 @@ karma-mocha@^1.3.0:
   resolved "https://registry.npmjs.org/karma-mocha/-/karma-mocha-1.3.0.tgz#eeaac7ffc0e201eb63c467440d2b69c7cf3778bf"
   dependencies:
     minimist "1.2.0"
+
+karma-sinon@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.npmjs.org/karma-sinon/-/karma-sinon-1.0.5.tgz#4e3443f2830fdecff624d3747163f1217daa2a9a"
 
 karma-sourcemap-loader@^0.3.7:
   version "0.3.7"
@@ -3606,19 +2943,9 @@ magic-string@^0.19.0:
   dependencies:
     vlq "^0.2.1"
 
-make-dir@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/make-dir/-/make-dir-1.0.0.tgz#97a011751e91dd87cfadef58832ebb04936de978"
-  dependencies:
-    pify "^2.3.0"
-
 map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
-
-map-stream@~0.1.0:
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/map-stream/-/map-stream-0.1.0.tgz#e56aa94c4c8055a16404a0674b78f215f7c8e194"
 
 media-typer@0.3.0:
   version "0.3.0"
@@ -3636,12 +2963,6 @@ memory-fs@^0.4.0, memory-fs@~0.4.1:
   dependencies:
     errno "^0.1.3"
     readable-stream "^2.0.1"
-
-memory-streams@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.npmjs.org/memory-streams/-/memory-streams-0.1.2.tgz#273ff777ab60fec599b116355255282cca2c50c2"
-  dependencies:
-    readable-stream "~1.0.2"
 
 meow@^3.3.0:
   version "3.7.0"
@@ -3909,20 +3230,6 @@ normalize-path@^2.0.0, normalize-path@^2.0.1:
   dependencies:
     remove-trailing-separator "^1.0.1"
 
-npm-run-all@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.npmjs.org/npm-run-all/-/npm-run-all-4.1.1.tgz#3095cf3f3cacf57fcb662b210ab10c609af6ddbb"
-  dependencies:
-    ansi-styles "^3.2.0"
-    chalk "^2.1.0"
-    cross-spawn "^5.1.0"
-    memory-streams "^0.1.2"
-    minimatch "^3.0.4"
-    ps-tree "^1.1.0"
-    read-pkg "^2.0.0"
-    shell-quote "^1.6.1"
-    string.prototype.padend "^3.0.0"
-
 npm-run-path@^2.0.0:
   version "2.0.2"
   resolved "https://registry.npmjs.org/npm-run-path/-/npm-run-path-2.0.2.tgz#35a9232dfa35d7067b4cb2ddf2357b1871536c5f"
@@ -4093,7 +3400,7 @@ os-locale@^2.0.0:
     lcid "^1.0.0"
     mem "^1.1.0"
 
-os-tmpdir@^1.0.0, os-tmpdir@^1.0.1, os-tmpdir@~1.0.1:
+os-tmpdir@^1.0.0, os-tmpdir@~1.0.1:
   version "1.0.2"
   resolved "https://registry.npmjs.org/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
 
@@ -4103,14 +3410,6 @@ osenv@^0.1.4:
   dependencies:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.0"
-
-output-file-sync@^1.1.2:
-  version "1.1.2"
-  resolved "http://registry.npm.taobao.org/output-file-sync/download/output-file-sync-1.1.2.tgz#d0a33eefe61a205facb90092e826598d5245ce76"
-  dependencies:
-    graceful-fs "^4.1.4"
-    mkdirp "^0.5.1"
-    object-assign "^4.1.0"
 
 p-finally@^1.0.0:
   version "1.0.0"
@@ -4212,7 +3511,7 @@ path-exists@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/path-exists/-/path-exists-3.0.0.tgz#ce0ebeaa5f78cb18925ea7d810d7b59b010fd515"
 
-path-is-absolute@^1.0.0, path-is-absolute@^1.0.1:
+path-is-absolute@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npmjs.org/path-is-absolute/-/path-is-absolute-1.0.1.tgz#174b9268735534ffbc7ace6bf53a5a9e1b5c5f5f"
 
@@ -4256,12 +3555,6 @@ pathval@^1.0.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/pathval/-/pathval-1.1.0.tgz#b942e6d4bde653005ef6b71361def8727d0645e0"
 
-pause-stream@0.0.11:
-  version "0.0.11"
-  resolved "https://registry.npmjs.org/pause-stream/-/pause-stream-0.0.11.tgz#fe5a34b0cbce12b5aa6a2b403ee2e73b602f1445"
-  dependencies:
-    through "~2.3"
-
 pbkdf2@^3.0.3:
   version "3.0.12"
   resolved "https://registry.npmjs.org/pbkdf2/-/pbkdf2-3.0.12.tgz#be36785c5067ea48d806ff923288c5f750b6b8a2"
@@ -4280,7 +3573,7 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
 
-pify@^2.0.0, pify@^2.3.0:
+pify@^2.0.0:
   version "2.3.0"
   resolved "https://registry.npmjs.org/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
 
@@ -4298,12 +3591,6 @@ pinkie@^2.0.0:
   version "2.0.4"
   resolved "https://registry.npmjs.org/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
 
-pkg-dir@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/pkg-dir/-/pkg-dir-2.0.0.tgz#f6d5d1109e19d63edf428e0bd57e12777615334b"
-  dependencies:
-    find-up "^2.1.0"
-
 portfinder@^1.0.9:
   version "1.0.13"
   resolved "https://registry.npmjs.org/portfinder/-/portfinder-1.0.13.tgz#bb32ecd87c27104ae6ee44b5a3ccbf0ebb1aede9"
@@ -4320,9 +3607,9 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.npmjs.org/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
-private@^0.1.6, private@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.npmjs.org/private/-/private-0.1.7.tgz#68ce5e8a1ef0a23bb570cc28537b5332aba63ef1"
+prettier@^1.7.4:
+  version "1.7.4"
+  resolved "https://registry.npmjs.org/prettier/-/prettier-1.7.4.tgz#5e8624ae9363c80f95ec644584ecdf55d74f93fa"
 
 process-nextick-args@~1.0.6:
   version "1.0.7"
@@ -4367,12 +3654,6 @@ proxy-addr@~1.1.4:
 prr@~0.0.0:
   version "0.0.0"
   resolved "https://registry.npmjs.org/prr/-/prr-0.0.0.tgz#1a84b85908325501411853d0081ee3fa86e2926a"
-
-ps-tree@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/ps-tree/-/ps-tree-1.1.0.tgz#b421b24140d6203f1ed3c76996b4427b08e8c014"
-  dependencies:
-    event-stream "~3.3.0"
 
 pseudomap@^1.0.2:
   version "1.0.2"
@@ -4615,25 +3896,9 @@ redux@^3.6.0, redux@^3.7.2:
     loose-envify "^1.1.0"
     symbol-observable "^1.0.3"
 
-regenerate@^1.2.1:
-  version "1.3.2"
-  resolved "https://registry.npmjs.org/regenerate/-/regenerate-1.3.2.tgz#d1941c67bad437e1be76433add5b385f95b19260"
-
-regenerator-runtime@^0.10.0, regenerator-runtime@^0.10.5:
+regenerator-runtime@^0.10.0:
   version "0.10.5"
   resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz#336c3efc1220adcedda2c9fab67b5a7955a33658"
-
-regenerator-runtime@^0.11.0:
-  version "0.11.0"
-  resolved "http://registry.npm.taobao.org/regenerator-runtime/download/regenerator-runtime-0.11.0.tgz#7e54fe5b5ccd5d6624ea6255c3473be090b802e1"
-
-regenerator-transform@^0.10.0:
-  version "0.10.1"
-  resolved "https://registry.npmjs.org/regenerator-transform/-/regenerator-transform-0.10.1.tgz#1e4996837231da8b7f3cf4114d71b5691a0680dd"
-  dependencies:
-    babel-runtime "^6.18.0"
-    babel-types "^6.19.0"
-    private "^0.1.6"
 
 regex-cache@^0.4.2:
   version "0.4.3"
@@ -4641,24 +3906,6 @@ regex-cache@^0.4.2:
   dependencies:
     is-equal-shallow "^0.1.3"
     is-primitive "^2.0.0"
-
-regexpu-core@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/regexpu-core/-/regexpu-core-2.0.0.tgz#49d038837b8dcf8bfa5b9a42139938e6ea2ae240"
-  dependencies:
-    regenerate "^1.2.1"
-    regjsgen "^0.2.0"
-    regjsparser "^0.1.4"
-
-regjsgen@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/regjsgen/-/regjsgen-0.2.0.tgz#6c016adeac554f75823fe37ac05b92d5a4edb1f7"
-
-regjsparser@^0.1.4:
-  version "0.1.5"
-  resolved "https://registry.npmjs.org/regjsparser/-/regjsparser-0.1.5.tgz#7ee8f84dc6fa792d3fd0ae228d24bd949ead205c"
-  dependencies:
-    jsesc "~0.5.0"
 
 remap-istanbul@^0.8.4:
   version "0.8.4"
@@ -4755,12 +4002,6 @@ rimraf@2, rimraf@^2.2.8, rimraf@^2.5.1, rimraf@^2.6.0, rimraf@^2.6.1:
   dependencies:
     glob "^7.0.5"
 
-rimraf@^2.6.2:
-  version "2.6.2"
-  resolved "https://registry.npmjs.org/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
-  dependencies:
-    glob "^7.0.5"
-
 ripemd160@^2.0.0, ripemd160@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/ripemd160/-/ripemd160-2.0.1.tgz#0f4584295c53a3628af7e6d79aca21ce57d1c6e7"
@@ -4799,7 +4040,7 @@ selfsigned@^1.9.1:
   dependencies:
     node-forge "0.6.33"
 
-"semver@2 || 3 || 4 || 5", semver@^5.3.0:
+"semver@2 || 3 || 4 || 5", semver@^5.0.1, semver@^5.3.0:
   version "5.4.1"
   resolved "https://registry.npmjs.org/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
 
@@ -4878,15 +4119,6 @@ shebang-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
 
-shell-quote@^1.6.1:
-  version "1.6.1"
-  resolved "https://registry.npmjs.org/shell-quote/-/shell-quote-1.6.1.tgz#f4781949cce402697127430ea3b3c5476f481767"
-  dependencies:
-    array-filter "~0.0.0"
-    array-map "~0.0.0"
-    array-reduce "~0.0.0"
-    jsonify "~0.0.0"
-
 signal-exit@^3.0.0:
   version "3.0.2"
   resolved "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
@@ -4905,10 +4137,6 @@ sinon@^4.0.0:
     samsam "^1.1.3"
     text-encoding "0.6.4"
     type-detect "^4.0.0"
-
-slash@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
 
 sntp@1.x.x:
   version "1.0.9"
@@ -4982,12 +4210,6 @@ source-list-map@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/source-list-map/-/source-list-map-2.0.0.tgz#aaa47403f7b245a92fbc97ea08f250d6087ed085"
 
-source-map-support@^0.4.15:
-  version "0.4.17"
-  resolved "http://registry.npm.taobao.org/source-map-support/download/source-map-support-0.4.17.tgz#6f2150553e6375375d0ccb3180502b78c18ba430"
-  dependencies:
-    source-map "^0.5.6"
-
 source-map@>=0.5.6:
   version "0.6.1"
   resolved "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
@@ -5059,12 +4281,6 @@ spdy@^3.4.1:
     select-hose "^2.0.0"
     spdy-transport "^2.0.18"
 
-split@0.3:
-  version "0.3.3"
-  resolved "https://registry.npmjs.org/split/-/split-0.3.3.tgz#cd0eea5e63a211dfff7eb0f091c4133e2d0dd28f"
-  dependencies:
-    through "2"
-
 sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
@@ -5093,12 +4309,6 @@ stream-browserify@^2.0.1:
   dependencies:
     inherits "~2.0.1"
     readable-stream "^2.0.2"
-
-stream-combiner@~0.0.4:
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/stream-combiner/-/stream-combiner-0.0.4.tgz#4d5e433c185261dde623ca3f44c586bcf5c4ad14"
-  dependencies:
-    duplexer "~0.1.1"
 
 stream-http@^2.3.1, stream-http@^2.7.2:
   version "2.7.2"
@@ -5133,14 +4343,6 @@ string-width@^2.0.0:
   dependencies:
     is-fullwidth-code-point "^2.0.0"
     strip-ansi "^4.0.0"
-
-string.prototype.padend@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npmjs.org/string.prototype.padend/-/string.prototype.padend-3.0.0.tgz#f3aaef7c1719f170c5eab1c32bf780d96e21f2f0"
-  dependencies:
-    define-properties "^1.1.2"
-    es-abstract "^1.4.3"
-    function-bind "^1.0.2"
 
 string_decoder@^0.10.25, string_decoder@~0.10.x:
   version "0.10.31"
@@ -5192,7 +4394,7 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-supports-color@4.4.0, supports-color@^4.0.0:
+supports-color@4.4.0:
   version "4.4.0"
   resolved "http://registry.npm.taobao.org/supports-color/download/supports-color-4.4.0.tgz#883f7ddabc165142b2a61427f3352ded195d1a3e"
   dependencies:
@@ -5213,6 +4415,12 @@ supports-color@^3.1.2:
   resolved "https://registry.npmjs.org/supports-color/-/supports-color-3.1.2.tgz#72a262894d9d408b956ca05ff37b2ed8a6e2a2d5"
   dependencies:
     has-flag "^1.0.0"
+
+supports-color@^4.0.0:
+  version "4.5.0"
+  resolved "https://registry.npmjs.org/supports-color/-/supports-color-4.5.0.tgz#be7a0de484dec5c5cddf8b3d59125044912f635b"
+  dependencies:
+    has-flag "^2.0.0"
 
 supports-color@^4.2.1:
   version "4.2.1"
@@ -5267,10 +4475,6 @@ through2@^2.0.0:
     readable-stream "^2.1.5"
     xtend "~4.0.1"
 
-through@2, through@~2.3, through@~2.3.1:
-  version "2.3.8"
-  resolved "https://registry.npmjs.org/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
-
 thunky@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmjs.org/thunky/-/thunky-0.1.0.tgz#bf30146824e2b6e67b0f2d7a4ac8beb26908684e"
@@ -5310,7 +4514,7 @@ to-arraybuffer@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npmjs.org/to-arraybuffer/-/to-arraybuffer-1.0.1.tgz#7d229b1fcc637e466ca081180836a7aabff83f43"
 
-to-fast-properties@^1.0.1, to-fast-properties@^1.0.3:
+to-fast-properties@^1.0.1:
   version "1.0.3"
   resolved "https://registry.npmjs.org/to-fast-properties/-/to-fast-properties-1.0.3.tgz#b83571fa4d8c25b82e231b06e3a3055de4ca1a47"
 
@@ -5327,6 +4531,15 @@ trim-newlines@^1.0.0:
 trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
+
+ts-loader@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.npmjs.org/ts-loader/-/ts-loader-3.0.3.tgz#2b25865c220529093f40c997e81197444955e652"
+  dependencies:
+    chalk "^2.0.1"
+    enhanced-resolve "^3.0.0"
+    loader-utils "^1.0.2"
+    semver "^5.0.1"
 
 tty-browserify@0.0.0:
   version "0.0.0"
@@ -5358,6 +4571,10 @@ type-is@~1.6.15:
   dependencies:
     media-typer "0.3.0"
     mime-types "~2.1.15"
+
+typescript@^2.5.3:
+  version "2.5.3"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-2.5.3.tgz#df3dcdc38f3beb800d4bc322646b04a3f6ca7f0d"
 
 ua-parser-js@^0.7.9:
   version "0.7.14"
@@ -5425,10 +4642,6 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
-user-home@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/user-home/-/user-home-1.1.1.tgz#2b5be23a32b63a7c9deb8d0f28d485724a3df190"
-
 useragent@^2.1.12:
   version "2.2.1"
   resolved "https://registry.npmjs.org/useragent/-/useragent-2.2.1.tgz#cf593ef4f2d175875e8bb658ea92e18a4fd06d8e"
@@ -5457,12 +4670,6 @@ uuid@^2.0.2:
 uuid@^3.0.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
-
-v8flags@^2.1.1:
-  version "2.1.1"
-  resolved "http://registry.npm.taobao.org/v8flags/download/v8flags-2.1.1.tgz#aab1a1fa30d45f88dd321148875ac02c0b55e5b4"
-  dependencies:
-    user-home "^1.1.1"
 
 validate-npm-package-license@^3.0.1:
   version "3.0.1"

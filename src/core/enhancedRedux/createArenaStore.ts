@@ -3,7 +3,7 @@ import ActionTypes from "../ActionTypes";
 import { ReducersMapObject, GenericStoreEnhancer, Middleware } from "redux";
 import createSagaMiddleware, { END, SagaMiddlewareOptions } from "redux-saga";
 import { getArenaInitState, arenaReducer } from "../reducers";
-import createEnhancedStore, { EhancedStore } from "./createEnhancedStore";
+import createEnhancedStore, { EnhancedStore } from "./createEnhancedStore";
 import rootSaga from "../sagas";
 
 export type ArenaStoreOptions = {

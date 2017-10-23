@@ -1,32 +1,35 @@
 import initState from "./state";
-import {
-  ARENA_SCENE_ANIMATION_NEXTPHRASE,
-  ARENA_SCENE_ANIMATION_LEAVING_START
-} from "./ActionTypes";
-import { LOADING, ENTERING, IN, LEAVING, OUT } from "./animationPhase";
+import ActionTypes from "./ActionTypes";
+import AnimationPhase from "./AnimationPhase";
+import { State } from "./types";
+import { AnyAction } from "redux";
 
-export default function(state = initState, action, sceneReducerKey) {
+export default function(
+  state: State = initState,
+  action: AnyAction,
+  sceneReducerKey: string
+) {
   if (action._sceneReducerKey !== sceneReducerKey) return state;
   switch (action.type) {
-    case ARENA_SCENE_ANIMATION_NEXTPHRASE:
+    case ActionTypes.ARENA_SCENE_ANIMATION_NEXTPHRASE:
       if (state.phase !== action.phase) return state;
       switch (state.phase) {
-        case LOADING:
+        case AnimationPhase.LOADING:
           return Object.assign({}, state, {
-            phase: ENTERING
+            phase: AnimationPhase.ENTERING
           });
-        case ENTERING:
+        case AnimationPhase.ENTERING:
           return Object.assign({}, state, {
-            phase: IN
+            phase: AnimationPhase.IN
           });
-        case LEAVING:
-          return Object.assign({}, state, { phase: OUT });
-        case ARENA_SCENE_ANIMATION_LEAVING_START:
-          if (state.phase === IN)
-            return Object.assign({}, state, { phase: LEAVING });
+        case AnimationPhase.LEAVING:
+          return Object.assign({}, state, { phase: AnimationPhase.OUT });
         default:
           return state;
       }
+    case ActionTypes.ARENA_SCENE_ANIMATION_LEAVING_START:
+      if (state.phase === AnimationPhase.IN)
+        return Object.assign({}, state, { phase: AnimationPhase.LEAVING });
     default:
       return state;
   }

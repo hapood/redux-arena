@@ -1,20 +1,14 @@
-import React from "react";
+import { AnyAction } from "redux";
+import { ReactWrapper } from "enzyme";
 import { expect } from "chai";
 import { spy } from "sinon";
-import { createMount } from "../../testUtils";
-import { createArenaStore } from "src";
+import { createArenaStore, EnhancedStore, SceneBundle } from "src";
 import sceneBundleForTestA from "../../sceneBundleForTestA";
 import sceneBundleForTestB from "../../sceneBundleForTestB";
-import TestHoc from "./TestHOC";
+import { MountBundle } from "./types";
+import createBundleMounter from "./createBundleMounter";
 
-function createMountWithRedux() {
-  let mount = createMount();
-  let mountWithProps = props => mount(<TestHoc {...props} />);
-  mountWithProps.cleanUp = mount.cleanUp;
-  return mountWithProps;
-}
-
-function selectNeededStates(allStates, name) {
+function selectNeededStates(allStates: any, name: string): any {
   let { arena, ...otherState } = allStates;
   let metaState, bundleState;
   Object.keys(otherState).forEach(key => {
@@ -32,16 +26,19 @@ function selectNeededStates(allStates, name) {
 }
 
 describe("<ArenaScene /> integration", () => {
-  let store, mountWithRedux, wrapper;
+  let store: EnhancedStore,
+    mountSceneBundle: MountBundle,
+    wrapper: ReactWrapper,
+    cleanUp: () => void;
 
   before(() => {
     store = createArenaStore();
-    mountWithRedux = createMountWithRedux(store);
-    wrapper = mountWithRedux({ sceneBundle: sceneBundleForTestA, store });
+    [mountSceneBundle, cleanUp] = createBundleMounter();
+    wrapper = mountSceneBundle(store, sceneBundleForTestA);
   });
 
   after(() => {
-    mountWithRedux.cleanUp();
+    cleanUp();
     store.close();
   });
 
@@ -86,7 +83,7 @@ describe("<ArenaScene /> integration", () => {
     };
     let flagPromise = new Promise(resolve => {
       let unsubscribe = store.subscribe(() => {
-        let state = store.getState();
+        let state: any = store.getState();
         let { arena, metaState, bundleState } = selectNeededStates(
           state,
           "PageB"
@@ -108,7 +105,10 @@ describe("<ArenaScene /> integration", () => {
   it("should hot replace reducer correctly", () => {
     let newProps = {
       sceneBundle: Object.assign({}, sceneBundleForTestB, {
-        reducer: (state = sceneBundleForTestA.state, action) => {
+        reducer: (
+          state: any = sceneBundleForTestA.state,
+          action: AnyAction
+        ) => {
           switch (action.type) {
             case "ADD_CNT":
               return Object.assign({}, state, { cnt: state.cnt + 16 });

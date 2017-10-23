@@ -1,8 +1,10 @@
+import { SceneBundle } from "src";
 import state from "./state";
 import saga from "./saga";
 import reducer from "./reducer";
-import * as actions from "./actions";
+import actions from "./actions";
 import Page from "./Page";
+import { State, Props } from "./types";
 
 export default {
   Component: Page,
@@ -10,4 +12,6 @@ export default {
   saga,
   reducer,
   actions
-};
+} as SceneBundle<Props, State>;
+
+export { State, Props } from "./types";

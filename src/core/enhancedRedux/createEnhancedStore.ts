@@ -18,27 +18,28 @@ type ArenaStoreState = {
   arena: ArenaState;
 };
 
-export type ReducerObject = { reducerKey: string; reducer: SceneReducer<any> };
+export type ReducerObject = {
+  reducerKey: string;
+  reducer: SceneReducer<any>;
+  state?: {} | null;
+};
 
-export interface EhancedStore<S> {
-  addReducer: (reducerObject: ReducerObject) => boolean;
-  removeReducer: (reducerKey: string) => boolean;
-  replaceReducer: (reducerObject: ReducerObject) => boolean;
+export interface EnhancedStore<S = {}> extends Store<S> {
+  addSingleReducer: (reducerObject: ReducerObject) => boolean;
+  removeSingleReducer: (reducerKey: string) => boolean;
+  replaceSingleReducer: (reducerObject: ReducerObject) => boolean;
   close: () => void;
   runSaga: (saga: ForkEffect) => void;
-  dispatch: Dispatch<S>;
-  getState(): S;
-  subscribe(listener: () => void): Unsubscribe;
 }
 
 function storeEnhancer<S extends ArenaStoreState>(
   store: Store<S>,
   reducers: ReducersMapObject
-): EhancedStore<S> {
+): EnhancedStore<S> {
   let _currentReducers = reducers;
   let handler = {
     get: function(target: Store<S>, name: string) {
-      if (name === "addReducer") {
+      if (name === "addSingleReducer") {
         return ({ reducerKey, reducer }: ReducerObject) => {
           let allStates = target.getState();
           if (allStates.arena.stateTreeDict.get(reducerKey) != null)
@@ -50,7 +51,7 @@ function storeEnhancer<S extends ArenaStoreState>(
           return true;
         };
       }
-      if (name === "removeReducer") {
+      if (name === "removeSingleReducer") {
         return (reducerKey: string) => {
           if (reducerKey == null) {
             throw new Error("Can not remove reducerKey of null.");
@@ -64,7 +65,7 @@ function storeEnhancer<S extends ArenaStoreState>(
           return true;
         };
       }
-      if (name === "replaceReducer") {
+      if (name === "replaceSingleReducer") {
         return ({ reducerKey, reducer }: ReducerObject) => {
           if (reducerKey == null)
             throw new Error(`reducerKey can not be null.`);

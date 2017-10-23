@@ -2,7 +2,6 @@ import { expect } from "chai";
 import { spy } from "sinon";
 import { applyMiddleware } from "redux";
 import createArenaStore from "./createArenaStore";
-import {} from "jasmine";
 
 describe("Redux-Arena start up", () => {
   it("should initial with config correctly", () => {

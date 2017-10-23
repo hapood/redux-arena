@@ -1,25 +1,27 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import * as React from "react";
 import { Provider } from "react-redux";
-import { ArenaSceneLoadMotion } from "src";
+import { ArenaSceneLoadMotion, EnhancedStore, SceneBundleThunk } from "src";
 import { bundleToElement } from "src/tools";
 import * as sceneAnimation from "./sceneAnimation";
 
-export default class TestHOC extends Component {
-  static propTypes = {
-    store: PropTypes.any.isRequired,
-    asyncBundleThunk: PropTypes.func.isRequired
-  };
+export type TestHOCProps = {
+  store: EnhancedStore;
+  sceneBundleThunk: SceneBundleThunk;
+  reducerKey?: string;
+  vReducerKey?: string;
+};
+
+export default class TestHOC extends React.Component<TestHOCProps> {
   render() {
     let props = this.props;
     return (
       <Provider store={props.store}>
         <ArenaSceneLoadMotion
-          asyncBundleThunk={this.props.asyncBundleThunk}
+          sceneBundleThunk={props.sceneBundleThunk}
           loadingPlay={<div />}
           initStyles={sceneAnimation.initStyles}
           styleCalculators={sceneAnimation.styleCalculators}
-          numberToStyle={sceneAnimation.numberToStyle}
+          numberToStyles={sceneAnimation.numberToStyles}
           nextPhaseCheckers={sceneAnimation.nextPhaseCheckers}
         >
           {bundle =>

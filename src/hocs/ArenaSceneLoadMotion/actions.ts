@@ -1,7 +1,7 @@
 import ArenaActionTypes from "../../ActionTypes";
 import ActionTypes from "./ActionTypes";
 import AnimationPhase from "./AnimationPhase";
-import { AsyncBundleThunk, State } from "./types";
+import { SceneBundleThunk, State } from "./types";
 
 export function setState(state: State) {
   return {
@@ -23,9 +23,11 @@ export function startLeaving() {
   };
 }
 
-export function loadSceneBundle(asyncBundleThunk: AsyncBundleThunk) {
+export function loadSceneBundle(sceneBundleThunk: SceneBundleThunk) {
   return {
     type: ActionTypes.ARENA_SCENE_ANIMATION_LOAD_BUNDLE,
-    asyncBundleThunk
+    sceneBundleThunk
   };
 }
+
+export default { setState, nextPhase, startLeaving, loadSceneBundle };

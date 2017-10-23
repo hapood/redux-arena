@@ -1,11 +1,16 @@
-import { ActionTypes } from "../core/ActionTypes";
-
-export function sceneReplaceReducer(store, reducerKey, reducerFactory, state) {
+import ActionTypes from "../core/ActionTypes";
+import { EnhancedStore, SceneReducer } from "../core";
+export function sceneReplaceReducer(
+  store: EnhancedStore,
+  reducerKey: string,
+  reducerFactory: (reducerKey: string) => SceneReducer,
+  state: {} | null | undefined
+) {
   store.dispatch({
     type: ActionTypes.ARENA_GLOBAL_PROPSPICKER_LOCK,
     lock: true
   });
-  let newReducerKey = store.replaceReducer({
+  let newReducerKey = store.replaceSingleReducer({
     reducerKey,
     reducer: reducerFactory(reducerKey),
     state

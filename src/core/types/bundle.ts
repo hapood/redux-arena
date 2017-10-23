@@ -14,16 +14,18 @@ export type PropsPicker<S, AS extends RootState = RootState> = (
 export type SceneBundleOptions = {
   reducerKey?: string;
   vReducerKey?: string;
-  isSceneActions?: boolean;
-  isSceneReducer?: boolean;
+  isSceneActions?: boolean | null | undefined;
+  isSceneReducer?: boolean | null | undefined;
 };
 
 export type SceneBundle<P = {}, S = {}> = {
   Component: ComponentClass<P> | SFC<P>;
-  state: any;
-  actions: ActionCreatorsMapObject;
-  propsPicker: PropsPicker<S, any>;
-  saga: () => null;
-  reducer: SceneReducer<S>;
+  state?: S;
+  actions?: ActionCreatorsMapObject;
+  propsPicker?: PropsPicker<S, any>;
+  saga?: (...params: any[]) => any;
+  reducer?: SceneReducer<S>;
   options?: SceneBundleOptions;
 };
+
+export type SceneBundleThunk<P = {}, S = {}> = () => Promise<SceneBundle<S, P>>;

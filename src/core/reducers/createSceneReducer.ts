@@ -1,5 +1,5 @@
 import { AnyAction } from "redux";
-import ActionTypes from "../ActionTypes.js";
+import ActionTypes from "../ActionTypes";
 import getSceneInitState from "./getSceneInitState";
 import { SceneReducer } from "../types";
 
@@ -20,7 +20,7 @@ function sceneReducer(
 }
 
 export default function createSceneReducer(
-  extendSceneReducer: SceneReducer<any>,
+  extendSceneReducer: SceneReducer<any> | null | undefined,
   initState: any,
   sceneReducerKey: string
 ) {

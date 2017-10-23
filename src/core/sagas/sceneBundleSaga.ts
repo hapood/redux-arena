@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { createPropsPicker } from "../enhancedRedux";
 import { sceneApplyRedux, sceneUpdateRedux } from "./sceneReduxSaga";
 import ActionTypes from "../ActionTypes";
-import { CurtainState } from "../reducers/types";
+import { CurtainState, CurtainReduxInfo } from "../reducers/types";
 import { SceneBundle, CurtainLoadSceneAction } from "../types";
 
 export function* applySceneBundle({
@@ -32,9 +32,9 @@ export function* applySceneBundle({
     mutableObj
   } = curtainState;
   mutableObj.isObsolete = true;
-  let newReduxInfo;
+  let newReduxInfo: CurtainReduxInfo;
   if (isInitial) {
-    newReduxInfo = yield call(sceneApplyRedux, {
+    newReduxInfo = yield* sceneApplyRedux({
       arenaReducerDict,
       state: sceneBundle.state,
       saga: sceneBundle.saga,
@@ -43,15 +43,15 @@ export function* applySceneBundle({
       options: sceneBundle.options
     });
   } else {
-    newReduxInfo = yield call(sceneUpdateRedux, {
+    newReduxInfo = yield* sceneUpdateRedux({
       arenaReducerDict,
       state: sceneBundle.state,
       saga: sceneBundle.saga,
       actions: sceneBundle.actions,
       reducer: sceneBundle.reducer,
       options: sceneBundle.options,
-      curSceneBundle: curSceneBundle,
-      reduxInfo
+      curSceneBundle: curSceneBundle as SceneBundle,
+      reduxInfo: reduxInfo as CurtainReduxInfo
     });
   }
   let newMutableObj = { isObsolete: false };
@@ -85,7 +85,7 @@ export function* applySceneBundle({
   });
   loadedCb();
   if (
-    reduxInfo !== null &&
+    reduxInfo != null &&
     newReduxInfo.reducerKey !== reduxInfo.reducerKey &&
     reduxInfo.reducerKey != null
   ) {
@@ -94,7 +94,7 @@ export function* applySceneBundle({
       type: ActionTypes.ARENA_STATETREE_NODE_DISABLE,
       reducerKey: reduxInfo.reducerKey
     });
-    arenaStore.removeReducer(reduxInfo.reducerKey);
+    arenaStore.removeSingleReducer(reduxInfo.reducerKey);
     yield put({
       type: ActionTypes.ARENA_STATETREE_NODE_DELETE,
       reducerKey: reduxInfo.reducerKey

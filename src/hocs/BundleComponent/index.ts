@@ -1,10 +1,8 @@
+export { default, default as BundleComponent } from "./BundleComponent";
 export {
-  default,
-  default as BundleComponent,
   BundleComponentProps,
-  BundleComponentExternalProps,
   BundleComponentBaseProps,
   BundleComponentConnectedProps,
   BundleComponentState
-} from "./SceneBundle";
+} from "./types";
 export { default as curtainConnect } from "./curtainConnect";

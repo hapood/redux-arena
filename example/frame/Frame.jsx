@@ -23,7 +23,7 @@ class Frame extends Component {
   componentWillMount() {
     this.setState({
       page: "emptyPage",
-      asyncBundleThunk: () => import("../scopedPage")
+      sceneBundleThunk: () => import("../scopedPage")
     });
   }
 
@@ -94,7 +94,7 @@ class Frame extends Component {
               ) : this.state.page === "moduleReUse" ? (
                 <ArenaScene sceneBundle={moduleReUseBundle} />
               ) : this.state.page === "asyncScopedPage" ? (
-                <AsyncLoadHOC asyncBundleThunk={this.state.asyncBundleThunk} />
+                <AsyncLoadHOC sceneBundleThunk={this.state.sceneBundleThunk} />
               ) : null}
             </div>
           </div>

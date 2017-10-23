@@ -2,15 +2,13 @@ import { Component, SFC } from "react";
 import { bindActionCreators, Dispatch, ActionCreator } from "redux";
 import { connect } from "react-redux";
 import actions from "./actions";
-import BundleComponent, {
-  BundleComponentExternalProps,
-  BundleComponentBaseProps
-} from "./SceneBundle";
+import BundleComponent from "./BundleComponent";
+import { BundleComponentProps, BundleComponentBaseProps } from "./types";
 
 export default function curtainConnect(
   reducerKey: string,
   clearCurtain: () => void
-): SFC<BundleComponentExternalProps> {
+): SFC<BundleComponentProps> {
   let mapDispatchToProps = (dispatch: Dispatch<any>) => {
     return bindActionCreators(actions, dispatch);
   };
@@ -30,5 +28,5 @@ export default function curtainConnect(
   );
 
   ConnectedComponent.displayName = `curtainConnect({reducerKey:${reducerKey}})`;
-  return <SFC<BundleComponentExternalProps>>ConnectedComponent;
+  return ConnectedComponent;
 }

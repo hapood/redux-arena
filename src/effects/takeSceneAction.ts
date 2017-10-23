@@ -26,22 +26,16 @@ function* _takeSceneActionMaybe(pattern: Pattern, key: string) {
 }
 
 export type TakeSceneAction = {
-  (pattern: Pattern, key: string): void;
-  maybe: (pattern: Pattern, key: string) => void;
+  (pattern: Pattern, key?: string): void;
+  maybe: (pattern: Pattern, key?: string) => void;
 };
 
-const takeSceneAction: any = function(
-  pattern: Pattern,
-  key: string = "_arenaScene"
-) {
-  return call(_takeSceneAction, pattern, key);
+const takeSceneAction: any = function(pattern: Pattern, key?: string) {
+  return call(_takeSceneAction, pattern, key ? key : "_arenaScene");
 };
 
-takeSceneAction.maybe = function(
-  pattern: Pattern,
-  key: string = "_arenaScene"
-) {
-  return call(_takeSceneActionMaybe, pattern, key);
+takeSceneAction.maybe = function(pattern: Pattern, key?: string) {
+  return call(_takeSceneActionMaybe, pattern, key ? key : "_arenaScene");
 };
 
 export default <TakeSceneAction>takeSceneAction;

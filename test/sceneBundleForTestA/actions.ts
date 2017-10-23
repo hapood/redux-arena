@@ -15,3 +15,9 @@ export function addSagaCnt() {
     type: "ADD_SAGA_CNT"
   };
 }
+
+export default {
+  addCnt,
+  addCntBySaga,
+  addSagaCnt
+};

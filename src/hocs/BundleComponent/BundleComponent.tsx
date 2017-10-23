@@ -1,25 +1,11 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import { CurtainState, ReducerDict, SceneBundle } from "../../core";
-import { CurtainLoadScene } from "./actions";
-
-export type BundleComponentState = {
-  loadedPromise: Promise<null>;
-};
-
-export type BundleComponentBaseProps = CurtainState & {
-  clearCurtain: () => void;
-};
-
-export type BundleComponentConnectedProps = BundleComponentBaseProps & {
-  curtainLoadScene: CurtainLoadScene;
-};
-
-export type BundleComponentProps = {
-  arenaReducerDict: ReducerDict;
-  sceneBundle: SceneBundle;
-  sceneProps: any;
-};
+import { ReducerDict, SceneBundle } from "../../core";
+import {
+  BundleComponentConnectedProps,
+  BundleComponentProps,
+  BundleComponentState
+} from "./types";
 
 export default class BundleComponent extends React.Component<
   BundleComponentConnectedProps & BundleComponentProps,

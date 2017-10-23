@@ -20,7 +20,7 @@ export default class ArenaSceneLoadMotion extends React.Component<
   InnerState
 > {
   componentWillMount() {
-    this.props.actions.loadSceneBundle(this.props.asyncBundleThunk);
+    this.props.actions.loadSceneBundle(this.props.sceneBundleThunk);
     this.setState({
       initStyles: (this.props.initStyles as ExtendedMotionStyles).concat([
         {
@@ -54,8 +54,8 @@ export default class ArenaSceneLoadMotion extends React.Component<
         ? nextProps.children(nextProps.bundle)
         : null;
     }
-    if (nextProps.asyncBundleThunk !== this.props.asyncBundleThunk) {
-      nextProps.actions.loadSceneBundle(nextProps.asyncBundleThunk);
+    if (nextProps.sceneBundleThunk !== this.props.sceneBundleThunk) {
+      nextProps.actions.loadSceneBundle(nextProps.sceneBundleThunk);
     }
     if (
       nextProps.actions !== this.props.actions ||

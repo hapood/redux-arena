@@ -1,7 +1,7 @@
 import { ActionCreatorsMapObject, ActionCreator } from "redux";
 import { ForkEffect } from "redux-saga/effects";
 import { SceneReducer } from "../types";
-import ActionTypes from "../ActionTypes.js";
+import ActionTypes from "../ActionTypes";
 import getCurtainInitState from "./getCurtainInitState";
 import { AnyAction } from "redux";
 import { CurtainState } from "./types";

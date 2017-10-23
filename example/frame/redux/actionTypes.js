@@ -1,3 +1,9 @@
-export const FRAME_SET_STATE = "FRAME_SET_STATE";
-export const ADD_CNT = "ADD_CNT";
-export const FRAME_CLEAR_CNT = "FRAME_CLEAR_CNT";
+const FRAME_SET_STATE = "FRAME_SET_STATE";
+const ADD_CNT = "ADD_CNT";
+const FRAME_CLEAR_CNT = "FRAME_CLEAR_CNT";
+
+export default {
+  FRAME_SET_STATE,
+  ADD_CNT,
+  FRAME_CLEAR_CNT
+};

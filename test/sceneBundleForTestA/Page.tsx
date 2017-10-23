@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import * as React from "react";
+import { Props } from "./types";
 
-export default class PageA extends Component {
+export default class PageA extends React.Component<Props> {
   componentWillMount() {
     this.props.actions.addCnt();
     this.props.actions.addSagaCnt();
@@ -34,7 +35,7 @@ export default class PageA extends Component {
             </tr>
           </tbody>
         </table>
-        <button onClick={() => this.props.addCnt()}>Add Cnt</button>
+        <button onClick={() => this.props.actions.addCnt()}>Add Cnt</button>
       </div>
     );
   }

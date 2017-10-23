@@ -1,4 +1,4 @@
-import { fork } from "redux-saga/effects";
+import { fork, ForkEffect } from "redux-saga/effects";
 import { delay } from "redux-saga";
 import {
   setSceneState,
@@ -25,7 +25,7 @@ function* addCntBySaga() {
 function* addCntBySagaMaybe() {
   while (true) {
     yield takeSceneAction.maybe("ADD_CNT_BY_SAGA");
-    yield putSceneAction.resolve(Promise.resolve({ type: "ADD_CNT" }));
+    yield putSceneAction({ type: "ADD_CNT" });
   }
 }
 

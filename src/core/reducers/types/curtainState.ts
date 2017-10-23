@@ -1,14 +1,14 @@
 import { SFC } from "react";
 import { ActionCreatorsMapObject } from "redux";
-import { ForkEffect } from "redux-saga/effects";
 import { SceneBundle, ReducerDict, SceneBundleOptions } from "../../types";
 
 export type CurtainReduxInfo = {
   reducerKey: string;
+  state?: {} | null | undefined;
   origArenaReducerDict: ReducerDict;
-  actions: ActionCreatorsMapObject;
+  actions: ActionCreatorsMapObject | null | undefined;
   options: SceneBundleOptions;
-  saga: ForkEffect;
+  saga: (...params: any[]) => any;
   bindedActions: ActionCreatorsMapObject;
   arenaReducerDict: ReducerDict;
 };
@@ -18,8 +18,8 @@ export type CurtainMutableObj = {
 };
 
 export type CurtainState<P = {}, RS = {}> = {
-  PlayingScene: SFC<P> | null;
-  curSceneBundle: SceneBundle<P, RS> | null;
-  reduxInfo: CurtainReduxInfo | null;
+  PlayingScene: SFC<P> | null | undefined;
+  curSceneBundle: SceneBundle<P, RS> | null | undefined;
+  reduxInfo: CurtainReduxInfo | null | undefined;
   mutableObj: CurtainMutableObj;
 };

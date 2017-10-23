@@ -1,13 +1,14 @@
 export {
   createArenaStore,
   createEnhancedStore,
-  EhancedStore
+  EnhancedStore
 } from "./enhancedRedux";
 export {
   CurtainLoadSceneAction,
   SceneReducer,
   SceneBundleOptions,
   SceneBundle,
+  SceneBundleThunk,
   ReducerDict,
   ReducerDictItem,
   ReducerFactory

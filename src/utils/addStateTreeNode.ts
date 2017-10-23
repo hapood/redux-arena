@@ -1,8 +1,8 @@
-import { EhancedStore } from "../core";
-import { ActionTypes } from "../core/ActionTypes";
+import { EnhancedStore } from "../core";
+import ActionTypes from "../core/ActionTypes";
 
 export default function addStateTreeNode(
-  store: EhancedStore<any>,
+  store: EnhancedStore<any>,
   pReducerKey: string,
   reducerKey: string
 ) {

@@ -1,4 +1,4 @@
-import { ActionTypes } from "../../core/ActionTypes";
+import ActionTypes from "../../core/ActionTypes";
 import { CurtainLoadSceneAction, ReducerDict, SceneBundle } from "../../core";
 
 export type CurtainLoadScene = (

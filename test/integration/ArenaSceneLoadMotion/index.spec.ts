@@ -1,11 +1,18 @@
-import React from "react";
+import * as React from "react";
+import { ReactWrapper } from "enzyme";
 import { expect } from "chai";
 import { spy } from "sinon";
-import { createMount } from "../../testUtils";
-import { createArenaStore, loadMotionPhase } from "src";
+import {
+  createArenaStore,
+  LoadMotionPhase,
+  EnhancedStore,
+  SceneBundleThunk
+} from "src";
+import { MountBundleThunk } from "./types";
 import TestHOC from "./TestHOC";
+import createBundleThunkMounter from "./createBundleThunkMounter";
 
-function selectAnimationState(allStates, name) {
+function selectAnimationState(allStates: any): any {
   let animationState;
   Object.keys(allStates).forEach(key => {
     if (allStates[key].phase != null) {
@@ -16,29 +23,27 @@ function selectAnimationState(allStates, name) {
 }
 
 describe("<ArenaSceneLoadMotion /> integration", () => {
-  let store, mount, wrapper;
+  let store: EnhancedStore,
+    mount: MountBundleThunk,
+    cleanUp: () => void,
+    wrapper;
 
   before(() => {
-    mount = createMount();
+    [mount, cleanUp] = createBundleThunkMounter();
     store = createArenaStore();
   });
 
   after(() => {
-    mount.cleanUp();
+    cleanUp();
     store.close();
   });
 
   it("should step into IN phase correctly", () => {
-    wrapper = mount(
-      <TestHOC
-        store={store}
-        asyncBundleThunk={() => import("../../sceneBundleForTestA")}
-      />
-    );
+    wrapper = mount(store, (() => import("../../sceneBundleForTestA")) as any);
     let flagPromise = new Promise(resolve => {
       let unsubscribe = store.subscribe(() => {
         let animationState = selectAnimationState(store.getState());
-        if (animationState && animationState.phase === loadMotionPhase.IN) {
+        if (animationState && animationState.phase === LoadMotionPhase.IN) {
           unsubscribe();
           resolve(true);
         }

@@ -7,20 +7,22 @@ import * as sceneAnimation from "./sceneAnimation";
 
 export default class AsyncLoadHOC extends Component {
   static propTypes = {
-    asyncBundleThunk: PropTypes.func.isRequired
+    sceneBundleThunk: PropTypes.func.isRequired
   };
   render() {
     return (
-      <ArenaSceneLoadMotion
-        asyncBundleThunk={this.props.asyncBundleThunk}
-        loadingPlay={<LoadingPage />}
-        initStyles={sceneAnimation.initStyles}
-        styleCalculators={sceneAnimation.styleCalculators}
-        numberToStyle={sceneAnimation.numberToStyle}
-        nextPhaseCheckers={sceneAnimation.nextPhaseCheckers}
-      >
-        {bundle => bundleToElement(bundle)}
-      </ArenaSceneLoadMotion>
+      <div style={{ width: "400px", height: "400px", position: "relative" }}>
+        <ArenaSceneLoadMotion
+          sceneBundleThunk={this.props.sceneBundleThunk}
+          loadingPlay={<LoadingPage />}
+          initStyles={sceneAnimation.initStyles}
+          styleCalculators={sceneAnimation.styleCalculators}
+          numberToStyles={sceneAnimation.numberToStyles}
+          nextPhaseCheckers={sceneAnimation.nextPhaseCheckers}
+        >
+          {bundle => bundleToElement(bundle)}
+        </ArenaSceneLoadMotion>
+      </div>
     );
   }
 }

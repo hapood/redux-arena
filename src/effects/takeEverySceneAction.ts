@@ -3,7 +3,7 @@ import getArenaReducerDictEntry from "./getArenaReducerDictEntry";
 
 function* _takeEverySceneAction(
   pattern: Pattern,
-  saga: () => void,
+  saga: (...params: any[]) => any,
   key: string,
   args: any
 ) {
@@ -18,9 +18,15 @@ function* _takeEverySceneAction(
 
 export default function takeEverySceneAction(
   pattern: Pattern,
-  saga: () => void,
-  key: string = "_arenaScene",
+  saga: (...params: any[]) => any,
+  key?: string,
   ...args: any[]
 ) {
-  return fork(_takeEverySceneAction, pattern, saga, key, args);
+  return fork(
+    _takeEverySceneAction,
+    pattern,
+    saga,
+    key ? key : "_arenaScene",
+    args
+  );
 }

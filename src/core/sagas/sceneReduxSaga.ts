@@ -1,4 +1,4 @@
-﻿import ActionTypes from "../ActionTypes";
+import ActionTypes from "../ActionTypes";
 import {
   put,
   PutEffect,
@@ -33,7 +33,7 @@ const defaultActions = {
 };
 
 function bindActions(
-  actions: ActionCreatorsMapObject,
+  actions: ActionCreatorsMapObject | null | undefined,
   reducerKey: string,
   dispatch: Dispatch<any>,
   isSceneActions: boolean
@@ -54,9 +54,9 @@ function* forkSagaWithContext(saga: () => null, ctx: any) {
   yield fork(saga);
 }
 
-function buildReducerFactory<S>(
-  reducer: SceneReducer<S>,
-  state: S,
+function buildReducerFactory<S = {}>(
+  reducer: SceneReducer<S> | null | undefined,
+  state: S | null | undefined,
   isSceneReducer: boolean
 ) {
   return isSceneReducer === false
@@ -80,11 +80,11 @@ function getParentReducerKey(arenaReducerDict: ReducerDict) {
 
 export interface ApplyReduxPayload {
   arenaReducerDict: ReducerDict;
-  state: {};
-  saga: () => null;
-  actions: ActionCreatorsMapObject;
-  reducer: SceneReducer;
-  options: SceneBundleOptions;
+  state: {} | null | undefined;
+  saga: ((...params: any[]) => any) | null | undefined;
+  actions: ActionCreatorsMapObject | null | undefined;
+  reducer: SceneReducer | null | undefined;
+  options: SceneBundleOptions | null | undefined;
 }
 
 export function* sceneApplyRedux({
@@ -93,17 +93,18 @@ export function* sceneApplyRedux({
   saga,
   actions,
   reducer,
-  options = {}
-}: ApplyReduxPayload) {
+  options
+}: ApplyReduxPayload): any {
+  let curOptions = options || {};
   let arenaStore = yield getContext("store");
-  let reducerFactory = buildReducerFactory<any>(
+  let reducerFactory = buildReducerFactory(
     reducer,
     state,
-    options.isSceneReducer || false
+    curOptions.isSceneReducer === false ? false : true
   );
   let newReducerKey = sceneAddReducer(
     arenaStore,
-    options.reducerKey,
+    curOptions.reducerKey,
     reducerFactory,
     state
   );
@@ -111,19 +112,19 @@ export function* sceneApplyRedux({
     actions,
     newReducerKey,
     arenaStore.dispatch,
-    options.isSceneActions || false
+    curOptions.isSceneActions === false ? false : true
   );
   let newArenaReducerDict = buildSceneReducerDict(
     arenaReducerDict,
     newReducerKey,
-    options.vReducerKey,
+    curOptions.vReducerKey,
     bindedActions
   );
   let newReduxInfo = {
     reducerKey: newReducerKey,
     origArenaReducerDict: arenaReducerDict,
     actions,
-    options,
+    options: curOptions,
     saga,
     bindedActions,
     arenaReducerDict: newArenaReducerDict
@@ -138,7 +139,7 @@ export function* sceneApplyRedux({
       arenaReducerDict: newReduxInfo.arenaReducerDict
     });
   }
-  return newReduxInfo;
+  return newReduxInfo as CurtainReduxInfo;
 }
 export interface UpdateReduxPayload extends ApplyReduxPayload {
   curSceneBundle: SceneBundle;
@@ -151,26 +152,27 @@ export function* sceneUpdateRedux({
   saga,
   actions,
   reducer,
-  options = {},
+  options,
   curSceneBundle,
   reduxInfo
-}: UpdateReduxPayload) {
+}: UpdateReduxPayload): any {
+  let curOptions = options || {};
   let newReducerKey = reduxInfo.reducerKey;
   let arenaStore = yield getContext("store");
   let reducerFactory = buildReducerFactory(
     reducer,
     state,
-    options.isSceneReducer || false
+    curOptions.isSceneReducer === false ? false : true
   );
-  let newReduxInfo = Object.assign({}, reduxInfo, { options });
+  let newReduxInfo = Object.assign({}, reduxInfo, { options: curOptions });
   if (
-    options.reducerKey != null &&
-    options.reducerKey !== reduxInfo.reducerKey
+    curOptions.reducerKey != null &&
+    curOptions.reducerKey !== reduxInfo.reducerKey
   ) {
     let oldState = yield select((state: any) => state[reduxInfo.reducerKey]);
     newReducerKey = sceneAddReducer(
       arenaStore,
-      options.reducerKey,
+      curOptions.reducerKey,
       reducerFactory,
       state === curSceneBundle.state ? oldState : state
     );
@@ -179,10 +181,10 @@ export function* sceneUpdateRedux({
       getParentReducerKey(newReduxInfo.arenaReducerDict),
       newReducerKey
     );
-  } else if (options.reducerKey === reduxInfo.reducerKey) {
+  } else if (curOptions.reducerKey === reduxInfo.reducerKey) {
     if (
       reducer !== curSceneBundle.reducer ||
-      options.isSceneReducer !== reduxInfo.options.isSceneReducer
+      curOptions.isSceneReducer !== reduxInfo.options.isSceneReducer
     ) {
       newReducerKey = sceneReplaceReducer(
         arenaStore,
@@ -207,25 +209,25 @@ export function* sceneUpdateRedux({
   newReduxInfo.reducerKey = newReducerKey;
   if (
     actions !== reduxInfo.actions ||
-    options.isSceneActions !== reduxInfo.options.isSceneActions
+    curOptions.isSceneActions !== reduxInfo.options.isSceneActions
   ) {
     newReduxInfo.actions = actions;
     newReduxInfo.bindedActions = bindActions(
       actions,
       newReducerKey,
       arenaStore.dispatch,
-      options.isSceneActions || false
+      curOptions.isSceneActions === false ? false : true
     );
   }
   if (
     newReducerKey !== reduxInfo.reducerKey ||
-    options.vReducerKey !== reduxInfo.options.vReducerKey ||
+    curOptions.vReducerKey !== reduxInfo.options.vReducerKey ||
     arenaReducerDict !== reduxInfo.origArenaReducerDict
   ) {
     newReduxInfo.arenaReducerDict = buildSceneReducerDict(
       arenaReducerDict,
       newReducerKey,
-      options.vReducerKey,
+      curOptions.vReducerKey,
       newReduxInfo.actions
     );
   }
@@ -234,5 +236,5 @@ export function* sceneUpdateRedux({
       arenaReducerDict: newReduxInfo.arenaReducerDict
     });
   }
-  return newReduxInfo;
+  return newReduxInfo as CurtainReduxInfo;
 }
