@@ -1,3 +1,7 @@
+## 0.9.0 (Oct 16, 2017)
+* Add typescript support (#13)
+* Separate animition hoc to other repository (#15)
+
 ## 0.8.0 (Oct 16, 2017)
 * Move async bundle loading of ArenaScene to ArenaSceneLoadMotion
 * Rename ArenaSceneMotion to ArenaSceneLoadMotion

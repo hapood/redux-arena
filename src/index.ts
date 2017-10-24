@@ -7,15 +7,4 @@ export {
   ReducerDict,
   ReducerDictItem
 } from "./core";
-export {
-  ArenaScene,
-  ArenaSceneLoadMotion,
-  ReducerDictOverrider,
-  StyleCalculators,
-  NextPhaseCheckers,
-  NumberToStyles,
-  InitMotionStyle
-} from "./hocs";
-export {
-  default as LoadMotionPhase
-} from "./hocs/ArenaSceneLoadMotion/AnimationPhases";
+export { ArenaScene, ReducerDictOverrider } from "./hocs";
