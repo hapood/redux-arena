@@ -151,18 +151,7 @@ function build() {
     );
     resolve();
   });
-  let buildTDPromise = new Promise(resolve => {
-    require("dts-bundle").bundle({
-      name: "../index.d.ts",
-      main: "src/index.ts"
-    });
-    resolve();
-  });
-  return Promise.all([
-    buildCJSPromise,
-    buildESPromise,
-    buildTDPromise
-  ]).then(() =>
+  return Promise.all([buildCJSPromise, buildESPromise]).then(() =>
     Promise.all(files.map(file => copyFile(file))).then(() =>
       createPackageFile()
     )
