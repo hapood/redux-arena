@@ -24,15 +24,21 @@ export function isCurPhaseEnd(
     switch (key) {
       case "container":
         return nextPhaseCheckers.container
-          ? nextPhaseCheckers.container(style, isSceneReady)
+          ? nextPhaseCheckers.container(style, isSceneReady) === true
+            ? true
+            : false
           : false;
       case "loadingPlay":
         return nextPhaseCheckers.loadingPlay
-          ? nextPhaseCheckers.loadingPlay(style, isSceneReady)
+          ? nextPhaseCheckers.loadingPlay(style, isSceneReady) === true
+            ? true
+            : false
           : false;
       case "scenePlay":
         return nextPhaseCheckers.scenePlay
-          ? nextPhaseCheckers.scenePlay(style, isSceneReady)
+          ? nextPhaseCheckers.scenePlay(style, isSceneReady) === true
+            ? true
+            : false
           : false;
       default:
         return false;

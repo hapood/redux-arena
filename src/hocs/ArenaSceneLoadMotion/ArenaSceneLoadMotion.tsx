@@ -91,10 +91,10 @@ export default class ArenaSceneLoadMotion extends React.Component<
     return (
       <TransitionMotion defaultStyles={initStyles} styles={styleCalculator}>
         {interpolatedStyles => {
-          let containerStyle,
-            scenePlayStyle,
-            loadingPlayStyle,
-            animationPhase: number;
+          let containerStyle, scenePlayStyle, loadingPlayStyle;
+          let animationPhase: AnimationPhases = (interpolatedStyles.find(
+            styleObj => styleObj.key === "nextPhase"
+          ) as any).style.phase;
           interpolatedStyles.forEach(styleObj => {
             let { key, style } = styleObj;
             switch (key) {
@@ -118,9 +118,6 @@ export default class ArenaSceneLoadMotion extends React.Component<
                   animationPhase,
                   isSceneReady
                 );
-                break;
-              case "nextPhase":
-                animationPhase = style.phase;
                 break;
             }
           });

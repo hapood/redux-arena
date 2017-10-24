@@ -21,7 +21,10 @@ export type StyleCalculators = {
   scenePlay: StyleCalculator;
 };
 
-export type NextPhaseChecker = (style: Style, isSceneReady: boolean) => boolean;
+export type NextPhaseChecker = (
+  style: PlainStyle,
+  isSceneReady: boolean
+) => boolean | null | undefined;
 
 export type NextPhaseCheckers = {
   container: NextPhaseChecker;
