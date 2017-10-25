@@ -68,7 +68,7 @@ module.exports = function(config) {
     webpack: {
       resolve: {
         alias: { src: path.resolve(__dirname, "../src") },
-        extensions: [".js", ".jsx", ".ts", ".tsx", ""]
+        extensions: [".js", ".jsx", ".ts", ".tsx"]
       },
       devtool: "inline-source-map",
       module: {
