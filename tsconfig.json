@@ -6,7 +6,6 @@
       "src": ["src"]
     },
     "target": "es5",
-    "outDir": "tmp",
     "sourceMap": true,
     "declaration": true,
     "module": "esnext",
