@@ -2,9 +2,9 @@ import { SFC } from "react";
 import { ActionCreatorsMapObject } from "redux";
 import { SceneBundle, ReducerDict, SceneBundleOptions } from "../../types";
 
-export type CurtainReduxInfo = {
+export type CurtainReduxInfo<S> = {
   reducerKey: string;
-  state?: {} | null | undefined;
+  state?: S | null | undefined;
   origArenaReducerDict: ReducerDict;
   actions: ActionCreatorsMapObject | null | undefined;
   options: SceneBundleOptions;
@@ -17,9 +17,9 @@ export type CurtainMutableObj = {
   isObsolete: boolean;
 };
 
-export type CurtainState<P = {}, RS = {}> = {
+export type CurtainState<P = {}, S = {}, CP = any> = {
   PlayingScene: SFC<P> | null | undefined;
-  curSceneBundle: SceneBundle<P, RS> | null | undefined;
-  reduxInfo: CurtainReduxInfo | null | undefined;
+  curSceneBundle: SceneBundle<P, S, CP> | null | undefined;
+  reduxInfo: CurtainReduxInfo<S> | null | undefined;
   mutableObj: CurtainMutableObj;
 };

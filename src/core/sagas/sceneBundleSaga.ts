@@ -15,12 +15,12 @@ import ActionTypes from "../ActionTypes";
 import { CurtainState, CurtainReduxInfo } from "../reducers/types";
 import { SceneBundle, CurtainLoadSceneAction } from "../types";
 
-export function* applySceneBundle({
+export function* applySceneBundle<P, S, CP>({
   isInitial,
   arenaReducerDict,
   sceneBundle,
   loadedCb
-}: CurtainLoadSceneAction) {
+}: CurtainLoadSceneAction<P, S, CP>) {
   let arenaCurtainReducerKey = arenaReducerDict._arenaCurtain.reducerKey;
   let curtainState: CurtainState = yield select(
     (state: any) => state[arenaCurtainReducerKey]
@@ -32,9 +32,10 @@ export function* applySceneBundle({
     mutableObj
   } = curtainState;
   mutableObj.isObsolete = true;
-  let newReduxInfo: CurtainReduxInfo;
+  let newReduxInfo: CurtainReduxInfo<S>;
+  //Use yield* because there is fork effect in sceneApplyRedux and sceneUpdateRedux
   if (isInitial) {
-    newReduxInfo = yield* sceneApplyRedux({
+    newReduxInfo = yield* sceneApplyRedux<P, S, CP>({
       arenaReducerDict,
       state: sceneBundle.state,
       saga: sceneBundle.saga,
@@ -43,15 +44,15 @@ export function* applySceneBundle({
       options: sceneBundle.options
     });
   } else {
-    newReduxInfo = yield* sceneUpdateRedux({
+    newReduxInfo = yield* sceneUpdateRedux<P, S, CP>({
       arenaReducerDict,
       state: sceneBundle.state,
       saga: sceneBundle.saga,
       actions: sceneBundle.actions,
       reducer: sceneBundle.reducer,
       options: sceneBundle.options,
-      curSceneBundle: curSceneBundle as SceneBundle,
-      reduxInfo: reduxInfo as CurtainReduxInfo
+      curSceneBundle: curSceneBundle as SceneBundle<P, S, CP>,
+      reduxInfo: reduxInfo as CurtainReduxInfo<S>
     });
   }
   let newMutableObj = { isObsolete: false };

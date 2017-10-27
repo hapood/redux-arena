@@ -9,9 +9,10 @@ export type BundleComponentBaseProps = CurtainState & {
   clearCurtain: () => void;
 };
 
-export type BundleComponentConnectedProps = BundleComponentBaseProps & {
-  curtainLoadScene: CurtainLoadScene;
-};
+export type BundleComponentConnectedProps = BundleComponentBaseProps &
+  BundleComponentProps & {
+    curtainLoadScene: CurtainLoadScene<any, any, any>;
+  };
 
 export type BundleComponentProps = {
   arenaReducerDict: ReducerDict;

@@ -4,7 +4,7 @@ import { ReducerDict } from "./reducerDict";
 import { SceneReducer } from "./reducer";
 import { RootState } from "../reducers/types";
 
-export type PropsPicker<S, AS extends RootState = RootState, CP = any> = (
+export type PropsPicker<S, AS extends RootState, CP> = (
   state: S,
   actions: ActionCreatorsMapObject,
   allState: AS,
@@ -14,11 +14,11 @@ export type PropsPicker<S, AS extends RootState = RootState, CP = any> = (
 export type SceneBundleOptions = {
   reducerKey?: string;
   vReducerKey?: string;
-  isSceneActions?: boolean | null | undefined;
-  isSceneReducer?: boolean | null | undefined;
+  isSceneActions?: boolean;
+  isSceneReducer?: boolean;
 };
 
-export type SceneBundle<P = {}, S = {}, CP = P> = {
+export type SceneBundle<P = {}, S = {}, CP = any> = {
   Component: ComponentClass<P> | SFC<P>;
   state?: S;
   actions?: ActionCreatorsMapObject;

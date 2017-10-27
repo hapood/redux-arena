@@ -2,10 +2,10 @@ import ActionTypes from "../ActionTypes";
 import { ReducerDict } from "./reducerDict";
 import { SceneBundle } from "./bundle";
 
-export type CurtainLoadSceneAction = {
+export type CurtainLoadSceneAction<P, S, CP> = {
   type: ActionTypes.ARENA_CURTAIN_LOAD_SCENE;
   arenaReducerDict: ReducerDict;
-  sceneBundle: SceneBundle;
+  sceneBundle: SceneBundle<P, S, CP>;
   isInitial: boolean;
   loadedCb: () => void;
 };

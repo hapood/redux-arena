@@ -11,9 +11,9 @@ function defaultPropsPicker(
   });
 }
 
-export default function createPropsPicker<P>(
-  propsPicker: PropsPicker<any, any> = defaultPropsPicker,
-  reduxInfo: CurtainReduxInfo,
+export default function createPropsPicker<P, S>(
+  propsPicker: PropsPicker<S, any, any> = defaultPropsPicker,
+  reduxInfo: CurtainReduxInfo<S>,
   mutableObj: CurtainMutableObj
 ) {
   let { arenaReducerDict } = reduxInfo;

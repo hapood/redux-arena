@@ -78,7 +78,7 @@ function getParentReducerKey(arenaReducerDict: ReducerDict) {
   );
 }
 
-export interface ApplyReduxPayload {
+export interface ApplyReduxPayload<P, S, CP> {
   arenaReducerDict: ReducerDict;
   state: {} | null | undefined;
   saga: ((...params: any[]) => any) | null | undefined;
@@ -87,14 +87,14 @@ export interface ApplyReduxPayload {
   options: SceneBundleOptions | null | undefined;
 }
 
-export function* sceneApplyRedux({
+export function* sceneApplyRedux<P, S, CP>({
   arenaReducerDict,
   state,
   saga,
   actions,
   reducer,
   options
-}: ApplyReduxPayload): any {
+}: ApplyReduxPayload<P, S, CP>): any {
   let curOptions = options || {};
   let arenaStore = yield getContext("store");
   let reducerFactory = buildReducerFactory(
@@ -139,14 +139,15 @@ export function* sceneApplyRedux({
       arenaReducerDict: newReduxInfo.arenaReducerDict
     });
   }
-  return newReduxInfo as CurtainReduxInfo;
+  return newReduxInfo as CurtainReduxInfo<S>;
 }
-export interface UpdateReduxPayload extends ApplyReduxPayload {
-  curSceneBundle: SceneBundle;
-  reduxInfo: CurtainReduxInfo;
+export interface UpdateReduxPayload<P, S, CP>
+  extends ApplyReduxPayload<P, S, CP> {
+  curSceneBundle: SceneBundle<P, S, CP>;
+  reduxInfo: CurtainReduxInfo<S>;
 }
 
-export function* sceneUpdateRedux({
+export function* sceneUpdateRedux<P, S, CP>({
   arenaReducerDict,
   state,
   saga,
@@ -155,7 +156,7 @@ export function* sceneUpdateRedux({
   options,
   curSceneBundle,
   reduxInfo
-}: UpdateReduxPayload): any {
+}: UpdateReduxPayload<P, S, CP>): any {
   let curOptions = options || {};
   let newReducerKey = reduxInfo.reducerKey;
   let arenaStore = yield getContext("store");
@@ -236,5 +237,5 @@ export function* sceneUpdateRedux({
       arenaReducerDict: newReduxInfo.arenaReducerDict
     });
   }
-  return newReduxInfo as CurtainReduxInfo;
+  return newReduxInfo as CurtainReduxInfo<S>;
 }

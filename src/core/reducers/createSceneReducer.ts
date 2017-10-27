@@ -19,8 +19,8 @@ function sceneReducer(
   }
 }
 
-export default function createSceneReducer(
-  extendSceneReducer: SceneReducer<any> | null | undefined,
+export default function createSceneReducer<S>(
+  extendSceneReducer: SceneReducer<S> | null | undefined,
   initState: any,
   sceneReducerKey: string
 ) {
