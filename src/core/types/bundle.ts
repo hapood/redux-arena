@@ -4,12 +4,12 @@ import { ReducerDict } from "./reducerDict";
 import { SceneReducer } from "./reducer";
 import { RootState } from "../reducers/types";
 
-export type PropsPicker<S, AS extends RootState = RootState> = (
+export type PropsPicker<S, AS extends RootState = RootState, CP = any> = (
   state: S,
   actions: ActionCreatorsMapObject,
   allState: AS,
   reducerDict: ReducerDict
-) => S;
+) => { [P in keyof CP]: CP[P] };
 
 export type SceneBundleOptions = {
   reducerKey?: string;
@@ -18,11 +18,11 @@ export type SceneBundleOptions = {
   isSceneReducer?: boolean | null | undefined;
 };
 
-export type SceneBundle<P = {}, S = {}> = {
+export type SceneBundle<P = {}, S = {}, CP = P> = {
   Component: ComponentClass<P> | SFC<P>;
   state?: S;
   actions?: ActionCreatorsMapObject;
-  propsPicker?: PropsPicker<S, any>;
+  propsPicker?: PropsPicker<S, any, CP>;
   saga?: (...params: any[]) => any;
   reducer?: SceneReducer<S>;
   options?: SceneBundleOptions;
