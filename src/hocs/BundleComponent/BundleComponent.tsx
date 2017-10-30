@@ -1,11 +1,11 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import { ReducerDict, SceneBundle } from "../../core";
-import { BundleComponentConnectedProps, BundleComponentState } from "./types";
+import { ConnectedProps, State } from "./types";
 
 export default class BundleComponent extends React.Component<
-  BundleComponentConnectedProps,
-  BundleComponentState
+  ConnectedProps,
+  State
 > {
   static childContextTypes = {
     arenaReducerDict: PropTypes.object
@@ -57,7 +57,7 @@ export default class BundleComponent extends React.Component<
     });
   }
 
-  componentWillReceiveProps(nextProps: BundleComponentConnectedProps) {
+  componentWillReceiveProps(nextProps: ConnectedProps) {
     let { sceneBundle } = nextProps;
     if (sceneBundle !== this.props.sceneBundle) {
       this.state.loadedPromise.then(() => {

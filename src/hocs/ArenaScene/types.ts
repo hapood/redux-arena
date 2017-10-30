@@ -1,22 +1,22 @@
 import { EnhancedStore, ReducerDict, SceneBundle } from "../../core";
 
-export type ArenaSceneExtraProps = {
+export type ExtraProps = {
   reducerKey?: string;
   vReducerKey?: string;
 };
-export type ArenaSceneProps<SP, SS> = ArenaSceneExtraProps & {
+export type Props<SP, SS> = ExtraProps & {
   sceneProps?: SP;
   sceneBundle: SceneBundle<SP, SS>;
 };
 
-export type ArenaSceneState = {
+export type State = {
   parentReducerKey: string;
   arenaReducerDict: ReducerDict;
   ConnectedBundleComponent: React.SFC<any>;
   connectedBundleElement: React.SFCElement<any>;
 };
 
-export type ArenaSceneContext = {
+export type Context = {
   store: EnhancedStore<any>;
   arenaReducerDict: ReducerDict | null | undefined;
 };

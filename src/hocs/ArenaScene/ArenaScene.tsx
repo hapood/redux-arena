@@ -9,7 +9,7 @@ import {
   buildCurtainReducerDict
 } from "../../utils";
 import { curtainConnect } from "../BundleComponent";
-import { ArenaSceneProps, ArenaSceneState, ArenaSceneContext } from "./types";
+import { Props, State, Context } from "./types";
 
 function buildConnectedSceneBundle(
   reducerKey: string,
@@ -40,8 +40,8 @@ function getParentReducerKey(arenaReducerDict: ReducerDict) {
 }
 
 export default class ArenaScene<SP, SS> extends React.Component<
-  ArenaSceneProps<SP, SS>,
-  ArenaSceneState
+  Props<SP, SS>,
+  State
 > {
   static contextTypes = {
     store: PropTypes.any,
@@ -80,12 +80,9 @@ export default class ArenaScene<SP, SS> extends React.Component<
     });
   }
 
-  componentWillReceiveProps(
-    nextProps: ArenaSceneProps<SP, SS>,
-    nextContext: ArenaSceneContext
-  ) {
+  componentWillReceiveProps(nextProps: Props<SP, SS>, nextContext: Context) {
     let refreshFlag = false;
-    let state: ArenaSceneState = Object.assign({}, this.state);
+    let state: State = Object.assign({}, this.state);
     let { reducerKey, vReducerKey, sceneBundle, sceneProps } = nextProps;
     let curReducerKey = state.arenaReducerDict._arenaCurtain.reducerKey;
     let newReducerKey = curReducerKey;

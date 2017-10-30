@@ -3,17 +3,17 @@ import { bindActionCreators, Dispatch, ActionCreator } from "redux";
 import { connect } from "react-redux";
 import actions from "./actions";
 import BundleComponent from "./BundleComponent";
-import { BundleComponentProps, BundleComponentBaseProps } from "./types";
+import { Props, BaseProps } from "./types";
 
 export default function curtainConnect(
   reducerKey: string,
   clearCurtain: () => void
-): SFC<BundleComponentProps> {
+): SFC<Props> {
   let mapDispatchToProps = (dispatch: Dispatch<any>) => {
     return bindActionCreators(actions, dispatch);
   };
 
-  let mapStateToProps = (state: any): BundleComponentBaseProps => {
+  let mapStateToProps = (state: any): BaseProps => {
     return {
       PlayingScene: state[reducerKey].PlayingScene,
       curSceneBundle: state[reducerKey].curSceneBundle,
