@@ -1,13 +1,16 @@
 {
   "name": "redux-arena",
   "version": "0.9.0-beta1",
-  "description": "Bundling reducers, actions, saga and react-component when using Redux",
+  "description":
+    "Bundling reducers, actions, saga and react-component when using Redux",
   "scripts": {
-    "prettier": "prettier --write \"**/*.js\" \"**/*.jsx\" \"**/*.tsx\" \"**/*.ts\"",
+    "prettier":
+      "prettier --write \"**/*.js\" \"**/*.jsx\" \"**/*.tsx\" \"**/*.ts\"",
     "build": "node scripts/build.js",
     "postpublish": "npm run build && cd build && npm publish",
     "test": "karma start test/karma.conf.js",
-    "test-travis": "karma start test/karma.conf.js --browsers Firefox --single-run"
+    "test-travis":
+      "karma start test/karma.conf.js --browsers Firefox --single-run"
   },
   "repository": {
     "type": "git",

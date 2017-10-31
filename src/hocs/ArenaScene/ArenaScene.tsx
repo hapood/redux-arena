@@ -39,10 +39,7 @@ function getParentReducerKey(arenaReducerDict: ReducerDict) {
   );
 }
 
-export default class ArenaScene<SP, SS> extends React.Component<
-  Props<SP, SS>,
-  State
-> {
+export default class ArenaScene extends React.Component<Props, State> {
   static contextTypes = {
     store: PropTypes.any,
     arenaReducerDict: PropTypes.object
@@ -80,7 +77,7 @@ export default class ArenaScene<SP, SS> extends React.Component<
     });
   }
 
-  componentWillReceiveProps(nextProps: Props<SP, SS>, nextContext: Context) {
+  componentWillReceiveProps(nextProps: Props, nextContext: Context) {
     let refreshFlag = false;
     let state: State = Object.assign({}, this.state);
     let { reducerKey, vReducerKey, sceneBundle, sceneProps } = nextProps;

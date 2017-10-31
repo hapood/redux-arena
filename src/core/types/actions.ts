@@ -13,3 +13,11 @@ export type CurtainLoadSceneAction<P, S, CP> = {
 export type DefaultSceneActions<S = {}> = {
   setState: (state: S) => void;
 };
+
+export type ConnectedAction = (...params: any[]) => void;
+
+export type ActionsDict = {
+  [key: string]: {
+    [key: string]: ConnectedAction;
+  };
+};

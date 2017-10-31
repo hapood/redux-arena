@@ -1,15 +1,15 @@
 import { ComponentClass, SFC } from "react";
 import { ActionCreatorsMapObject } from "redux";
-import { ReducerDict } from "./reducerDict";
+import { ActionsDict } from "./actions";
 import { SceneReducer } from "./reducer";
 import { RootState } from "../reducers/types";
 
-export type PropsPicker<S, AS extends RootState, CP> = (
-  state: S,
-  actions: ActionCreatorsMapObject,
-  allState: AS,
-  reducerDict: ReducerDict
-) => { [P in keyof CP]: CP[P] };
+export type StateDict = { [key: string]: {} };
+
+export type PropsPicker<CP = any> = (
+  stateDict: StateDict,
+  actionsDict: ActionsDict
+) => Partial<CP>;
 
 export type SceneBundleOptions = {
   reducerKey?: string;
@@ -18,14 +18,16 @@ export type SceneBundleOptions = {
   isSceneReducer?: boolean;
 };
 
-export type SceneBundle<P = {}, S = {}, CP = any> = {
+export type SceneBundle<SP, P, S> = {
   Component: ComponentClass<P> | SFC<P>;
   state?: S;
   actions?: ActionCreatorsMapObject;
-  propsPicker?: PropsPicker<S, any, CP>;
+  propsPicker?: PropsPicker<P>;
   saga?: (...params: any[]) => any;
   reducer?: SceneReducer<S>;
   options?: SceneBundleOptions;
 };
 
-export type SceneBundleThunk<P = {}, S = {}> = () => Promise<SceneBundle<S, P>>;
+export type SceneBundleThunk<SP = {}, P = {}, S = {}> = () => Promise<
+  SceneBundle<SP, S, P>
+>;

@@ -12,7 +12,9 @@ export {
   ReducerDict,
   ReducerDictItem,
   ReducerFactory,
-  DefaultSceneActions
+  DefaultSceneActions,
+  ConnectedAction,
+  ActionsDict
 } from "./types";
 export {
   arenaReducer,

@@ -4,9 +4,9 @@ export type ExtraProps = {
   reducerKey?: string;
   vReducerKey?: string;
 };
-export type Props<SP, SS> = ExtraProps & {
-  sceneProps?: SP;
-  sceneBundle: SceneBundle<SP, SS>;
+export type Props = ExtraProps & {
+  sceneProps?: {};
+  sceneBundle: SceneBundle<{}, {}, {}>;
 };
 
 export type State = {
