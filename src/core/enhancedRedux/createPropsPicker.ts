@@ -25,12 +25,15 @@ export default function propsPicker<P, S>(
   let latestProps: Partial<P> | Partial<DefaultPickedProps<S>>;
   let stateHandler = {
     get: function(target: { state: any }, name: string) {
-      return target.state[arenaReducerDict[name].reducerKey];
+      return (
+        arenaReducerDict[name] &&
+        target.state[arenaReducerDict[name].reducerKey]
+      );
     }
   };
   let actionsHandler = {
     get: function(target: { state: any }, name: string) {
-      return arenaReducerDict[name].actions;
+      return arenaReducerDict[name] && arenaReducerDict[name].actions;
     }
   };
   let stateObj = { state: null };

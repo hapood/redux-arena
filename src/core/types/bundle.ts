@@ -1,4 +1,4 @@
-import { ComponentClass, SFC } from "react";
+import { ComponentType } from "react";
 import { ActionCreatorsMapObject } from "redux";
 import { ActionsDict } from "./actions";
 import { SceneReducer } from "./reducer";
@@ -18,8 +18,8 @@ export type SceneBundleOptions = {
   isSceneReducer?: boolean;
 };
 
-export type SceneBundle<SP, P, S> = {
-  Component: ComponentClass<P> | SFC<P>;
+export type SceneBundle<SP = {}, P = {}, S = {}> = {
+  Component: ComponentType<P>;
   state?: S;
   actions?: ActionCreatorsMapObject;
   propsPicker?: PropsPicker<P>;

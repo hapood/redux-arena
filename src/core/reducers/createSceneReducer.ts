@@ -3,12 +3,7 @@ import ActionTypes from "../ActionTypes";
 import getSceneInitState from "./getSceneInitState";
 import { SceneReducer } from "../types";
 
-function sceneReducer(
-  state = getSceneInitState(),
-  action: AnyAction,
-  sceneReducerKey: string
-) {
-  if (action._sceneReducerKey !== sceneReducerKey) return state;
+function sceneReducer(state = getSceneInitState(), action: AnyAction) {
   switch (action.type) {
     case ActionTypes.ARENA_SCENE_SET_STATE:
       return Object.assign({}, state, action.state);
@@ -25,9 +20,13 @@ export default function createSceneReducer<S>(
   sceneReducerKey: string
 ) {
   return function(state = initState, action: AnyAction) {
+    let isSceneAction =
+      action._sceneReducerKey && action._sceneReducerKey === sceneReducerKey
+        ? true
+        : false;
     if (extendSceneReducer) {
-      state = extendSceneReducer(state, action, sceneReducerKey);
+      state = extendSceneReducer(state, action, isSceneAction);
     }
-    return sceneReducer(state, action, sceneReducerKey);
+    return isSceneAction ? sceneReducer(state, action) : state;
   };
 }
