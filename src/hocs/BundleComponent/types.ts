@@ -1,5 +1,9 @@
-import { CurtainLoadScene } from "./actions";
-import { CurtainState, ReducerDict, SceneBundle } from "../../core";
+import {
+  CurtainLoadSceneAction,
+  CurtainState,
+  ReducerDict,
+  SceneBundle
+} from "../../core";
 
 export type State = {
   loadedPromise: Promise<null>;
@@ -19,3 +23,10 @@ export type Props = {
   sceneBundle: SceneBundle;
   sceneProps: any;
 };
+
+export type CurtainLoadScene<P, S, CP> = (
+  arenaReducerDict: ReducerDict,
+  sceneBundle: SceneBundle<P, S, CP>,
+  isInitial: any,
+  loadedCb: () => void
+) => CurtainLoadSceneAction<P, S, CP>;

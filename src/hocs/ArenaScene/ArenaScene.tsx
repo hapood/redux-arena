@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
+import { ActionCreatorsMapObject, AnyAction } from "redux";
 import { EnhancedStore, ReducerDict } from "../../core";
 import ActionTypes from "../../core/ActionTypes";
 import { createCurtainReducer } from "../../core/reducers";
