@@ -1,15 +1,23 @@
-import { Component, SFC } from "react";
-import { bindActionCreators, Dispatch, ActionCreator } from "redux";
+import { ComponentClass, StatelessComponent } from "react";
+import {
+  bindActionCreators,
+  Dispatch,
+  ActionCreator,
+  ActionCreatorsMapObject,
+  AnyAction
+} from "redux";
 import { connect } from "react-redux";
 import actions from "./actions";
 import BundleComponent from "./BundleComponent";
-import { Props, BaseProps } from "./types";
+import { Props, BaseProps, CurtainLoadScene } from "./types";
 
 export default function curtainConnect(
   reducerKey: string,
   clearCurtain: () => void
-): SFC<Props> {
-  let mapDispatchToProps = (dispatch: Dispatch<any>) => {
+) {
+  let mapDispatchToProps = (
+    dispatch: Dispatch<any>
+  ): { curtainLoadScene: CurtainLoadScene<any, any, any> } => {
     return bindActionCreators(actions, dispatch);
   };
 
@@ -23,7 +31,7 @@ export default function curtainConnect(
     };
   };
 
-  let ConnectedComponent: any = connect(mapStateToProps, mapDispatchToProps)(
+  let ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(
     BundleComponent
   );
 

@@ -3,24 +3,44 @@ import { PropsPicker } from "../types";
 import { CurtainReduxInfo, CurtainMutableObj } from "../reducers/types";
 
 function defaultPropsPicker(
-  sceneState: any,
-  sceneActions: ActionCreatorsMapObject
+  { _arenaScene: state }: { _arenaScene: {} },
+  { _arenaScene: actions }: { _arenaScene: {} }
 ) {
-  return Object.assign({}, sceneState, {
-    actions: sceneActions
+  return Object.assign({}, state, {
+    actions
   });
 }
 
-export default function createPropsPicker<P, S>(
-  propsPicker: PropsPicker<S, any, any> = defaultPropsPicker,
+export type DefaultPickedProps<S> = {
+  actions: { [key: string]: (...params: any[]) => void };
+} & { [K in keyof S]: S[K] };
+
+export default function propsPicker<P, S>(
+  propsPicker: PropsPicker<P | DefaultPickedProps<S>> = defaultPropsPicker,
   reduxInfo: CurtainReduxInfo<S>,
   mutableObj: CurtainMutableObj
 ) {
   let { arenaReducerDict } = reduxInfo;
   let sceneReducerKey = arenaReducerDict._arenaScene.reducerKey;
-  let sceneActions = arenaReducerDict._arenaScene.actions;
-  let latestProps: P;
+  let latestProps: Partial<P> | Partial<DefaultPickedProps<S>>;
+  let stateHandler = {
+    get: function(target: { state: any }, name: string) {
+      return (
+        arenaReducerDict[name] &&
+        target.state[arenaReducerDict[name].reducerKey]
+      );
+    }
+  };
+  let actionsHandler = {
+    get: function(target: { state: any }, name: string) {
+      return arenaReducerDict[name] && arenaReducerDict[name].actions;
+    }
+  };
+  let stateObj = { state: null };
+  let stateDict = new Proxy(stateObj, stateHandler);
+  let actionsDict = new Proxy(stateObj, actionsHandler);
   return (state: any) => {
+    stateObj.state = state;
     if (
       mutableObj.isObsolete === true ||
       state.arena.propsLock !== false ||
@@ -28,12 +48,7 @@ export default function createPropsPicker<P, S>(
     ) {
       return latestProps;
     } else {
-      latestProps = propsPicker(
-        state[sceneReducerKey],
-        sceneActions,
-        state,
-        arenaReducerDict
-      );
+      latestProps = propsPicker(stateDict, actionsDict);
       return latestProps;
     }
   };

@@ -1,4 +1,4 @@
-import { ReducerDict, ReducerDictItem } from "../core";
+import { ReducerDict } from "../core";
 import { ActionCreatorsMapObject } from "redux";
 
 function buildReducerKey(
@@ -23,7 +23,7 @@ export function buildCurtainReducerDict(
   arenaReducerDict: ReducerDict | null | undefined,
   reducerKey: string,
   vReducerKey: string | null | undefined
-): ReducerDict & { _arenaScene: ReducerDictItem } {
+) {
   let newDict: any = buildReducerKey(
     arenaReducerDict,
     reducerKey,

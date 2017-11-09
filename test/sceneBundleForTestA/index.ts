@@ -12,6 +12,6 @@ export default {
   saga,
   reducer,
   actions
-} as SceneBundle<Props, State>;
+} as SceneBundle;
 
 export { State, Props } from "./types";

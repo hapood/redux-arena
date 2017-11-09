@@ -20,7 +20,7 @@ export default class BundleComponent extends React.Component<
 
   buildLoadScenePromise(
     arenaReducerDict: ReducerDict,
-    sceneBundle: SceneBundle,
+    sceneBundle: SceneBundle<{}, {}, {}>,
     isInitial: any
   ): Promise<null> {
     if (isInitial) {
