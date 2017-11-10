@@ -5,8 +5,8 @@ import { connect } from "react-redux";
 import actions from "./redux/actions";
 
 import ModuleReUse from "../ModuleReUse";
-import scopedPageBundle from "../scopedPage";
-import passDownBundle from "../passDownStateAndActions";
+import ScopedPage from "../ScopedPage";
+import PassDownState from "../passDownState";
 
 const linkStyle = {
   textDecoration: "underline",
@@ -77,11 +77,11 @@ class Frame extends Component<any, any> {
           <div>
             <div style={{ marginTop: "1rem" }}>
               {this.state.page === "scopedPage" ? (
-                <ArenaScene sceneBundle={scopedPageBundle} />
+                <ScopedPage />
               ) : this.state.page === "passDownStateAndActions" ? (
-                <ArenaScene sceneBundle={passDownBundle} />
+                <PassDownState />
               ) : this.state.page === "moduleReUse" ? (
-                <ArenaScene sceneBundle={moduleReUseBundle} />
+                <ModuleReUse />
               ) : null}
             </div>
           </div>

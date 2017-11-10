@@ -18,7 +18,7 @@ export default function curtainConnect(
 ) {
   let mapDispatchToProps = (
     dispatch: Dispatch<any>
-  ): { curtainLoadScene: CurtainLoadScene<any, any, any> } => {
+  ): { curtainLoadScene: CurtainLoadScene<{}, {}, {}, {}> } => {
     return bindActionCreators(actions, dispatch);
   };
 

@@ -21,7 +21,7 @@ const bundle = {
   state: { a: "a" },
   propsPicker: (
     { $0: state }: StateDict<{ a: string }>,
-    { $0: actions }: ActionsDict
+    { $0: actions }: ActionsDict<{}>
   ) => ({
     actions,
     a: state.a

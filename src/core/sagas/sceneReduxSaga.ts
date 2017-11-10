@@ -27,6 +27,7 @@ import {
   SceneBundle
 } from "../types";
 import { CurtainReduxInfo } from "../reducers/types";
+import { ConnectedAction } from "build/core/types/actions";
 
 const defaultActions = {
   setState: (state: any) => ({ type: ActionTypes.ARENA_SCENE_SET_STATE, state })
@@ -78,7 +79,12 @@ function getParentReducerKey(arenaReducerDict: ReducerDict) {
   );
 }
 
-export interface ApplyReduxPayload<P, S, PP> {
+export interface ApplyReduxPayload<
+  P,
+  S,
+  A extends ActionCreatorsMapObject,
+  PP
+> {
   arenaReducerDict: ReducerDict;
   state: {} | null | undefined;
   saga: ((...params: any[]) => any) | null | undefined;
@@ -87,14 +93,14 @@ export interface ApplyReduxPayload<P, S, PP> {
   options: SceneBundleOptions | null | undefined;
 }
 
-export function* sceneApplyRedux<P, S, PP>({
+export function* sceneApplyRedux<P, S, A extends ActionCreatorsMapObject, PP>({
   arenaReducerDict,
   state,
   saga,
   actions,
   reducer,
   options
-}: ApplyReduxPayload<P, S, PP>): any {
+}: ApplyReduxPayload<P, S, A, PP>): any {
   let curOptions = options || {};
   let arenaStore = yield getContext("store");
   let reducerFactory = buildReducerFactory(
@@ -141,13 +147,17 @@ export function* sceneApplyRedux<P, S, PP>({
   }
   return newReduxInfo as CurtainReduxInfo<S>;
 }
-export interface UpdateReduxPayload<P, S, PP>
-  extends ApplyReduxPayload<P, S, PP> {
-  curSceneBundle: SceneBundle<P, S, PP>;
+export interface UpdateReduxPayload<
+  P,
+  S,
+  A extends ActionCreatorsMapObject,
+  PP
+> extends ApplyReduxPayload<P, S, A, PP> {
+  curSceneBundle: SceneBundle<P, S, A, PP>;
   reduxInfo: CurtainReduxInfo<S>;
 }
 
-export function* sceneUpdateRedux<P, S, PP>({
+export function* sceneUpdateRedux<P, S, A extends ActionCreatorsMapObject, PP>({
   arenaReducerDict,
   state,
   saga,
@@ -156,7 +166,7 @@ export function* sceneUpdateRedux<P, S, PP>({
   options,
   curSceneBundle,
   reduxInfo
-}: UpdateReduxPayload<P, S, PP>): any {
+}: UpdateReduxPayload<P, S, A, PP>): any {
   let curOptions = options || {};
   let newReducerKey = reduxInfo.reducerKey;
   let arenaStore = yield getContext("store");

@@ -1,10 +1,11 @@
 import * as React from "react";
+import { ActionCreatorsMapObject } from "redux";
 import { ArenaSceneExtraProps, ArenaScene } from "../hocs";
 import { SceneBundle } from "../core";
 import { Omit } from "./types";
 
-export default function<P extends PP, S, PP>(
-  bundle: SceneBundle<P, S, PP>,
+export default function<P extends PP, S, A extends ActionCreatorsMapObject, PP>(
+  bundle: SceneBundle<P, S, A, PP>,
   props: Omit<P, keyof PP>,
   extraProps?: ArenaSceneExtraProps
 ) {

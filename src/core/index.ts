@@ -8,12 +8,10 @@ export {
   SceneReducer,
   SceneBundleOptions,
   SceneBundle,
-  SceneBundleThunk,
   ReducerDict,
   ReducerDictItem,
   ReducerFactory,
   DefaultSceneActions,
-  ConnectedAction,
   ActionsDict,
   StateDict
 } from "./types";

@@ -8,6 +8,7 @@ import {
   PutEffect,
   SelectEffect
 } from "redux-saga/effects";
+import { ActionCreatorsMapObject } from "redux";
 import { connect } from "react-redux";
 import { createPropsPicker } from "../enhancedRedux";
 import { sceneApplyRedux, sceneUpdateRedux } from "./sceneReduxSaga";
@@ -15,12 +16,12 @@ import ActionTypes from "../ActionTypes";
 import { CurtainState, CurtainReduxInfo } from "../reducers/types";
 import { SceneBundle, CurtainLoadSceneAction } from "../types";
 
-export function* applySceneBundle<P, S, PP>({
+export function* applySceneBundle<P, S, A extends ActionCreatorsMapObject, PP>({
   isInitial,
   arenaReducerDict,
   sceneBundle,
   loadedCb
-}: CurtainLoadSceneAction<P, S, PP>) {
+}: CurtainLoadSceneAction<P, S, A, PP>) {
   let arenaCurtainReducerKey = arenaReducerDict._arenaCurtain.reducerKey;
   let curtainState: CurtainState = yield select(
     (state: any) => state[arenaCurtainReducerKey]
@@ -35,7 +36,7 @@ export function* applySceneBundle<P, S, PP>({
   let newReduxInfo: CurtainReduxInfo<S>;
   //Use yield* because there is fork effect in sceneApplyRedux and sceneUpdateRedux
   if (isInitial) {
-    newReduxInfo = yield* sceneApplyRedux<P, S, PP>({
+    newReduxInfo = yield* sceneApplyRedux<P, S, A, PP>({
       arenaReducerDict,
       state: sceneBundle.state,
       saga: sceneBundle.saga,
@@ -44,14 +45,14 @@ export function* applySceneBundle<P, S, PP>({
       options: sceneBundle.options
     });
   } else {
-    newReduxInfo = yield* sceneUpdateRedux<P, S, PP>({
+    newReduxInfo = yield* sceneUpdateRedux<P, S, A, PP>({
       arenaReducerDict,
       state: sceneBundle.state,
       saga: sceneBundle.saga,
       actions: sceneBundle.actions,
       reducer: sceneBundle.reducer,
       options: sceneBundle.options,
-      curSceneBundle: curSceneBundle as SceneBundle<P, S, PP>,
+      curSceneBundle: curSceneBundle as SceneBundle<P, S, A, PP>,
       reduxInfo: reduxInfo as CurtainReduxInfo<S>
     });
   }

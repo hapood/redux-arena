@@ -1,7 +1,10 @@
-import React, { Component } from "react";
+import * as React from "react";
 import OpPanel from "./OpPanel";
+import { State, Actions } from "./types";
 
-export default class Container extends Component {
+export default class Container extends React.Component<
+  State & { actions: Actions }
+> {
   render() {
     let { panelNum, actions } = this.props;
     return (
@@ -26,7 +29,7 @@ export default class Container extends Component {
           }}
         >
           {Array(panelNum)
-            .fill()
+            .fill(null)
             .map((_, i) => <OpPanel key={i} step={i} />)}
         </div>
       </div>

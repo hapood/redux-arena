@@ -1,11 +1,17 @@
+import { ActionCreatorsMapObject } from "redux";
 import ActionTypes from "../ActionTypes";
 import { ReducerDict } from "./reducerDict";
 import { SceneBundle } from "./bundle";
 
-export type CurtainLoadSceneAction<P, S, PP> = {
+export type CurtainLoadSceneAction<
+  P,
+  S,
+  A extends ActionCreatorsMapObject,
+  PP
+> = {
   type: ActionTypes.ARENA_CURTAIN_LOAD_SCENE;
   arenaReducerDict: ReducerDict;
-  sceneBundle: SceneBundle<P, S, PP>;
+  sceneBundle: SceneBundle<P, S, A, PP>;
   isInitial: boolean;
   loadedCb: () => void;
 };
@@ -14,6 +20,7 @@ export type DefaultSceneActions<S = {}> = {
   setState: (state: S) => void;
 };
 
-export type ConnectedAction = (...params: any[]) => void;
-
-export type ActionsDict = Record<string, Record<string, ConnectedAction>>;
+export type ActionsDict<A extends ActionCreatorsMapObject> = {
+  [key: string]: ActionCreatorsMapObject;
+  _arenaScene: A;
+};

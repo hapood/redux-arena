@@ -8,7 +8,7 @@ export type ExtraProps = {
 };
 export type Props = ExtraProps & {
   sceneProps?: {};
-  sceneBundle: SceneBundle<{}, {}, {}>
+  sceneBundle: SceneBundle<{}, {}, {}, {}>;
 };
 
 export type State = {

@@ -1,5 +1,5 @@
 import { ActionCreatorsMapObject } from "redux";
-import { PropsPicker, ConnectedAction, StateDict, ActionsDict } from "../types";
+import { PropsPicker, StateDict, ActionsDict } from "../types";
 import {
   CurtainReduxInfo,
   CurtainMutableObj,
@@ -35,11 +35,15 @@ function getLevelState(
 }
 
 export type DefaultPickedProps<S> = {
-  actions: Record<string, ConnectedAction>;
+  actions: ActionCreatorsMapObject;
 } & S;
 
-export default function createPropsPicker<S, P = DefaultPickedProps<S>>(
-  propsPicker: PropsPicker<P, S, Partial<P>> = defaultPropsPicker,
+export default function createPropsPicker<
+  S,
+  A extends ActionCreatorsMapObject,
+  P = DefaultPickedProps<S>
+>(
+  propsPicker: PropsPicker<P, S, A, Partial<P>> = defaultPropsPicker,
   reduxInfo: CurtainReduxInfo<S>,
   mutableObj: CurtainMutableObj
 ) {
@@ -70,7 +74,7 @@ export default function createPropsPicker<S, P = DefaultPickedProps<S>>(
   };
   let stateObj = { state: null };
   let stateDict: StateDict<S> = new Proxy(stateObj, stateHandler) as any;
-  let actionsDict: ActionsDict = new Proxy(stateObj, actionsHandler);
+  let actionsDict: ActionsDict<A> = new Proxy(stateObj, actionsHandler) as any;
   return (state: any) => {
     stateObj.state = state;
     if (

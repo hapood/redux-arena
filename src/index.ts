@@ -2,7 +2,6 @@ export {
   createArenaStore,
   SceneBundle,
   EnhancedStore,
-  SceneBundleThunk,
   DefaultSceneActions,
   ReducerDict,
   ReducerDictItem,

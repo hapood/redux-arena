@@ -4,7 +4,7 @@ import { ArenaScene, EnhancedStore, SceneBundle } from "src";
 
 export type TestHOCProps = {
   store: EnhancedStore;
-  sceneBundle: SceneBundle<{}, {}, {}>;
+  sceneBundle: SceneBundle<{}, {}, {}, {}>;
   reducerKey?: string;
   vReducerKey?: string;
 };

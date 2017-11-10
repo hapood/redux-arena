@@ -1,3 +1,4 @@
+import { ActionCreatorsMapObject } from "redux";
 import {
   CurtainLoadSceneAction,
   CurtainState,
@@ -15,18 +16,18 @@ export type BaseProps = CurtainState & {
 
 export type ConnectedProps = BaseProps &
   Props & {
-    curtainLoadScene: CurtainLoadScene<any, any, any>;
+    curtainLoadScene: CurtainLoadScene<{}, {}, {}, {}>;
   };
 
 export type Props = {
   arenaReducerDict: ReducerDict;
-  sceneBundle: SceneBundle<{}, {}, {}>;
+  sceneBundle: SceneBundle<{}, {}, {}, {}>;
   sceneProps: any;
 };
 
-export type CurtainLoadScene<P, S, PP> = (
+export type CurtainLoadScene<P, S, A extends ActionCreatorsMapObject, PP> = (
   arenaReducerDict: ReducerDict,
-  sceneBundle: SceneBundle<P, S, PP>,
+  sceneBundle: SceneBundle<P, S, A, PP>,
   isInitial: any,
   loadedCb: () => void
-) => CurtainLoadSceneAction<P, S, PP>;
+) => CurtainLoadSceneAction<P, S, A, PP>;

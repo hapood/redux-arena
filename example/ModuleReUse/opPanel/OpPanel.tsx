@@ -1,9 +1,12 @@
-import React, { Component } from "react";
+import * as React from "react";
+import { Actions } from "./types";
 
-export default class OpPanel extends Component {
-  componentWillMount() {
-    this.addCnt = () => this.props.actions.addCnt(this.props.step);
-  }
+export default class OpPanel extends React.Component<{
+  actions: Actions;
+  step: number;
+}> {
+  addCnt = () => this.props.actions.addCnt(this.props.step);
+
   render() {
     return (
       <div
