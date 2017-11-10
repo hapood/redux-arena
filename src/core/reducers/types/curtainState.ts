@@ -17,9 +17,9 @@ export type CurtainMutableObj = {
   isObsolete: boolean;
 };
 
-export type CurtainState<P = {}, S = {}, CP = any> = {
+export type CurtainState<P = {}, S = {}, PP = {}> = {
   PlayingScene: SFC<P> | null | undefined;
-  curSceneBundle: SceneBundle<P, S, CP> | null | undefined;
+  curSceneBundle: SceneBundle<P, S, PP> | null | undefined;
   reduxInfo: CurtainReduxInfo<S> | null | undefined;
   mutableObj: CurtainMutableObj;
 };

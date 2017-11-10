@@ -1,12 +1,12 @@
 import ActionTypes from "../../core/ActionTypes";
 import { CurtainLoadSceneAction, ReducerDict, SceneBundle } from "../../core";
 
-export function curtainLoadScene<P, S, CP>(
+export function curtainLoadScene<P, S, PP>(
   arenaReducerDict: ReducerDict,
-  sceneBundle: SceneBundle<P, S, CP>,
+  sceneBundle: SceneBundle<P, S, PP>,
   isInitial: any,
   loadedCb: () => void
-): CurtainLoadSceneAction<P, S, CP> {
+): CurtainLoadSceneAction<P, S, PP> {
   return {
     type: ActionTypes.ARENA_CURTAIN_LOAD_SCENE,
     arenaReducerDict,

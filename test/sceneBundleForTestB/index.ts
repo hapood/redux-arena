@@ -10,6 +10,6 @@ export default {
   state,
   reducer,
   actions
-} as SceneBundle;
+} as SceneBundle<{}, {}, {}>;
 
 export { State, Props } from "./types";

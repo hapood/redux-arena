@@ -1,22 +1,22 @@
 import { ActionCreatorsMapObject } from "redux";
-import { PropsPicker } from "../types";
+import { PropsPicker, ConnectedAction } from "../types";
 import { CurtainReduxInfo, CurtainMutableObj } from "../reducers/types";
 
-function defaultPropsPicker(
-  { _arenaScene: state }: { _arenaScene: {} },
+function defaultPropsPicker<S>(
+  { _arenaScene: state }: { _arenaScene: S },
   { _arenaScene: actions }: { _arenaScene: {} }
-) {
+): DefaultPickedProps<S> {
   return Object.assign({}, state, {
     actions
   });
 }
 
 export type DefaultPickedProps<S> = {
-  actions: { [key: string]: (...params: any[]) => void };
-} & { [K in keyof S]: S[K] };
+  actions: Record<string, ConnectedAction>;
+} & S;
 
-export default function propsPicker<P, S>(
-  propsPicker: PropsPicker<P | DefaultPickedProps<S>> = defaultPropsPicker,
+export default function createPropsPicker<S, P = DefaultPickedProps<S>>(
+  propsPicker: PropsPicker<P, Partial<P>> = defaultPropsPicker,
   reduxInfo: CurtainReduxInfo<S>,
   mutableObj: CurtainMutableObj
 ) {
@@ -25,15 +25,16 @@ export default function propsPicker<P, S>(
   let latestProps: Partial<P> | Partial<DefaultPickedProps<S>>;
   let stateHandler = {
     get: function(target: { state: any }, name: string) {
-      return (
-        arenaReducerDict[name] &&
-        target.state[arenaReducerDict[name].reducerKey]
-      );
+      let dictItem = arenaReducerDict[name];
+      if (dictItem == null) return null;
+      return target.state[dictItem.reducerKey];
     }
   };
   let actionsHandler = {
     get: function(target: { state: any }, name: string) {
-      return arenaReducerDict[name] && arenaReducerDict[name].actions;
+      let dictItem = arenaReducerDict[name];
+      if (dictItem == null) return null;
+      return dictItem.actions;
     }
   };
   let stateObj = { state: null };

@@ -15,12 +15,12 @@ import ActionTypes from "../ActionTypes";
 import { CurtainState, CurtainReduxInfo } from "../reducers/types";
 import { SceneBundle, CurtainLoadSceneAction } from "../types";
 
-export function* applySceneBundle<P, S, CP>({
+export function* applySceneBundle<P, S, PP>({
   isInitial,
   arenaReducerDict,
   sceneBundle,
   loadedCb
-}: CurtainLoadSceneAction<P, S, CP>) {
+}: CurtainLoadSceneAction<P, S, PP>) {
   let arenaCurtainReducerKey = arenaReducerDict._arenaCurtain.reducerKey;
   let curtainState: CurtainState = yield select(
     (state: any) => state[arenaCurtainReducerKey]
@@ -35,7 +35,7 @@ export function* applySceneBundle<P, S, CP>({
   let newReduxInfo: CurtainReduxInfo<S>;
   //Use yield* because there is fork effect in sceneApplyRedux and sceneUpdateRedux
   if (isInitial) {
-    newReduxInfo = yield* sceneApplyRedux<P, S, CP>({
+    newReduxInfo = yield* sceneApplyRedux<P, S, PP>({
       arenaReducerDict,
       state: sceneBundle.state,
       saga: sceneBundle.saga,
@@ -44,14 +44,14 @@ export function* applySceneBundle<P, S, CP>({
       options: sceneBundle.options
     });
   } else {
-    newReduxInfo = yield* sceneUpdateRedux<P, S, CP>({
+    newReduxInfo = yield* sceneUpdateRedux<P, S, PP>({
       arenaReducerDict,
       state: sceneBundle.state,
       saga: sceneBundle.saga,
       actions: sceneBundle.actions,
       reducer: sceneBundle.reducer,
       options: sceneBundle.options,
-      curSceneBundle: curSceneBundle as SceneBundle<P, S, CP>,
+      curSceneBundle: curSceneBundle as SceneBundle<P, S, PP>,
       reduxInfo: reduxInfo as CurtainReduxInfo<S>
     });
   }
