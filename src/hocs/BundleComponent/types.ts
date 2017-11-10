@@ -20,13 +20,13 @@ export type ConnectedProps = BaseProps &
 
 export type Props = {
   arenaReducerDict: ReducerDict;
-  sceneBundle: SceneBundle;
+  sceneBundle: SceneBundle<{}, {}, {}>;
   sceneProps: any;
 };
 
-export type CurtainLoadScene<P, S, CP> = (
+export type CurtainLoadScene<P, S, PP> = (
   arenaReducerDict: ReducerDict,
-  sceneBundle: SceneBundle<P, S, CP>,
+  sceneBundle: SceneBundle<P, S, PP>,
   isInitial: any,
   loadedCb: () => void
-) => CurtainLoadSceneAction<P, S, CP>;
+) => CurtainLoadSceneAction<P, S, PP>;

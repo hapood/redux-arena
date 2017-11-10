@@ -6,10 +6,10 @@ import { RootState } from "../reducers/types";
 
 export type StateDict = { [key: string]: {} };
 
-export type PropsPicker<CP = any> = (
+export type PropsPicker<P, PP extends Partial<P>> = (
   stateDict: StateDict,
   actionsDict: ActionsDict
-) => Partial<CP>;
+) => PP;
 
 export type SceneBundleOptions = {
   reducerKey?: string;
@@ -18,16 +18,14 @@ export type SceneBundleOptions = {
   isSceneReducer?: boolean;
 };
 
-export type SceneBundle<SP = {}, P = {}, S = {}> = {
+export type SceneBundle<P, S, PP> = {
   Component: ComponentType<P>;
   state?: S;
   actions?: ActionCreatorsMapObject;
-  propsPicker?: PropsPicker<P>;
+  propsPicker?: PropsPicker<P, PP>;
   saga?: (...params: any[]) => any;
   reducer?: SceneReducer<S>;
   options?: SceneBundleOptions;
 };
 
-export type SceneBundleThunk<SP = {}, P = {}, S = {}> = () => Promise<
-  SceneBundle<SP, S, P>
->;
+export type SceneBundleThunk<P, S, PP> = () => Promise<SceneBundle<S, P, PP>>;

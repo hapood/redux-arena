@@ -6,7 +6,9 @@ import TestHOC from "./TestHOC";
 
 export default function createBundleMounter(): [MountBundle, () => void] {
   let [mount, cleanUp] = createMount();
-  let mountWithProps = (store: EnhancedStore, sceneBundle: SceneBundle) =>
-    mount(<TestHOC store={store} sceneBundle={sceneBundle} />);
+  let mountWithProps = (
+    store: EnhancedStore,
+    sceneBundle: SceneBundle<{}, {}, {}>
+  ) => mount(<TestHOC store={store} sceneBundle={sceneBundle} />);
   return [mountWithProps, cleanUp];
 }
