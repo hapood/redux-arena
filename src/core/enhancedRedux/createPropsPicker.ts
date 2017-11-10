@@ -6,15 +6,6 @@ import {
   RootState
 } from "../reducers/types";
 
-function defaultPropsPicker<S>(
-  { _arenaScene: state }: StateDict<S>,
-  { _arenaScene: actions }: { _arenaScene: {} }
-): DefaultPickedProps<S> {
-  return Object.assign({}, state, {
-    actions
-  });
-}
-
 function getRelativeLevel(name: string) {
   let result = name.match(/^\$(\d+)$/);
   return result && parseInt(result[1]);
@@ -34,22 +25,18 @@ function getLevelState(
   return stateTree.getIn(path);
 }
 
-export type DefaultPickedProps<S> = {
-  actions: ActionCreatorsMapObject;
-} & S;
-
 export default function createPropsPicker<
   S,
   A extends ActionCreatorsMapObject,
-  P = DefaultPickedProps<S>
+  P
 >(
-  propsPicker: PropsPicker<P, S, A, Partial<P>> = defaultPropsPicker,
+  propsPicker: PropsPicker<P, S, A, Partial<P>>,
   reduxInfo: CurtainReduxInfo<S>,
   mutableObj: CurtainMutableObj
 ) {
   let { arenaReducerDict } = reduxInfo;
   let sceneReducerKey = arenaReducerDict._arenaScene.reducerKey;
-  let latestProps: Partial<P> | Partial<DefaultPickedProps<S>>;
+  let latestProps: Partial<P>;
   let stateHandler = {
     get: function(target: { state: any }, name: string) {
       let levelNum = getRelativeLevel(name);

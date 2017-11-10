@@ -27,23 +27,18 @@ import {
   SceneBundle
 } from "../types";
 import { CurtainReduxInfo } from "../reducers/types";
-import { ConnectedAction } from "build/core/types/actions";
-
-const defaultActions = {
-  setState: (state: any) => ({ type: ActionTypes.ARENA_SCENE_SET_STATE, state })
-};
 
 function bindActions(
-  actions: ActionCreatorsMapObject | null | undefined,
+  actions: ActionCreatorsMapObject,
   reducerKey: string,
   dispatch: Dispatch<any>,
   isSceneActions: boolean
 ) {
   if (isSceneActions === false) {
-    return bindActionCreators(actions || defaultActions, dispatch);
+    return bindActionCreators(actions, dispatch);
   } else {
     return bindArenaActionCreators(
-      actions || defaultActions,
+      actions,
       dispatch,
       reducerKey
     );

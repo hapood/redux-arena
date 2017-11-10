@@ -13,7 +13,8 @@ export {
   ReducerFactory,
   DefaultSceneActions,
   ActionsDict,
-  StateDict
+  StateDict,
+  PropsPicker
 } from "./types";
 export {
   arenaReducer,

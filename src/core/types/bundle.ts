@@ -27,15 +27,10 @@ export type SceneBundleOptions = {
   isSceneReducer?: boolean;
 };
 
-export type SceneBundle<
-  P,
-  S = {},
-  A extends ActionCreatorsMapObject = { setState: (state: Partial<S>) => void },
-  PP = DefaultPickedProps<S>
-> = {
+export type SceneBundle<P, S, A extends ActionCreatorsMapObject, PP> = {
   Component: ComponentType<P>;
   state: S;
-  actions: ActionCreatorsMapObject;
+  actions: A;
   propsPicker: PropsPicker<P, S, A, PP>;
   saga?: (...params: any[]) => any;
   reducer: SceneReducer<S>;
