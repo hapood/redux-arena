@@ -2,7 +2,8 @@ export {
   SceneBundleOptions,
   SceneBundle,
   SceneBundleThunk,
-  PropsPicker
+  PropsPicker,
+  StateDict
 } from "./bundle";
 export { ReducerDict, ReducerDictItem } from "./reducerDict";
 export {

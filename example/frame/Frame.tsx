@@ -2,11 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { ArenaScene } from "redux-arena";
-import AsyncLoadHOC from "../AsyncLoadHOC";
-import * as actions from "./redux/actions";
+import actions from "./redux/actions";
 
-import moduleReUseBundle from "../moduleReUse";
+import ModuleReUse from "../ModuleReUse";
 import scopedPageBundle from "../scopedPage";
 import passDownBundle from "../passDownStateAndActions";
 
@@ -16,7 +14,7 @@ const linkStyle = {
   cursor: "pointer"
 };
 
-class Frame extends Component {
+class Frame extends Component<any, any> {
   constructor(props) {
     super(props);
   }

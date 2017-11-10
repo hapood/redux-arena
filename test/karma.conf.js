@@ -86,7 +86,7 @@ module.exports = function(config) {
             },
             enforce: "post",
             include: path.resolve(__dirname, "../src"),
-            exclude: /node_modules|\.spec\.ts$/
+            exclude: /node_modules|\.spec\.tsx?$/
           }
         ]
       }

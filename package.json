@@ -1,6 +1,6 @@
 {
   "name": "redux-arena",
-  "version": "0.9.0-beta1",
+  "version": "0.9.0-rc-1",
   "description":
     "Bundling reducers, actions, saga and react-component when using Redux",
   "scripts": {
@@ -34,11 +34,9 @@
   },
   "dependencies": {
     "@types/prop-types": "^15.5.2",
-    "@types/react-motion": "^0.0.23",
     "@types/react-redux": "^5.0.12",
     "immutable": "^3.8.2",
     "prop-types": "^15.6.0",
-    "react-motion": "^0.5.2",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-saga": "^0.16.0"
@@ -46,13 +44,13 @@
   "devDependencies": {
     "@types/chai": "^4.0.4",
     "@types/enzyme": "^3.1.3",
-    "@types/enzyme-adapter-react-16": "^1.0.0",
+    "@types/enzyme-adapter-react-16": "^1.0.1",
     "@types/mocha": "^2.2.44",
-    "@types/react-dom": "^16.0.2",
+    "@types/react-dom": "^16.0.3",
     "@types/sinon": "^2.3.7",
     "chai": "^4.1.2",
-    "enzyme": "^3.1.0",
-    "enzyme-adapter-react-16": "^1.0.3",
+    "enzyme": "^3.1.1",
+    "enzyme-adapter-react-16": "^1.0.4",
     "fs-extra": "^4.0.2",
     "istanbul-instrumenter-loader": "^3.0.0",
     "karma": "^1.7.1",
@@ -67,11 +65,11 @@
     "karma-verbose-reporter": "^0.0.6",
     "karma-webpack": "^2.0.5",
     "mocha": "^4.0.1",
-    "prettier": "^1.7.4",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "prettier": "^1.8.2",
+    "react": "^16.1.0",
+    "react-dom": "^16.1.0",
     "react-test-renderer": "16",
-    "sinon": "^4.1.0",
+    "sinon": "^4.1.2",
     "ts-loader": "^3.1.1",
     "typescript": "^2.6.1",
     "webpack": "^3.8.1",

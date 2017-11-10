@@ -6,7 +6,9 @@ export {
   DefaultSceneActions,
   ReducerDict,
   ReducerDictItem,
-  SceneReducer
+  SceneReducer,
+  StateDict,
+  ActionsDict
 } from "./core";
 export { ArenaScene, ReducerDictOverrider } from "./hocs";
 

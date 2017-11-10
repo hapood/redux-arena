@@ -2,12 +2,18 @@ import { ComponentType } from "react";
 import { ActionCreatorsMapObject } from "redux";
 import { ActionsDict } from "./actions";
 import { SceneReducer } from "./reducer";
+import { CurtainState } from "../reducers";
 import { RootState } from "../reducers/types";
 
-export type StateDict = { [key: string]: {} };
+export type StateDict<S> = {
+  [key: string]: {};
+  _arenaScene: S;
+  _arenaCurtain: CurtainState;
+  $0: S;
+};
 
-export type PropsPicker<P, PP extends Partial<P>> = (
-  stateDict: StateDict,
+export type PropsPicker<P, S, PP extends Partial<P>> = (
+  stateDict: StateDict<S>,
   actionsDict: ActionsDict
 ) => PP;
 
@@ -22,7 +28,7 @@ export type SceneBundle<P, S, PP> = {
   Component: ComponentType<P>;
   state?: S;
   actions?: ActionCreatorsMapObject;
-  propsPicker?: PropsPicker<P, PP>;
+  propsPicker?: PropsPicker<P, S, PP>;
   saga?: (...params: any[]) => any;
   reducer?: SceneReducer<S>;
   options?: SceneBundleOptions;

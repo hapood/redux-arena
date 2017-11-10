@@ -5,8 +5,7 @@ var ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 
 module.exports = {
   entry: {
-    app: "./index.js",
-    babelPolyfill: "babel-polyfill"
+    app: "./index.tsx"
   },
   output: {
     path: path.join(__dirname, "build"),
@@ -15,14 +14,14 @@ module.exports = {
     publicPath: "/redux-arena/"
   },
   resolve: {
-    extensions: [".js", ".jsx"]
+    extensions: [".ts", ".tsx", ".js", ".js", ".jsx"]
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        exclude: [/node_modules/],
-        use: ["babel-loader"]
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        loader: "ts-loader"
       }
     ]
   },

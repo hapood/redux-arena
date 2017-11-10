@@ -1,7 +1,8 @@
-## 0.9.0 (Oct 31, 2017)
+## 0.9.0 (Nov 10, 2017)
 * Add typescript support (#13)
 * Separate animition hoc to other repository (#15)
-* Change propsPicker for typescript type infer (#18)
+* Change propsPicker for typescript type inferring (#18)
+* Add relative level popspicker (#20)
 
 ## 0.8.0 (Oct 16, 2017)
 * Move async bundle loading of ArenaScene to ArenaSceneLoadMotion

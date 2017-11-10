@@ -1,13 +1,15 @@
 import ActionTypes from "./ActionTypes";
 
-export function addCnt() {
+function addCnt() {
   return {
     type: ActionTypes.ADD_CNT
   };
 }
 
-export function clearCnt() {
+function clearCnt() {
   return {
     type: ActionTypes.FRAME_CLEAR_CNT
   };
 }
+
+export { addCnt, clearCnt };

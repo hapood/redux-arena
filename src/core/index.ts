@@ -14,7 +14,8 @@ export {
   ReducerFactory,
   DefaultSceneActions,
   ConnectedAction,
-  ActionsDict
+  ActionsDict,
+  StateDict
 } from "./types";
 export {
   arenaReducer,

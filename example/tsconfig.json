@@ -1,0 +1,12 @@
+{
+  "version": "2.5.3",
+  "compilerOptions": {
+    "target": "es5",
+    "sourceMap": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": ["es6", "dom"],
+    "jsx": "react"
+  },
+  "exclude": ["node_modules", "example"]
+}

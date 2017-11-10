@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import actions from "./actions";
 import BundleComponent from "./BundleComponent";
 import { Props, BaseProps, CurtainLoadScene } from "./types";
+import { CurtainState } from "../../core";
 
 export default function curtainConnect(
   reducerKey: string,

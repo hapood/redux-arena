@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build": "npm run clean:build &&webpack --colors --config webpack.config.prod.js",
+    "build":
+      "npm run clean:build &&webpack --colors --config webpack.config.prod.js",
     "clean:build": "rimraf dist",
     "start:dist": "node expressServer.js"
   },
@@ -19,28 +20,20 @@
   },
   "homepage": "https://github.com/hapood/redux-arena#readme",
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
-    "prop-types": "^15.5.10",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-jss": "^7.2.0",
-    "redux-arena": "^0.9.0-alpha-2",
+    "react": "^16.1.0",
+    "react-dom": "^16.1.0",
+    "redux-arena": "^0.9.0-beta1",
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "babel-plugin-syntax-object-rest-spread": "^6.13.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "express": "^4.15.4",
+    "express": "^4.16.2",
     "html-webpack-plugin": "^2.30.1",
-    "react-hot-loader": "^3.0.0-beta.1",
-    "script-ext-html-webpack-plugin": "^1.8.5",
-    "webpack": "^3.5.6",
-    "webpack-dev-server": "^2.7.1"
+    "react-hot-loader": "^3.1.2",
+    "script-ext-html-webpack-plugin": "^1.8.8",
+    "ts-loader": "^3.1.1",
+    "typescript": "^2.6.1",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.4"
   },
   "config": {
     "host": "localhost",

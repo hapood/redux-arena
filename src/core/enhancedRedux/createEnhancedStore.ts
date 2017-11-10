@@ -29,7 +29,7 @@ export interface EnhancedStore<S = {}> extends Store<S> {
   removeSingleReducer: (reducerKey: string) => boolean;
   replaceSingleReducer: (reducerObject: ReducerObject) => boolean;
   close: () => void;
-  runSaga: (saga: ForkEffect) => void;
+  runSaga: (saga: (...params: any[]) => any) => void;
 }
 
 function storeEnhancer<S extends ArenaStoreState>(

@@ -1,7 +1,7 @@
 import state from "./state";
 import reducer from "./reducer";
 import Child from "./Child";
-import * as actions from "./actions";
+import actions from "./actions";
 
 export default {
   Component: Child,

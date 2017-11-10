@@ -8,8 +8,7 @@ module.exports = {
     `webpack-dev-server/client?http://${process.env
       .npm_package_config_host}:${process.env.npm_package_config_port}`, // WebpackDevServer host and port
     "webpack/hot/only-dev-server", // "only" prevents reload on syntax errors
-    "babel-polyfill",
-    "./index.js" // "only" prevents reload on syntax errors
+    "./index.tsx" // "only" prevents reload on syntax errors
   ],
   output: {
     path: path.join(__dirname, "dist"),
@@ -19,14 +18,14 @@ module.exports = {
   },
   devtool: "inline-source-map",
   resolve: {
-    extensions: [".js", ".jsx"]
+    extensions: [".ts", ".tsx", ".js", ".js", ".jsx"]
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        exclude: [/node_modules/],
-        use: ["babel-loader"]
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        loader: "ts-loader"
       }
     ]
   },

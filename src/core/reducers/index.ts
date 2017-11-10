@@ -13,5 +13,5 @@ export {
   StateTreeNode,
   StateTreeDictItem,
   StateTreeDict,
-  StateTree
+  StateTree,
 } from "./types";
