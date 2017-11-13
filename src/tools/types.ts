@@ -14,56 +14,46 @@ export type DefaultState = {};
 
 export type DefaultActions<S> = { setState: (state: Partial<S>) => void };
 
-export type SceneBundleBase<P> = {
+export type ActionsProps<A> = { actions: A };
+
+export type SceneBundleBase<P, S> = {
   Component: ComponentType<P>;
   saga?: (...params: any[]) => any;
   options?: SceneBundleOptions;
+  reducer?: SceneReducer<S>;
 };
+
+export type SceneBundleNo<P, S, A extends ActionCreatorsMapObject, PP> = {
+  state: S;
+  actions: A;
+  propsPicker: PropsPicker<P, S, A, PP>;
+} & SceneBundleBase<P, S>;
 
 export type SceneBundleNoS<P, A extends ActionCreatorsMapObject, PP> = {
   actions: A;
   propsPicker: PropsPicker<P, DefaultState, A, PP>;
-  reducer: SceneReducer<DefaultState>;
-} & SceneBundleBase<P>;
-
-export type SceneBundleNoR<P, S, A extends ActionCreatorsMapObject, PP> = {
-  state: S;
-  actions: A;
-  propsPicker: PropsPicker<P, S, A, PP>;
-};
+} & SceneBundleBase<P, DefaultState>;
 
 export type SceneBundleNoPP<P, S, A extends ActionCreatorsMapObject> = {
   state: S;
   actions: A;
-  reducer: SceneReducer<DefaultState>;
-} & SceneBundleBase<P>;
+} & SceneBundleBase<P & { actions: A }, S>;
 
 export type SceneBundleNoA<P, S, PP> = {
   state: S;
-  reducer: SceneReducer<DefaultState>;
   propsPicker: PropsPicker<P, DefaultState, DefaultActions<S>, PP>;
-} & SceneBundleBase<P>;
+} & SceneBundleBase<P, S>;
 
-export type SceneBundleNoSR<P, A extends ActionCreatorsMapObject, PP> = {
+export type SceneBundleNoSPP<P, A extends ActionCreatorsMapObject> = {
   actions: A;
-  propsPicker?: PropsPicker<P, DefaultState, DefaultActions<DefaultState>, PP>;
-} & SceneBundleBase<P>;
-
-export type SceneBundleNoSPP<P, S, A extends ActionCreatorsMapObject> = {
-  actions: A;
-  reducer: SceneReducer<S>;
-} & SceneBundleBase<P>;
+} & SceneBundleBase<P & { actions: A }, DefaultState>;
 
 export type SceneBundleNoSA<P, PP> = {
-  reducer: SceneReducer<DefaultState>;
   propsPicker: PropsPicker<P, DefaultState, DefaultActions<DefaultState>, PP>;
-} & SceneBundleBase<P>;
+} & SceneBundleBase<P, DefaultState>;
 
 export type SceneBundleNoAPP<P, S> = {
   state: S;
-  reducer: SceneReducer<S>;
-} & SceneBundleBase<P>;
+} & SceneBundleBase<P, S>;
 
-export type SceneBundleNoASPP<P> = {
-  reducer: SceneReducer<DefaultState>;
-} & SceneBundleBase<P>;
+export type SceneBundleNoSAPP<P> = SceneBundleBase<P, DefaultState>;

@@ -1,9 +1,10 @@
+import { bundleToComponent } from "redux-arena/tools";
 import state from "./state";
 import reducer from "./reducer";
 import Parent from "./Parent";
 import * as actions from "./actions";
 
-export default {
+export default bundleToComponent{
   Component: Parent,
   state,
   actions,
@@ -11,4 +12,4 @@ export default {
   options: {
     vReducerKey: "parent"
   }
-};
+});

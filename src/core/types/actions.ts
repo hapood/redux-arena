@@ -23,4 +23,5 @@ export type DefaultSceneActions<S = {}> = {
 export type ActionsDict<A extends ActionCreatorsMapObject> = {
   [key: string]: ActionCreatorsMapObject;
   _arenaScene: A;
+  $0: A;
 };

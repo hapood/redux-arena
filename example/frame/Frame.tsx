@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import * as React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import actions from "./redux/actions";
@@ -14,7 +13,7 @@ const linkStyle = {
   cursor: "pointer"
 };
 
-class Frame extends Component<any, any> {
+class Frame extends React.Component<any, any> {
   constructor(props) {
     super(props);
   }

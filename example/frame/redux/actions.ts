@@ -12,4 +12,4 @@ function clearCnt() {
   };
 }
 
-export { addCnt, clearCnt };
+export default { addCnt, clearCnt };

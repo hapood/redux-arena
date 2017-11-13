@@ -37,11 +37,7 @@ function bindActions(
   if (isSceneActions === false) {
     return bindActionCreators(actions, dispatch);
   } else {
-    return bindArenaActionCreators(
-      actions,
-      dispatch,
-      reducerKey
-    );
+    return bindArenaActionCreators(actions, dispatch, reducerKey);
   }
 }
 
@@ -50,9 +46,9 @@ function* forkSagaWithContext(saga: () => null, ctx: any) {
   yield fork(saga);
 }
 
-function buildReducerFactory<S = {}>(
-  reducer: SceneReducer<S> | null | undefined,
-  state: S | null | undefined,
+function buildReducerFactory<S>(
+  reducer: SceneReducer<S>,
+  state: S,
   isSceneReducer: boolean
 ) {
   return isSceneReducer === false
@@ -60,7 +56,7 @@ function buildReducerFactory<S = {}>(
         createSceneReducer(reducer, state, bindingReducerKey)
     : (bindingReducerKey: string) =>
         createSceneReducer(
-          reducer && sceneReducerWrapper(reducer),
+          sceneReducerWrapper(reducer),
           state,
           bindingReducerKey
         );
@@ -81,10 +77,10 @@ export interface ApplyReduxPayload<
   PP
 > {
   arenaReducerDict: ReducerDict;
-  state: {} | null | undefined;
+  state: S;
   saga: ((...params: any[]) => any) | null | undefined;
-  actions: ActionCreatorsMapObject | null | undefined;
-  reducer: SceneReducer | null | undefined;
+  actions: ActionCreatorsMapObject;
+  reducer: SceneReducer<S>;
   options: SceneBundleOptions | null | undefined;
 }
 

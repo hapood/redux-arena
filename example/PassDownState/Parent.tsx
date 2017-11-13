@@ -1,8 +1,10 @@
-import React, { Component } from "react";
-import { ArenaScene } from "redux-arena";
-import childBundle from "./child";
+import * as React from "react";
+import Child from "./child";
+import { State, Actions } from "./types";
 
-export default class Parent extends Component {
+export default class Parent extends React.Component<
+  State & { actions: Actions }
+> {
   render() {
     let { name, cnt } = this.props;
     return (
@@ -23,7 +25,7 @@ export default class Parent extends Component {
             </tr>
           </tbody>
         </table>
-        <ArenaScene sceneBundle={childBundle} />
+        <Child />
       </div>
     );
   }

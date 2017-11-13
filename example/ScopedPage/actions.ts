@@ -1,12 +1,12 @@
 import ActionTypes from "redux-arena/ActionTypes";
 
-export function addCnt() {
+function addCnt() {
   return {
     type: "ADD_CNT"
   };
 }
 
-export function clearCnt() {
+function clearCnt() {
   return {
     type: ActionTypes.ARENA_SCENE_SET_STATE,
     state: {
@@ -15,6 +15,8 @@ export function clearCnt() {
   };
 }
 
-export function switchDynamicState(flag) {
-  return { type: "SWITCH_DYNAMIC_STATE", flag };
+function switchDynamicState(isEnabled) {
+  return { type: "SWITCH_DYNAMIC_STATE", isEnabled };
 }
+
+export default { addCnt, clearCnt, switchDynamicState };
