@@ -1,14 +1,14 @@
-import { bundleToComponent } from "redux-arena/tools";
+import bundleToComponent from "../bundleToComponent";
 import state from "./state";
 import reducer from "./reducer";
 import Child from "./Child";
 import actions from "./actions";
-import { Props, State, Actions } from "./types";
-import { State as ParentState, Actions as ParentActions } from "../types";
+import { Props } from "./types";
+import { StatelessComponent } from "react";
 
 const propsPicker = (
-  { $0: state, parent: parentState }: { $0: State; parent: ParentState },
-  { $0: actions, parent: parentActions }: { $0: Actions; parent: ParentActions }
+  { $0: state, parent: parentState },
+  { $0: actions, parent: parentActions }
 ) => ({
   name: state.name,
   cnt: state.cnt,
@@ -19,7 +19,7 @@ const propsPicker = (
 
 export default bundleToComponent({
   Component: Child,
-  state:state,
+  state,
   actions,
   reducer,
   propsPicker

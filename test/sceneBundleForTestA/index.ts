@@ -11,7 +11,11 @@ export default {
   state,
   saga,
   reducer,
-  actions
+  actions,
+  propsPicker: ({ _arenaScene: state }, { _arenaScene: actions }) => ({
+    ...state,
+    actions
+  })
 } as SceneBundle<{}, {}, {}, {}>;
 
 export { State, Props } from "./types";

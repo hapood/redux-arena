@@ -14,7 +14,7 @@ import {
   SceneBundleNoSPP,
   SceneBundleNoSAPP
 } from "./types";
-import { defaultPropsPicker, defaultActions, defaultReducer } from "./commons";
+import { defaultPropsPicker, defaultActions, defaultReducer } from "./autoFill";
 
 function bundleToComponent<
   P extends PP,

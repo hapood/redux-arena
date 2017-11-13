@@ -1,3 +1,4 @@
+import { ActionCreatorsMapObject } from "redux";
 import { StateDict } from "../core";
 import { DefaultPickedProps } from "./types";
 import ActionTypes from "../ActionTypes";
@@ -5,9 +6,9 @@ import ActionTypes from "../ActionTypes";
 export function defaultPropsPicker<S>(
   { _arenaScene: state }: StateDict<S>,
   { _arenaScene: actions }: { _arenaScene: {} }
-): DefaultPickedProps<S, { setState: (state: Partial<S>) => void }> {
+): DefaultPickedProps<S, ActionCreatorsMapObject> {
   return Object.assign({}, state, {
-    actions: defaultActions
+    actions
   });
 }
 
