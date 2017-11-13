@@ -139,7 +139,7 @@ export function* sceneApplyRedux<P, S, A extends ActionCreatorsMapObject, PP>({
   return newReduxInfo as CurtainReduxInfo<S>;
 }
 export interface UpdateReduxPayload<
-  P,
+  P extends PP,
   S,
   A extends ActionCreatorsMapObject,
   PP
@@ -148,7 +148,12 @@ export interface UpdateReduxPayload<
   reduxInfo: CurtainReduxInfo<S>;
 }
 
-export function* sceneUpdateRedux<P, S, A extends ActionCreatorsMapObject, PP>({
+export function* sceneUpdateRedux<
+  P extends PP,
+  S,
+  A extends ActionCreatorsMapObject,
+  PP
+>({
   arenaReducerDict,
   state,
   saga,

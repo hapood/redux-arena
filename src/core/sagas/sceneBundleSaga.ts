@@ -16,14 +16,19 @@ import ActionTypes from "../ActionTypes";
 import { CurtainState, CurtainReduxInfo } from "../reducers/types";
 import { SceneBundle, CurtainLoadSceneAction } from "../types";
 
-export function* applySceneBundle<P, S, A extends ActionCreatorsMapObject, PP>({
+export function* applySceneBundle<
+  P extends PP,
+  S,
+  A extends ActionCreatorsMapObject,
+  PP
+>({
   isInitial,
   arenaReducerDict,
   sceneBundle,
   loadedCb
 }: CurtainLoadSceneAction<P, S, A, PP>) {
   let arenaCurtainReducerKey = arenaReducerDict._arenaCurtain.reducerKey;
-  let curtainState: CurtainState = yield select(
+  let curtainState: CurtainState<P> = yield select(
     (state: any) => state[arenaCurtainReducerKey]
   );
   let {

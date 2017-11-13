@@ -5,10 +5,12 @@ import Child from "./Child";
 import actions from "./actions";
 import { Props } from "./types";
 import { StatelessComponent } from "react";
+import { StateDict, ActionsDict } from "../../core";
+import { State, Actions } from "./types";
 
 const propsPicker = (
-  { $0: state, parent: parentState },
-  { $0: actions, parent: parentActions }
+  { $0: state, parent: parentState }: StateDict<State, { parent: any }>,
+  { $0: actions, parent: parentActions }: ActionsDict<Actions, { parent: any }>
 ) => ({
   name: state.name,
   cnt: state.cnt,

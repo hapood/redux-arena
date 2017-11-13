@@ -47,14 +47,11 @@ function bundleToElement<
 ): React.ReactElement<
   JSX.IntrinsicAttributes & Omit<P, keyof (S & ActionsProps<A>)>
 >;
-function bundleToElement<P extends ActionsProps<DefaultActions<{}>>, PP>(
+function bundleToElement<P extends PP, PP>(
   bundle: SceneBundleNoSA<P, PP>,
-  props: JSX.IntrinsicAttributes &
-    Omit<P, keyof (ActionsProps<DefaultActions<{}>>)>,
+  props: JSX.IntrinsicAttributes & Omit<P, keyof (PP)>,
   extraProps?: ArenaSceneExtraProps
-): React.ReactElement<
-  JSX.IntrinsicAttributes & Omit<P, keyof (ActionsProps<DefaultActions<{}>>)>
->;
+): React.ReactElement<JSX.IntrinsicAttributes & Omit<P, keyof (PP)>>;
 function bundleToElement<
   P extends ActionsProps<A>,
   A extends ActionCreatorsMapObject

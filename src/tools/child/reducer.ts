@@ -1,6 +1,8 @@
+import { AnyAction } from "redux";
 import initState from "./state";
-
-export default function reducer(state = initState, action) {
+import {State} from './types'
+import { SceneReducer } from "../../core";
+function reducer(state = initState, action: AnyAction) {
   switch (action.type) {
     case "ADD_CNT":
       return Object.assign({}, state, { cnt: state.cnt + 1 });
@@ -8,3 +10,5 @@ export default function reducer(state = initState, action) {
       return state;
   }
 }
+
+export default reducer as SceneReducer<State>;

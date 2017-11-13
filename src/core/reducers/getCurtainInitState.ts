@@ -1,6 +1,6 @@
 import { CurtainState } from "./types";
 
-export default function getCurtainInitState(): CurtainState {
+export default function getCurtainInitState(): CurtainState<{}> {
   return {
     PlayingScene: null,
     curSceneBundle: null,

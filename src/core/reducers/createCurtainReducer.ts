@@ -7,7 +7,7 @@ import { AnyAction } from "redux";
 import { CurtainState } from "./types";
 
 function curtainReducer(
-  state: CurtainState,
+  state: CurtainState<{}>,
   action: AnyAction,
   bindedReducerKey: string
 ) {
@@ -23,9 +23,9 @@ function curtainReducer(
 
 export default function createCurtainReducer(
   bindedReducerKey: string
-): SceneReducer<CurtainState> {
+): SceneReducer<CurtainState<{}>> {
   return function(
-    state: CurtainState = getCurtainInitState(),
+    state: CurtainState<{}> = getCurtainInitState(),
     action: AnyAction
   ) {
     if (bindedReducerKey === action._reducerKey) {

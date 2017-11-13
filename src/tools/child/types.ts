@@ -1,13 +1,11 @@
-import { State as ParentState, Actions as ParentActions } from "../types";
-
 export type State = {
   name: string;
   cnt: number;
 };
 
 export type ConnectedProps = {
-  parentState: ParentState;
-  parentActions: ParentActions;
+  parentState: {};
+  parentActions: Actions;
 };
 
 export type Actions = {

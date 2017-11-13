@@ -7,7 +7,7 @@ import { Props, State, Actions } from "./types";
 import { State as ParentState, Actions as ParentActions } from "../types";
 
 const propsPicker = (
-  { $0: state, parent: parentState }: { $0: State; parent: ParentState },
+  { $0: state, parent: parentState }: { $0: State; parent: ParentState } ,
   { $0: actions, parent: parentActions }: { $0: Actions; parent: ParentActions }
 ) => ({
   name: state.name,
@@ -19,7 +19,7 @@ const propsPicker = (
 
 export default bundleToComponent({
   Component: Child,
-  state:state,
+  state,
   actions,
   reducer,
   propsPicker

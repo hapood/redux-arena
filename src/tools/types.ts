@@ -23,13 +23,22 @@ export type SceneBundleBase<P, S> = {
   reducer?: SceneReducer<S>;
 };
 
-export type SceneBundleNo<P, S, A extends ActionCreatorsMapObject, PP> = {
+export type SceneBundleNo<
+  P extends PP,
+  S,
+  A extends ActionCreatorsMapObject,
+  PP
+> = {
   state: S;
   actions: A;
   propsPicker: PropsPicker<P, S, A, PP>;
 } & SceneBundleBase<P, S>;
 
-export type SceneBundleNoS<P, A extends ActionCreatorsMapObject, PP> = {
+export type SceneBundleNoS<
+  P extends PP,
+  A extends ActionCreatorsMapObject,
+  PP
+> = {
   actions: A;
   propsPicker: PropsPicker<P, DefaultState, A, PP>;
 } & SceneBundleBase<P, DefaultState>;
@@ -39,7 +48,7 @@ export type SceneBundleNoPP<P, S, A extends ActionCreatorsMapObject> = {
   actions: A;
 } & SceneBundleBase<P & { actions: A }, S>;
 
-export type SceneBundleNoA<P, S, PP> = {
+export type SceneBundleNoA<P extends PP, S, PP> = {
   state: S;
   propsPicker: PropsPicker<P, DefaultState, DefaultActions<S>, PP>;
 } & SceneBundleBase<P, S>;
@@ -48,7 +57,7 @@ export type SceneBundleNoSPP<P, A extends ActionCreatorsMapObject> = {
   actions: A;
 } & SceneBundleBase<P & { actions: A }, DefaultState>;
 
-export type SceneBundleNoSA<P, PP> = {
+export type SceneBundleNoSA<P extends PP, PP> = {
   propsPicker: PropsPicker<P, DefaultState, DefaultActions<DefaultState>, PP>;
 } & SceneBundleBase<P, DefaultState>;
 

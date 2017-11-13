@@ -41,10 +41,10 @@ function bundleToComponent<
   bundle: SceneBundleNoPP<P, S, A>,
   extraProps?: ArenaSceneExtraProps
 ): React.SFC<Omit<P, keyof (S & ActionsProps<A>)>>;
-function bundleToComponent<P extends ActionsProps<DefaultActions<{}>>, PP>(
+function bundleToComponent<P extends PP, PP>(
   bundle: SceneBundleNoSA<P, PP>,
   extraProps?: ArenaSceneExtraProps
-): React.SFC<Omit<P, keyof (ActionsProps<DefaultActions<{}>>)>>;
+): React.SFC<Omit<P, keyof (PP)>>;
 function bundleToComponent<
   P extends ActionsProps<A>,
   A extends ActionCreatorsMapObject

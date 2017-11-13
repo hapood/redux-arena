@@ -5,12 +5,11 @@ import { SceneReducer } from "./reducer";
 import { CurtainState } from "../reducers";
 import { RootState } from "../reducers/types";
 
-export type StateDict<S> = {
-  [key: string]: {};
+export type StateDict<S, D = {}> = {
   _arenaScene: S;
-  _arenaCurtain: CurtainState;
+  _arenaCurtain: CurtainState<S>;
   $0: S;
-};
+} & D;
 
 export type PropsPicker<
   P extends PP,
