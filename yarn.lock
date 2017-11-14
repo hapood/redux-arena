@@ -60,11 +60,7 @@
     "@types/react" "*"
     redux "^3.6.0"
 
-"@types/react@*":
-  version "16.0.13"
-  resolved "https://registry.npmjs.org/@types/react/-/react-16.0.13.tgz#973836e6deec10184937322cd10a1605f9de81fc"
-
-"@types/react@^16.0.22":
+"@types/react@*", "@types/react@^16.0.22":
   version "16.0.22"
   resolved "https://registry.npmjs.org/@types/react/-/react-16.0.22.tgz#19ad106e124aceebd2b4d430a278d55413ee8759"
 
