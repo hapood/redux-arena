@@ -11,8 +11,9 @@ export {
 } from "./core";
 export { ArenaScene, ReducerDictOverrider } from "./hocs";
 
-import * as tools from "./tools";
+export { bundleToComponent, bundleToElement } from "./tools";
+
 import * as effects from "./effects";
-export { tools, effects };
+export { effects };
 
 export { default as ActionTypes } from "./ActionTypes";

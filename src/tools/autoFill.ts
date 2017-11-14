@@ -16,4 +16,6 @@ export const defaultActions = {
   setState: (state: any) => ({ type: ActionTypes.ARENA_SCENE_SET_STATE, state })
 };
 
-export const defaultReducer = (state: any) => state;
+export const defaultReducerCreator = (defaultState: object = {}) => (
+  state: any = defaultState
+) => state;

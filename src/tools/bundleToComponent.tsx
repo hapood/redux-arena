@@ -14,7 +14,11 @@ import {
   SceneBundleNoSPP,
   SceneBundleNoSAPP
 } from "./types";
-import { defaultPropsPicker, defaultActions, defaultReducer } from "./autoFill";
+import {
+  defaultPropsPicker,
+  defaultActions,
+  defaultReducerCreator
+} from "./autoFill";
 
 function bundleToComponent<
   P extends PP,
@@ -68,12 +72,12 @@ function bundleToComponent(
     {
       propsPicker: defaultPropsPicker,
       actions: defaultActions,
-      reducer: defaultReducer
+      reducer: defaultReducerCreator(bundle.state)
     },
     bundle
   );
   let WrapperClass: React.SFC<{}> = props => (
-    <ArenaScene sceneBundle={bundle} sceneProps={props} {...extraProps} />
+    <ArenaScene sceneBundle={newBundle} sceneProps={props} {...extraProps} />
   );
   WrapperClass.displayName = "ScenePropsProxy";
   return WrapperClass;

@@ -20,9 +20,9 @@ fs.removeSync(buildFolder);
 
 function runTypeScriptBuild(outDir, target, moduleKind, isDeclarationOut) {
   console.log(
-    `Running typescript build (target: ${ts.ScriptTarget[
-      target
-    ]}, moduleKind: ${moduleKind}) in ${outDir}/`
+    `Running typescript build (target: ${
+      ts.ScriptTarget[target]
+    }, moduleKind: ${moduleKind}) in ${outDir}/`
   );
 
   const tsConfig = path.resolve("tsconfig.json");
@@ -59,9 +59,9 @@ function runTypeScriptBuild(outDir, target, moduleKind, isDeclarationOut) {
     const message = result.diagnostics
       .map(
         d =>
-          `${ts.DiagnosticCategory[
-            d.category
-          ]} ${d.code} (${d.file}:${d.start}): ${d.messageText}`
+          `${ts.DiagnosticCategory[d.category]} ${d.code} (${d.file}:${
+            d.start
+          }): ${d.messageText}`
       )
       .join("\n");
 

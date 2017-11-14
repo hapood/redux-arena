@@ -11,9 +11,9 @@ import audienceSaga from "./audienceSaga";
 
 /**
  * This is a function that starts saga
- * 
+ *
  * @export
- * @param {any} ctx 
+ * @param {any} ctx
  */
 export default function* root(ctx: any) {
   yield setContext(ctx);

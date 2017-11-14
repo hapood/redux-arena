@@ -5,13 +5,14 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   entry: [
     "react-hot-loader/patch",
-    `webpack-dev-server/client?http://${process.env
-      .npm_package_config_host}:${process.env.npm_package_config_port}`, // WebpackDevServer host and port
+    `webpack-dev-server/client?http://${process.env.npm_package_config_host}:${
+      process.env.npm_package_config_port
+    }`, // WebpackDevServer host and port
     "webpack/hot/only-dev-server", // "only" prevents reload on syntax errors
     "./index.tsx" // "only" prevents reload on syntax errors
   ],
   output: {
-    path: path.join(__dirname, "dist"),
+    path: path.join(__dirname, "build"),
     filename: "[name].[hash].js",
     chunkFilename: "[name].[id].[hash].js",
     publicPath: ""

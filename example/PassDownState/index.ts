@@ -1,10 +1,10 @@
-import { bundleToComponent } from "redux-arena/tools";
+import { bundleToComponent } from "redux-arena";
 import state from "./state";
 import reducer from "./reducer";
 import Parent from "./Parent";
-import * as actions from "./actions";
+import actions from "./actions";
 
-export default bundleToComponent{
+export default bundleToComponent({
   Component: Parent,
   state,
   actions,

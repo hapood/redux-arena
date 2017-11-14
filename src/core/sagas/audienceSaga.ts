@@ -4,8 +4,8 @@ import ActionTypes from "../ActionTypes";
 
 /**
  *This function is run at the beginning of the incoming saga, and then saved in the arena
- * 
- * @param {any} { saga } 
+ *
+ * @param {any} { saga }
  */
 
 interface InitAudienceAction extends Action {

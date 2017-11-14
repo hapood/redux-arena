@@ -11,18 +11,15 @@ function getRelativeLevel(name: string) {
   return result && parseInt(result[1]);
 }
 
-function getLevelState(
+function getLevelKey(
   rootState: RootState,
   reducerKey: string,
   levelNum: number
 ) {
-  if (levelNum === 0) return rootState[reducerKey];
+  if (levelNum === 0) return reducerKey;
   let { stateTree, stateTreeDict } = rootState.arena;
-  let path = stateTreeDict
-    .getIn([reducerKey, "path"])
-    .skipLast(2 * levelNum)
-    .toList();
-  return stateTree.getIn(path);
+  let path = stateTreeDict.getIn([reducerKey, "path"]);
+  return path.get(path.count() - 1 - 2 * levelNum);
 }
 
 export default function createPropsPicker<
@@ -41,7 +38,7 @@ export default function createPropsPicker<
     get: function(target: { state: any }, name: string) {
       let levelNum = getRelativeLevel(name);
       if (levelNum != null) {
-        return getLevelState(target.state, sceneReducerKey, levelNum);
+        name = getLevelKey(target.state, sceneReducerKey, levelNum);
       }
       let dictItem = arenaReducerDict[name];
       if (dictItem == null) return null;
@@ -52,7 +49,7 @@ export default function createPropsPicker<
     get: function(target: { state: any }, name: string) {
       let levelNum = getRelativeLevel(name);
       if (levelNum != null) {
-        return getLevelState(target.state, sceneReducerKey, levelNum);
+        name = getLevelKey(target.state, sceneReducerKey, levelNum);
       }
       let dictItem = arenaReducerDict[name];
       if (dictItem == null) return null;

@@ -80,7 +80,9 @@ export function* applySceneBundle<
     sceneBundle.Component.displayName ||
     sceneBundle.Component.name ||
     "Unknown";
-  PlayingScene.displayName = `SceneConnect({reducerKey:${newReduxInfo.reducerKey},Component:${displayName}})`;
+  PlayingScene.displayName = `SceneConnect({reducerKey:${
+    newReduxInfo.reducerKey
+  },Component:${displayName}})`;
   let newArenaState = {
     PlayingScene,
     curSceneBundle: sceneBundle

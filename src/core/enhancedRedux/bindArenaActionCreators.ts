@@ -15,7 +15,9 @@ function bindArenaActionCreator(
     if (action && action._sceneReducerKey) {
       console.warn(
         '"Action with redux-arena should not contain an user specified "_sceneReducerKey" property.\n' +
-          `Occurred in type: ${action.type}, _sceneReducerKey: ${sceneReducerKey}.`
+          `Occurred in type: ${action.type}, _sceneReducerKey: ${
+            sceneReducerKey
+          }.`
       );
     }
     typeof action === "object"
@@ -39,10 +41,9 @@ export default function bindArenaActionCreators<
     actionCreators === null
   ) {
     throw new Error(
-      `bindArenaActionCreators expected an object, instead received ${actionCreators ===
-      null
-        ? "null"
-        : typeof actionCreators}. ` +
+      `bindArenaActionCreators expected an object, instead received ${
+        actionCreators === null ? "null" : typeof actionCreators
+      }. ` +
         `Did you write "import ActionCreators from" instead of "import * as ActionCreators from"?`
     );
   }

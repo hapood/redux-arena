@@ -32,8 +32,8 @@ function* takeEverySceneBundleAction() {
 /**
  * Listen to the loading of each scene,
  * and handle different processing functions when handling scene switches.
- * 
- * @param {any} ctx 
+ *
+ * @param {any} ctx
  */
 
 function* forkSagaWithContext(ctx: any) {
@@ -43,8 +43,8 @@ function* forkSagaWithContext(ctx: any) {
 
 /**
  * It is used to initialize the ArenaSwitch layer.
- * 
- * @param {any} { reducerKey, setSagaTask } 
+ *
+ * @param {any} { reducerKey, setSagaTask }
  */
 
 interface InitArenaCurtainAction extends Action {
@@ -64,8 +64,8 @@ function* initArenaCurtainSaga({
 
 /**
  * It is used to cancel the task of the ArenaSwitch layer.
- * 
- * @param {any} { sagaTaskPromise } 
+ *
+ * @param {any} { sagaTaskPromise }
  */
 
 interface KillArenaCurtainAction extends Action {

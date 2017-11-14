@@ -6,6 +6,7 @@ import actions from "./redux/actions";
 import ModuleReUse from "../ModuleReUse";
 import ScopedPage from "../ScopedPage";
 import PassDownState from "../passDownState";
+import { Props } from "./types";
 
 const linkStyle = {
   textDecoration: "underline",
@@ -13,7 +14,7 @@ const linkStyle = {
   cursor: "pointer"
 };
 
-class Frame extends React.Component<any, any> {
+class Frame extends React.Component<Props, { page: string }> {
   constructor(props) {
     super(props);
   }
@@ -49,7 +50,8 @@ class Frame extends React.Component<any, any> {
               <a
                 style={linkStyle}
                 onClick={() =>
-                  this.setState({ page: "passDownStateAndActions" })}
+                  this.setState({ page: "passDownStateAndActions" })
+                }
               >
                 Pass Down State And Actions
               </a>

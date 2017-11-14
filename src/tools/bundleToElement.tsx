@@ -14,7 +14,11 @@ import {
   SceneBundleNoSPP,
   SceneBundleNoSAPP
 } from "./types";
-import { defaultPropsPicker, defaultActions, defaultReducer } from "./autoFill";
+import {
+  defaultPropsPicker,
+  defaultActions,
+  defaultReducerCreator
+} from "./autoFill";
 
 function bundleToElement<
   P extends PP,
@@ -87,7 +91,7 @@ function bundleToElement(
     {
       propsPicker: defaultPropsPicker,
       actions: defaultActions,
-      reducer: defaultReducer
+      reducer: defaultReducerCreator(bundle.state)
     },
     bundle
   );
