@@ -4,33 +4,69 @@ import { spy } from "sinon";
 import { StateDict, ActionsDict } from "src";
 import bundleToComponent from "./bundleToComponent";
 import bundleToElement from "./bundleToElement";
-import { ActionCreatorsMapObject } from "redux";
+import { ActionsProps, DefaultActions } from "./types";
 
-class TestComponent extends React.Component<{
-  a: string;
-  b: string;
-  actions: ActionCreatorsMapObject;
-}> {
+class TestComponent extends React.Component<
+  {
+    a: string;
+    b: string;
+  } & ActionsProps<DefaultActions<{ a: string }>>
+> {
   render() {
     return <div>{this.props.a + this.props.b}</div>;
   }
 }
 
-const bundle = {
+const bundleWithDefaultA = {
   Component: TestComponent,
   state: { a: "a" },
   propsPicker: (
     { $0: state }: StateDict<{ a: string }>,
-    { $0: actions }: ActionsDict<{}>
+    { $0: actions }: ActionsDict<DefaultActions<{ a: string }>>
   ) => ({
     actions,
     a: state.a
   })
 };
 
+const bundleWithDefaultAPP = {
+  Component: TestComponent,
+  state: { a: "a" }
+};
+
+class TestComponent2 extends React.Component<
+  {
+    a: string;
+    b: string;
+  } & { actions: { addCnt: () => void } }
+> {
+  render() {
+    return <div>{this.props.a + this.props.b}</div>;
+  }
+}
+
+const bundleWithDefaultSPP = {
+  Component: TestComponent,
+  actions: { addCnt: () => null }
+};
+
+const bundleWithDefaultSAPP = {
+  Component: TestComponent
+};
+
 describe("Redux-Arena tools bundle transform", () => {
   it("should referring right types", () => {
-    const A = bundleToComponent(bundle);
-    const B = bundleToElement(bundle, { b: "b" });
+    let A = bundleToComponent(bundleWithDefaultA);
+    <A b="b" />;
+    bundleToElement(bundleWithDefaultA, { b: "b" });
+    let APP = bundleToComponent(bundleWithDefaultAPP);
+    <APP b="b" />;
+    bundleToElement(bundleWithDefaultAPP, { b: "b" });
+    let SPP = bundleToComponent(bundleWithDefaultSPP);
+    <SPP a="a" b="b" />;
+    bundleToElement(bundleWithDefaultSPP, { a: "a", b: "b" });
+    let SAPP = bundleToComponent(bundleWithDefaultSAPP);
+    <SAPP a="a" b="b" />;
+    bundleToElement(bundleWithDefaultSAPP, { a: "a", b: "b" });
   });
 });

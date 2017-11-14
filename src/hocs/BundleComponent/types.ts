@@ -10,7 +10,7 @@ export type State = {
   loadedPromise: Promise<null>;
 };
 
-export type BaseProps = CurtainState & {
+export type BaseProps = CurtainState<{}> & {
   clearCurtain: () => void;
 };
 
@@ -25,7 +25,12 @@ export type Props = {
   sceneProps: any;
 };
 
-export type CurtainLoadScene<P, S, A extends ActionCreatorsMapObject, PP> = (
+export type CurtainLoadScene<
+  P extends PP,
+  S,
+  A extends ActionCreatorsMapObject,
+  PP
+> = (
   arenaReducerDict: ReducerDict,
   sceneBundle: SceneBundle<P, S, A, PP>,
   isInitial: any,

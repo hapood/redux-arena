@@ -46,13 +46,13 @@ function* setLetter() {
   }
 }
 
-function* switchDynamicState({ flag }) {
+function* switchDynamicState({ isEnabled }) {
   let { isDynamicStateEnable } = yield getSceneState();
-  if (flag) {
+  if (isEnabled) {
     yield fork(setLetter);
   }
   yield setSceneState({
-    isDynamicStateEnable: flag
+    isDynamicStateEnable: isEnabled
   });
 }
 

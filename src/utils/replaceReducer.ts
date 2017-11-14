@@ -3,7 +3,7 @@ import { EnhancedStore, SceneReducer } from "../core";
 export function sceneReplaceReducer(
   store: EnhancedStore,
   reducerKey: string,
-  reducerFactory: (reducerKey: string) => SceneReducer,
+  reducerFactory: (reducerKey: string) => SceneReducer<{}>,
   state: {} | null | undefined
 ) {
   store.dispatch({

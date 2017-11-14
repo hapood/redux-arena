@@ -5,10 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build":
-      "npm run clean:build &&webpack --colors --config webpack.config.prod.js",
-    "clean:build": "rimraf dist",
-    "start:dist": "node expressServer.js"
+    "build": "npm run clean:build &&webpack --colors --config webpack.config.prod.js",
+    "clean:build": "rimraf build",
+    "start:build": "node expressServer.js"
   },
   "repository": {
     "type": "git",
@@ -20,9 +19,11 @@
   },
   "homepage": "https://github.com/hapood/redux-arena#readme",
   "dependencies": {
-    "react": "^16.1.0",
-    "react-dom": "^16.1.0",
-    "redux-arena": "^0.9.0-beta1",
+    "@types/react": "^16.0.22",
+    "@types/react-dom": "^16.0.3",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "redux-arena": "^0.9.0-rc-1",
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {

@@ -108,7 +108,7 @@ describe("<ArenaScene /> integration", () => {
         reducer: (
           state: any = sceneBundleForTestA.state,
           action: AnyAction
-        ) => {
+        ): any => {
           switch (action.type) {
             case "ADD_CNT":
               return Object.assign({}, state, { cnt: state.cnt + 16 });

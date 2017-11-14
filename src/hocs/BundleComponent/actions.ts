@@ -2,7 +2,12 @@ import { ActionCreatorsMapObject } from "redux";
 import ActionTypes from "../../core/ActionTypes";
 import { CurtainLoadSceneAction, ReducerDict, SceneBundle } from "../../core";
 
-export function curtainLoadScene<P, S, A extends ActionCreatorsMapObject, PP>(
+export function curtainLoadScene<
+  P extends PP,
+  S,
+  A extends ActionCreatorsMapObject,
+  PP
+>(
   arenaReducerDict: ReducerDict,
   sceneBundle: SceneBundle<P, S, A, PP>,
   isInitial: any,

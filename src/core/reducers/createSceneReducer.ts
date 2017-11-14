@@ -15,7 +15,7 @@ function sceneReducer(state = getSceneInitState(), action: AnyAction) {
 }
 
 export default function createSceneReducer<S>(
-  extendSceneReducer: SceneReducer<S> | null | undefined,
+  extendSceneReducer: SceneReducer<S>,
   initState: any,
   sceneReducerKey: string
 ) {

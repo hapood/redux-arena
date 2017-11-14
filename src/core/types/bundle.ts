@@ -4,20 +4,18 @@ import { ActionsDict } from "./actions";
 import { SceneReducer } from "./reducer";
 import { CurtainState } from "../reducers";
 import { RootState } from "../reducers/types";
-import { DefaultPickedProps } from "../enhancedRedux";
 
-export type StateDict<S> = {
-  [key: string]: {};
+export type StateDict<S, D = {}> = {
   _arenaScene: S;
-  _arenaCurtain: CurtainState;
+  _arenaCurtain: CurtainState<S>;
   $0: S;
-};
+} & D;
 
 export type PropsPicker<
-  P,
+  P extends PP,
   S,
   A extends ActionCreatorsMapObject,
-  PP extends Partial<P>
+  PP
 > = (stateDict: StateDict<S>, actionsDict: ActionsDict<A>) => PP;
 
 export type SceneBundleOptions = {
@@ -28,14 +26,14 @@ export type SceneBundleOptions = {
 };
 
 export type SceneBundle<
-  P,
-  S = {},
-  A extends ActionCreatorsMapObject = { setState: (state: Partial<S>) => void },
-  PP = DefaultPickedProps<S>
+  P extends PP,
+  S,
+  A extends ActionCreatorsMapObject,
+  PP
 > = {
   Component: ComponentType<P>;
   state: S;
-  actions: ActionCreatorsMapObject;
+  actions: A;
   propsPicker: PropsPicker<P, S, A, PP>;
   saga?: (...params: any[]) => any;
   reducer: SceneReducer<S>;

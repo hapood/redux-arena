@@ -12,18 +12,19 @@ document.getElementById("app").className = "";
 let appDom = document.getElementById("app");
 
 let render = (FrameComponent, version) => {
+  let AProvider = Provider as any;
   ReactDOM.render(
-    <Provider store={store}>
+    <AProvider store={store}>
       <FrameComponent version={version} />
-    </Provider>,
+    </AProvider>,
     appDom
   );
 };
 
 let version = 0;
 render(Frame, version);
-if (module.hot) {
-  module.hot.accept("./frame/Frame", () => {
+if ((module as any).hot) {
+  (module as any).hot.accept("./frame/Frame", () => {
     let UpdatedFrame = require("./frame/Frame").default;
     render(UpdatedFrame, ++version);
   });

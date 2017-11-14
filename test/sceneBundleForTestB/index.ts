@@ -9,7 +9,11 @@ export default {
   Component: Page,
   state,
   reducer,
-  actions
+  actions,
+  propsPicker: ({ _arenaScene: state }, { _arenaScene: actions }) => ({
+    ...state,
+    actions
+  })
 } as SceneBundle<{}, {}, {}, {}>;
 
 export { State, Props } from "./types";

@@ -1,4 +1,4 @@
-function addCnt(num) {
+function addCnt(num: number) {
   return {
     type: "ADD_CNT",
     num

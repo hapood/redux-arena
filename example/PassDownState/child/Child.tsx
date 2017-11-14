@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import * as React from "react";
+import { Props } from "./types";
 
-export default class Child extends Component {
+export default class Child extends React.Component<Props> {
   render() {
     let { name, cnt, parentState, actions, parentActions } = this.props;
     return (

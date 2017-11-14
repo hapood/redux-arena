@@ -1,6 +1,9 @@
-import React, { Component } from "react";
+import * as React from "react";
+import { State, Actions } from "./types";
 
-export default class ScopedPage extends Component {
+export default class ScopedPage extends React.Component<
+  State & { actions: Actions }
+> {
   render() {
     let { name, dynamicState, cnt, actions } = this.props;
     return (

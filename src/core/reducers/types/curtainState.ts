@@ -18,7 +18,7 @@ export type CurtainMutableObj = {
 };
 
 export type CurtainState<
-  P = {},
+  P extends PP,
   S = {},
   A extends ActionCreatorsMapObject = {},
   PP = {}

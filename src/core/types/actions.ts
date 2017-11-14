@@ -4,7 +4,7 @@ import { ReducerDict } from "./reducerDict";
 import { SceneBundle } from "./bundle";
 
 export type CurtainLoadSceneAction<
-  P,
+  P extends PP,
   S,
   A extends ActionCreatorsMapObject,
   PP
@@ -20,7 +20,7 @@ export type DefaultSceneActions<S = {}> = {
   setState: (state: S) => void;
 };
 
-export type ActionsDict<A extends ActionCreatorsMapObject> = {
-  [key: string]: ActionCreatorsMapObject;
+export type ActionsDict<A extends ActionCreatorsMapObject, D = {}> = {
   _arenaScene: A;
-};
+  $0: A;
+} & D;
