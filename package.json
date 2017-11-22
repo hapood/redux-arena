@@ -1,6 +1,6 @@
 {
   "name": "redux-arena",
-  "version": "0.9.0-rc-1",
+  "version": "0.9.0-rc-2",
   "description": "Bundling reducers, actions, saga and react-component when using Redux",
   "scripts": {
     "prettier": "prettier --write \"**/*.js\" \"**/*.jsx\" \"**/*.tsx\" \"**/*.ts\"",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@types/prop-types": "^15.5.2",
-    "@types/react-redux": "^5.0.12",
+    "@types/react-redux": "^5.0.13",
     "immutable": "^3.8.2",
     "prop-types": "^15.6.0",
     "react-redux": "^5.0.6",
@@ -39,16 +39,16 @@
     "redux-saga": "^0.16.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.0.4",
-    "@types/enzyme": "^3.1.4",
+    "@types/chai": "^4.0.5",
+    "@types/enzyme": "^3.1.5",
     "@types/enzyme-adapter-react-16": "^1.0.1",
     "@types/mocha": "^2.2.44",
-    "@types/react": "^16.0.22",
+    "@types/react": "^16.0.25",
     "@types/react-dom": "^16.0.3",
     "@types/sinon": "^4.0.0",
     "chai": "^4.1.2",
-    "enzyme": "^3.1.1",
-    "enzyme-adapter-react-16": "^1.0.4",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
     "fs-extra": "^4.0.2",
     "istanbul-instrumenter-loader": "^3.0.0",
     "karma": "^1.7.1",

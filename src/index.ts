@@ -1,4 +1,4 @@
-export {
+﻿export {
   createArenaStore,
   SceneBundle,
   EnhancedStore,
@@ -11,7 +11,13 @@ export {
 } from "./core";
 export { ArenaScene, ReducerDictOverrider } from "./hocs";
 
-export { bundleToComponent, bundleToElement } from "./tools";
+export {
+  bundleToComponent,
+  bundleToElement,
+  SceneBundlePart,
+  DefaultState,
+  ActionsProps
+} from "./tools";
 
 import * as effects from "./effects";
 export { effects };

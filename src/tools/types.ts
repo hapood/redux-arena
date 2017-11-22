@@ -1,4 +1,4 @@
-import { ComponentType } from "react";
+﻿import { ComponentType } from "react";
 import { ActionCreatorsMapObject } from "redux";
 import { PropsPicker, SceneReducer, SceneBundleOptions } from "../core";
 
@@ -66,3 +66,18 @@ export type SceneBundleNoAPP<P, S> = {
 } & SceneBundleBase<P, S>;
 
 export type SceneBundleNoSAPP<P> = SceneBundleBase<P, DefaultState>;
+
+export type SceneBundlePart<
+  P extends PP,
+  S,
+  A extends ActionCreatorsMapObject,
+  PP
+> =
+  | SceneBundleNo<P, S, A, PP>
+  | SceneBundleNoS<P, A, PP>
+  | SceneBundleNoPP<P, S, A>
+  | SceneBundleNoA<P, S, PP>
+  | SceneBundleNoSPP<P, A>
+  | SceneBundleNoAPP<P, S>
+  | SceneBundleNoSA<P, PP>
+  | SceneBundleNoSAPP<P>;

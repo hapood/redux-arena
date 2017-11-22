@@ -12,14 +12,15 @@ export type TestHOCProps = {
 export default class TestHOC extends React.Component<TestHOCProps> {
   render() {
     let props = this.props;
+    let ProviderA = Provider;
     return (
-      <Provider store={props.store}>
+      <ProviderA store={props.store}>
         <ArenaScene
           sceneBundle={props.sceneBundle}
           reducerKey={props.reducerKey}
           vReducerKey={props.vReducerKey}
         />
-      </Provider>
+      </ProviderA>
     );
   }
 }
