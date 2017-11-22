@@ -18,7 +18,7 @@ const buildFolder = "build";
 
 fs.removeSync(buildFolder);
 
-function runTypeScriptBuild(outDir, target, moduleKind, isDeclarationOut) {
+function runTypeScriptBuild(outDir, target, moduleKind) {
   console.log(
     `Running typescript build (target: ${
       ts.ScriptTarget[target]
@@ -41,14 +41,9 @@ function runTypeScriptBuild(outDir, target, moduleKind, isDeclarationOut) {
   options.target = target;
   options.outDir = outDir;
   options.paths = undefined;
-  if (isDeclarationOut) {
-    options.declaration = true;
-    options.declarationDir = buildFolder;
-  } else {
-    options.declaration = false;
-  }
 
   options.module = moduleKind;
+  options.declarationDir = path.resolve(outDir);
   options.sourceMap = false;
 
   const rootFile = path.resolve("src", "index.ts");
@@ -111,7 +106,7 @@ function createPackageFile() {
         main: "lib/index.js",
         module: "es/index.js",
         "jsnext:main": "es/index.js",
-        typings: "index.d.ts",
+        typings: "es/index.d.ts",
         keywords,
         repository,
         license,
@@ -138,8 +133,7 @@ function build() {
     runTypeScriptBuild(
       `${buildFolder}/lib`,
       ts.ScriptTarget.ES5,
-      ts.ModuleKind.CommonJS,
-      true
+      ts.ModuleKind.CommonJS
     );
     resolve();
   });
