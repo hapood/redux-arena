@@ -11,6 +11,8 @@ export default class BundleComponent extends React.Component<
     arenaReducerDict: PropTypes.object
   };
 
+  _isValid = false;
+
   getChildContext() {
     return {
       arenaReducerDict:
@@ -47,6 +49,7 @@ export default class BundleComponent extends React.Component<
   }
 
   componentWillMount() {
+    this._isValid = true;
     let loadedPromise = this.buildLoadScenePromise(
       this.props.arenaReducerDict,
       this.props.sceneBundle,
@@ -61,19 +64,22 @@ export default class BundleComponent extends React.Component<
     let { sceneBundle } = nextProps;
     if (sceneBundle !== this.props.sceneBundle) {
       this.state.loadedPromise.then(() => {
-        let loadedPromise = this.buildLoadScenePromise(
-          nextProps.arenaReducerDict,
-          nextProps.sceneBundle,
-          false
-        );
-        this.setState({
-          loadedPromise
-        });
+        if (this._isValid) {
+          let loadedPromise = this.buildLoadScenePromise(
+            nextProps.arenaReducerDict,
+            nextProps.sceneBundle,
+            false
+          );
+          this.setState({
+            loadedPromise
+          });
+        }
       });
     }
   }
 
   componentWillUnmount() {
+    this._isValid = false;
     this.props.clearCurtain();
     this.props.mutableObj.isObsolete = true;
   }

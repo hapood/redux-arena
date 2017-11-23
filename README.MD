@@ -77,9 +77,6 @@ ReactDOM.render(
 * [`EnhancedRedux API`](#enhancedredux-api)
   * [`createArenaStore(reducers, initialStates, enhencers, sagaOptions): enhancedStore`](#createarenastorereducers-initialstates-enhancers-sagaoptions-enhancedstore)
 * [`Bundle API`](#bundle-api)
-* [`HOC API`](#hoc-api)
-  * [`<ArenaScene />`](#arenascene)
-  * [`<ArenaSceneMotion />`](#arenascenemotion)
 * [`Tools API`](#tools-api)
   * [`bundleToComponent(bundle, extraProps)`](#bundletocomponentbundle-extraProps)
   * [`bundleToElement(bundle, props, extraProps)`](#asyncbundletoelementasyncbundle-props-extraProps)
@@ -94,7 +91,7 @@ ReactDOM.render(
 
 ## EnhancedRedux API
 
-### `createArenaStore(reducers, initialStates, enhancers, sagaOptions): enhancedStore`
+### `createArenaStore(reducers, options): enhancedStore`
 
 Creates a enhanced redux store for redux-arena
 
@@ -110,8 +107,9 @@ Creates a enhanced redux store for redux-arena
      }
      ```
 
-- `initialStates: object` - A set of initial states.
+- `options: object` - Options of redux arena store.
 
+  - `initialStates: object` - A set of initial states.
    **Example**
 
     ```javascript
@@ -123,7 +121,7 @@ Creates a enhanced redux store for redux-arena
     ```
 
 
-- `enhencers: array` - An array of redux enhencers.
+  - `enhencers: array` - An array of redux enhencers.
 
     **Example**
 
@@ -134,7 +132,17 @@ Creates a enhanced redux store for redux-arena
     let enhancers = [applyMiddleware(thunk)];
     ```
 
-- `sagaOptions：object` - Options used for redux-saga.
+  - `sagaOptions：object` - Options used for redux-saga.
+
+  - `middlewares: array` - An array of redux middlewares.
+
+    **Example**
+
+    ```javascript
+    import thunk from "redux-thunk";
+
+    let middlewares = [thunk];
+    ```
 
 - `enhancedStore：object` - An enhanced redux store which owning following method.
 
@@ -173,6 +181,27 @@ export default {
 
 - `saga: function*` - Generator of redux-Ssga, initialize when component be mounted.
 
+- `propsPicker: function(stateDict, actionsDict)` - Pick state and actions to props. $ is relative location symbol, $0 could get current location fast，and $1 will get parent location. If this option is unset, an default propsPicker will map all state entities to props with same key, actions will alse pass to props as actions.
+
+**Example**
+
+```javascript
+import state from "./state";
+import saga from "./saga";
+import * as actions from "./actions";
+import Component from "./Component";
+
+export default {
+  Component,
+  state,
+  actions,
+  propsPicker:({$0: state}, {$0: actions})=>({
+    a: state.a,
+    actions
+  })
+}
+```
+
 - `options: object` - Options of bundle.
 
   - `reducerKey: string` - Specify a fixed reducer key for bundle.
@@ -182,38 +211,6 @@ export default {
   - `isSceneAction: bool` - If false, "_sceneReducerKey" will not add to actions in bundle.
 
   - `isSceneReducer: bool` - If false, reducer will accept actions dispatched by other bundle.
-
-## HOC API
-
-### `<ArenaScene />`
-
-A container for transforming bundle to a plain react element. Props is explained following:
-
-- `sceneBundle: object` - Sync bundle for loading.
-
-- `sceneProps: object` - Props of bundle's Component.
-
-- `reducerKey: string` - Specify a fixed reducer key for container.
-
-- `vReducerKey: string` - Specify a fixed vitural reducer key for container.
-
-### `<ArenaSceneMotion />`
-
-Loading Animation Frame for ArenaScene. Props is explained following:
-
-- `children: element` - Element of ArenaScene rendered.
-
-- `sceneBundleThunk: () => Promise` - function for async loading bundle.
-
-- `loadingPlay: element` - Element of loading animation.
-
-- `initStyles: object` - Initial style of container, loadingPlay and scenePlay.
-
-- `styleCalculators: object` - Style calculators of container, loadingPlay and scenePlay.
-
-- `numberToStyle: object` - Style transformers of container, loadingPlay and scenePlay.
-
-- `nextPhaseCheckers: object` - Phase checks of container, loadingPlay and scenePlay.
 
 ## Tools API
 

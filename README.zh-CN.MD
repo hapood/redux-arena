@@ -78,9 +78,6 @@ ReactDOM.render(
 * [`EnhancedRedux API`](#enhancedredux-api)
   * [`createArenaStore(reducers, initialStates, enhencers, sagaOptions): enhancedStore`](#createarenastorereducers-initialstates-enhancers-sagaoptions-enhancedstore)
 * [`Bundle API`](#bundle-api)
-* [`HOC API`](#hoc-api)
-  * [`<ArenaScene />`](#arenascene)
-  * [`<ArenaSceneMotion />`](#arenascenemotion)
 * [`Tools API`](#tools-api)
   * [`bundleToComponent(bundle, extraProps)`](#bundletocomponentbundle-extraProps)
   * [`asyncBundleToComponent(asyncBundle, extraProps)`](#bundletoelementbundle-props-extraProps)
@@ -111,7 +108,9 @@ ReactDOM.render(
      }
      ```
 
-- `initialStates: object` - 对象形式的redux的state。
+- `options: object` - Store的设置选项。
+
+  - `initialStates: object` - 对象形式的redux的state。
 
    **Example**
 
@@ -123,8 +122,7 @@ ReactDOM.render(
      }
     ```
 
-
-- `enhencers: array` - 数组形式的redux enhencers。
+  - `enhencers: array` - 数组形式的redux enhencers。
 
     **Example**
 
@@ -135,7 +133,17 @@ ReactDOM.render(
     let enhancers = [applyMiddleware(thunk)];
     ```
 
-- `sagaOptions：object` - redux-saga的扩展选项。
+  - `middlewares: array` - 数组形式的redux middlewares。
+
+    **Example**
+
+    ```javascript
+    import thunk from "redux-thunk";
+
+    let middlewares = [thunk];
+    ```
+
+  - `sagaOptions：object` - redux-saga的扩展选项。
 
 - `enhancedStore：object` - 函数返回值，拥有以下方法：
 
@@ -174,6 +182,27 @@ export default {
 
 - `saga: function*` - Redux-Saga的生成器函数，当组件被挂载时初始化。
 
+- `propsPicker: function(stateDict, actionsDict)` - 挑选state与actions到组件的props。$是相对位置表示符号，$0可以快速拿到当前层次的信息，同理$1可以拿到上一层的信息。如果该项为空，默认会将state中的所有实体绑定至同名的props中，并将actions绑定至props的actions中。
+
+**Example**
+
+```javascript
+import state from "./state";
+import saga from "./saga";
+import * as actions from "./actions";
+import Component from "./Component";
+
+export default {
+  Component,
+  state,
+  actions,
+  propsPicker:({$0: state}, {$0: actions})=>({
+    a: state.a,
+    actions
+  })
+}
+```
+
 - `options: object` - Bundle的选项。
 
   - `reducerKey: string` - 为bundle指定reducerKey。
@@ -183,38 +212,6 @@ export default {
   - `isSceneAction: bool` - 如果为false, "_sceneReducerKey"不会添加到发送的action中。
 
   - `isSceneReducer: bool` - 如果为false, reducer会接收其他bundle发送的action。
-
-## HOC API
-
-### `<ArenaScene />`
-
-将bundle转换为react element的容器，props如下所示：
-
-- `sceneBundle: object` - 需要加载的同步bundle。
-
-- `sceneProps: object` - Bundle组件接收的props。
-
-- `reducerKey: string` - 为容器指定reducerKey。
-
-- `vReducerKey: string` - 为容器指定虚拟reducerKey。
-
-### `<ArenaSceneMotion />`
-
-ArenaScene的加载动画框架，props如下所示：
-
-- `children: element` - ArenaScene渲染出的element。
-
-- `sceneBundleThunk: () => Promise` - 用于异步加载bundle的函数。
-
-- `loadingPlay: element` - 加载动画的element。
-
-- `initStyles: object` - Container、loadingPlay、scenePlay的初始化样式。
-
-- `styleCalculators: object` - Container、loadingPlay、scenePlay的样式计算函数。
-
-- `numberToStyle: object` - Container、loadingPlay、scenePlay的样式转换函数。
-
-- `nextPhaseCheckers: object` - Container、loadingPlay、scenePlay的阶段检查器。
 
 ## Tools API
 

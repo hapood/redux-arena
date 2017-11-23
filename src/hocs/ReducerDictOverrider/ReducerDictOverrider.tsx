@@ -9,11 +9,13 @@ export default class ReducerDictOverrider extends React.Component<
   static childContextTypes = {
     arenaReducerDict: PropTypes.object
   };
+
   getChildContext() {
     return {
       arenaReducerDict: this.props.reducerDict
     };
   }
+
   render() {
     return this.props.children;
   }
