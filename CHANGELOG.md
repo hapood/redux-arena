@@ -1,4 +1,4 @@
-## 0.9.0 (Nov 10, 2017)
+## 0.9.0 (Dec 13, 2017)
 * Add typescript support (#13)
 * Separate animition hoc to other repository (#15)
 * Change propsPicker for typescript type inferring (#18)
