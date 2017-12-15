@@ -67,7 +67,7 @@ function bundleToComponent<P extends ActionsProps<DefaultActions<{}>>>(
 function bundleToComponent(
   bundle: any,
   extraProps?: ArenaSceneExtraProps
-): any {
+) {
   let newBundle = Object.assign(
     {
       propsPicker: defaultPropsPicker,

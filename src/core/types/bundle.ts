@@ -16,7 +16,7 @@ export type PropsPicker<
   S,
   A extends ActionCreatorsMapObject,
   PP
-> = (stateDict: StateDict<S>, actionsDict: ActionsDict<A>) => PP;
+> = (stateDict: StateDict<S, any>, actionsDict: ActionsDict<A, any>) => PP;
 
 export type SceneBundleOptions = {
   reducerKey?: string;
