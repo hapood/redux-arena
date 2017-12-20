@@ -6,7 +6,6 @@ export {
   Omit,
   DefaultState,
   ActionsProps,
-  DefaultActions,
   SceneBundleNo,
   SceneBundleNoS,
   SceneBundleNoPP,

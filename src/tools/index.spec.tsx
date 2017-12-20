@@ -2,15 +2,16 @@ import * as React from "react";
 import { expect } from "chai";
 import { spy } from "sinon";
 import { StateDict, ActionsDict } from "src";
+import { DefaultSceneActions } from "src/core/types";
 import bundleToComponent from "./bundleToComponent";
 import bundleToElement from "./bundleToElement";
-import { ActionsProps, DefaultActions } from "./types";
+import { ActionsProps } from "./types";
 
 class TestComponent extends React.Component<
   {
     a: string;
     b: string;
-  } & ActionsProps<DefaultActions<{ a: string }>>
+  } & ActionsProps<DefaultSceneActions<{ a: string }>>
 > {
   render() {
     return <div>{this.props.a + this.props.b}</div>;
@@ -22,7 +23,7 @@ const bundleWithDefaultA = {
   state: { a: "a" },
   propsPicker: (
     { $0: state }: StateDict<{ a: string }>,
-    { $0: actions }: ActionsDict<DefaultActions<{ a: string }>>
+    { $0: actions }: ActionsDict<DefaultSceneActions<{ a: string }>>
   ) => ({
     actions,
     a: state.a

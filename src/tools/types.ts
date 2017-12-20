@@ -1,6 +1,12 @@
 ﻿import { ComponentType } from "react";
 import { ActionCreatorsMapObject } from "redux";
-import { PropsPicker, SceneReducer, SceneBundleOptions } from "../core";
+import {
+  PropsPicker,
+  SceneReducer,
+  SceneBundleOptions,
+  ActionsDict,
+  DefaultSceneActions
+} from "../core";
 
 export type Diff<T extends string, U extends string> = ({ [P in T]: P } &
   { [P in U]: never } & { [x: string]: never })[T];
@@ -11,8 +17,6 @@ export type DefaultPickedProps<S, A extends ActionCreatorsMapObject> = {
 } & S;
 
 export type DefaultState = {};
-
-export type DefaultActions<S> = { setState: (state: Partial<S>) => void };
 
 export type ActionsProps<A> = { actions: A };
 
@@ -50,7 +54,7 @@ export type SceneBundleNoPP<P, S, A extends ActionCreatorsMapObject> = {
 
 export type SceneBundleNoA<P extends PP, S, PP> = {
   state: S;
-  propsPicker: PropsPicker<P, DefaultState, DefaultActions<S>, PP>;
+  propsPicker: PropsPicker<P, DefaultState, DefaultSceneActions<S>, PP>;
 } & SceneBundleBase<P, S>;
 
 export type SceneBundleNoSPP<P, A extends ActionCreatorsMapObject> = {
@@ -58,7 +62,7 @@ export type SceneBundleNoSPP<P, A extends ActionCreatorsMapObject> = {
 } & SceneBundleBase<P & { actions: A }, DefaultState>;
 
 export type SceneBundleNoSA<P extends PP, PP> = {
-  propsPicker: PropsPicker<P, DefaultState, DefaultActions<DefaultState>, PP>;
+  propsPicker: PropsPicker<P, DefaultState, DefaultSceneActions<DefaultState>, PP>;
 } & SceneBundleBase<P, DefaultState>;
 
 export type SceneBundleNoAPP<P, S> = {

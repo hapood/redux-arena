@@ -1,10 +1,10 @@
 import * as React from "react";
 import { ActionCreatorsMapObject } from "redux";
+import { DefaultSceneActions } from "../core/types";
 import { ArenaSceneExtraProps, ArenaScene } from "../hocs";
 import {
   Omit,
   ActionsProps,
-  DefaultActions,
   SceneBundleNo,
   SceneBundleNoS,
   SceneBundleNoA,
@@ -56,18 +56,18 @@ function bundleToComponent<
   bundle: SceneBundleNoSPP<P, A>,
   extraProps?: ArenaSceneExtraProps
 ): React.SFC<Omit<P, keyof (ActionsProps<A>)>>;
-function bundleToComponent<P extends S & ActionsProps<DefaultActions<S>>, S>(
+function bundleToComponent<
+  P extends S & ActionsProps<DefaultSceneActions<S>>,
+  S
+>(
   bundle: SceneBundleNoAPP<P, S>,
   extraProps?: ArenaSceneExtraProps
-): React.SFC<Omit<P, keyof (S & ActionsProps<DefaultActions<S>>)>>;
-function bundleToComponent<P extends ActionsProps<DefaultActions<{}>>>(
+): React.SFC<Omit<P, keyof (S & ActionsProps<DefaultSceneActions<S>>)>>;
+function bundleToComponent<P extends ActionsProps<DefaultSceneActions<{}>>>(
   bundle: SceneBundleNoSAPP<P>,
   extraProps?: ArenaSceneExtraProps
-): React.SFC<Omit<P, keyof (ActionsProps<DefaultActions<{}>>)>>;
-function bundleToComponent(
-  bundle: any,
-  extraProps?: ArenaSceneExtraProps
-) {
+): React.SFC<Omit<P, keyof (ActionsProps<DefaultSceneActions<{}>>)>>;
+function bundleToComponent(bundle: any, extraProps?: ArenaSceneExtraProps) {
   let newBundle = Object.assign(
     {
       propsPicker: defaultPropsPicker,
